@@ -26,7 +26,13 @@ from quantlab import backtest, baselines, features, metrics, models, validation
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", choices=["yfinance", "planted", "noise"], default="planted")
-    ap.add_argument("--model", choices=["ridge", "gbr"], default="ridge")
+    ap.add_argument(
+        "--model",
+        choices=["ridge", "ridge_cv", "gbr"],
+        default="ridge",
+        help="ridge_cv re-selects alpha per roll via nested walk-forward "
+        "(in-sample only -- does not inflate the trial count).",
+    )
     ap.add_argument("--cost-bps", type=float, default=10.0)
     ap.add_argument("--horizon", type=int, default=21)
     ap.add_argument(

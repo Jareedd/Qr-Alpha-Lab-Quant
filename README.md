@@ -37,13 +37,15 @@ src/quantlab/
   synthetic.py   # planted-signal and pure-noise panels for falsification tests
   features.py    # cross-sectionally z-scored: 12-1 momentum, 6-1, reversal, vol, 52w-high
   validation.py  # expanding walk-forward splitter with embargo
-  models.py      # Ridge baseline + gradient boosting; per-date rank IC
+  models.py      # Ridge baseline + gradient boosting; per-date rank IC;
+                 # ridge_cv = nested per-roll alpha tuning (train window only)
   baselines.py   # 12-1 momentum decile L/S + equal-weight 1/N benchmarks
   backtest.py    # dollar-neutral decile long-short, linear costs, turnover
   metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe Ratio
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
-tests/                    # 16 tests: leakage, costs, DSR monotonicity, lookahead,
-                          # baselines, vectorized-vs-naive equivalence
+tests/                    # 21 tests: leakage, costs, DSR monotonicity, lookahead,
+                          # baselines, vectorized-vs-naive equivalence,
+                          # nested-tuning leak checks
 research_log.md           # every trial ever run; owns the honest --n-trials count
 .github/workflows/ci.yml  # unit tests + falsification gate on every push
 ```
@@ -52,7 +54,7 @@ research_log.md           # every trial ever run; owns the honest --n-trials cou
 
 ```
 pip install -r requirements.txt
-python -m pytest tests/ -q                              # 16 tests
+python -m pytest tests/ -q                              # 21 tests
 python scripts/run_pipeline.py --data planted           # sanity check 1
 python scripts/run_pipeline.py --data noise --n-trials 20   # sanity check 2
 python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 5  # real data
@@ -62,7 +64,7 @@ Outputs land in `results/`: metrics JSON + equity-curve PNG per run.
 
 ## Known limitations (deliberate honesty)
 
-The default real-data universe is today's liquid names — **survivorship-biased**, which inflates long-side returns; fixing this with point-in-time membership is on the roadmap. Costs are linear with no market-impact model. The label is a 21-day forward return; no risk-model neutralization (sector/beta) yet. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
+The default real-data universe is today's liquid names — **survivorship-biased**, which inflates long-side returns; fixing this with point-in-time membership is on the roadmap. Costs are linear with no market-impact model. The label is a 21-day forward return; no risk-model neutralization (sector/beta) yet. Reported IC t-stats assume independent daily observations, but overlapping 21-day labels are autocorrelated — they're overstated until a Newey–West correction lands. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
 
 ## References
 

@@ -25,18 +25,64 @@ def make_model(name: str):
             early_stopping=False,
             random_state=0,
         )
-    raise ValueError(f"unknown model {name!r}; use 'ridge' or 'gbr'")
+    raise ValueError(f"unknown model {name!r}; use 'ridge', 'ridge_cv', or 'gbr'")
+
+
+# Candidate alphas for nested tuning. A coarse log-spaced grid on purpose:
+# a fine grid buys nothing at this signal-to-noise and multiplies compute.
+RIDGE_ALPHA_GRID = (1.0, 10.0, 100.0, 1000.0)
+
+
+def select_ridge_alpha(
+    train_panel: pd.DataFrame,
+    embargo_days: int,
+    grid: tuple[float, ...] = RIDGE_ALPHA_GRID,
+) -> float:
+    """Nested hyperparameter selection: pick Ridge alpha by inner walk-forward.
+
+    Runs an inner expanding walk-forward *within the training window only* and
+    scores each candidate alpha by mean out-of-fold rank IC. The outer test
+    window is never seen, so this is in-sample model selection: re-tuning on
+    every roll does NOT inflate the DSR trial count, because nothing here is
+    selected on outer out-of-sample results.
+
+    Falls back to the grid's middle value if the training window is too short
+    for even one inner split (early outer rolls on short histories).
+    """
+    from quantlab.validation import WalkForwardSplitter
+
+    inner = WalkForwardSplitter(
+        min_train_days=504, test_days=126, embargo_days=embargo_days
+    )
+    best_alpha, best_ic = grid[len(grid) // 2], -np.inf
+    for alpha in grid:
+        try:
+            preds = walk_forward_predict(
+                train_panel, inner, model_factory=lambda a=alpha: Ridge(alpha=a)
+            )
+        except RuntimeError:  # window too short for any inner split
+            return best_alpha
+        mean_ic = information_coefficient(preds, train_panel).mean()
+        if mean_ic > best_ic:
+            best_alpha, best_ic = alpha, mean_ic
+    return best_alpha
 
 
 def walk_forward_predict(
     panel: pd.DataFrame,
     splitter,
     model_name: str = "ridge",
+    model_factory=None,
 ) -> pd.Series:
     """Train on each walk-forward window, predict the test window.
 
     ``panel``: long-format (date, ticker) frame with feature columns + 'label'.
     Returns an out-of-sample prediction Series indexed by (date, ticker).
+
+    ``model_name='ridge_cv'`` re-selects the Ridge alpha on every roll via
+    nested inner walk-forward on the training window (see select_ridge_alpha).
+    ``model_factory`` (a zero-arg callable) overrides model_name entirely --
+    used internally by the nested tuner.
 
     Window selection uses positional slicing on the date-sorted panel rather
     than per-split ``isin`` masks. This is equivalent because the splitter's
@@ -59,7 +105,15 @@ def walk_forward_predict(
         test_hi = np.searchsorted(dates_np, test_dates[-1].to_datetime64(), side="right")
         if train_end == 0 or test_lo == test_hi:
             continue
-        model = make_model(model_name)
+        if model_factory is not None:
+            model = model_factory()
+        elif model_name == "ridge_cv":
+            alpha = select_ridge_alpha(
+                panel.iloc[:train_end], embargo_days=splitter.embargo_days
+            )
+            model = Ridge(alpha=alpha)
+        else:
+            model = make_model(model_name)
         model.fit(X[:train_end], y[:train_end])
         p = model.predict(X[test_lo:test_hi])
         preds.append(pd.Series(p, index=panel.index[test_lo:test_hi]))
