@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+pytest-cache-files-*/
+
+# Data caches (regenerable; never commit market data)
+data_cache/
+
+# Scratch outputs (the canonical results/ directory IS committed --
+# small PNGs/JSONs regenerable from config + seed, shown in the README)
+results_baseline/
+results/results/

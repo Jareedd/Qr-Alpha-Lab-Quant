@@ -1,0 +1,17 @@
+{
+  "ann_return_net": -0.11876262356886196,
+  "ann_vol": 0.23616062899045331,
+  "sharpe_gross": -0.4491499809958584,
+  "sharpe_net": -0.5028891736804398,
+  "max_drawdown": -0.8334903178932113,
+  "annual_turnover": 4.241999999999999,
+  "skew": -0.329003753195254,
+  "psr": 0.07776221329293026,
+  "dsr": 0.0004348735400893708,
+  "n_trials_assumed": 20,
+  "n_days": 1992,
+  "mean_rank_ic": -0.019925111472763598,
+  "baseline_mom_sharpe_net": 0.19207610924306526,
+  "baseline_ew_sharpe": 0.5668237883099094,
+  "beats_mom_baseline": false
+}

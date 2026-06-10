@@ -1,0 +1,27 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit tests
+        run: python -m pytest tests/ -q
+      # The falsification gate is part of CI, not just local ritual:
+      # planted signal must be recovered, pure noise must be rejected.
+      - name: Falsification gate — planted signal must be recovered
+        run: python scripts/run_pipeline.py --data planted --fail-if-dsr-below 0.95
+      - name: Falsification gate — noise must be rejected
+        run: python scripts/run_pipeline.py --data noise --n-trials 20 --fail-if-dsr-above 0.5
