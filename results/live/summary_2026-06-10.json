@@ -1,0 +1,9 @@
+{
+  "asof": "2026-06-10",
+  "n_names": 100,
+  "submitted": true,
+  "equity": 1000000.0,
+  "orders_sent": 100,
+  "orders_failed": [],
+  "n_failed": 0
+}

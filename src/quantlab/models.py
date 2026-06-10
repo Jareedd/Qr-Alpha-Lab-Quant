@@ -11,6 +11,9 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.linear_model import Ridge
+from sklearn.neural_network import MLPRegressor
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 def make_model(name: str):
@@ -25,7 +28,27 @@ def make_model(name: str):
             early_stopping=False,
             random_state=0,
         )
-    raise ValueError(f"unknown model {name!r}; use 'ridge', 'ridge_cv', or 'gbr'")
+    if name == "mlp":
+        # Deliberately small (Gu-Kelly-Xiu: shallow nets win in this domain;
+        # 5 features cannot feed a deep one). Exists to complete the model-
+        # class ablation -- linear (ridge) / trees (gbr) / nonlinear smooth
+        # (mlp) on identical features -- not as an alpha hail-mary. Scaler in
+        # a sklearn Pipeline so test-window data never touches the fit.
+        return make_pipeline(
+            StandardScaler(),
+            MLPRegressor(
+                hidden_layer_sizes=(16, 8),
+                alpha=1e-3,
+                learning_rate_init=1e-3,
+                max_iter=300,
+                early_stopping=True,  # splits off 10% of TRAIN data only
+                n_iter_no_change=10,
+                random_state=0,
+            ),
+        )
+    raise ValueError(
+        f"unknown model {name!r}; use 'ridge', 'ridge_cv', 'gbr', or 'mlp'"
+    )
 
 
 # Candidate alphas for nested tuning. A coarse log-spaced grid on purpose:

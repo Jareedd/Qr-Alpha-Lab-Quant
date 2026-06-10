@@ -1,0 +1,38 @@
+name: live-paper-trading
+
+on:
+  schedule:
+    # 22:30 UTC weekdays = comfortably after US close year-round (EST/EDT).
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch: {}  # manual trigger for testing
+
+permissions:
+  contents: write  # the run commits its prediction log back to the repo
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Daily paper trade (skips gracefully if secrets unset)
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: |
+          if [ -z "$ALPACA_API_KEY_ID" ]; then
+            echo "Alpaca secrets not configured -> skipping (see README Phase 6)"
+            exit 0
+          fi
+          python scripts/live_trade.py
+      - name: Commit prediction log (the immutable live-IC record)
+        run: |
+          git config user.name "qr-alpha-lab live bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add results/live
+          git diff --cached --quiet || git commit -m "live: prediction log $(date -u +%F)"
+          git push

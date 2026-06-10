@@ -57,6 +57,8 @@ src/quantlab/
   metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe, Newey-West t-stats
   impact.py      # square-root market impact, dollar-ADV, capacity curves
   env.py         # minimal .env loader (Alpaca keys, Phase 6)
+  live.py        # daily paper-trading: complete-label training, order deltas,
+                 # paper-only Alpaca client; predictions logged before orders
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
 tests/                    # 21 tests: leakage, costs, DSR monotonicity, lookahead,
                           # baselines, vectorized-vs-naive equivalence,
@@ -77,6 +79,12 @@ python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 5  # stati
 ```
 
 Outputs land in `results/`: metrics JSON + equity-curve PNG per run.
+
+## Live paper trading (Phase 6)
+
+A daily GitHub Actions job (`.github/workflows/live.yml`, 22:30 UTC weekdays) rebuilds the point-in-time universe, trains on **fully-labeled history only** (rows newer than `today − horizon` have incomplete labels and are excluded — live trading gets the same leakage discipline as the backtest), logs the day's predictions to `results/live/` *before* any order exists, then submits integer-share, per-name-capped orders to an Alpaca **paper** account (the client refuses any non-paper endpoint). The prediction log is committed back to the repo — an immutable, timestamped record that after each 21-day horizon elapses yields **live IC vs backtest IC**, the ultimate out-of-sample test. Local alternative: `python scripts/live_trade.py [--dry-run]`.
+
+One-time setup: repo → Settings → Secrets and variables → Actions → add `ALPACA_API_KEY_ID` and `ALPACA_API_SECRET_KEY` (paper keys). The workflow skips gracefully until they exist.
 
 ## Known limitations (deliberate honesty)
 
