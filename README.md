@@ -29,7 +29,13 @@ Current results: planted → out-of-sample rank IC 0.063 (Newey–West t = 2.0),
 
 **Survivorship bias, measured on this very pipeline.** The same ridge config earns net Sharpe **0.82** (IC 0.033) on a static universe of today's members — and net Sharpe **−0.01** (IC 0.005, Newey–West t = 0.5) on the point-in-time S&P 500. The entire "edge" was hindsight in the universe selection. McLean & Pontiff in miniature, reproduced in-house, and the single best exhibit this project owns.
 
+**The honest bottom line after six logged trials.** Across horizons (21/63d), labels (raw/beta-residualized), models (ridge/GBR), and neutralization, no configuration of five price-only features earns a defensible net edge on the bias-corrected universe (best DSR 0.04). The pipeline provably recovers planted signals and rejects noise — the conclusion is about the signals, not the plumbing, and it matches the published record for heavily-arbitraged large caps. A negative result you can trust is the deliverable; the trials that produced near-misses (|t_NW| ≈ 1.9) are documented in `research_log.md` along with why we refuse to trade the sign-flip.
+
+**Capacity is a first-class question.** `--capacity` sweeps AUM through a square-root impact model (trailing dollar-ADV, point-in-time, k = 1) and reports where net Sharpe dies — because "does it scale?" is the question that separates a backtest from a business.
+
 **Neutrality is measured, not asserted.** `--neutralize sector|beta|both` demeans predictions within GICS sector and projects rebalance weights to zero ex-ante market beta (rolling 252-day betas, past data only). Every run — neutralized or not — emits a risk report (realized rolling beta, market correlation, sector net exposures), because a "market-neutral" label without measurement is marketing. On the planted panel, neutralization cuts p95 |rolling beta| from 0.32 to 0.03 while the planted (idiosyncratic) signal survives intact — which is exactly the pair of facts that proves the projection removes factor exposure and not signal.
+
+**Label and cadence research, counted.** `--label residual` predicts beta-residualized forward returns (past-only rolling betas — the only return a dollar-neutral book can harvest); `--horizon` and `--rebalance` trade signal speed against turnover. Every per-window univariate feature IC ships as a CSV (`feature_ics_*.csv`) with sign-consistency printed per run, because a feature whose IC flips sign across walk-forward windows is an overfitting tell regardless of its pooled value. Each configuration evaluated on real data increments the trial count in `research_log.md` — no exceptions.
 
 **Vectorized but pinned.** The IC computation, weight construction, and walk-forward slicing are vectorized (~4.4× core speedup), and each optimized path is pinned by a test against a naive per-date reference implementation, so a future "optimization" that drifts the numbers fails the suite.
 
@@ -40,7 +46,8 @@ src/quantlab/
   data.py        # yfinance loader with parquet cache; chunked downloads
   universe.py    # point-in-time S&P 500 membership from Wikipedia changes table
   synthetic.py   # planted-signal and pure-noise panels for falsification tests
-  features.py    # cross-sectionally z-scored: 12-1 momentum, 6-1, reversal, vol, 52w-high
+  features.py    # cross-sectionally z-scored: 12-1 momentum, 6-1, reversal, vol, 52w-high;
+                 # member-masked z-scores; optional beta-residualized labels
   validation.py  # expanding walk-forward splitter with embargo
   models.py      # Ridge baseline + gradient boosting; per-date rank IC;
                  # ridge_cv = nested per-roll alpha tuning (train window only)
@@ -48,6 +55,7 @@ src/quantlab/
   risk.py        # sector demean, beta-neutral weight projection, risk report
   backtest.py    # dollar-neutral decile long-short, linear costs, turnover
   metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe, Newey-West t-stats
+  impact.py      # square-root market impact, dollar-ADV, capacity curves
   env.py         # minimal .env loader (Alpaca keys, Phase 6)
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
 tests/                    # 21 tests: leakage, costs, DSR monotonicity, lookahead,

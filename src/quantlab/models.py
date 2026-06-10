@@ -124,6 +124,28 @@ def walk_forward_predict(
     return out[~out.index.duplicated()]
 
 
+def feature_window_ics(panel: pd.DataFrame, splitter) -> pd.DataFrame:
+    """Per-test-window mean rank IC of each raw feature vs the label.
+
+    A model-agnostic overfitting tell (works for ridge and GBR alike): a
+    feature whose univariate IC flips sign across walk-forward windows has no
+    stable relationship with forward returns, whatever the pooled IC says.
+    Returns a (window x feature) frame plus a 'test_start' column.
+    """
+    feature_cols = [c for c in panel.columns if c != "label"]
+    daily = {f: information_coefficient(panel[f], panel) for f in feature_cols}
+    dates = pd.DatetimeIndex(panel.index.get_level_values("date").unique())
+    rows = []
+    for i, (_, test) in enumerate(splitter.split(dates)):
+        row = {"test_start": str(test[0].date())}
+        for f in feature_cols:
+            row[f] = float(daily[f].loc[test[0] : test[-1]].mean())
+        rows.append(row)
+    out = pd.DataFrame(rows)
+    out.index.name = "window"
+    return out
+
+
 def information_coefficient(preds: pd.Series, panel: pd.DataFrame) -> pd.Series:
     """Per-date Spearman rank IC between predictions and realized labels.
 

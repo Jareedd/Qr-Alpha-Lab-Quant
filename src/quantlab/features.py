@@ -17,8 +17,18 @@ def _zscore_cs(df: pd.DataFrame) -> pd.DataFrame:
     return df.sub(df.mean(axis=1), axis=0).div(df.std(axis=1) + 1e-12, axis=0)
 
 
-def build_features(prices: pd.DataFrame) -> dict[str, pd.DataFrame]:
-    """Return dict of feature name -> (date x ticker) z-scored frames."""
+def build_features(
+    prices: pd.DataFrame,
+    member_mask: pd.DataFrame | None = None,
+) -> dict[str, pd.DataFrame]:
+    """Return dict of feature name -> (date x ticker) z-scored frames.
+
+    ``member_mask`` (date x ticker booleans): raw features are computed from
+    each name's full price history (pre-membership prices are real, public
+    data -- a new entrant's momentum is legitimate), but the cross-sectional
+    z-score is taken over index members only, so non-members can't shift the
+    mean/std the model normalizes against.
+    """
     # fill_method=None: a halted or delisted name's missing price must yield a
     # NaN return, not a pad-filled phantom 0% -- phantom zeros deflate measured
     # vol and corrupt every downstream statistic for point-in-time universes.
@@ -37,17 +47,42 @@ def build_features(prices: pd.DataFrame) -> dict[str, pd.DataFrame]:
         # Distance from 52-week high (George & Hwang 2004).
         "pct_52w_high": prices / prices.rolling(252).max() - 1.0,
     }
+    if member_mask is not None:
+        feats = {name: f.where(member_mask) for name, f in feats.items()}
     return {name: _zscore_cs(f) for name, f in feats.items()}
 
 
-def build_labels(prices: pd.DataFrame, horizon: int = 21) -> pd.DataFrame:
+def build_labels(
+    prices: pd.DataFrame,
+    horizon: int = 21,
+    residualize: bool = False,
+    member_mask: pd.DataFrame | None = None,
+) -> pd.DataFrame:
     """Forward ``horizon``-day return, cross-sectionally z-scored.
 
     Label at date t uses prices (t, t+horizon] -- strictly future information,
     aligned so a model trained on rows <= t never sees beyond t + horizon
     (handled by the embargo in validation).
+
+    ``residualize=True`` subtracts each name's beta-scaled market move over
+    the same window: label = r_fwd - beta_t * mkt_fwd, with beta estimated
+    from PAST returns only (rolling 252d as of t). The model then predicts
+    idiosyncratic return -- the only part a dollar-neutral portfolio can
+    actually harvest -- instead of wasting capacity on who-has-more-beta
+    during whatever the market does next.
     """
     fwd = prices.shift(-horizon) / prices - 1.0
+    if residualize:
+        from quantlab.risk import rolling_beta
+
+        rets = prices.pct_change(fill_method=None)
+        mkt = rets.where(member_mask).mean(axis=1) if member_mask is not None else rets.mean(axis=1)
+        beta = rolling_beta(rets, mkt)  # past-only, known at t
+        mkt_prices = (1 + mkt.fillna(0)).cumprod()
+        mkt_fwd = mkt_prices.shift(-horizon) / mkt_prices - 1.0
+        fwd = fwd - beta.mul(mkt_fwd, axis=0)
+    if member_mask is not None:
+        fwd = fwd.where(member_mask)
     return _zscore_cs(fwd)
 
 

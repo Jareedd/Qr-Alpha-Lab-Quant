@@ -16,6 +16,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -43,6 +44,21 @@ def main() -> None:
     ap.add_argument("--cost-bps", type=float, default=10.0)
     ap.add_argument("--horizon", type=int, default=21)
     ap.add_argument(
+        "--label",
+        choices=["raw", "residual"],
+        default="raw",
+        help="residual: subtract beta_t * forward market return from the "
+        "label (past-only betas) -- predict idiosyncratic return, the only "
+        "part a dollar-neutral book can harvest.",
+    )
+    ap.add_argument(
+        "--rebalance",
+        type=int,
+        default=None,
+        help="Rebalance every N days (default: the label horizon). Longer "
+        "rebalance = less turnover = less cost drag on a weak edge.",
+    )
+    ap.add_argument(
         "--n-trials",
         type=int,
         default=1,
@@ -57,6 +73,13 @@ def main() -> None:
         "rebalance weights to zero ex-ante market beta (rolling 252d, "
         "past-only). Factor exposure usually explains most of a naive "
         "signal -- this asks what is left.",
+    )
+    ap.add_argument(
+        "--capacity",
+        action="store_true",
+        help="Run a square-root-impact capacity sweep (needs volume data; "
+        "real-data modes only). Same strategy under execution scenarios -- "
+        "not a new alpha trial.",
     )
     ap.add_argument("--out", default="results")
     ap.add_argument(
@@ -113,16 +136,25 @@ def main() -> None:
         sectors = prices.attrs.get("sectors", {})
     print(f"[data] {prices.shape[1]} assets x {prices.shape[0]} days ({args.data})")
 
-    feats = features.build_features(prices)
-    labels = features.build_labels(prices, horizon=args.horizon)
+    # Features/labels are masked to index members BEFORE z-scoring, so
+    # non-members never shift the cross-sectional stats the model sees;
+    # raw features still use each name's full (public) price history.
+    feats = features.build_features(prices, member_mask=member_mask)
+    labels = features.build_labels(
+        prices,
+        horizon=args.horizon,
+        residualize=(args.label == "residual"),
+        member_mask=member_mask,
+    )
     panel = features.stack_panel(feats, labels)
     if member_mask is not None:
-        # A (date, ticker) row survives only if the name was in the index on
-        # that date -- membership gates tradability, not feature history.
+        # Defensive second gate: a (date, ticker) row survives only if the
+        # name was in the index on that date.
         in_index = member_mask.stack()
         in_index.index.names = ["date", "ticker"]
         panel = panel[in_index.reindex(panel.index, fill_value=False)]
-    print(f"[features] panel: {len(panel):,} rows, {len(feats)} features")
+    print(f"[features] panel: {len(panel):,} rows, {len(feats)} features, "
+          f"label={args.label}")
 
     splitter = validation.WalkForwardSplitter(embargo_days=args.horizon)
     preds = models.walk_forward_predict(panel, splitter, model_name=args.model)
@@ -135,11 +167,24 @@ def main() -> None:
         f"(t_naive={ic.mean()/ic.sem():.2f}, t_NW={ic_t_nw:.2f})"
     )
 
+    # Feature-stability diagnostic: univariate per-window ICs (overfitting tell).
+    fw_ics = models.feature_window_ics(panel, splitter)
+    stability = {
+        f: f"{fw_ics[f].mean():+.4f} (sign-consistency "
+        f"{(np.sign(fw_ics[f]) == np.sign(fw_ics[f].mean())).mean():.0%})"
+        for f in fw_ics.columns
+        if f != "test_start"
+    }
+    print("[features] per-window IC stability:")
+    for f, s in stability.items():
+        print(f"    {f:>14}: {s}")
+
     if args.neutralize in ("sector", "both") and sectors:
         preds = risk.neutralize_predictions_by_sector(preds, sectors)
         print(f"[risk] sector-demeaned predictions ({len(set(sectors.values()))} sectors)")
 
-    weights = backtest.predictions_to_weights(preds)
+    rebalance_every = args.rebalance or args.horizon
+    weights = backtest.predictions_to_weights(preds, rebalance_every=rebalance_every)
 
     # Market proxy + rolling betas (past-only) -- used by beta neutralization
     # and by the risk report either way, so exposure is always measured.
@@ -158,7 +203,9 @@ def main() -> None:
     stats["ic_tstat_newey_west"] = float(ic_t_nw)
 
     # Baselines (law #5): same OOS dates, same backtester, same costs.
-    mom_w = baselines.momentum_baseline_weights(feats, preds.index)
+    mom_w = baselines.momentum_baseline_weights(
+        feats, preds.index, rebalance_every=rebalance_every
+    )
     mom_res = backtest.run_backtest(mom_w, prices, cost_bps=args.cost_bps)
     ew = mkt.loc[result["net"].index[0] :]
     stats["baseline_mom_sharpe_net"] = metrics.sharpe(mom_res["net"])
@@ -168,15 +215,57 @@ def main() -> None:
     rr = risk.risk_report(result["net"], mkt, result["daily_weights"], betas, sectors)
     stats.update({f"risk_{k}": v for k, v in rr.items()})
 
+    capacity = None
+    if args.capacity:
+        if args.data not in ("yfinance", "sp500"):
+            print("[capacity] skipped: needs real volume data")
+        else:
+            from quantlab import impact
+            from quantlab.data import load_volumes
+
+            vol_tickers = list(prices.columns)
+            volumes = load_volumes(
+                vol_tickers, start=str(prices.index[0].date())
+            )
+            adv = impact.dollar_adv(prices, volumes)
+            free = backtest.run_backtest(weights, prices, cost_bps=0.0)
+            capacity = impact.capacity_curve(
+                weights, prices, adv, free["gross"], spread_bps=args.cost_bps
+            )
+            cap_dead = impact.capacity_at_zero(capacity)
+            print(f"[capacity] adv coverage {capacity.attrs['adv_coverage']:.1%}; "
+                  f"net SR by AUM:")
+            for aum, row in capacity.iterrows():
+                print(f"    ${aum/1e6:>7,.0f}M: SR {row['sharpe_net']:+.2f} "
+                      f"(cost drag {row['ann_cost_drag']:.2%}/yr)")
+            print(f"    edge dies at: "
+                  f"{'never within sweep' if cap_dead is None else f'${cap_dead/1e6:,.0f}M'}")
+
     os.makedirs(args.out, exist_ok=True)
     tag = f"{args.data}_{args.model}"
     if args.neutralize != "none":
         tag += f"_{args.neutralize}"
+    if args.label != "raw":
+        tag += "_residlabel"
+    if args.horizon != 21:
+        tag += f"_h{args.horizon}"
+    if args.rebalance and args.rebalance != args.horizon:
+        tag += f"_r{args.rebalance}"
     with open(os.path.join(args.out, f"metrics_{tag}.json"), "w") as f:
         json.dump(stats, f, indent=2)
     if args.data == "sp500":
         with open(os.path.join(args.out, "sp500_pit_coverage.json"), "w") as f:
             json.dump(cov, f, indent=2)
+    fw_ics.to_csv(os.path.join(args.out, f"feature_ics_{tag}.csv"))
+    if capacity is not None:
+        cap_payload = {
+            "adv_coverage": capacity.attrs["adv_coverage"],
+            "curve": capacity.reset_index().to_dict(orient="records"),
+            "note": "square-root impact, k=1.0 (order of magnitude); "
+            "one-day execution; spread included",
+        }
+        with open(os.path.join(args.out, f"capacity_{tag}.json"), "w") as f:
+            json.dump(cap_payload, f, indent=2)
 
     fig, ax = plt.subplots(figsize=(10, 5))
     (1 + result["net"]).cumprod().plot(ax=ax, label=f"net ({args.cost_bps}bps)")

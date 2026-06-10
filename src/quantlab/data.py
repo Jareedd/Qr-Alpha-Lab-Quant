@@ -19,6 +19,54 @@ DEFAULT_UNIVERSE = [
 ]
 
 
+def _download_field(
+    tickers: list[str],
+    field: str,
+    start: str,
+    end: str | None,
+    cache_dir: str,
+    min_coverage: float,
+    chunk_size: int,
+) -> pd.DataFrame:
+    """Chunked yfinance download of one OHLCV field, cached to parquet."""
+    os.makedirs(cache_dir, exist_ok=True)
+    # Key on ticker *content*, not count: two different universes of the same
+    # size must never silently share a cache file.
+    digest = hashlib.md5(",".join(sorted(tickers)).encode()).hexdigest()[:10]
+    # "prices" kept as the Close prefix so pre-refactor caches stay valid.
+    prefix = "prices" if field == "Close" else field.lower()
+    key = f"{prefix}_{digest}_{start}_{end or 'latest'}_{min_coverage}.parquet"
+    cache_path = os.path.join(cache_dir, key)
+    if os.path.exists(cache_path):
+        return pd.read_parquet(cache_path)
+
+    try:
+        import yfinance as yf
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError(
+            "yfinance is required for real data: pip install yfinance. "
+            "For offline testing use synthetic data (see quantlab.synthetic)."
+        ) from exc
+
+    frames = []
+    for i in range(0, len(tickers), chunk_size):
+        chunk = tickers[i : i + chunk_size]
+        raw = yf.download(chunk, start=start, end=end, auto_adjust=True, progress=False)
+        if raw.empty:
+            continue
+        part = raw[field] if isinstance(raw.columns, pd.MultiIndex) else raw[[field]]
+        if not isinstance(raw.columns, pd.MultiIndex):
+            part.columns = chunk[:1]
+        frames.append(part)
+    out = pd.concat(frames, axis=1).sort_index()
+    out = out.loc[:, ~out.columns.duplicated()]
+    out = out.dropna(how="all").dropna(axis=1, how="all")
+    if min_coverage > 0:
+        out = out.dropna(axis=1, thresh=int(len(out) * min_coverage))
+    out.to_parquet(cache_path)
+    return out
+
+
 def load_prices(
     tickers: list[str] | None = None,
     start: str = "2010-01-01",
@@ -38,37 +86,23 @@ def load_prices(
     are EXACTLY the ones survivorship-bias work needs to keep.
     """
     tickers = tickers or DEFAULT_UNIVERSE
-    os.makedirs(cache_dir, exist_ok=True)
-    # Key on ticker *content*, not count: two different universes of the same
-    # size must never silently share a cache file.
-    digest = hashlib.md5(",".join(sorted(tickers)).encode()).hexdigest()[:10]
-    key = f"prices_{digest}_{start}_{end or 'latest'}_{min_coverage}.parquet"
-    cache_path = os.path.join(cache_dir, key)
-    if os.path.exists(cache_path):
-        return pd.read_parquet(cache_path)
+    return _download_field(
+        tickers, "Close", start, end, cache_dir, min_coverage, chunk_size
+    )
 
-    try:
-        import yfinance as yf
-    except ImportError as exc:  # pragma: no cover
-        raise ImportError(
-            "yfinance is required for real data: pip install yfinance. "
-            "For offline testing use synthetic data (see quantlab.synthetic)."
-        ) from exc
 
-    frames = []
-    for i in range(0, len(tickers), chunk_size):
-        chunk = tickers[i : i + chunk_size]
-        raw = yf.download(chunk, start=start, end=end, auto_adjust=True, progress=False)
-        if raw.empty:
-            continue
-        closes = raw["Close"] if isinstance(raw.columns, pd.MultiIndex) else raw[["Close"]]
-        if not isinstance(raw.columns, pd.MultiIndex):
-            closes.columns = chunk[:1]
-        frames.append(closes)
-    prices = pd.concat(frames, axis=1).sort_index()
-    prices = prices.loc[:, ~prices.columns.duplicated()]
-    prices = prices.dropna(how="all").dropna(axis=1, how="all")
-    if min_coverage > 0:
-        prices = prices.dropna(axis=1, thresh=int(len(prices) * min_coverage))
-    prices.to_parquet(cache_path)
-    return prices
+def load_volumes(
+    tickers: list[str] | None = None,
+    start: str = "2010-01-01",
+    end: str | None = None,
+    cache_dir: str = "data_cache",
+    chunk_size: int = 100,
+) -> pd.DataFrame:
+    """Share volumes (for dollar-ADV / impact modeling), cached like prices.
+
+    No coverage filter: missing volume simply means a name falls back to the
+    cross-sectional median ADV inside the impact model (and is counted in
+    adv_coverage).
+    """
+    tickers = tickers or DEFAULT_UNIVERSE
+    return _download_field(tickers, "Volume", start, end, cache_dir, 0.0, chunk_size)
