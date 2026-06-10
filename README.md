@@ -15,7 +15,7 @@ python scripts/run_pipeline.py --data noise --n-trials 20 --fail-if-dsr-above 0.
 
 Both checks run in CI on every push (`.github/workflows/ci.yml`) and fail the build on violation — leakage introduced by any future commit breaks CI, not just my confidence.
 
-Current results: planted → out-of-sample rank IC 0.063 (t = 7.8), net Sharpe 0.86, **DSR 0.99 → recovered**. Noise → IC −0.02, **DSR 0.0004 → correctly rejected**. A pipeline that "finds alpha" in noise has leakage; one that can't find a planted signal has bugs. This pipeline passes both.
+Current results: planted → out-of-sample rank IC 0.063 (Newey–West t = 2.0), net Sharpe 0.86, **DSR 0.99 → recovered**. Noise → IC −0.02, **DSR 0.0004 → correctly rejected**. A pipeline that "finds alpha" in noise has leakage; one that can't find a planted signal has bugs. This pipeline passes both.
 
 **Walk-forward validation with embargo.** Expanding-window splits only; a 21-day embargo between train and test windows prevents overlapping forward-return labels from leaking future information into training (purged CV, López de Prado ch. 7). Standard k-fold on financial panels is silently invalid — this is the single most common fatal flaw in student projects.
 
@@ -25,7 +25,9 @@ Current results: planted → out-of-sample rank IC 0.063 (t = 7.8), net Sharpe 0
 
 **No lookahead by construction, verified by test.** Weights formed at date *t* earn returns only from *t+1*. The test suite includes a same-day-return exploit test that a buggy backtester fails loudly, plus a counter-test proving genuine foresight *would* profit (a check of the check).
 
-**Baselines first.** Every run reports the model against (a) a one-line 12-1 momentum decile long-short and (b) an equal-weight 1/N portfolio, on the same out-of-sample dates, through the same cost-aware backtester. On the planted panel the momentum baseline (net SR 1.19) *beats* the ridge model (net SR 0.86) — the planted signal is literally momentum, and the model dilutes it across five features. If ML can't beat the baseline on real data either, that gets reported, not hidden.
+**Baselines first.** Every run reports the model against (a) a one-line 12-1 momentum decile long-short and (b) an equal-weight 1/N portfolio, on the same out-of-sample dates, through the same cost-aware backtester. On the planted panel the momentum baseline (net SR 1.19) *beats* the ridge model (net SR 0.86) — the planted signal is literally momentum, and the model dilutes it across five features. If ML can't beat the baseline on real data either, that gets reported, not hidden. (The baselines also caught a real bug: an "equal-weight SR of 3.3" was impossible on its face and exposed pad-filled phantom returns for delisted names.)
+
+**Survivorship bias, measured on this very pipeline.** The same ridge config earns net Sharpe **0.82** (IC 0.033) on a static universe of today's members — and net Sharpe **−0.01** (IC 0.005, Newey–West t = 0.5) on the point-in-time S&P 500. The entire "edge" was hindsight in the universe selection. McLean & Pontiff in miniature, reproduced in-house, and the single best exhibit this project owns.
 
 **Vectorized but pinned.** The IC computation, weight construction, and walk-forward slicing are vectorized (~4.4× core speedup), and each optimized path is pinned by a test against a naive per-date reference implementation, so a future "optimization" that drifts the numbers fails the suite.
 
@@ -33,7 +35,8 @@ Current results: planted → out-of-sample rank IC 0.063 (t = 7.8), net Sharpe 0
 
 ```
 src/quantlab/
-  data.py        # yfinance loader with parquet cache; 60-name liquid US universe
+  data.py        # yfinance loader with parquet cache; chunked downloads
+  universe.py    # point-in-time S&P 500 membership from Wikipedia changes table
   synthetic.py   # planted-signal and pure-noise panels for falsification tests
   features.py    # cross-sectionally z-scored: 12-1 momentum, 6-1, reversal, vol, 52w-high
   validation.py  # expanding walk-forward splitter with embargo
@@ -41,7 +44,8 @@ src/quantlab/
                  # ridge_cv = nested per-roll alpha tuning (train window only)
   baselines.py   # 12-1 momentum decile L/S + equal-weight 1/N benchmarks
   backtest.py    # dollar-neutral decile long-short, linear costs, turnover
-  metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe Ratio
+  metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe, Newey-West t-stats
+  env.py         # minimal .env loader (Alpaca keys, Phase 6)
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
 tests/                    # 21 tests: leakage, costs, DSR monotonicity, lookahead,
                           # baselines, vectorized-vs-naive equivalence,
@@ -57,14 +61,15 @@ pip install -r requirements.txt
 python -m pytest tests/ -q                              # 21 tests
 python scripts/run_pipeline.py --data planted           # sanity check 1
 python scripts/run_pipeline.py --data noise --n-trials 20   # sanity check 2
-python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 5  # real data
+python scripts/run_pipeline.py --data sp500 --n-trials 2     # point-in-time S&P 500 (honest universe)
+python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 5  # static universe (biased, for comparison)
 ```
 
 Outputs land in `results/`: metrics JSON + equity-curve PNG per run.
 
 ## Known limitations (deliberate honesty)
 
-The default real-data universe is today's liquid names — **survivorship-biased**, which inflates long-side returns; fixing this with point-in-time membership is on the roadmap. Costs are linear with no market-impact model. The label is a 21-day forward return; no risk-model neutralization (sector/beta) yet. Reported IC t-stats assume independent daily observations, but overlapping 21-day labels are autocorrelated — they're overstated until a Newey–West correction lands. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
+The `--data sp500` mode reconstructs **point-in-time S&P 500 membership** from Wikipedia's changes table, which removes the worst of survivorship bias — but not all of it: names that died (bankruptcy, acquisition) often have no Yahoo price history, so they drop out of the backtest even when membership says they were tradable; the run emits a `sp500_pit_coverage.json` quantifying exactly how many. Delisting returns (the final, usually ugly, price move of a dying stock) are missing entirely — a known upward bias in all free-data backtests (Shumway 1997). Names delisted within the label horizon lose their final partial period (the 21-day forward label needs a t+21 price). The legacy `--data yfinance` mode (today's members, fully biased) is kept deliberately so the two can be compared — measuring the bias is more interesting than removing it. Costs are linear with no market-impact model. No risk-model neutralization (sector/beta) yet. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
 
 ## References
 

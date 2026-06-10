@@ -25,7 +25,14 @@ from quantlab import backtest, baselines, features, metrics, models, validation
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", choices=["yfinance", "planted", "noise"], default="planted")
+    ap.add_argument(
+        "--data",
+        choices=["yfinance", "sp500", "planted", "noise"],
+        default="planted",
+        help="sp500 = point-in-time S&P 500 membership (survivorship-bias "
+        "aware); yfinance = static present-day universe (biased, kept for "
+        "comparison).",
+    )
     ap.add_argument(
         "--model",
         choices=["ridge", "ridge_cv", "gbr"],
@@ -57,10 +64,29 @@ def main() -> None:
     )
     args = ap.parse_args()
 
+    member_mask = None
     if args.data == "yfinance":
         from quantlab.data import load_prices
 
         prices = load_prices()
+    elif args.data == "sp500":
+        from quantlab import universe as univ
+        from quantlab.data import load_prices
+
+        current, changes = univ.fetch_sp500_tables()
+        intervals = univ.build_membership_intervals(current, changes, start="2010-01-01")
+        members = univ.all_members_in_window(intervals)
+        # Prices start a year before membership so features have warm-up
+        # history; min_coverage=0 keeps mid-window IPOs and delistings.
+        prices = load_prices(members, start="2009-01-01", min_coverage=0.0)
+        cov = univ.coverage_report(members, prices)
+        member_mask = univ.membership_mask(prices.index, prices.columns, intervals)
+        print(
+            f"[universe] point-in-time S&P 500: {cov['n_members_ever']} members "
+            f"ever in window, {cov['n_with_price_data']} with price data "
+            f"({cov['pct_covered']:.1%}); {cov['n_missing_price_data']} dead names "
+            f"unpriceable -> residual bias, see coverage JSON"
+        )
     else:
         from quantlab.synthetic import make_panel
 
@@ -70,12 +96,24 @@ def main() -> None:
     feats = features.build_features(prices)
     labels = features.build_labels(prices, horizon=args.horizon)
     panel = features.stack_panel(feats, labels)
+    if member_mask is not None:
+        # A (date, ticker) row survives only if the name was in the index on
+        # that date -- membership gates tradability, not feature history.
+        in_index = member_mask.stack()
+        in_index.index.names = ["date", "ticker"]
+        panel = panel[in_index.reindex(panel.index, fill_value=False)]
     print(f"[features] panel: {len(panel):,} rows, {len(feats)} features")
 
     splitter = validation.WalkForwardSplitter(embargo_days=args.horizon)
     preds = models.walk_forward_predict(panel, splitter, model_name=args.model)
     ic = models.information_coefficient(preds, panel)
-    print(f"[model] {args.model}: mean rank IC = {ic.mean():.4f} (t={ic.mean()/ic.sem():.2f})")
+    # Overlapping h-day labels autocorrelate daily ICs; the naive t assumes
+    # independence. Quote the Newey-West one (lags = horizon).
+    ic_t_nw = metrics.newey_west_tstat(ic, lags=args.horizon)
+    print(
+        f"[model] {args.model}: mean rank IC = {ic.mean():.4f} "
+        f"(t_naive={ic.mean()/ic.sem():.2f}, t_NW={ic_t_nw:.2f})"
+    )
 
     weights = backtest.predictions_to_weights(preds)
     result = backtest.run_backtest(weights, prices, cost_bps=args.cost_bps)
@@ -83,11 +121,14 @@ def main() -> None:
         result["net"], result["gross"], result["annual_turnover"], n_trials=args.n_trials
     )
     stats["mean_rank_ic"] = float(ic.mean())
+    stats["ic_tstat_newey_west"] = float(ic_t_nw)
 
     # Baselines (law #5): same OOS dates, same backtester, same costs.
     mom_w = baselines.momentum_baseline_weights(feats, preds.index)
     mom_res = backtest.run_backtest(mom_w, prices, cost_bps=args.cost_bps)
-    ew = baselines.equal_weight_returns(prices, start=result["net"].index[0])
+    ew = baselines.equal_weight_returns(
+        prices, start=result["net"].index[0], member_mask=member_mask
+    )
     stats["baseline_mom_sharpe_net"] = metrics.sharpe(mom_res["net"])
     stats["baseline_ew_sharpe"] = metrics.sharpe(ew)
     stats["beats_mom_baseline"] = bool(stats["sharpe_net"] > stats["baseline_mom_sharpe_net"])
@@ -96,6 +137,9 @@ def main() -> None:
     tag = f"{args.data}_{args.model}"
     with open(os.path.join(args.out, f"metrics_{tag}.json"), "w") as f:
         json.dump(stats, f, indent=2)
+    if args.data == "sp500":
+        with open(os.path.join(args.out, "sp500_pit_coverage.json"), "w") as f:
+            json.dump(cov, f, indent=2)
 
     fig, ax = plt.subplots(figsize=(10, 5))
     (1 + result["net"]).cumprod().plot(ax=ax, label=f"net ({args.cost_bps}bps)")

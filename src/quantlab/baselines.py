@@ -40,11 +40,24 @@ def momentum_baseline_weights(
     return predictions_to_weights(mom, quantile=quantile, rebalance_every=rebalance_every)
 
 
-def equal_weight_returns(prices: pd.DataFrame, start=None) -> pd.Series:
+def equal_weight_returns(
+    prices: pd.DataFrame,
+    start=None,
+    member_mask: pd.DataFrame | None = None,
+) -> pd.Series:
     """Daily returns of a long-only 1/N portfolio (rebalanced daily).
+
+    ``fill_method=None`` is essential: pad-filling delisted names fabricates
+    phantom 0% returns that crush measured volatility (this bug produced an
+    'equal-weight SR of 3.3' before it was caught -- see research_log).
+    ``member_mask`` (date x ticker booleans) restricts the average to names
+    actually in the index that day, for point-in-time universes.
 
     Daily 1/N rebalancing has negligible turnover cost at this universe size,
     so gross ~= net; reported as-is for context, not as a tradable claim.
     """
-    ew = prices.pct_change().mean(axis=1)
+    rets = prices.pct_change(fill_method=None)
+    if member_mask is not None:
+        rets = rets.where(member_mask.reindex_like(rets).fillna(False))
+    ew = rets.mean(axis=1)
     return ew.loc[start:] if start is not None else ew

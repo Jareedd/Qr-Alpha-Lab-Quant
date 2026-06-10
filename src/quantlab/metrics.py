@@ -16,6 +16,28 @@ TRADING_DAYS = 252
 EULER_GAMMA = 0.5772156649015329
 
 
+def newey_west_tstat(series: pd.Series, lags: int) -> float:
+    """t-statistic of the series mean with HAC (Newey-West 1987) standard error.
+
+    Why it exists here: daily rank ICs of h-day forward-return labels overlap,
+    so consecutive ICs share h-1 days of label information and are strongly
+    autocorrelated. A naive t-stat (mean/sem) assumes independence and can
+    overstate significance by roughly sqrt(h). Use ``lags`` >= label horizon.
+    Bartlett-kernel weights guarantee a positive variance estimate.
+    """
+    x = series.dropna().to_numpy(dtype=float)
+    n = len(x)
+    if n < lags + 2:
+        return np.nan
+    xc = x - x.mean()
+    s = float(xc @ xc) / n
+    for lag in range(1, lags + 1):
+        w = 1.0 - lag / (lags + 1.0)
+        s += 2.0 * w * float(xc[:-lag] @ xc[lag:]) / n
+    se = np.sqrt(s / n)
+    return float(x.mean() / se) if se > 0 else np.nan
+
+
 def sharpe(returns: pd.Series, periods: int = TRADING_DAYS) -> float:
     r = returns.dropna()
     if len(r) < 2 or r.std() == 0:

@@ -7,6 +7,9 @@ pytest-cache-files-*/
 # Data caches (regenerable; never commit market data)
 data_cache/
 
+# Secrets -- the real .env never enters git (.env.example documents the keys)
+.env
+
 # Scratch outputs (the canonical results/ directory IS committed --
 # small PNGs/JSONs regenerable from config + seed, shown in the README)
 results_baseline/

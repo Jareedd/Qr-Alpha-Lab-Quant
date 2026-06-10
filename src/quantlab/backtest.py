@@ -46,7 +46,10 @@ def run_backtest(
 
     Returns dict with daily net/gross return series and turnover.
     """
-    rets = prices.pct_change().reindex(columns=weights.columns)
+    # fill_method=None: dead names produce NaN returns (excluded from the
+    # daily P&L sum), never pad-filled phantom zeros. The true delisting
+    # return is still missing -- that residual bias is documented, not hidden.
+    rets = prices.pct_change(fill_method=None).reindex(columns=weights.columns)
     # Daily weights: hold each rebalance's weights until the next one;
     # shift(1) so weights chosen at t earn returns from t+1 (no lookahead).
     daily_w = weights.reindex(rets.index).ffill().shift(1).fillna(0.0)

@@ -57,7 +57,39 @@ def test_momentum_baseline_uses_only_oos_dates():
 def test_equal_weight_returns_match_row_mean():
     prices, _, _ = _setup(mode="noise", seed=3)
     ew = baselines.equal_weight_returns(prices)
-    expected = prices.pct_change().mean(axis=1)
+    expected = prices.pct_change(fill_method=None).mean(axis=1)
     pd.testing.assert_series_equal(ew, expected)
     start = prices.index[100]
     assert baselines.equal_weight_returns(prices, start=start).index[0] == start
+
+
+def test_dead_names_never_contribute_phantom_zero_returns():
+    # Regression test for the bug that produced an impossible equal-weight
+    # SR of 3.3 on the point-in-time universe: pad-filled prices gave dead
+    # stocks frozen 0% daily returns, crushing measured volatility. After a
+    # name's last price, it must drop out of the average entirely.
+    dates = pd.bdate_range("2020-01-01", periods=6)
+    prices = pd.DataFrame(
+        {
+            "LIVE": [100.0, 101.0, 99.0, 102.0, 103.0, 101.0],
+            "DEAD": [50.0, 51.0, np.nan, np.nan, np.nan, np.nan],
+        },
+        index=dates,
+    )
+    ew = baselines.equal_weight_returns(prices)
+    live_rets = prices["LIVE"].pct_change(fill_method=None)
+    # From the day DEAD goes dark, EW must equal LIVE's return exactly.
+    pd.testing.assert_series_equal(ew.iloc[2:], live_rets.iloc[2:], check_names=False)
+
+
+def test_member_mask_restricts_equal_weight():
+    dates = pd.bdate_range("2020-01-01", periods=4)
+    prices = pd.DataFrame(
+        {"A": [100.0, 110.0, 121.0, 133.1], "B": [100.0, 90.0, 81.0, 72.9]},
+        index=dates,
+    )
+    mask = pd.DataFrame({"A": [True] * 4, "B": [False] * 4}, index=dates)
+    ew = baselines.equal_weight_returns(prices, member_mask=mask)
+    pd.testing.assert_series_equal(
+        ew, prices["A"].pct_change(fill_method=None), check_names=False
+    )

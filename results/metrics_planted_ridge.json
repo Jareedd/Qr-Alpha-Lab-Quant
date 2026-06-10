@@ -11,6 +11,7 @@
   "n_trials_assumed": 1,
   "n_days": 1992,
   "mean_rank_ic": 0.06286314099595566,
+  "ic_tstat_newey_west": 2.0006101872547917,
   "baseline_mom_sharpe_net": 1.1895505148975456,
   "baseline_ew_sharpe": 0.5670940950643969,
   "beats_mom_baseline": false

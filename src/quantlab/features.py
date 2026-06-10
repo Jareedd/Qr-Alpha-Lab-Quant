@@ -19,7 +19,10 @@ def _zscore_cs(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_features(prices: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """Return dict of feature name -> (date x ticker) z-scored frames."""
-    rets = prices.pct_change()
+    # fill_method=None: a halted or delisted name's missing price must yield a
+    # NaN return, not a pad-filled phantom 0% -- phantom zeros deflate measured
+    # vol and corrupt every downstream statistic for point-in-time universes.
+    rets = prices.pct_change(fill_method=None)
     log_p = np.log(prices)
 
     feats = {
