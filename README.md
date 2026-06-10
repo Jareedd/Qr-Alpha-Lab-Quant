@@ -29,6 +29,8 @@ Current results: planted → out-of-sample rank IC 0.063 (Newey–West t = 2.0),
 
 **Survivorship bias, measured on this very pipeline.** The same ridge config earns net Sharpe **0.82** (IC 0.033) on a static universe of today's members — and net Sharpe **−0.01** (IC 0.005, Newey–West t = 0.5) on the point-in-time S&P 500. The entire "edge" was hindsight in the universe selection. McLean & Pontiff in miniature, reproduced in-house, and the single best exhibit this project owns.
 
+**Neutrality is measured, not asserted.** `--neutralize sector|beta|both` demeans predictions within GICS sector and projects rebalance weights to zero ex-ante market beta (rolling 252-day betas, past data only). Every run — neutralized or not — emits a risk report (realized rolling beta, market correlation, sector net exposures), because a "market-neutral" label without measurement is marketing. On the planted panel, neutralization cuts p95 |rolling beta| from 0.32 to 0.03 while the planted (idiosyncratic) signal survives intact — which is exactly the pair of facts that proves the projection removes factor exposure and not signal.
+
 **Vectorized but pinned.** The IC computation, weight construction, and walk-forward slicing are vectorized (~4.4× core speedup), and each optimized path is pinned by a test against a naive per-date reference implementation, so a future "optimization" that drifts the numbers fails the suite.
 
 ## Layout
@@ -43,6 +45,7 @@ src/quantlab/
   models.py      # Ridge baseline + gradient boosting; per-date rank IC;
                  # ridge_cv = nested per-roll alpha tuning (train window only)
   baselines.py   # 12-1 momentum decile L/S + equal-weight 1/N benchmarks
+  risk.py        # sector demean, beta-neutral weight projection, risk report
   backtest.py    # dollar-neutral decile long-short, linear costs, turnover
   metrics.py     # Sharpe, max DD, PSR, Deflated Sharpe, Newey-West t-stats
   env.py         # minimal .env loader (Alpaca keys, Phase 6)
@@ -69,7 +72,7 @@ Outputs land in `results/`: metrics JSON + equity-curve PNG per run.
 
 ## Known limitations (deliberate honesty)
 
-The `--data sp500` mode reconstructs **point-in-time S&P 500 membership** from Wikipedia's changes table, which removes the worst of survivorship bias — but not all of it: names that died (bankruptcy, acquisition) often have no Yahoo price history, so they drop out of the backtest even when membership says they were tradable; the run emits a `sp500_pit_coverage.json` quantifying exactly how many. Delisting returns (the final, usually ugly, price move of a dying stock) are missing entirely — a known upward bias in all free-data backtests (Shumway 1997). Names delisted within the label horizon lose their final partial period (the 21-day forward label needs a t+21 price). The legacy `--data yfinance` mode (today's members, fully biased) is kept deliberately so the two can be compared — measuring the bias is more interesting than removing it. Costs are linear with no market-impact model. No risk-model neutralization (sector/beta) yet. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
+Sector data is **as-of-today** (Wikipedia only lists sectors for current members), so departed names share an UNKNOWN bucket and reclassifications are invisible; point-in-time GICS needs paid data. The `--data sp500` mode reconstructs **point-in-time S&P 500 membership** from Wikipedia's changes table, which removes the worst of survivorship bias — but not all of it: names that died (bankruptcy, acquisition) often have no Yahoo price history, so they drop out of the backtest even when membership says they were tradable; the run emits a `sp500_pit_coverage.json` quantifying exactly how many. Delisting returns (the final, usually ugly, price move of a dying stock) are missing entirely — a known upward bias in all free-data backtests (Shumway 1997). Names delisted within the label horizon lose their final partial period (the 21-day forward label needs a t+21 price). The legacy `--data yfinance` mode (today's members, fully biased) is kept deliberately so the two can be compared — measuring the bias is more interesting than removing it. Costs are linear with no market-impact model. No risk-model neutralization (sector/beta) yet. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
 
 ## References
 

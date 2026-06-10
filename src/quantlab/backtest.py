@@ -69,4 +69,5 @@ def run_backtest(
         "gross": gross.loc[start:],
         "net": net.loc[start:],
         "annual_turnover": ann_turnover,
+        "daily_weights": daily_w.loc[start:],
     }

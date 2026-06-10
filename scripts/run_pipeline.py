@@ -20,7 +20,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from quantlab import backtest, baselines, features, metrics, models, validation
+from quantlab import backtest, baselines, features, metrics, models, risk, validation
 
 
 def main() -> None:
@@ -49,6 +49,15 @@ def main() -> None:
         help="How many strategy variants you have tried IN TOTAL (be honest). "
         "Used by the Deflated Sharpe Ratio.",
     )
+    ap.add_argument(
+        "--neutralize",
+        choices=["none", "sector", "beta", "both"],
+        default="none",
+        help="sector: demean predictions within (date, sector); beta: project "
+        "rebalance weights to zero ex-ante market beta (rolling 252d, "
+        "past-only). Factor exposure usually explains most of a naive "
+        "signal -- this asks what is left.",
+    )
     ap.add_argument("--out", default="results")
     ap.add_argument(
         "--fail-if-dsr-below",
@@ -65,10 +74,19 @@ def main() -> None:
     args = ap.parse_args()
 
     member_mask = None
+    sectors: dict[str, str] = {}
     if args.data == "yfinance":
         from quantlab.data import load_prices
 
         prices = load_prices()
+        if args.neutralize in ("sector", "both"):
+            try:
+                from quantlab import universe as univ
+
+                cur, _ = univ.fetch_sp500_tables()
+                sectors = univ.sector_map(cur, list(prices.columns))
+            except Exception as exc:  # offline: every name -> UNKNOWN bucket
+                print(f"[warn] no sector data ({exc}); sector demean is a no-op")
     elif args.data == "sp500":
         from quantlab import universe as univ
         from quantlab.data import load_prices
@@ -81,6 +99,7 @@ def main() -> None:
         prices = load_prices(members, start="2009-01-01", min_coverage=0.0)
         cov = univ.coverage_report(members, prices)
         member_mask = univ.membership_mask(prices.index, prices.columns, intervals)
+        sectors = univ.sector_map(current, list(prices.columns))
         print(
             f"[universe] point-in-time S&P 500: {cov['n_members_ever']} members "
             f"ever in window, {cov['n_with_price_data']} with price data "
@@ -91,6 +110,7 @@ def main() -> None:
         from quantlab.synthetic import make_panel
 
         prices = make_panel(mode=args.data)
+        sectors = prices.attrs.get("sectors", {})
     print(f"[data] {prices.shape[1]} assets x {prices.shape[0]} days ({args.data})")
 
     feats = features.build_features(prices)
@@ -115,7 +135,21 @@ def main() -> None:
         f"(t_naive={ic.mean()/ic.sem():.2f}, t_NW={ic_t_nw:.2f})"
     )
 
+    if args.neutralize in ("sector", "both") and sectors:
+        preds = risk.neutralize_predictions_by_sector(preds, sectors)
+        print(f"[risk] sector-demeaned predictions ({len(set(sectors.values()))} sectors)")
+
     weights = backtest.predictions_to_weights(preds)
+
+    # Market proxy + rolling betas (past-only) -- used by beta neutralization
+    # and by the risk report either way, so exposure is always measured.
+    mkt = baselines.equal_weight_returns(prices, member_mask=member_mask)
+    asset_rets = prices.pct_change(fill_method=None)
+    betas = risk.rolling_beta(asset_rets, mkt)
+    if args.neutralize in ("beta", "both"):
+        weights = risk.beta_neutralize_weights(weights, betas)
+        print("[risk] weights projected to zero ex-ante beta at each rebalance")
+
     result = backtest.run_backtest(weights, prices, cost_bps=args.cost_bps)
     stats = metrics.summary(
         result["net"], result["gross"], result["annual_turnover"], n_trials=args.n_trials
@@ -126,15 +160,18 @@ def main() -> None:
     # Baselines (law #5): same OOS dates, same backtester, same costs.
     mom_w = baselines.momentum_baseline_weights(feats, preds.index)
     mom_res = backtest.run_backtest(mom_w, prices, cost_bps=args.cost_bps)
-    ew = baselines.equal_weight_returns(
-        prices, start=result["net"].index[0], member_mask=member_mask
-    )
+    ew = mkt.loc[result["net"].index[0] :]
     stats["baseline_mom_sharpe_net"] = metrics.sharpe(mom_res["net"])
     stats["baseline_ew_sharpe"] = metrics.sharpe(ew)
     stats["beats_mom_baseline"] = bool(stats["sharpe_net"] > stats["baseline_mom_sharpe_net"])
 
+    rr = risk.risk_report(result["net"], mkt, result["daily_weights"], betas, sectors)
+    stats.update({f"risk_{k}": v for k, v in rr.items()})
+
     os.makedirs(args.out, exist_ok=True)
     tag = f"{args.data}_{args.model}"
+    if args.neutralize != "none":
+        tag += f"_{args.neutralize}"
     with open(os.path.join(args.out, f"metrics_{tag}.json"), "w") as f:
         json.dump(stats, f, indent=2)
     if args.data == "sp500":
@@ -164,6 +201,12 @@ def main() -> None:
         f"12-1 momentum SR={stats['baseline_mom_sharpe_net']:.2f}, "
         f"equal-weight SR={stats['baseline_ew_sharpe']:.2f} -> model "
         f"{'beats' if stats['beats_mom_baseline'] else 'DOES NOT beat'} momentum baseline"
+    )
+    print(
+        f"  Risk ({args.neutralize}): mkt corr={rr['market_corr']:.2f}, "
+        f"realized beta={rr['realized_beta_mean']:.2f} "
+        f"(p95 |beta|={rr['realized_beta_p95_abs']:.2f}), "
+        f"sector net mean|max abs={rr['sector_net_mean_abs']:.3f}|{rr['sector_net_max_abs']:.3f}"
     )
 
     if args.fail_if_dsr_below is not None and stats["dsr"] < args.fail_if_dsr_below:

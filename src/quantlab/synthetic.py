@@ -65,4 +65,9 @@ def make_panel(
     dates = pd.bdate_range("2012-01-02", periods=n_days)
     tickers = [f"SYN{i:03d}" for i in range(n_assets)]
     prices = 100 * np.exp(np.cumsum(rets, axis=0))
-    return pd.DataFrame(prices, index=dates, columns=tickers)
+    panel = pd.DataFrame(prices, index=dates, columns=tickers)
+    # Ground truth for risk-neutralization tests; attrs ride along with the
+    # frame without changing the (long-stable) return signature.
+    panel.attrs["sectors"] = {t: f"S{sectors[i]}" for i, t in enumerate(tickers)}
+    panel.attrs["betas"] = {t: float(betas[i]) for i, t in enumerate(tickers)}
+    return panel

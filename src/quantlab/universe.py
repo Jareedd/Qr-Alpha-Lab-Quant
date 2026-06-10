@@ -53,13 +53,20 @@ def fetch_sp500_tables(cache_dir: str = "data_cache") -> tuple[pd.DataFrame, pd.
     cur_path = os.path.join(cache_dir, "sp500_current.parquet")
     chg_path = os.path.join(cache_dir, "sp500_changes.parquet")
     if os.path.exists(cur_path) and os.path.exists(chg_path):
-        return pd.read_parquet(cur_path), pd.read_parquet(chg_path)
+        current = pd.read_parquet(cur_path)
+        if "sector" in current.columns:  # cache from before sectors -> refetch
+            return current, pd.read_parquet(chg_path)
 
     req = urllib.request.Request(WIKI_URL, headers={"User-Agent": _UA})
     html = urllib.request.urlopen(req, timeout=30).read().decode("utf-8")
     tables = pd.read_html(io.StringIO(html))
 
-    current = pd.DataFrame({"ticker": tables[0]["Symbol"].map(_normalize_ticker)})
+    current = pd.DataFrame(
+        {
+            "ticker": tables[0]["Symbol"].map(_normalize_ticker),
+            "sector": tables[0]["GICS Sector"].astype(str),
+        }
+    )
 
     raw = tables[1].copy()
     raw.columns = ["date", "added", "added_name", "removed", "removed_name", "reason"]
@@ -131,6 +138,18 @@ def all_members_in_window(
     for _, _, members in intervals:
         names |= members
     return sorted(names)
+
+
+def sector_map(current: pd.DataFrame, tickers: list[str]) -> dict[str, str]:
+    """ticker -> GICS sector, 'UNKNOWN' for names not in the current table.
+
+    Honest limitation: Wikipedia only carries sectors for *current* members,
+    so departed names get UNKNOWN and form their own neutralization bucket.
+    Sectors are also as-of-today (companies occasionally reclassify); a
+    point-in-time GICS history needs paid data.
+    """
+    known = dict(zip(current["ticker"], current.get("sector", pd.Series(dtype=str))))
+    return {t: known.get(t, "UNKNOWN") for t in tickers}
 
 
 def coverage_report(member_tickers: list[str], prices: pd.DataFrame) -> dict:

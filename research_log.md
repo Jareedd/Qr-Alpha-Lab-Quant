@@ -1,6 +1,6 @@
 # Research Log — qr-alpha-lab
 
-**Global trial count (feeds `--n-trials` for the DSR): N = 2**
+**Global trial count (feeds `--n-trials` for the DSR): N = 3**
 
 Rules (from CLAUDE.md law #3): every strategy variant, hyperparameter tweak,
 feature set, or horizon evaluated on **real data** gets one row and increments N.
@@ -22,14 +22,18 @@ Infrastructure changes are logged with a falsification-gate re-run (law #2).
 | — | 2026-06-10 | infra | Bug caught BY a baseline: PIT run showed equal-weight SR 3.34 — impossible (RSP ≈ 0.9), so something was broken | `pct_change()` default pad-fill fabricated frozen 0% daily returns for delisted names, crushing measured vol | After `fill_method=None` everywhere (features, backtest, baselines): EW SR 0.81 (sane); strategy results ~unchanged (net SR −0.03→−0.01), so the bug was isolated to return-series construction for dead names. Gate re-passed; regression test added (dead names must drop out of averages, never contribute phantom zeros). | A baseline so good it must be wrong is as informative as a strategy that looks too good. Law #5 paid for itself the first week it existed. |
 | — | 2026-06-10 | infra | Newey–West IC t-stats (overlapping 21d labels autocorrelate daily ICs) | `metrics.newey_west_tstat`, lags = horizon, Bartlett kernel | Planted panel: t_naive 7.76 → t_NW 2.00 (≈√21 shrinkage, as theory predicts). Trial #2: t_naive 1.70 → t_NW 0.54. | Naive IC t-stats on overlapping labels overstate significance ~4×. All quoted t-stats are NW from now on. |
 
+| 3 | 2026-06-10 | **trial** | Phase 3 question: is real signal hiding under factor exposure in the flat PIT result? | Trial #2 config + `--neutralize both` (sector demean over 12 GICS-as-of-today buckets incl. UNKNOWN; weights projected to zero ex-ante beta, rolling 252d past-only betas), `--n-trials 3` | OOS 3378d: IC unchanged 0.0052 (neutralization acts after prediction), gross SR −0.09, net SR −0.38, DSR 0.01. Vol fell 10.0%→6.5% (factor exposure removed), ex-ante β 0.009, realized β mean 0.05 (p95 0.23 — estimation drift between ex-ante and realized is real and now measured). Turnover 7.39×/yr unchanged; costs unchanged on a smaller vol base → worse net SR. | **Nothing was hiding.** The 5 standard features have no edge on the honest universe, raw or neutralized — factor exposure was *adding* (noisy) return, not masking alpha. Clean negative result for the write-up. Phase 3 machinery validated separately on planted panel: p95 |β| 0.32→0.03 with the planted idiosyncratic signal intact. Phase 4 must find better features/labels, not better risk plumbing. |
+
 ## Notes
 
 - 2026-06-10: N = 2 (trial #1 biased universe, trial #2 PIT universe).
   The Newey–West caveat from trial #1 is now fixed; all t-stats quoted are NW.
-- Phase 2 is functionally complete: real data, CI with falsification gate,
-  PIT universe with quantified residual bias. Headline finding so far: the
-  default 5-feature ridge has NO defensible edge on the honest universe.
-- Next (Phase 3): sector/beta neutralization + risk report. Open questions for
-  Phase 4: z-score features over members only (currently z-scored over all
-  priceable names, mild contamination, no lookahead); turnover 7.3×/yr is high —
-  slower signals or longer rebalance may help net results; residualized labels.
+- Phase 2 AND Phase 3 complete: real data, CI falsification gate, PIT universe
+  with quantified residual bias, sector/beta neutralization with measured (not
+  asserted) exposures. Headline finding: the default 5-feature ridge has NO
+  defensible edge on the honest universe, raw or neutralized (trials #2, #3).
+- Alpaca paper account connected and verified (read-only check; $1M paper equity).
+- Phase 4 agenda (every variant = +1 trial): residualized-return labels,
+  multiple horizons (5/21/63d), z-score features over members only, turnover
+  reduction (7.4×/yr is the enemy of any weak edge at 10 bps), feature
+  importance stability across walk-forward windows.
