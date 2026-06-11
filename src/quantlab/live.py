@@ -51,10 +51,17 @@ def live_target_weights(
     horizon: int = HORIZON,
     quantile: float = 0.1,
     min_names: int = 50,
-) -> pd.Series:
+) -> tuple[pd.Series, pd.DataFrame]:
     """Fit on fully-labeled history, predict today's cross-section, build
     decile weights with sector demean + beta projection (the trial-#5-style
-    construction). Returns target weights for the LAST date in ``prices``.
+    construction).
+
+    Returns ``(weights, predictions)`` for the LAST date in ``prices``:
+    weights drive orders; predictions (columns ``pred_raw`` and
+    ``pred_sector_neutral``, indexed by ticker) are the IC-bearing artifact.
+    The backtest's ``mean_rank_ic`` is computed on PRE-demean predictions,
+    so live IC must be measured on ``pred_raw`` to be comparable; the
+    neutralized column documents what actually drove the book.
     """
     feats = features.build_features(prices, member_mask=member_mask)
     labels = features.build_labels(
@@ -80,18 +87,42 @@ def live_target_weights(
     if len(row) < min_names:
         raise RuntimeError(f"only {len(row)} tradable names today (< {min_names})")
 
-    preds = pd.Series(model.predict(row[feature_cols].to_numpy()), index=row.index)
-    preds.index = pd.MultiIndex.from_product(
-        [[today], preds.index], names=["date", "ticker"]
+    raw = pd.Series(model.predict(row[feature_cols].to_numpy()), index=row.index)
+    raw.index = pd.MultiIndex.from_product(
+        [[today], raw.index], names=["date", "ticker"]
     )
-    preds = risk.neutralize_predictions_by_sector(preds, sectors)
+    neutral = risk.neutralize_predictions_by_sector(raw, sectors)
 
-    weights = backtest.predictions_to_weights(preds, quantile=quantile, rebalance_every=1)
+    weights = backtest.predictions_to_weights(neutral, quantile=quantile, rebalance_every=1)
     rets = prices.pct_change(fill_method=None)
     mkt = rets.where(member_mask).mean(axis=1) if member_mask is not None else rets.mean(axis=1)
     betas = risk.rolling_beta(rets, mkt)
     weights = risk.beta_neutralize_weights(weights, betas)
-    return weights.iloc[0]
+    predictions = pd.DataFrame(
+        {
+            "pred_raw": raw.droplevel("date"),
+            "pred_sector_neutral": neutral.droplevel("date"),
+        }
+    )
+    return weights.iloc[0], predictions
+
+
+def assert_write_once(paths: list[str], allow_overwrite: bool = False) -> None:
+    """Refuse to clobber existing per-date live logs.
+
+    The prediction log is only evidence if it is write-once: a record that
+    can be silently regenerated later (same-day re-run, CI retry, a stray
+    --dry-run) is a revisable prediction, which is no prediction at all.
+    """
+    if allow_overwrite:
+        return
+    existing = [p for p in paths if os.path.exists(p)]
+    if existing:
+        raise RuntimeError(
+            f"refusing to overwrite immutable live record(s): {existing} "
+            "(pass allow_overwrite=True / --allow-overwrite only for a "
+            "deliberate re-run of a failed cycle)"
+        )
 
 
 def orders_from_weights(
@@ -182,8 +213,15 @@ def run_daily(
     out_dir: str = "results/live",
     env_path: str = ".env",
     submit: bool = True,
+    allow_overwrite: bool = False,
 ) -> dict:
-    """One live cycle: data -> predictions (logged first) -> orders."""
+    """One live cycle: data -> predictions (logged first) -> orders.
+
+    The per-date logs are write-once: a second run on the same as-of date
+    raises instead of silently replacing the record (a revisable prediction
+    log is worthless as evidence). ``allow_overwrite=True`` is the explicit,
+    deliberate escape hatch for re-running a cycle that failed mid-way.
+    """
     from quantlab import universe as univ
     from quantlab.data import load_prices
 
@@ -198,11 +236,19 @@ def run_daily(
     member_mask = univ.membership_mask(prices.index, prices.columns, intervals)
     sectors = univ.sector_map(current, list(prices.columns))
 
-    target = live_target_weights(prices, member_mask, sectors, model_name=model_name)
+    target, predictions = live_target_weights(
+        prices, member_mask, sectors, model_name=model_name
+    )
 
-    # Primary artifact first: today's weights/predictions, immutable record.
+    # Primary artifacts first, immutable record before any order exists:
+    # the full prediction cross-section (live IC is measured on pred_raw,
+    # the same pre-demean object the backtest's mean_rank_ic uses), then
+    # the order-bearing weights.
     asof = str(prices.index[-1].date())
+    pred_path = os.path.join(out_dir, f"predictions_{asof}.csv")
     record_path = os.path.join(out_dir, f"weights_{asof}.csv")
+    assert_write_once([pred_path, record_path], allow_overwrite)
+    predictions.rename_axis("ticker").to_csv(pred_path)
     target[target != 0].rename("weight").to_csv(record_path)
 
     summary: dict = {"asof": asof, "n_names": int((target != 0).sum()), "submitted": False}

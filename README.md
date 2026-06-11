@@ -59,10 +59,14 @@ src/quantlab/
   env.py         # minimal .env loader (Alpaca keys, Phase 6)
   live.py        # daily paper-trading: complete-label training, order deltas,
                  # paper-only Alpaca client; predictions logged before orders
+  monitor.py     # Phase 6 monitoring: cycle continuity, live IC vs backtest IC,
+                 # mark-to-market of logged books (read-only by design)
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
-tests/                    # 21 tests: leakage, costs, DSR monotonicity, lookahead,
+scripts/live_report.py    # one-page live-monitoring report from results/live/
+tests/                    # 58 tests: leakage, costs, DSR monotonicity, lookahead,
                           # baselines, vectorized-vs-naive equivalence,
-                          # nested-tuning leak checks
+                          # nested-tuning leak checks, live-order known answers,
+                          # monitor known answers
 research_log.md           # every trial ever run; owns the honest --n-trials count
 .github/workflows/ci.yml  # unit tests + falsification gate on every push
 ```
@@ -71,7 +75,7 @@ research_log.md           # every trial ever run; owns the honest --n-trials cou
 
 ```
 pip install -r requirements.txt
-python -m pytest tests/ -q                              # 21 tests
+python -m pytest tests/ -q                              # 58 tests
 python scripts/run_pipeline.py --data planted           # sanity check 1
 python scripts/run_pipeline.py --data noise --n-trials 20   # sanity check 2
 python scripts/run_pipeline.py --data sp500 --n-trials 2     # point-in-time S&P 500 (honest universe)
@@ -82,13 +86,15 @@ Outputs land in `results/`: metrics JSON + equity-curve PNG per run.
 
 ## Live paper trading (Phase 6)
 
-A daily GitHub Actions job (`.github/workflows/live.yml`, 22:30 UTC weekdays) rebuilds the point-in-time universe, trains on **fully-labeled history only** (rows newer than `today − horizon` have incomplete labels and are excluded — live trading gets the same leakage discipline as the backtest), logs the day's predictions to `results/live/` *before* any order exists, then submits integer-share, per-name-capped orders to an Alpaca **paper** account (the client refuses any non-paper endpoint). The prediction log is committed back to the repo — an immutable, timestamped record that after each 21-day horizon elapses yields **live IC vs backtest IC**, the ultimate out-of-sample test. Local alternative: `python scripts/live_trade.py [--dry-run]`.
+A daily GitHub Actions job (`.github/workflows/live.yml`, 22:30 UTC weekdays) rebuilds the point-in-time universe, trains on **fully-labeled history only** (rows newer than `today − horizon` have incomplete labels and are excluded — live trading gets the same leakage discipline as the backtest), logs the day's full prediction cross-section to `results/live/predictions_*.csv` *before* any order exists (both `pred_raw`, the object the backtest's IC is computed on, and `pred_sector_neutral`, the one that drives the book), then submits integer-share, per-name-capped orders to an Alpaca **paper** account (the client refuses any non-paper endpoint). The prediction log is committed back to the repo — an immutable, timestamped record that after each 21-day horizon elapses yields **live IC vs backtest IC**, the ultimate out-of-sample test. Local alternative: `python scripts/live_trade.py [--dry-run]`.
+
+Monitoring: `python scripts/live_report.py` renders a one-page report from the logs — cycle continuity (silently missed crons get caught in days, not months), per-cycle live IC vs the backtest's mean IC once cycles mature, and a public-price mark-to-market of the logged books as a cross-check on the broker's equity curve. Read-only by construction; it cannot contaminate the strategy.
 
 One-time setup: repo → Settings → Secrets and variables → Actions → add `ALPACA_API_KEY_ID` and `ALPACA_API_SECRET_KEY` (paper keys). The workflow skips gracefully until they exist.
 
 ## Known limitations (deliberate honesty)
 
-Sector data is **as-of-today** (Wikipedia only lists sectors for current members), so departed names share an UNKNOWN bucket and reclassifications are invisible; point-in-time GICS needs paid data. The `--data sp500` mode reconstructs **point-in-time S&P 500 membership** from Wikipedia's changes table, which removes the worst of survivorship bias — but not all of it: names that died (bankruptcy, acquisition) often have no Yahoo price history, so they drop out of the backtest even when membership says they were tradable; the run emits a `sp500_pit_coverage.json` quantifying exactly how many. Delisting returns (the final, usually ugly, price move of a dying stock) are missing entirely — a known upward bias in all free-data backtests (Shumway 1997). Names delisted within the label horizon lose their final partial period (the 21-day forward label needs a t+21 price). The legacy `--data yfinance` mode (today's members, fully biased) is kept deliberately so the two can be compared — measuring the bias is more interesting than removing it. Costs are linear with no market-impact model. No risk-model neutralization (sector/beta) yet. Free daily data only. Every one of these is a roadmap item, and naming them is part of the point.
+Sector data is **as-of-today** (Wikipedia only lists sectors for current members), so departed names share an UNKNOWN bucket and reclassifications are invisible; point-in-time GICS needs paid data. The `--data sp500` mode reconstructs **point-in-time S&P 500 membership** from Wikipedia's changes table, which removes the worst of survivorship bias — but not all of it: names that died (bankruptcy, acquisition) often have no Yahoo price history, so they drop out of the backtest even when membership says they were tradable; the run emits a `sp500_pit_coverage.json` quantifying exactly how many. Delisting returns (the final, usually ugly, price move of a dying stock) are missing entirely — a known upward bias in all free-data backtests (Shumway 1997). Names delisted within the label horizon lose their final partial period (the 21-day forward label needs a t+21 price). The legacy `--data yfinance` mode (today's members, fully biased) is kept deliberately so the two can be compared — measuring the bias is more interesting than removing it. Headline results use linear costs; square-root market impact lives in the `--capacity` sweep, not in every backtest. Sector/beta neutralization exists (`--neutralize`) but betas are estimated, not known — realized residual beta drifts to ~0.05 mean (p95 0.23) between rebalances, measured and reported per run. The first live cycle (2026-06-10) logged weights only; full prediction logging starts with the second cycle, so the live-IC record is one cycle shorter than the trading record. Free daily data only. Every one of these is a roadmap item or a permanent caveat, and naming them is part of the point.
 
 ## References
 

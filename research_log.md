@@ -43,6 +43,9 @@ the machinery (capacity, live paper trading infrastructure) demonstrated honestl
 what exists; new alpha hypotheses (fundamentals, alternative data, different universes)
 are future work with their own pre-registered trials.
 
+| — | 2026-06-10 | infra | Live-IC gap: `run_daily` logged decile *weights* but not *predictions* — live IC vs backtest IC (the point of Phase 6) needs the full prediction cross-section, and the backtest's `mean_rank_ic` is computed on PRE-sector-demean predictions (run_pipeline.py computes IC before `neutralize_predictions_by_sector`), so weights alone cannot reproduce it | `live.py` now logs `predictions_{asof}.csv` (cols `pred_raw` + `pred_sector_neutral`, full scored cross-section) before weights/orders. New `monitor.py` + `scripts/live_report.py`: cycle-continuity check (missed crons caught in days), per-cycle live IC vs realized residual label via the same `features.build_labels` machinery (Spearman-as-Pearson-of-ranks, identical tie handling to `models.information_coefficient`), mark-to-market of logged books as broker cross-check. Monitor is read-only by design — cannot feed back into the strategy. | 58 tests green (9 new known-answer tests incl. perfect-foresight IC = ±1.0 exactly, immature-cycle omission, book-holds-until-next-log). Also: per-date live logs are now **write-once** (`assert_write_once`) — a same-day re-run/CI retry/stray `--dry-run` would previously have silently replaced the "immutable" record; `--allow-overwrite` is the explicit escape hatch. Falsification gate re-passed; planted/noise metrics match the laptop baseline to reported precision (float drift ~1e-14 from different CPU/BLAS — measured, not assumed). Report runs end-to-end on the real day-1 log and honestly reports "0 measurable cycles". | Cost of the gap: cycle #1 (2026-06-10) has weights only — the live-IC record is permanently one cycle shorter than the trading record; recorded in README limitations. Every cycle from #2 onward yields IC once its 21d horizon matures (~2026-07-09). The t_NW needs >23 matured cycles before any live-vs-backtest claim is allowed. |
+| — | 2026-06-10 | infra | Phase 6 live paper trading deployed: the live cycle must inherit the backtest's leakage discipline, not approximate it | `live.py` + `scripts/live_trade.py`: daily cycle trains ONLY on fully-labeled history (rows newer than today−horizon excluded); predictions logged to `results/live/` BEFORE any order exists; integer-share orders capped at 5% of equity per name; Alpaca client refuses any endpoint without "paper" in it. `live.yml` cron 22:30 UTC weekdays commits the prediction log back to the repo as an immutable record. | First live cycle ran end-to-end 2026-06-10: 100-name book (50L/50S) from ~500 PIT members, 100/100 orders accepted, zero failures, queued for the 2026-06-11 09:30 ET open — reproducing the backtest convention (weights at t earn from t+1) by construction. 49 tests green incl. order-delta known answers, per-name cap, paper-only guard, and complete-label training checks. | Live IC vs backtest IC becomes measurable as each 21d horizon elapses; the committed prediction logs are the tamper-proof record. CI skips gracefully until Alpaca secrets are configured in the repo — **until then, the daily cycle only runs from a machine holding `.env`**. |
+
 ## Notes
 
 - 2026-06-10: N = 2 (trial #1 biased universe, trial #2 PIT universe).
@@ -56,3 +59,13 @@ are future work with their own pre-registered trials.
   multiple horizons (5/21/63d), z-score features over members only, turnover
   reduction (7.4×/yr is the enemy of any weak edge at 10 bps), feature
   importance stability across walk-forward windows.
+- 2026-06-10 (PC migration): work moved laptop → PC mid-Phase-6. The copy
+  arrived as a GitHub ZIP (no `.git`, no `.env`), so this log entry for the
+  Phase 6 deployment was reconstructed from the laptop session summary and
+  must be reconciled against the laptop/GitHub copy of this file when the
+  repo is re-cloned. Environment re-verified on PC: fresh venv, 49 tests
+  green, falsification gate re-passed with planted/noise numbers matching
+  the logged baseline to reported precision (IC 0.0629 / net SR 0.8646 /
+  DSR 0.9919; noise rejected). Cross-platform float drift is ~1e-14
+  (different CPU/BLAS); the laptop's canonical results/ artifacts were kept
+  rather than committing no-information churn.

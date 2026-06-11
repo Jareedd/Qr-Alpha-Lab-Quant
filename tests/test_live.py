@@ -54,16 +54,25 @@ def test_live_weights_train_only_on_complete_labels():
     prices = make_panel(n_assets=40, n_days=1300, mode="planted", seed=11)
     sectors = prices.attrs["sectors"]
 
-    w_clean = live.live_target_weights(prices, None, sectors, horizon=21, min_names=20)
+    w_clean, p_clean = live.live_target_weights(
+        prices, None, sectors, horizon=21, min_names=20
+    )
 
     poisoned = prices.copy()
     # Scale the final 20 days' prices (inside the horizon window): labels for
     # training-cutoff rows are unaffected; today's FEATURES change, so today's
     # weights may differ -- but the run must not crash and must stay neutral.
     poisoned.iloc[-20:] *= 1.5
-    w_poisoned = live.live_target_weights(
+    w_poisoned, _ = live.live_target_weights(
         poisoned, None, sectors, horizon=21, min_names=20
     )
+
+    # The prediction log (the live-IC artifact) must cover the whole scored
+    # cross-section -- not just the names that made the book -- in both the
+    # raw (backtest-comparable) and sector-neutral (book-driving) columns.
+    assert {"pred_raw", "pred_sector_neutral"} <= set(p_clean.columns)
+    assert len(p_clean) >= (w_clean != 0).sum()
+    assert np.isfinite(p_clean.to_numpy()).all()
 
     for w in (w_clean, w_poisoned):
         assert abs(w.sum()) < 1e-9            # dollar neutral
@@ -73,6 +82,21 @@ def test_live_weights_train_only_on_complete_labels():
         # legitimately push one to ~0.3. The real concentration guard is the
         # 5% per-name cap applied at order time (tested separately).
         assert w.abs().max() < 0.35
+
+
+def test_live_records_are_write_once(tmp_path):
+    # A second cycle on the same as-of date must refuse to replace the
+    # logged record -- a revisable prediction log is no evidence at all.
+    existing = tmp_path / "predictions_2026-06-10.csv"
+    existing.write_text("ticker,pred_raw\nAAA,0.1\n")
+    fresh = tmp_path / "weights_2026-06-10.csv"
+
+    with pytest.raises(RuntimeError, match="refusing to overwrite"):
+        live.assert_write_once([str(existing), str(fresh)])
+    # explicit escape hatch for re-running a failed cycle
+    live.assert_write_once([str(existing), str(fresh)], allow_overwrite=True)
+    # nothing logged yet -> no objection
+    live.assert_write_once([str(fresh)])
 
 
 def test_alpaca_client_refuses_live_endpoint(tmp_path):
