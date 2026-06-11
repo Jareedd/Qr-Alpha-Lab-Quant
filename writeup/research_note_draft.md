@@ -1,90 +1,203 @@
 # Do standard price signals survive an honest backtest? A falsification-first study on point-in-time S&P 500 data
 
-**DRAFT SKELETON — Phase 7.** Every number below is traceable to a row in
-`research_log.md` or a JSON in `results/` (law #8); sections marked TODO
-fill in as live cycles mature. Target: 6–10 pages, AQR-note structure.
+**DRAFT — Phase 7.** This is a full working draft for the owner to rewrite
+in his own voice; every number is traceable to a row in `research_log.md`
+or an artifact in `results/` (law #8). Live-results sections update as
+cycles mature.
 
-## Abstract (write last)
+## Abstract
 
-TODO. One paragraph: question, method, the headline *negative* result, the
-survivorship-bias exhibit, live verification status.
+We test whether five standard price-only cross-sectional signals (12-1 and
+6-1 momentum, 1-month reversal, 3-month realized volatility, 52-week-high
+proximity) carry exploitable alpha in large-cap US equities, under a
+research protocol designed to make self-deception difficult: a planted-
+signal/pure-noise falsification harness enforced in CI, point-in-time
+index membership, embargoed walk-forward validation, Newey–West inference
+on overlapping labels, cost-aware dollar-neutral construction, a declared
+trial count feeding the Deflated Sharpe Ratio, and live paper-trading
+verification. The headline result is negative, and the most instructive
+exhibit is how the positive result died: on a static present-day universe
+the pipeline produces IC 0.033 and net Sharpe 0.82; on the honest
+point-in-time universe the same pipeline produces IC 0.005 and net Sharpe
+−0.01. Across seven logged trials spanning horizons, labels,
+neutralization schemes, and three model classes (ridge, gradient boosting,
+shallow neural network), no configuration achieved a Deflated Sharpe above
+0.04 or a correctly-signed |t_NW| ≥ 2. We quantify the capacity
+consequences of turnover with a square-root impact model and verify the
+pipeline live against a real broker API. We argue the negative result is
+the expected one given the publication-decay literature, and that the
+infrastructure for *establishing* it — which recovered every planted
+signal and rejected every noise panel on demand — is the transferable
+contribution.
 
 ## 1. Question
 
-Do five standard price-only cross-sectional signals (12-1 and 6-1 momentum,
-1-month reversal, 3-month realized vol, 52-week-high proximity) carry
-exploitable alpha in large-cap US equities, once the backtest is honest:
-point-in-time universe, embargoed walk-forward validation, costs, declared
-trial count, and a falsification harness that must recover planted signals
-and reject pure noise?
+Can the most widely published price-only cross-sectional signals be
+traded profitably in the S&P 500 universe today, net of costs, once every
+known form of backtest inflation available to a free-data researcher is
+removed? If not — and the literature predicts not — can a research
+pipeline demonstrate that null convincingly, in a way that would survive
+an adversarial review?
 
-## 2. Why the bar is set where it is (literature)
+## 2. Why the bar is set where it is
 
-- Published anomalies decay 26% OOS, 58% post-publication (McLean–Pontiff).
-- Most published factors are false discoveries at honest thresholds
-  (Harvey–Liu–Zhu).
-- High-turnover anomalies die to costs (Novy-Marx–Velikov).
-- Max-of-N backtests look great on noise; the Deflated Sharpe Ratio prices
-  that in (Bailey–López de Prado). Trial count here: **N = 7, logged**.
+Four empirical facts shaped every design decision:
+
+1. Published anomaly returns decay 26% out-of-sample and 58%
+   post-publication (McLean & Pontiff 2016). Whatever was in these signals
+   when published, less of it remains.
+2. At honest multiple-testing thresholds, most published factors are false
+   discoveries (Harvey, Liu & Zhu 2016). A t-stat of 2 means little after
+   hundreds of tries — so we count our tries: **N = 7, logged in
+   `research_log.md`, never reset**.
+3. Anomaly profits concentrate in high-turnover implementations whose
+   costs exceed their gross returns (Novy-Marx & Velikov 2016). We never
+   report a gross-only number; turnover is a headline metric.
+4. The expected maximum Sharpe of N noise strategies grows with N (Bailey
+   & López de Prado 2014). The Deflated Sharpe Ratio benchmarks every
+   result against that expected maximum.
 
 ## 3. Data and universe
 
-- Daily prices via yfinance, 2009→2026; PIT S&P 500 membership rebuilt from
-  Wikipedia's changes table: 810 members ever, 661 priceable (81.6%).
-- Residual bias quantified, not waved at: 149 dead names unpriceable, no
-  delisting returns (Shumway) — both push results UP, stated in §8
-  (`results/sp500_pit_coverage.json`).
-- The biased static-universe run is kept deliberately as a measured
-  exhibit: same code, same features — IC 0.033 / net SR 0.82 (biased) vs
-  IC 0.005 / net SR −0.01 (PIT). **Survivorship bias manufactured the
-  entire result** (trials #1 vs #2). This is the paper's centerpiece
-  exhibit, reproduced in-house.
+Daily adjusted prices via yfinance, 2009–2026. Index membership is
+reconstructed point-in-time by walking Wikipedia's S&P 500 changes table
+backward from the current constituent list: 810 distinct members ever in
+the 2010–2026 window, of which 661 (81.6%) have retrievable price
+history. Features are masked to members-as-of-date before cross-sectional
+normalization, so departed names cannot shift the statistics the model
+sees.
+
+The residual bias is quantified rather than waved at
+(`results/sp500_pit_coverage.json`): 149 dead names are unpriceable on
+free data, and delisting returns — the final, usually catastrophic, price
+move of a dying stock — are missing entirely (Shumway 1997). Both effects
+push measured returns *up*, so our null is, if anything, generous to the
+signals.
+
+The static present-day universe is retained deliberately as a measured
+exhibit rather than deleted as a mistake. Same code, same features, same
+costs:
+
+| | static (biased) universe | point-in-time universe |
+|---|---|---|
+| mean rank IC | 0.0333 | 0.0052 |
+| net Sharpe | **0.82** | **−0.01** |
+| equal-weight long-only SR | 1.00 | 0.81 |
+
+Survivorship bias did not inflate the result — it *was* the result. A
+universe composed of known survivors makes "buy the dip" unfalsifiable:
+every drawdown in the panel is, by construction, one the company
+survived. Reproducing McLean–Pontiff-scale decay in-house, from a single
+universe correction, is the project's centerpiece exhibit.
 
 ## 4. Methodology
 
-- Walk-forward ridge (α=10) on 5 z-scored features; embargo ≥ label
-  horizon; nested per-roll tuning shown to not inflate trials (log, infra).
-- Falsification gate in CI: planted signal must be recovered (DSR 0.992),
-  noise must be rejected (DSR 0.078) — on every push.
-- Newey–West t-stats throughout: overlapping 21d labels autocorrelate
-  daily ICs; naive t overstates ~√21 ≈ 4.6× (measured: 7.76 → 2.00 on the
-  planted panel).
-- Costs 10 bps linear; turnover a headline metric. Sector demean +
-  ex-ante-beta-zero projection (rolling 252d, past-only); realized residual
-  beta measured, not asserted (mean 0.05, p95 0.23).
-- Baselines (law #5): equal-weight and one-line 12-1 momentum, same OOS
-  window, same costs. A baseline once caught a bug a 9-test suite missed
-  (EW SR 3.34 → pad-filled phantom returns for dead names).
+**Validation.** Expanding walk-forward with an embargo at least the label
+horizon: a model trained through date t sees no row whose 21-day forward
+label overlaps the test window. k-fold cross-validation is unusable on
+financial panels — random folds put tomorrow in the training set of
+yesterday — and the embargo width follows from the label construction,
+not from convention.
 
-## 5. Results (all OOS, all net of costs, N = 7 trials declared)
+**The falsification gate.** Before any real-data result is read, the
+pipeline must (a) recover a synthetic planted signal (DSR 0.992 achieved)
+and (b) find nothing in a pure-noise panel of identical shape (DSR 0.078
+at N=1). Both checks run in CI on every push with hard exit-code gates;
+a future commit that introduces leakage fails the build. During
+development the harness caught real bugs, described in §6.
 
-| Trial | Config | IC | t_NW | net SR | DSR |
-|---|---|---|---|---|---|
-| 1 | biased universe, ridge | 0.0333 | (7.77 naive) | 0.82 | 0.998* |
-| 2 | PIT universe, ridge | 0.0052 | 0.54 | −0.01 | 0.29 |
-| 3 | + sector/beta neutral | 0.0052 | — | −0.38 | 0.01 |
-| 4 | 63d horizon/rebal | −0.0278 | −1.95 | −0.35 | 0.01 |
-| 5 | residual label | +0.0225 | 1.91 | −0.77 | ≈0 |
-| 6 | GBR, residual label | +0.0077 | 0.80 | −0.12 | 0.04 |
-| 7 | MLP, residual label | +0.0093 | 1.21 | −0.28 | 0.008 |
+**Inference.** Daily rank ICs of overlapping 21-day labels share 20 days
+of label information; treating them as independent overstates t-stats by
+roughly √21. On the planted panel the naive t of 7.76 collapses to a
+Newey–West t of 2.00 (lags = horizon, Bartlett kernel) — the shrinkage
+theory predicts. All quoted t-stats are Newey–West.
 
-\* DSR at N=1 before the universe was honest — kept to show why DSR alone
-doesn't save you from a biased universe.
+**Construction and costs.** Decile dollar-neutral long-short, 10 bps
+linear costs on turnover, monthly rebalance unless stated. Predictions
+are sector-demeaned (12 GICS-as-of-today buckets) and weights projected
+to zero ex-ante beta using rolling 252-day past-only betas. Exposure is
+*measured*, not asserted: ex-ante beta 0.009 realizes as mean 0.05 with
+p95 0.23 — beta estimation drift between rebalances is real and reported
+per run.
 
-**Verdict:** no configuration produced a defensible edge (best DSR 0.04;
-no |t_NW| ≥ 2 in the right direction) across linear, tree, and shallow-net
-model classes on identical features and harness.
+**Baselines.** Every model must beat equal-weight and a one-line 12-1
+momentum rank, same out-of-sample dates, same costs (law #5). On the
+planted panel — where the planted signal *is* momentum-like — the
+baseline beats the 5-feature ridge (net SR 1.19 vs 0.86): a multi-feature
+model is not automatically better than its strongest ingredient. The
+baseline also caught a bug a 9-test suite had missed (§6).
 
-## 6. What failed (mandatory section)
+**Hyperparameters.** Per-roll nested walk-forward selection (inner splits
+inside each outer training window) chooses ridge α from {1, 10, 100,
+1000} without touching outer test data; a pinned leak-test verifies that
+corrupting all post-train-window data cannot change the chosen α.
+Selection on training data is in-sample model fitting, not a new trial.
 
-- The headline "alpha" of trial #1 was survivorship bias, in full.
-- Sector/beta neutralization removed (noisy) factor *return*, not masking —
-  nothing was hiding underneath (trial #3).
-- Slower rebalancing fixed turnover but the IC flipped negative — and we
-  explicitly declined to trade the sign-flip (max-of-N trap, logged, trial #4).
-- Residual-label IC "improved" while gross P&L worsened: IC and P&L are
-  different objects; we report both and trust the P&L (trial #5).
-- TODO: anything Phase 6 live operation breaks or reveals.
+## 5. Results
+
+All out-of-sample, all net of 10 bps, all on the point-in-time universe
+unless noted, N = 7 trials declared to the DSR:
+
+| Trial | Config | IC | t_NW | net SR | DSR | turnover |
+|---|---|---|---|---|---|---|
+| 1 | static universe (exhibit) | 0.0333 | — | +0.82 | 0.998* | 3.8× |
+| 2 | PIT universe, ridge, raw label | 0.0052 | +0.54 | −0.01 | 0.29 | 7.3× |
+| 3 | + sector/beta neutralization | 0.0052 | — | −0.38 | 0.01 | 7.4× |
+| 4 | 63d horizon & rebalance | −0.0278 | −1.95 | −0.35 | 0.01 | 2.4× |
+| 5 | residualized label | +0.0225 | +1.91 | −0.77 | ≈0 | 3.5× |
+| 6 | gradient boosting, residual label | +0.0077 | +0.80 | −0.12 | 0.04 | 5.4× |
+| 7 | shallow MLP, residual label | +0.0093 | +1.21 | −0.28 | 0.008 | 5.8× |
+
+\* DSR at N=1 on the biased universe — retained to demonstrate that the
+DSR cannot rescue a backtest from a dishonest universe. It deflates for
+multiplicity, not for survivorship.
+
+**Verdict: no configuration produced a defensible edge.** Best DSR 0.04;
+no correctly-signed |t_NW| ≥ 2. The model-class ablation (linear, trees,
+shallow net on identical features and harness) localizes the null in the
+*features*, not the learner: before each real-data run, every model class
+recovered the planted signal (MLP more weakly than ridge — the Gu, Kelly
+& Xiu shallow-net result) and rejected noise.
+
+## 6. What failed (and what the harness caught)
+
+This section is mandatory by project constitution.
+
+- **The headline alpha was survivorship bias, in full** (trials 1→2). Not
+  partially: IC fell 84% and net Sharpe went from +0.82 to −0.01.
+- **A baseline too good to be true caught a data bug.** The first PIT run
+  showed equal-weight SR 3.34 (impossible; RSP ≈ 0.9). Cause: pandas
+  `pct_change()` pad-filling delisted names into frozen 0% daily returns,
+  crushing measured volatility. After `fill_method=None` everywhere,
+  EW SR 0.81. The strategy numbers barely moved — the bug lived only in
+  dead names' return construction — but we would not have known that
+  without the baseline. A wrong number that *looks* wrong is a gift.
+- **Neutralization revealed nothing was hiding** (trial 3). Removing
+  sector/beta exposure cut volatility 10.0%→6.5% and *worsened* net
+  Sharpe: factor exposure had been adding noisy return, not masking alpha.
+- **We declined to trade a sign-flip** (trial 4). At the quarterly
+  horizon the IC went negative (t_NW −1.95). "My signal works reversed"
+  after N variants is textbook max-of-N mining; if quarterly reversal is
+  a real hypothesis it gets its own pre-registered test on fresh data.
+- **IC and P&L are different objects** (trial 5). Against a residualized
+  label the IC "improved" to +0.0225 (partly definitional — the label is
+  cleaner) while the portfolio lost money gross. We report both and trust
+  the P&L.
+- **A cache-key bug was caught before it could corrupt anything**: price
+  caches were keyed on the *number* of tickers, so two same-size
+  universes would silently collide. Found in code review before the first
+  real-data run; keys are now content hashes.
+- **The live deployment shipped with its measurement broken** (caught on
+  day 1): the daily cycle logged portfolio weights but not predictions,
+  and the backtest IC is computed on pre-neutralization predictions —
+  live IC could never have been compared like-for-like. One cycle was
+  lost to this; the prediction log is now written, write-once, before any
+  order exists.
+- **A missing transitive dependency would have killed the first
+  unattended cloud cycle**: `lxml` (pandas' HTML parser backend) was
+  installed ad hoc on the development machine but absent from
+  `requirements.txt`, which is all CI installs. A fresh environment is
+  the only honest test of a requirements file.
 
 ## 7. Capacity and execution realism
 
@@ -111,31 +224,54 @@ The residual drift is yfinance *retroactively re-adjusting* history for
 dividends/splits announced after the first download — "point-in-time data"
 has a data-revision dimension, not just a membership dimension.
 
-## 8. Live verification (Phase 6, running)
+## 8. Live verification (running)
 
-- Daily CI-driven paper trading on Alpaca; complete-label training (live
-  inherits the backtest's leakage discipline); predictions logged before
-  orders, committed to the repo, **write-once**.
-- First cycle 2026-06-10: 100-name book, 100/100 orders accepted.
-- Live IC vs backtest IC once cycles mature (21 trading days); t_NW needs
-  >23 matured cycles. TODO: table + `results/live/live_ic.png` after
-  ~2026-07-09.
-- Known asymmetry: cycle #1 logged weights only; the live-IC record is one
-  cycle shorter than the trading record.
+Why paper-trade a null result? Because live IC vs backtest IC is the
+ultimate out-of-sample test *of the pipeline and of the null itself* — if
+live ICs cluster meaningfully above the backtest's 0.0225, something is
+wrong with the backtest, and that is worth knowing.
 
-## 9. Limitations (keep synced with README)
+A daily CI job rebuilds the point-in-time universe, trains only on rows
+whose labels are fully realized (live trading inherits the backtest's
+leakage discipline), writes the full prediction cross-section to a
+write-once log *before any order exists*, then submits integer-share,
+per-name-capped orders to an Alpaca paper endpoint (the client refuses
+non-paper URLs). The log is committed to the repository — an append-only,
+timestamped record.
 
-PIT-residual bias (149 unpriceable dead names; no delisting returns);
-sectors as-of-today; free daily data; linear costs in headline results;
-estimated (drifting) betas; single-market, single-period.
+- First cycle 2026-06-10: 100-name book (50 long / 50 short) from ~500
+  members, 100/100 orders accepted.
+- First measurable live IC: ~2026-07-09 (cycles mature at 21 trading
+  days). A Newey–West t needs >23 matured cycles; until then live ICs are
+  reported but not interpreted.
+- [TO UPDATE as cycles mature: live IC table, `results/live/live_ic.png`,
+  realized-vs-broker P&L cross-check.]
+
+## 9. Limitations
+
+Residual survivorship bias (149 unpriceable dead names; no delisting
+returns — both flatter the signals we nonetheless reject); sectors are
+as-of-today; betas are estimated, with measured drift; linear costs in
+headline results (impact priced separately in §7); free daily data; a
+single market and period; and the live record is one cycle shorter than
+the trading record (§6).
 
 ## 10. What institutional-grade would require
 
-Point-in-time fundamentals/GICS, delisting returns (CRSP), borrow
-costs/locates, impact model calibrated to fills, multi-market replication.
+CRSP-quality delisting returns; point-in-time fundamentals and GICS;
+borrow availability and fees on the short book; an impact model
+calibrated to actual fills rather than a literature constant; multi-market
+replication; and an order-of-magnitude more trials under the same logging
+discipline.
 
 ## References
 
-Bailey & López de Prado (2014); Gu, Kelly & Xiu (2020); Harvey, Liu & Zhu
-(2016); Jegadeesh & Titman (1993); López de Prado (2018); McLean & Pontiff
-(2016); Novy-Marx & Velikov (2016); Shumway (1997).
+Bailey, D. & M. López de Prado (2014), "The Deflated Sharpe Ratio";
+Gu, S., B. Kelly & D. Xiu (2020), "Empirical Asset Pricing via Machine
+Learning"; Harvey, C., Y. Liu & H. Zhu (2016), "...and the Cross-Section
+of Expected Returns"; Jegadeesh, N. & S. Titman (1993); López de Prado,
+M. (2018), *Advances in Financial Machine Learning*; McLean, R.D. & J.
+Pontiff (2016), "Does Academic Research Destroy Stock Return
+Predictability?"; Novy-Marx, R. & M. Velikov (2016), "A Taxonomy of
+Anomalies and Their Trading Costs"; Shumway, T. (1997), "The Delisting
+Bias in CRSP Data".

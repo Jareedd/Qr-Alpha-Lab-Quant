@@ -62,6 +62,13 @@ are future work with their own pre-registered trials.
   multiple horizons (5/21/63d), z-score features over members only, turnover
   reduction (7.4×/yr is the enemy of any weak edge at 10 bps), feature
   importance stability across walk-forward windows.
+- 2026-06-10 (Phase 7 started): full prose draft of the research note in
+  `writeup/research_note_draft.md` (owner to rewrite in his voice — every
+  number traced to a log row or results/ artifact). New
+  `writeup/preregistered_hypotheses.md`: H1 fundamentals (blocked on a
+  point-in-time data audit), H2 crypto-perp carry, H3 regime-gated
+  momentum (registered with a trap check). Nothing run; N stays 7; each
+  future run needs owner sign-off and increments N by exactly 1.
 - 2026-06-10 (PC migration): work moved laptop → PC mid-Phase-6. The copy
   arrived as a GitHub ZIP (no `.git`, no `.env`), so this log entry for the
   Phase 6 deployment was reconstructed from the laptop session summary and
