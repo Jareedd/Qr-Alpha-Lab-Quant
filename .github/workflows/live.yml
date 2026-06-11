@@ -29,6 +29,8 @@ jobs:
             exit 0
           fi
           python scripts/live_trade.py
+      - name: Refresh monitoring report (non-fatal -- trading already logged)
+        run: python scripts/live_report.py || echo "report failed; cycle log is intact"
       - name: Commit prediction log (the immutable live-IC record)
         run: |
           git config user.name "qr-alpha-lab live bot"

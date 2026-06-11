@@ -5,4 +5,5 @@ scikit-learn>=1.3
 matplotlib>=3.7
 pyarrow>=14.0
 yfinance>=0.2.40
+lxml>=4.9  # pd.read_html backend for the PIT universe scrape (universe.py)
 pytest>=7.0

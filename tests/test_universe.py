@@ -16,6 +16,19 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from quantlab import metrics, universe
 
 
+def test_read_html_backend_is_installed():
+    # universe.fetch_sp500_tables depends on pandas' lxml backend. A missing
+    # lxml crashes the LIVE CYCLE at the universe fetch -- found the hard way
+    # when a fresh environment installed requirements.txt and died on day one.
+    # This pins the dependency without touching the network.
+    import io
+
+    tables = pd.read_html(
+        io.StringIO("<table><tr><th>a</th></tr><tr><td>1</td></tr></table>")
+    )
+    assert tables[0]["a"].iloc[0] == 1
+
+
 def _toy_history():
     # Today: {A, B, C}. Walking backward:
     #   2020-06-01: C added, D removed  -> before: {A, B, D}
