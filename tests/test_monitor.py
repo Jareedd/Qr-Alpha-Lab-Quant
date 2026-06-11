@@ -138,3 +138,34 @@ def test_render_report_states_unmeasurable_honestly():
     assert "not yet measurable" in md
     assert "do not interpret yet" in md
     assert "record is gap-free" in md
+    # optional sections absent when their inputs are absent
+    assert "Control arm" not in md
+    assert "Data revisions" not in md
+
+
+def test_render_report_control_arm_and_revisions_sections():
+    cont = monitor.cycle_continuity([pd.Timestamp("2026-06-11")], "2026-06-11")
+    md = monitor.render_report(
+        asof="2026-06-11",
+        continuity=cont,
+        n_weights_logged=1,
+        n_preds_logged=1,
+        comparison=None,
+        live_ic=pd.Series(dtype=float),
+        book_pnl=pd.Series(dtype=float),
+        baseline_live_ic=pd.Series({pd.Timestamp("2026-06-11"): 0.0312}),
+        revisions=[
+            {
+                "compared_to": "2026-06-10",
+                "n_cells_compared": 1_000_000,
+                "n_price_cells_changed": 2100,
+                "frac_price_cells_changed": 0.0021,
+                "n_return_cells_changed": 3,
+                "max_abs_return_change": 1.7e-4,
+            }
+        ],
+    )
+    assert "Control arm" in md
+    assert "+0.0312" in md
+    assert "Data revisions" in md
+    assert "2,100" in md and "3 return cells" in md

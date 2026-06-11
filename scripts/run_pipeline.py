@@ -76,6 +76,16 @@ def main() -> None:
         "signal -- this asks what is left.",
     )
     ap.add_argument(
+        "--delisting-return",
+        type=float,
+        default=None,
+        help="SCENARIO (real-data modes): inject a synthetic final return of "
+        "this size into every name whose prices end mid-window, to BOUND the "
+        "missing-delisting-return bias (Shumway 1997: -0.30 is the classic "
+        "worst case). Same strategy under a data assumption -- not a new "
+        "alpha trial. All artifacts get a _dlret tag.",
+    )
+    ap.add_argument(
         "--capacity",
         action="store_true",
         help="Run a square-root-impact capacity sweep (needs volume data; "
@@ -136,6 +146,18 @@ def main() -> None:
         prices = make_panel(mode=args.data)
         sectors = prices.attrs.get("sectors", {})
     print(f"[data] {prices.shape[1]} assets x {prices.shape[0]} days ({args.data})")
+
+    if args.delisting_return is not None:
+        if args.data not in ("yfinance", "sp500"):
+            sys.exit("--delisting-return is a real-data scenario (yfinance/sp500)")
+        from quantlab.synthetic import inject_delisting_returns
+
+        prices = inject_delisting_returns(prices, args.delisting_return)
+        print(
+            f"[scenario] SYNTHETIC delisting return {args.delisting_return:+.0%} "
+            f"injected into {prices.attrs['delist_injected']} names whose "
+            "series end mid-window -- bias BOUND, not data; artifacts tagged _dlret"
+        )
 
     # Features/labels are masked to index members BEFORE z-scoring, so
     # non-members never shift the cross-sectional stats the model sees;
@@ -202,6 +224,14 @@ def main() -> None:
     )
     stats["mean_rank_ic"] = float(ic.mean())
     stats["ic_tstat_newey_west"] = float(ic_t_nw)
+    if args.delisting_return is not None:
+        # Loud scenario stamp (law #7): these numbers contain synthetic prints.
+        stats["scenario_delisting_return"] = float(args.delisting_return)
+        stats["scenario_names_injected"] = int(prices.attrs["delist_injected"])
+        stats["scenario_note"] = (
+            "SYNTHETIC delisting returns injected to bound the missing-"
+            "delisting-return bias -- not a tradable result"
+        )
 
     # Baselines (law #5): same OOS dates, same backtester, same costs.
     mom_w = baselines.momentum_baseline_weights(
@@ -212,6 +242,15 @@ def main() -> None:
     stats["baseline_mom_sharpe_net"] = metrics.sharpe(mom_res["net"])
     stats["baseline_ew_sharpe"] = metrics.sharpe(ew)
     stats["beats_mom_baseline"] = bool(stats["sharpe_net"] > stats["baseline_mom_sharpe_net"])
+    # Baseline IC on the same OOS (date, ticker) pairs: the backtest-side
+    # anchor for the live control arm (live.py shadow-logs this feature).
+    mom_sig = feats["mom_12_1"].stack()
+    mom_sig.index.names = ["date", "ticker"]
+    mom_ic = models.information_coefficient(mom_sig.reindex(preds.index), panel)
+    stats["baseline_mom_ic"] = float(mom_ic.mean())
+    stats["baseline_mom_ic_tstat_nw"] = float(
+        metrics.newey_west_tstat(mom_ic, lags=args.horizon)
+    )
 
     rr = risk.risk_report(result["net"], mkt, result["daily_weights"], betas, sectors)
     stats.update({f"risk_{k}": v for k, v in rr.items()})
@@ -252,6 +291,8 @@ def main() -> None:
         tag += f"_h{args.horizon}"
     if args.rebalance and args.rebalance != args.horizon:
         tag += f"_r{args.rebalance}"
+    if args.delisting_return is not None:
+        tag += f"_dlret{round(args.delisting_return * 100):+d}"
     with open(os.path.join(args.out, f"metrics_{tag}.json"), "w") as f:
         json.dump(stats, f, indent=2)
     if args.data == "sp500":

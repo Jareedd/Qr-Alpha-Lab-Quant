@@ -151,6 +151,8 @@ def render_report(
     live_ic: pd.Series,
     book_pnl: pd.Series,
     horizon: int = 21,
+    baseline_live_ic: pd.Series | None = None,
+    revisions: list[dict] | None = None,
 ) -> str:
     """One-page markdown report. Purely descriptive: it never says the live
     experiment 'works', only what was measured and what cannot be measured
@@ -196,6 +198,37 @@ def render_report(
                 f"- **do not interpret yet**: t_NW needs > {horizon + 2} matured "
                 "cycles; early ICs are single noisy draws"
             )
+    if baseline_live_ic is not None:
+        n_base = int(baseline_live_ic.notna().sum())
+        lines += [
+            "",
+            "### Control arm (12-1 momentum baseline, shadow-logged — no orders)",
+            (
+                f"- baseline live mean rank IC: **{baseline_live_ic.mean():+.4f}** "
+                f"over {n_base} matured cycles"
+                if n_base
+                else "- baseline live IC: *not yet measurable*"
+            ),
+            "- purpose: if the model's live IC sags vs backtest, the baseline's "
+            "own live-vs-backtest gap separates 'model decayed' from 'period "
+            "was hostile to everything'",
+        ]
+    if revisions:
+        latest = revisions[-1]
+        lines += [
+            "",
+            "## Data revisions (vendor rewriting the shared past)",
+            f"- snapshot pairs compared: **{len(revisions)}**; latest "
+            f"({latest.get('compared_to', '?')} → cycle): "
+            f"{latest['n_price_cells_changed']:,} of "
+            f"{latest['n_cells_compared']:,} shared price cells changed "
+            f"({latest['frac_price_cells_changed']:.4%}), "
+            f"**{latest['n_return_cells_changed']:,} return cells** changed "
+            f"(max |Δreturn| {latest['max_abs_return_change']:.2e})",
+            "- price-level changes are mostly benign re-adjustments; *return* "
+            "changes alter features/labels — they are why backtest and live "
+            "model literally saw different versions of the same past",
+        ]
     lines += ["", "## Realized book P&L (public-price marks, gross, no costs)"]
     if len(book_pnl):
         cum = float((1 + book_pnl).prod() - 1)

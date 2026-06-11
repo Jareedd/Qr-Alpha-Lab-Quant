@@ -71,3 +71,53 @@ def make_panel(
     panel.attrs["sectors"] = {t: f"S{sectors[i]}" for i, t in enumerate(tickers)}
     panel.attrs["betas"] = {t: float(betas[i]) for i, t in enumerate(tickers)}
     return panel
+
+
+def inject_delisting_returns(
+    prices: pd.DataFrame,
+    delist_return: float,
+    end_buffer_days: int = 5,
+) -> pd.DataFrame:
+    """SCENARIO TOOL, not data: append one SYNTHETIC final return to every
+    name whose price series ends before the panel does.
+
+    Free data drops the delisting return -- the final, usually ugly, move of
+    a dying stock (Shumway 1997: ~-30% for performance delistings). The
+    honest way to handle that hole is NOT to impute it (delistings are
+    missing *because* the company died -- any model fit on survivors imputes
+    survivor-like values, which is survivorship bias re-injected by ML), but
+    to BOUND it: re-run the backtest under explicit worst-case assumptions
+    and report the spread. This function builds those scenario worlds.
+
+    It lives in synthetic.py on purpose (research law #7: fabricated values
+    exist only here and are always labeled). Outputs that use it must carry
+    a scenario tag -- run_pipeline appends ``_dlret±NN`` to every artifact.
+
+    Mechanics: for each ticker whose last valid price is at least
+    ``end_buffer_days`` trading days before the panel's end (i.e., it died
+    mid-window rather than just missing a print), one synthetic price is
+    placed on the next trading day: ``last_price * (1 + delist_return)``.
+    That single return then flows through features, labels and the
+    backtest's P&L exactly as a real final print would.
+
+    The count of touched names rides along in ``attrs['delist_injected']``.
+    """
+    out = prices.copy()
+    n_days = len(out.index)
+    injected = 0
+    for col in out.columns:
+        s = out[col]
+        last = s.last_valid_index()
+        if last is None:
+            continue  # never priced at all -- nothing to extend
+        pos = out.index.get_loc(last)
+        if pos >= n_days - end_buffer_days:
+            continue  # still trading (or died too close to the end to tell)
+        out.iloc[pos + 1, out.columns.get_loc(col)] = float(s.loc[last]) * (
+            1.0 + delist_return
+        )
+        injected += 1
+    out.attrs = dict(prices.attrs)
+    out.attrs["delist_injected"] = injected
+    out.attrs["delist_return"] = float(delist_return)
+    return out

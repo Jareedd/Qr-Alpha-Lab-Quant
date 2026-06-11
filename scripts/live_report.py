@@ -18,6 +18,10 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
+# The report uses unicode arrows; Windows consoles default to cp1252 and the
+# echo-to-stdout would crash AFTER the file is written (report fine, exit 1).
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -49,6 +53,7 @@ def main() -> None:
 
     comparison = None
     live_ic = pd.Series(dtype=float)
+    baseline_ic = None
     book_pnl = pd.Series(dtype=float)
     if not args.offline:
         from quantlab.data import load_prices
@@ -70,6 +75,21 @@ def main() -> None:
             comparison = monitor.live_vs_backtest(
                 live_ic, json.load(f), horizon=args.horizon
             )
+        # Control arm: cycles logged after the baseline column was added.
+        with_baseline = {
+            d: p for d, p in preds_by_date.items() if "baseline_mom_12_1" in p.columns
+        }
+        if with_baseline:
+            baseline_ic = monitor.realized_live_ic(
+                with_baseline, prices, horizon=args.horizon, col="baseline_mom_12_1"
+            )
+
+    # Data-revision records written by the live cycle (vendor drift log).
+    revisions = []
+    for fn in sorted(os.listdir(args.live_dir)):
+        if fn.startswith("revisions_") and fn.endswith(".json"):
+            with open(os.path.join(args.live_dir, fn)) as f:
+                revisions.append(json.load(f))
 
     md = monitor.render_report(
         asof=str(today.date()),
@@ -80,6 +100,8 @@ def main() -> None:
         live_ic=live_ic,
         book_pnl=book_pnl,
         horizon=args.horizon,
+        baseline_live_ic=baseline_ic,
+        revisions=revisions,
     )
     out_md = os.path.join(args.live_dir, "report.md")
     with open(out_md, "w", encoding="utf-8") as f:

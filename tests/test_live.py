@@ -13,7 +13,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from quantlab import live
+from quantlab import features, live
 from quantlab.synthetic import make_panel
 
 
@@ -68,9 +68,12 @@ def test_live_weights_train_only_on_complete_labels():
     )
 
     # The prediction log (the live-IC artifact) must cover the whole scored
-    # cross-section -- not just the names that made the book -- in both the
-    # raw (backtest-comparable) and sector-neutral (book-driving) columns.
-    assert {"pred_raw", "pred_sector_neutral"} <= set(p_clean.columns)
+    # cross-section -- not just the names that made the book -- in the raw
+    # (backtest-comparable), sector-neutral (book-driving) and control-arm
+    # columns.
+    assert {"pred_raw", "pred_sector_neutral", "baseline_mom_12_1"} <= set(
+        p_clean.columns
+    )
     assert len(p_clean) >= (w_clean != 0).sum()
     assert np.isfinite(p_clean.to_numpy()).all()
 
@@ -82,6 +85,22 @@ def test_live_weights_train_only_on_complete_labels():
         # legitimately push one to ~0.3. The real concentration guard is the
         # 5% per-name cap applied at order time (tested separately).
         assert w.abs().max() < 0.35
+
+
+def test_prediction_log_control_arm_matches_baseline_feature():
+    # The shadow-logged baseline column must be the SAME object the law-#5
+    # backtest baseline ranks on (today's mom_12_1 feature), name for name --
+    # otherwise the live control arm and the backtest baseline diverge.
+    prices = make_panel(n_assets=40, n_days=1300, mode="planted", seed=11)
+    _, preds = live.live_target_weights(
+        prices, None, prices.attrs["sectors"], horizon=21, min_names=20
+    )
+    expected = features.build_features(prices)["mom_12_1"].iloc[-1]
+    pd.testing.assert_series_equal(
+        preds["baseline_mom_12_1"],
+        expected.reindex(preds.index),
+        check_names=False,
+    )
 
 
 def test_live_records_are_write_once(tmp_path):

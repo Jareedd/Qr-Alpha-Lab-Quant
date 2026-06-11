@@ -57,11 +57,20 @@ def live_target_weights(
     construction).
 
     Returns ``(weights, predictions)`` for the LAST date in ``prices``:
-    weights drive orders; predictions (columns ``pred_raw`` and
-    ``pred_sector_neutral``, indexed by ticker) are the IC-bearing artifact.
-    The backtest's ``mean_rank_ic`` is computed on PRE-demean predictions,
-    so live IC must be measured on ``pred_raw`` to be comparable; the
-    neutralized column documents what actually drove the book.
+    weights drive orders; predictions (columns ``pred_raw``,
+    ``pred_sector_neutral`` and ``baseline_mom_12_1``, indexed by ticker)
+    are the IC-bearing artifact. The backtest's ``mean_rank_ic`` is computed
+    on PRE-demean predictions, so live IC must be measured on ``pred_raw``
+    to be comparable; the neutralized column documents what actually drove
+    the book.
+
+    ``baseline_mom_12_1`` is the live experiment's CONTROL ARM: the raw
+    12-1 momentum feature (the law-#5 baseline) logged on the same names
+    the same day. If the model's live IC degrades vs backtest, the
+    baseline's own live-vs-backtest gap tells us whether the model decayed
+    or the period was hostile to everything. Z-scoring is monotone within a
+    date, so its rank IC is identical to the backtest baseline's. No orders
+    are ever sent for it — shadow-logged only, so it cannot leak anywhere.
     """
     feats = features.build_features(prices, member_mask=member_mask)
     labels = features.build_labels(
@@ -102,6 +111,7 @@ def live_target_weights(
         {
             "pred_raw": raw.droplevel("date"),
             "pred_sector_neutral": neutral.droplevel("date"),
+            "baseline_mom_12_1": row["mom_12_1"],
         }
     )
     return weights.iloc[0], predictions
@@ -270,6 +280,26 @@ def run_daily(
             {"submitted": True, "equity": equity, "orders_sent": sent,
              "orders_failed": failed[:20], "n_failed": len(failed)}
         )
+
+    # Data-revision fingerprint: compare today's freshly downloaded history
+    # against the previous cycle's snapshot of the SAME past (see
+    # quantlab.revisions). Strictly after trading and wrapped: a measurement
+    # bug must never cost a cycle. Read-only -- it observes vendor drift,
+    # never adjusts for it.
+    try:
+        from quantlab import revisions
+
+        rev = revisions.snapshot_revision_summary("data_cache", today_tag, prices)
+        if rev is not None:
+            with open(os.path.join(out_dir, f"revisions_{asof}.json"), "w") as f:
+                json.dump(rev, f, indent=2)
+            summary["revisions"] = {
+                k: rev[k]
+                for k in ("compared_to", "frac_price_cells_changed",
+                          "n_return_cells_changed")
+            }
+    except Exception as exc:  # noqa: BLE001 -- monitoring is best-effort
+        summary["revisions_error"] = str(exc)[:200]
 
     with open(os.path.join(out_dir, f"summary_{asof}.json"), "w") as f:
         json.dump(summary, f, indent=2)
