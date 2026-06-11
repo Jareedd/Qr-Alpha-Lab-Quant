@@ -87,9 +87,13 @@ def test_beta_projection_zeroes_exposure_keeps_neutrality_and_gross():
 
     # The projection should have moved weights (raw deciles are not beta
     # neutral by accident) but not replaced them wholesale: compare signs on
-    # the originally-active cells only.
-    sign_orig = np.sign(w[w != 0]).stack()
-    sign_neut = np.sign(w_n[w != 0]).stack()
+    # the originally-active cells only. The explicit .dropna() matters:
+    # pandas 3 stack() keeps the NaN cells that w[w != 0] masks out, and
+    # counting them as mismatches dilutes overlap to ~0.2 (active fraction
+    # x true overlap) -- the comparison must be active-cells-only under
+    # both stack semantics.
+    sign_orig = np.sign(w[w != 0]).stack().dropna()
+    sign_neut = np.sign(w_n[w != 0]).stack().dropna()
     overlap = (sign_orig == sign_neut.reindex(sign_orig.index)).mean()
     assert overlap > 0.5
 
