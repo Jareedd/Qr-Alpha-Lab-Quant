@@ -1,0 +1,42 @@
+{
+  "adv_coverage": 0.8756237181570019,
+  "curve": [
+    {
+      "aum": 1000000.0,
+      "sharpe_net": -0.8487919321590972,
+      "ann_return_net": -0.04757180568892656,
+      "ann_cost_drag": 0.013559370861400317
+    },
+    {
+      "aum": 10000000.0,
+      "sharpe_net": -1.0033709150015884,
+      "ann_return_net": -0.056709196250569485,
+      "ann_cost_drag": 0.022696761423043253
+    },
+    {
+      "aum": 50000000.0,
+      "sharpe_net": -1.2576258467714163,
+      "ann_return_net": -0.0732270296895824,
+      "ann_cost_drag": 0.039214594862056175
+    },
+    {
+      "aum": 100000000.0,
+      "sharpe_net": -1.422508487677246,
+      "ann_return_net": -0.08560416229588634,
+      "ann_cost_drag": 0.051591727468360105
+    },
+    {
+      "aum": 500000000.0,
+      "sharpe_net": -1.8771059819209688,
+      "ann_return_net": -0.13783813797445915,
+      "ann_cost_drag": 0.10382570314693293
+    },
+    {
+      "aum": 1000000000.0,
+      "sharpe_net": -2.0351978735855623,
+      "ann_return_net": -0.17697806791231568,
+      "ann_cost_drag": 0.14296563308478943
+    }
+  ],
+  "note": "square-root impact, k=1.0 (order of magnitude); one-day execution; spread included"
+}

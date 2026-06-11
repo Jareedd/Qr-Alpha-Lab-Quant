@@ -88,9 +88,28 @@ model classes on identical features and harness.
 
 ## 7. Capacity and execution realism
 
-TODO: square-root impact capacity sweep on the PIT config
-(`results/capacity_*.json`); state the AUM at which costs eat the
-(already absent) edge; one-day execution assumption.
+Square-root impact sweep (k = 1.0, spread 10 bps, one-day execution, ADV
+coverage 87.6%) on the deployed config
+(`results/capacity_sp500_ridge_both_residlabel.json`):
+
+| AUM | impact + spread drag (ann.) | net SR |
+|---|---|---|
+| $1M | 1.36% | −0.85 |
+| $10M | 2.27% | −1.00 |
+| $100M | 5.16% | −1.42 |
+| $1B | 14.30% | −2.04 |
+
+The gross edge is negative, so formal capacity is $0. The informative
+object is the **drag curve**: any strategy with this turnover profile
+(3.46×/yr, ~500-name S&P book) must generate ≥ 1.4%/yr of true gross alpha
+to exist at $1M and ≥ 5%/yr at $100M — a quantified statement of
+Novy-Marx–Velikov cost mortality on our own book.
+
+Reproducibility note discovered en route: a fresh data download in a fresh
+environment on different hardware reproduced trial #5 to ~1e-7 relative.
+The residual drift is yfinance *retroactively re-adjusting* history for
+dividends/splits announced after the first download — "point-in-time data"
+has a data-revision dimension, not just a membership dimension.
 
 ## 8. Live verification (Phase 6, running)
 
