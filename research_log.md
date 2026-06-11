@@ -1,6 +1,6 @@
 # Research Log — qr-alpha-lab
 
-**Global trial count (feeds `--n-trials` for the DSR): N = 6**
+**Global trial count (feeds `--n-trials` for the DSR): N = 7**
 
 Rules (from CLAUDE.md law #3): every strategy variant, hyperparameter tweak,
 feature set, or horizon evaluated on **real data** gets one row and increments N.
@@ -27,6 +27,8 @@ Infrastructure changes are logged with a falsification-gate re-run (law #2).
 | 4 | 2026-06-10 | **trial** | Turnover attack: do the features survive at a slower cadence (63d horizon + 63d rebalance → ~3× less turnover)? | PIT sp500, ridge, h63/r63, neutralize both, member-masked z-scores, `--n-trials 4` | IC **−0.0278** (t_NW −1.95), gross SR −0.24, net SR −0.35, DSR 0.01, turnover 2.43×/yr | Turnover fixed, edge still absent — and the IC flipped *negative* at the quarterly horizon (t_NW −1.95, sub-threshold). **Recording the trap explicitly: we will NOT trade the sign-flip.** "My signal reversed works" after testing N variants is textbook max-of-N mining; if quarterly reversal is a real hypothesis it needs its own pre-registered test on fresh data, not a salvage of this one. |
 | 5 | 2026-06-10 | **trial** | Residualized labels: does predicting idiosyncratic return (the only thing a neutral book harvests) beat predicting raw return? | PIT sp500, ridge, h21, `--label residual` (past-only rolling betas), neutralize both, `--n-trials 5` | IC vs residual label **+0.0225** (t_NW +1.91), but gross SR **−0.61**, net −0.77, DSR ≈ 0, turnover 3.46× | Most instructive failure yet: measurable-ish predictability of the residual label that does NOT monetize as portfolio return — the decile construction loses money gross while "IC" improves. IC against a cleaner label is partly definitional, and sub-2 t with N=5 is not evidence. Lesson: IC and P&L are different objects; report both, trust the P&L. |
 | 6 | 2026-06-10 | **trial** | Nonlinear interactions: does GBR find structure ridge can't in the residual-label setup? | PIT sp500, gbr (depth 3, 200 iters), `--label residual`, neutralize both, `--n-trials 6` | IC +0.0077 (t_NW +0.80), gross SR +0.19, net SR −0.12, DSR 0.04, turnover 5.44× | No. Costs eat the thin gross edge; nothing statistically defensible. |
+
+| 7 | 2026-06-10 | **trial** | Model-class ablation closer: does a small neural net find structure ridge/GBR can't? | PIT sp500, mlp (16,8) w/ scaler-in-pipeline + early stopping on train only, `--label residual`, neutralize both, `--n-trials 7` | IC +0.0093 (t_NW +1.21), gross SR +0.09, net SR −0.28, DSR 0.008, turnover 5.77× | No. The ablation is complete: linear (ridge, #5), trees (gbr, #6), shallow net (mlp, #7) on identical features and identical harness — all null. Pre-run validation: MLP recovers the planted signal (weaker than ridge, the Gu–Kelly–Xiu shallow-net result) and rejects noise (DSR 0.005), so the null is about the features, not the model or the harness. "No model class rescues information-free features" is now an evidenced sentence for the write-up. |
 
 ## Phase 4 verdict (the central finding of the project so far)
 
