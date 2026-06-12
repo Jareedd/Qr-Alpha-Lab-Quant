@@ -41,6 +41,11 @@ jobs:
           python scripts/live_trade.py
       - name: Refresh monitoring report (non-fatal -- trading already logged)
         run: python scripts/live_report.py || echo "report failed; cycle log is intact"
+      # H7 (collection-only, zero trials): daily borrow-fee snapshot of the
+      # live universe. Unbackfillable by construction -- the commit history
+      # is the timestamp. Non-fatal: a collector bug never costs a cycle.
+      - name: Borrow snapshot (H7)
+        run: python scripts/collect_borrow.py || echo "borrow snapshot failed; cycle intact (gap stays visible in the record)"
       # Keep only the newest 7 snapshot dirs before saving: the revision
       # JSONs (committed above) are the durable measurements; raw snapshots
       # are only needed pairwise, so the cache stays ~100MB instead of

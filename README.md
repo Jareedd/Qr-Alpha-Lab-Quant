@@ -78,8 +78,11 @@ pip install -r requirements.txt
 python -m pytest tests/ -q                              # 58 tests
 python scripts/run_pipeline.py --data planted           # sanity check 1
 python scripts/run_pipeline.py --data noise --n-trials 20   # sanity check 2
-python scripts/run_pipeline.py --data sp500 --n-trials 2     # point-in-time S&P 500 (honest universe)
-python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 5  # static universe (biased, for comparison)
+# Real-data runs are registration-gated (law #3, mechanized): they require
+# either --hypothesis Hn (a PROPOSED entry in writeup/preregistered_hypotheses.md
+# -- spends a trial) or --reproduce "reason" (re-running logged work):
+python scripts/run_pipeline.py --data sp500 --n-trials 7 --reproduce "trial #2 artifacts"
+python scripts/run_pipeline.py --data yfinance --model gbr --n-trials 7 --reproduce "trial comparison"
 ```
 
 Outputs land in `results/`: metrics JSON + equity-curve PNG per run.

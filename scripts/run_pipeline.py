@@ -92,6 +92,22 @@ def main() -> None:
         "real-data modes only). Same strategy under execution scenarios -- "
         "not a new alpha trial.",
     )
+    ap.add_argument(
+        "--hypothesis",
+        default=None,
+        metavar="Hn",
+        help="Real-data runs only: the pre-registered hypothesis this run "
+        "spends a trial on (must exist in writeup/preregistered_hypotheses.md "
+        "with status PROPOSED). Law #3, mechanized.",
+    )
+    ap.add_argument(
+        "--reproduce",
+        default=None,
+        metavar="REASON",
+        help="Real-data runs only: declare this run a REPRODUCTION of "
+        "already-logged work (e.g. 'trial #5 artifacts for capacity sweep') "
+        "-- not a new trial, no N increment.",
+    )
     ap.add_argument("--out", default="results")
     ap.add_argument(
         "--fail-if-dsr-below",
@@ -106,6 +122,32 @@ def main() -> None:
         help="Exit non-zero if DSR > this (CI gate: noise data finding alpha = leakage).",
     )
     args = ap.parse_args()
+
+    # Law #3, mechanized: a real-data run is either a registered new trial
+    # or a declared reproduction -- never an unaccounted variant. Synthetic
+    # modes are exempt (synthetic data is free by law).
+    if args.data in ("yfinance", "sp500"):
+        if bool(args.hypothesis) == bool(args.reproduce):
+            sys.exit(
+                "real-data runs require exactly ONE of:\n"
+                "  --hypothesis Hn      (a registered, PROPOSED hypothesis: "
+                "this run spends a trial; bump --n-trials and log it)\n"
+                "  --reproduce REASON   (re-running already-logged work: no "
+                "new trial)\n"
+                "Synthetic modes (--data planted/noise) need neither."
+            )
+        if args.hypothesis:
+            from quantlab.registry import require_runnable_registration
+
+            try:
+                require_runnable_registration(args.hypothesis)
+            except RuntimeError as exc:
+                sys.exit(f"REGISTRATION GATE: {exc}")
+            print(f"[registration] {args.hypothesis} verified PROPOSED -- "
+                  f"this run is a NEW TRIAL at --n-trials {args.n_trials}; "
+                  "log it whatever it says.")
+        else:
+            print(f"[reproduce] declared reproduction: {args.reproduce}")
 
     member_mask = None
     sectors: dict[str, str] = {}

@@ -169,8 +169,45 @@ Template:
   noise with no cross-sectional structure — still a write-up section,
   because measuring it is the only way anyone finds out.
 
+### H7: Daily borrow-fee/short-availability snapshots — collection-only (zero trials)
+- Status: REGISTERED 2026-06-12 with owner sign-off, COLLECTION-ONLY —
+  the H5 two-stage structure, second instance. This registration
+  authorizes data COLLECTION only; it does not authorize any analysis
+  and does not increment N. (Originated as candidate H7 in
+  `writeup/edge_candidates_2026-06-12.md`, where 17 sibling ideas were
+  killed on the record.)
+- Economic prior: the borrow fee is the observable price of concentrated
+  negative information (the shorting-premium literature is gross of fee;
+  net-of-fee tradability is ambiguous — which makes this a dataset, not
+  a trade). Honest uses for THIS book: (a) a risk veto for any future
+  short leg; (b) a candidate feature for future registrations; (c) an
+  unbackfillable public dataset — the moat. Nobody can reconstruct
+  yesterday's borrow market tomorrow.
+- Source, VERIFIED at registration time: IBKR public short-stock file
+  (ftp2.interactivebrokers.com, user 'shortstock', usa.txt; ~20k
+  instruments, pipe-delimited, carries its own '#BOF' timestamp).
+- Mechanics: non-fatal step in the live cron after each trading cycle
+  (`scripts/collect_borrow.py` → `results/live/borrow_{asof}.json`,
+  write-once, committed with the prediction logs). Universe = the live
+  experiment's own scored cross-section (latest predictions/weights),
+  plus whole-file aggregates so format drift is visible. The live
+  trading path (`live.py`, deployed config) is untouched.
+- Point-in-time safety: trivial — snapshot at t, committed by CI at t;
+  the public commit history is the verifiable timestamp.
+- Stage 2 condition: ≥ 60 cycles accumulated; the exact analysis config
+  and success criteria are registered HERE before the first look. No
+  analysis of any kind before Stage 2 is written down.
+- Operational success criterion (Stage 1): snapshots present for ≥ 95%
+  of trading cycles; schema stable; zero trading-cycle failures
+  attributable to the collector.
+- Kill criteria: source becomes unreliable or terms-blocked → stop
+  collection, log the attempt; the outcome still costs nothing and is a
+  write-up sentence about data moats.
+
 ---
 
 Nothing in this file has been run. N remains 7. Each run requires owner
 sign-off, increments N by exactly 1, and gets logged in
-`research_log.md` regardless of outcome.
+`research_log.md` regardless of outcome. (H7 is collection-only and
+exempt from the run/N language by construction; its Stage-2 analysis is
+not.)
