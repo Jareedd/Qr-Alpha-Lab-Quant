@@ -115,6 +115,81 @@ def make_panel(
     return panel
 
 
+def make_perp_panel(
+    n_assets: int = 30,
+    n_days: int = 1500,
+    mode: str = "planted_carry",
+    seed: int = 7,
+    carry_premium: float = 0.3,
+) -> pd.DataFrame:
+    """Synthetic perpetual-futures world for the H2 falsification gate.
+
+    Returns a (date x contract) MARK PRICE panel; the funding-rate panel
+    rides in ``attrs["funding"]`` (daily rate, sign convention: positive =
+    longs pay shorts, the crypto-perp norm).
+
+    The carry-specific subtlety this world exists to encode: the NULL of a
+    carry strategy is not "funding doesn't exist" — funding is plainly
+    observable — it is "funding is fully priced": the mark price drifts in
+    favor of the side that pays, so funding income is exactly offset and a
+    funding-ranked book earns nothing. The two modes:
+
+    - ``planted_carry``: a fraction ``carry_premium`` (gamma) of funding is
+      a TRUE premium. Price return r = beta*mkt + idio + (1-gamma)*F, so a
+      long's funding-inclusive total return is r - F = beta*mkt + idio -
+      gamma*F: shorting high-funding contracts harvests gamma*F. The H2
+      machinery must RECOVER this.
+    - ``priced_carry``: gamma = 0 — same world, funding fully compensated
+      by drift; total returns are unpredictable from funding. The machinery
+      must find NOTHING here (finding carry in this world = the harness is
+      broken or the label is funding-exclusive, the exact bug this world
+      guards against).
+
+    Funding dynamics: persistent AR(1) per contract (phi=0.97) around a
+    positive cross-sectional mean (~11%/yr — the perp baseline), with
+    dispersion and occasional negative-funding contracts, so trailing
+    funding ranks are slow-moving and realistic.
+
+    Like everything in this module: SYNTHETIC, for harness validation only,
+    and labeled as such (law #7).
+    """
+    if mode not in {"planted_carry", "priced_carry"}:
+        raise ValueError(
+            f"mode must be 'planted_carry' or 'priced_carry', got {mode!r}"
+        )
+    rng = np.random.default_rng(seed)
+    gamma = carry_premium if mode == "planted_carry" else 0.0
+
+    betas = rng.uniform(0.8, 1.2, n_assets)  # vs the crypto market factor
+    idio_vol = rng.uniform(0.02, 0.05, n_assets)  # perps are wild
+    mkt = rng.standard_normal(n_days) * 0.025
+
+    # Funding: AR(1) around a positive mean, daily units.
+    f_mean = rng.normal(0.0003, 0.0004, n_assets)  # some contracts negative
+    funding = np.empty((n_days, n_assets))
+    funding[0] = f_mean
+    shocks = rng.standard_normal((n_days, n_assets)) * 0.0004
+    for t in range(1, n_days):
+        funding[t] = f_mean + 0.97 * (funding[t - 1] - f_mean) + shocks[t]
+
+    idio = rng.standard_normal((n_days, n_assets)) * idio_vol
+    # Mark-price return: funding is (1-gamma) priced into drift; the
+    # remaining gamma is the planted premium a short-the-payers book earns.
+    rets = betas[None, :] * mkt[:, None] + idio + (1.0 - gamma) * funding
+
+    dates = pd.bdate_range("2019-01-01", periods=n_days)
+    contracts = [f"PERP{i:02d}" for i in range(n_assets)]
+    prices = pd.DataFrame(
+        100 * np.exp(np.cumsum(rets, axis=0)), index=dates, columns=contracts
+    )
+    prices.attrs["funding"] = pd.DataFrame(
+        funding, index=dates, columns=contracts
+    )
+    prices.attrs["carry_gamma"] = float(gamma)
+    prices.attrs["mode"] = mode
+    return prices
+
+
 def inject_delisting_returns(
     prices: pd.DataFrame,
     delist_return: float,
