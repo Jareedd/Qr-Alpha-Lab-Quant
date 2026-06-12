@@ -64,6 +64,32 @@ Template:
 - Failure interpretation: carry is consumed by fees/crowding at our
   fidelity — still a publishable section ("the pipeline generalizes;
   the free lunch does not").
+- **Amendment, 2026-06-12 — PRE-DATA (no exchange data has been
+  downloaded as of this edit; full design in `writeup/h2_carry_design.md`):**
+  1. **Label corrected to funding-INCLUSIVE total return**
+     (`mark_return − funding` for a long). The premium lives in the
+     funding flows; a price-only label measures the wrong object —
+     demonstrated in the synthetic lab, where the same planted-carry book
+     scores ≈ +1 funding-inclusive and ≈ −2 price-only
+     (`tests/test_synthetic_carry.py`).
+  2. **Universe corrected: perps are NOT survivorship-free.** PIT top-30
+     by trailing 30d dollar volume among contracts listed at t, with
+     delisted contracts (enumerable from the exchange's own public dumps,
+     full terminal histories) included through their final day.
+  3. **Timestamp convention fixed:** features use only funding SETTLED at
+     or before the decision time (8h settlements; trailing 21-settlement
+     mean); labels accrue settlements inside the holding window only.
+  4. **Machinery gate added:** `synthetic.make_perp_panel` planted_carry
+     must be recovered and priced_carry (funding fully offset by drift —
+     the true null) rejected, in the same environment, immediately before
+     the real run.
+  5. **Paired controls registered:** cross-sectionally shuffled-funding
+     book must earn ~nothing; funding-income vs price-drag decomposition
+     reported; result must not be one regime/period/name.
+  6. Costs pinned: taker 5 bps/side + spread 2 bps/side + sqrt impact on
+     perp dollar-ADV; weekly rebalance; quartile book on the top-30
+     universe.
+  Status remains PROPOSED; the run is trial #8 and awaits owner sign-off.
 
 ### H3: Momentum works conditionally — only in low-cross-sectional-vol regimes
 - Status: PROPOSED — registered partly as a TRAP CHECK
