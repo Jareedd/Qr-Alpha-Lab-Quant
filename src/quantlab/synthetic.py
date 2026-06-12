@@ -6,6 +6,12 @@ Two modes, both essential research hygiene:
   A correct pipeline must RECOVER it (positive out-of-sample Sharpe, DSR > 0.5).
 - ``noise``: returns are pure noise with realistic vol clustering and correlation.
   A correct pipeline must NOT find anything (DSR should fail to reject luck).
+- ``planted_regime``: the planted momentum signal exists ONLY in a persistent
+  low-volatility regime (a hidden 2-state Markov chain; high-vol states run
+  2.5x market vol with the signal switched off). Ground truth rides in
+  ``attrs["regimes"]``. This is the falsification world for regime-detection
+  machinery (quantlab.regime): a causal detector must add value here and a
+  leaky one must be caught -- BEFORE either is allowed near real data.
 
 If your pipeline passes both checks, backtest numbers on real data become
 meaningfully interpretable. If it "finds alpha" in noise, you have leakage.
@@ -31,13 +37,39 @@ def make_panel(
     asset's idiosyncratic return is predictable from its own trailing 12-1 month
     performance (cross-sectional momentum), scaled by ``signal_strength``.
     """
-    if mode not in {"planted", "noise"}:
-        raise ValueError(f"mode must be 'planted' or 'noise', got {mode!r}")
+    if mode not in {"planted", "noise", "planted_regime"}:
+        raise ValueError(
+            f"mode must be 'planted', 'noise' or 'planted_regime', got {mode!r}"
+        )
     rng = np.random.default_rng(seed)
+
+    # planted_regime only: a persistent hidden chain (expected duration
+    # ~100 trading days per state). Drawn from a SEPARATE rng so the
+    # planted/noise draw sequences -- and therefore the falsification-gate
+    # baselines -- stay byte-identical to before this mode existed.
+    regimes = np.zeros(n_days, dtype=int)
+    if mode == "planted_regime":
+        regime_rng = np.random.default_rng(seed + 777)
+        stay = 0.99
+        for t in range(1, n_days):
+            if regime_rng.random() >= stay:
+                regimes[t] = 1 - regimes[t - 1]
+            else:
+                regimes[t] = regimes[t - 1]
 
     n_sectors = 6
     sectors = rng.integers(0, n_sectors, n_assets)
     betas = rng.uniform(0.6, 1.4, n_assets)
+    if mode == "planted_regime":
+        # Uniform betas, AFTER the draw (so planted/noise rng sequences are
+        # untouched). Reason, measured during development: with dispersed
+        # betas, beta-ESTIMATION error interacting with the 2.5x vol regime
+        # manufactures momentum-vs-residual-label IC of ~+0.13 in stressed
+        # states on signal-free data -- an artifact that exactly masked the
+        # planted on/off differential. A falsification world must have a
+        # clean known answer; the artifact itself is documented in the log
+        # (it is a live caution for any real-data regime claim).
+        betas = np.ones(n_assets)
 
     # Volatility regimes (slow-moving, common to the market).
     base_vol = 0.010
@@ -55,11 +87,17 @@ def make_panel(
 
     for t in range(n_days):
         idio = rng.standard_normal(n_assets) * idio_vol
-        r = betas * mkt[t] + sector_f[t, sectors] + idio
-        if mode == "planted" and t > lookback:
+        # Stressed regime (planted_regime only): market vol jumps 2.5x --
+        # the observable footprint a volatility-regime detector keys on.
+        mkt_t = mkt[t] * (2.5 if regimes[t] else 1.0)
+        r = betas * mkt_t + sector_f[t, sectors] + idio
+        if mode in ("planted", "planted_regime") and t > lookback:
             past = rets[t - lookback : t - skip].sum(axis=0)
             z = (past - past.mean()) / (past.std() + 1e-12)
-            r += signal_strength * z * idio_vol  # weak, vol-scaled momentum
+            # In planted_regime the signal exists ONLY in the calm state:
+            # ground truth for "momentum works conditionally".
+            on = 1.0 if (mode == "planted" or regimes[t] == 0) else 0.0
+            r += on * signal_strength * z * idio_vol  # weak, vol-scaled momentum
         rets[t] = r
 
     dates = pd.bdate_range("2012-01-02", periods=n_days)
@@ -70,6 +108,10 @@ def make_panel(
     # frame without changing the (long-stable) return signature.
     panel.attrs["sectors"] = {t: f"S{sectors[i]}" for i, t in enumerate(tickers)}
     panel.attrs["betas"] = {t: float(betas[i]) for i, t in enumerate(tickers)}
+    if mode == "planted_regime":
+        # Ground truth (0 = calm/signal-on, 1 = stressed/signal-off): the
+        # known answer regime-detection machinery is falsified against.
+        panel.attrs["regimes"] = pd.Series(regimes, index=dates, name="regime")
     return panel
 
 

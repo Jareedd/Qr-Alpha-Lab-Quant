@@ -81,6 +81,68 @@ Template:
 - Failure interpretation: regime gating on free daily data is noise; do
   not iterate on the mapping (that is mining with extra steps).
 
+### H4: A causal volatility-regime gate (filtered 2-state HMM) improves the momentum baseline where the fixed dispersion gate (H3) may not
+- Status: PROPOSED — machinery built and falsification-validated on
+  synthetic data 2026-06-12 (`quantlab/regime.py`, `planted_regime` mode,
+  `tests/test_regime.py`); REAL-DATA RUN NOT PERFORMED, awaiting owner
+  sign-off. A separate registration from H3 on purpose: H3's fixed
+  dispersion mapping stays as registered (editing it post-hoc is
+  prohibited); this is a different detector and counts as its own trial.
+- Economic prior: same as H3 (Daniel–Moskowitz momentum crashes cluster
+  in high-vol regimes) — weak, trap-flagged. The HMM adds persistence
+  modeling, not new economics; if H3 and H4 disagree, the disagreement
+  itself is evidence of mining.
+- Point-in-time safety: the gate is the forward-FILTERED P(calm | market
+  returns through t), parameters re-fit on an expanding PAST-only window
+  (`causal_regime_probs`). The smoothed (forward-backward) probabilities
+  — what off-the-shelf HMM libraries return — condition on the future;
+  tests pin both that our filter cannot see the future (perturbing the
+  future moves nothing in the past) and that the smoothed version DOES
+  (the leak is demonstrated, not asserted). The smoothed output is never
+  exposed to strategy code.
+- Exact config: trial #2's exact config; rebalance weights scaled by
+  filtered P(calm) at each rebalance (fixed mapping, no tuned threshold);
+  HMM refit_every=63, min_train=504, on the member-masked equal-weight
+  market return.
+- Success criteria: t_NW ≥ +2 and DSR ≥ 0.95 at then-current N, net of
+  costs; unconditional momentum must remain null; AND the paired
+  artifact control must pass — the same gate applied to a label-shuffled
+  control must show no lift (the synthetic lab showed residualization ×
+  vol-regime interactions can manufacture conditional IC of +0.06 to
+  +0.13 from nothing; a real-data result that fails the paired control
+  is the artifact, not alpha).
+- Failure interpretation: regime gating on free daily data is noise
+  regardless of detector sophistication; H3 need not be run separately
+  (one trap is enough).
+
+### H5: Vendor data-revision intensity is cross-sectionally informative (the dataset nobody else has)
+- Status: PROPOSED — two-stage registration. Stage 1 (now): the idea is
+  timestamped BEFORE any data exists to peek at; collection of per-cycle
+  revision fingerprints (`results/live/revisions_*.json`, started
+  2026-06-11) is fully automated and untouched by hand. Stage 2: when
+  ≥ 60 cycles have accumulated (~September 2026), the exact test config
+  and success criteria are registered in this file BEFORE the first
+  analysis run. No analysis of the revision data is permitted before
+  Stage 2 is written down.
+- Economic prior: return-cell revisions cluster around dividends,
+  splits and corrections — i.e., corporate-action density — and flag
+  names whose historical record is least stable. Plausible links: (a)
+  realized-vol differences, (b) feature reliability (a name whose past
+  keeps changing has noisier features, arguing for down-weighting), (c)
+  at minimum a data-quality risk control for the live book. The honest
+  prior is that this is a RISK/quality signal, not an alpha signal.
+- Point-in-time safety: trivially safe — the fingerprint at t is a
+  function of downloads made at t and t−1, both timestamped by CI
+  commits; it cannot reference anything later.
+- Why this qualifies as an edge at all: the dataset is proprietary by
+  construction (daily diffs of a vendor's claimed history exist only if
+  someone snapshots daily — we started 2026-06-11 and commit the
+  fingerprints publicly, making the record verifiable). Nobody can
+  backfill it.
+- Failure interpretation: revision intensity is idiosyncratic vendor
+  noise with no cross-sectional structure — still a write-up section,
+  because measuring it is the only way anyone finds out.
+
 ---
 
 Nothing in this file has been run. N remains 7. Each run requires owner
