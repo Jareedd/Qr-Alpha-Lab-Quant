@@ -1,0 +1,4 @@
+# Dashboard-only dependencies -- deliberately NOT in requirements.txt:
+# the nightly trading cycle must never be breakable by a dashboard dep.
+# Usage: pip install -r requirements.txt -r requirements-dashboard.txt
+streamlit>=1.50
