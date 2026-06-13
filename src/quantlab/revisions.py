@@ -31,8 +31,16 @@ Assumptions stated:
   vendors would conflate revision with methodology.
 - Cells present in one snapshot and absent in the other ("appeared"/
   "vanished" history) are counted but not treated as numeric changes.
-- float tolerance 1e-9 relative: parquet round-trips are exact, so anything
-  above noise is a real vendor-side change.
+- TWO thresholds, calibrated by the first real measurement (2026-06-12 →
+  -13 snapshots): the vendor re-SERVES history with ~1e-7 relative float
+  wobble on a majority of cells (51% of price cells and 61% of return
+  cells flagged at a 1e-9 tolerance, magnitudes ~1e-7 — the same drift
+  the capacity re-run measured), while REAL adjustments sit at 1e-3 and
+  above (dividend re-scalings ~0.3–1.1%, one split-factor rewrite at 90%
+  on day one). So: changes are counted above REL_TOL = 1e-6 (above the
+  serving-noise floor, three orders below real events), and cells in
+  (NOISE_FLOOR, REL_TOL] are counted separately as the noise band — the
+  serving-noise phenomenon is itself worth measuring, not hiding.
 """
 
 from __future__ import annotations
@@ -46,7 +54,10 @@ import pandas as pd
 
 _LIVE_DIR_RE = re.compile(r"live_(\d{4}-\d{2}-\d{2})$")
 
-REL_TOL = 1e-9
+# Above the vendor's ~1e-7 serving-noise floor; far below real adjustments.
+REL_TOL = 1e-6
+# Anything above this but below REL_TOL is counted as the noise band.
+NOISE_FLOOR = 1e-9
 
 
 def find_price_snapshot(cache_dir: str) -> str | None:
@@ -97,12 +108,15 @@ def compare_price_snapshots(
     both = o.notna() & n.notna()
     rel = (n / o - 1.0).where(both)
     changed = rel.abs() > rel_tol
+    price_noise = (rel.abs() > NOISE_FLOOR) & ~changed
 
     # Returns on the SHARED grid: the quantity features/labels actually eat.
     o_ret = o.pct_change(fill_method=None)
     n_ret = n.pct_change(fill_method=None)
     ret_both = o_ret.notna() & n_ret.notna()
-    ret_changed = (n_ret - o_ret).abs().where(ret_both) > rel_tol
+    ret_diff = (n_ret - o_ret).abs().where(ret_both)
+    ret_changed = ret_diff > rel_tol
+    ret_noise = (ret_diff > NOISE_FLOOR) & ~ret_changed
 
     per_ticker = changed.sum()
     affected = per_ticker[per_ticker > 0].sort_values(ascending=False)
@@ -138,6 +152,10 @@ def compare_price_snapshots(
             else 0.0
         ),
         "n_tickers_affected": int((per_ticker > 0).sum()),
+        # The vendor's float-serving wobble (~1e-7): measured, not hidden,
+        # but never mistaken for a revision.
+        "n_price_cells_noise_band": int(price_noise.sum().sum()),
+        "n_return_cells_noise_band": int(ret_noise.sum().sum()),
         "n_cells_appeared": int((n.notna() & o.isna()).sum().sum()),
         "n_cells_vanished": int((o.notna() & n.isna()).sum().sum()),
         "top_affected_tickers": top,

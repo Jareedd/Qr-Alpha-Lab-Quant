@@ -29,8 +29,24 @@ def test_identical_snapshots_report_zero_changes():
     stats = revisions.compare_price_snapshots(old, old.copy())
     assert stats["n_price_cells_changed"] == 0
     assert stats["n_return_cells_changed"] == 0
+    assert stats["n_price_cells_noise_band"] == 0
     assert stats["n_tickers_affected"] == 0
     assert stats["n_cells_compared"] == old.size
+
+
+def test_serving_noise_lands_in_the_noise_band_not_in_changes():
+    # Calibrated against the first real measurement (2026-06-12 -> -13):
+    # yfinance re-serves history with ~1e-7 relative wobble on most cells.
+    # That is the vendor's float noise, not a revision -- it must be
+    # counted (the phenomenon is real and worth tracking) but never
+    # conflated with actual adjustments (which start ~1e-3).
+    old = _panel()
+    new = old * (1.0 + 1e-7)  # uniform serving wobble
+    stats = revisions.compare_price_snapshots(old, new)
+    assert stats["n_price_cells_changed"] == 0
+    assert stats["n_price_cells_noise_band"] == old.size
+    # a uniform rescale leaves returns untouched at any threshold
+    assert stats["n_return_cells_changed"] == 0
 
 
 def test_full_history_readjustment_changes_prices_but_not_returns():
