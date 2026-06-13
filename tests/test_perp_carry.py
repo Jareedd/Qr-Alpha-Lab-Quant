@@ -60,6 +60,31 @@ def test_carry_weights_are_dollar_neutral_and_correctly_signed():
     assert row["A"] > 0 and row["B"] > 0        # receive -> long
 
 
+def test_carry_weights_flattens_dropped_names():
+    # Regression for a real pre-trial bug: a name in the book one rebalance
+    # but NOT selected the next must go to ZERO, not keep its stale weight.
+    # Funding flips between two rebalance windows so the quartiles fully
+    # swap; after the second rebalance the first window's names must be flat.
+    cols = list("ABCDEFGH")
+    early = [8, 7, 6, 5, 4, 3, 2, 1]   # A,B highest -> short; G,H lowest -> long
+    late = [1, 2, 3, 4, 5, 6, 7, 8]    # reversed: now A,B long flips to short etc.
+    rows = [early] * 7 + [late] * 7
+    funding = _frame([[v / 1000 for v in r] for r in rows], cols)
+    uni = pd.DataFrame(True, index=funding.index, columns=cols)
+    sig = perp_carry.carry_signal(funding, lookback=3)
+    w = perp_carry.carry_weights(sig, uni, quantile=0.25, rebalance=7)
+
+    # On the second rebalance row the book must be a FRESH dollar-neutral
+    # vector -- not a superposition of two windows' books.
+    second = w.iloc[7]
+    assert abs(second.sum()) < 1e-12
+    assert abs(second.abs().sum() - 1.0) < 1e-9
+    # every row stays dollar-neutral and gross never exceeds 1 (the bug
+    # would have pushed gross above 1 as stale positions accumulated)
+    assert w.sum(axis=1).abs().max() < 1e-9
+    assert w.abs().sum(axis=1).max() < 1.0 + 1e-9
+
+
 def test_shuffle_funding_preserves_marginals_destroys_cross_section():
     cols = list("ABCDE")
     funding = _frame([[1.0, 2.0, 3.0, 4.0, 5.0]] * 10, cols)

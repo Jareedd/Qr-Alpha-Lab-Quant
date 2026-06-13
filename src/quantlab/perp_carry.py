@@ -75,18 +75,29 @@ def carry_weights(
     ``rebalance`` days and held between rebalances. Short high funding,
     long low funding, within the PIT universe only."""
     sig = signal.where(universe)
-    weights = pd.DataFrame(0.0, index=signal.index, columns=signal.columns)
+    # Each rebalance row holds the FULL target vector (explicit zeros for
+    # unselected names); rows between rebalances are NaN and get the prior
+    # vector forward-filled. Setting the whole row -- not just the nonzero
+    # legs -- is the fix for a real bug: a `replace(0 -> NaN)` ffill carried
+    # stale positions forward for names that dropped out of the quartiles at
+    # a rebalance, silently breaking dollar-neutrality and inflating gross
+    # over a multi-month run. Caught in pre-trial review; pinned by
+    # test_carry_weights_flattens_dropped_names.
+    target = pd.DataFrame(np.nan, index=signal.index, columns=signal.columns)
     for i in range(0, len(signal.index), rebalance):
         row = sig.iloc[i].dropna()
         n_side = int(len(row) * quantile)
+        target.iloc[i] = 0.0  # full reset at every rebalance
         if n_side < 2:
             continue
         shorts = row.nlargest(n_side).index
         longs = row.nsmallest(n_side).index
-        weights.iloc[i, weights.columns.get_indexer(shorts)] = -0.5 / n_side
-        weights.iloc[i, weights.columns.get_indexer(longs)] = 0.5 / n_side
-    held = weights.replace(0.0, np.nan).ffill(limit=rebalance - 1).fillna(0.0)
-    # a name that delists mid-hold drops out (its return goes NaN) -- zero it
+        target.iloc[i, target.columns.get_indexer(shorts)] = -0.5 / n_side
+        target.iloc[i, target.columns.get_indexer(longs)] = 0.5 / n_side
+    # ffill the full vector between rebalances; a name that delists mid-hold
+    # then has a NaN return and drops out of the P&L (conservative: a short
+    # that delists to ~0 would really be a gain we forgo, not a loss).
+    held = target.ffill(limit=rebalance - 1).fillna(0.0)
     return held
 
 
