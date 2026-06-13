@@ -1,0 +1,7 @@
+{
+  "asof": "2026-06-13",
+  "question": "can Stooq recover any of the 149 dead names free? (backlog item from edge_candidates / limitations)",
+  "method": "20 of 149 missing tickers probed via the CSV endpoint (stooq.com/q/d/l), polite 1.2s spacing",
+  "result": "0/20 usable: every response is an HTML JavaScript proof-of-work challenge (SHA-256 anti-bot wall) -- programmatic access is blocked as of this date",
+  "decision": "NOT circumvented (kill criteria: terms-blocked source -> stop and log). Dead-name recovery still requires CRSP (WRDS pending)."
+}
