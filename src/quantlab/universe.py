@@ -45,17 +45,23 @@ def _normalize_ticker(t: str) -> str:
 def fetch_sp500_tables(cache_dir: str = "data_cache") -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return (current_members, changes) from Wikipedia, cached locally.
 
-    current_members: columns [ticker]; changes: columns [date, added, removed]
-    with one row per ticker movement (a single announcement covering an add
-    and a removal becomes one row with both filled).
+    current_members: columns [ticker]; changes: columns [date, added,
+    removed, reason] with one row per ticker movement (a single
+    announcement covering an add and a removal becomes one row with both
+    filled). ``reason`` is Wikipedia's free-text change rationale --
+    retained for the H8 removal-reason census; it is descriptive text and
+    never feeds a feature.
     """
     os.makedirs(cache_dir, exist_ok=True)
     cur_path = os.path.join(cache_dir, "sp500_current.parquet")
     chg_path = os.path.join(cache_dir, "sp500_changes.parquet")
     if os.path.exists(cur_path) and os.path.exists(chg_path):
         current = pd.read_parquet(cur_path)
-        if "sector" in current.columns:  # cache from before sectors -> refetch
-            return current, pd.read_parquet(chg_path)
+        changes = pd.read_parquet(chg_path)
+        # Stale-cache checks: pre-sector caches lack 'sector'; pre-H8
+        # caches lack 'reason'. Either -> refetch.
+        if "sector" in current.columns and "reason" in changes.columns:
+            return current, changes
 
     req = urllib.request.Request(WIKI_URL, headers={"User-Agent": _UA})
     html = urllib.request.urlopen(req, timeout=30).read().decode("utf-8")
@@ -75,6 +81,7 @@ def fetch_sp500_tables(cache_dir: str = "data_cache") -> tuple[pd.DataFrame, pd.
             "date": pd.to_datetime(raw["date"], format="%B %d, %Y", errors="coerce"),
             "added": raw["added"].map(lambda t: _normalize_ticker(t) if pd.notna(t) else None),
             "removed": raw["removed"].map(lambda t: _normalize_ticker(t) if pd.notna(t) else None),
+            "reason": raw["reason"].map(lambda r: str(r).strip() if pd.notna(r) else None),
         }
     ).dropna(subset=["date"])
 
@@ -150,6 +157,49 @@ def sector_map(current: pd.DataFrame, tickers: list[str]) -> dict[str, str]:
     """
     known = dict(zip(current["ticker"], current.get("sector", pd.Series(dtype=str))))
     return {t: known.get(t, "UNKNOWN") for t in tickers}
+
+
+def classify_removal_reason(reason: str | None) -> str:
+    """Bucket Wikipedia's free-text removal rationale for the H8 census.
+
+    Buckets (H8's spec separates corporate actions and index migrations
+    from genuinely discretionary committee deletions — Greenwood–Sammon's
+    decomposition says migrations drove much of the index effect's
+    'disappearance', so they must not be conflated):
+
+    - ``corporate_action``: M&A, taken private, spin-off, restructuring —
+      the name left because it stopped existing in its old form.
+    - ``distress``: bankruptcy / delisting — the name left feet-first.
+    - ``migration``: moved to another S&P index (MidCap/SmallCap swap).
+    - ``discretionary``: market-cap / representativeness deletions by the
+      committee — H8's actual object.
+    - ``unknown``: unclassifiable text (shown, never silently dropped).
+
+    This is a keyword screen for the CENSUS (zero trials, no price data).
+    The H8 registration mandates reconciling a 20-event random sample
+    against contemporaneous press releases before any run; the frozen
+    classification methodology is set there, not here.
+    """
+    if not reason:
+        return "unknown"
+    r = reason.lower()
+    if any(k in r for k in ("acquir", "merg", "taken private", "private equity",
+                            "takeover", "taken over", "purchas", "bought",
+                            "spun off", "spin-off", "spinoff", "spins off",
+                            "spinning off", "split into", "split-off",
+                            "separated into")):
+        return "corporate_action"
+    if any(k in r for k in ("bankrupt", "chapter 11", "delist", "liquidat",
+                            "receivership")):
+        return "distress"
+    if any(k in r for k in ("midcap", "mid cap", "smallcap", "small cap",
+                            "600", "constituent swap", "moved to")):
+        return "migration"
+    if any(k in r for k in ("market cap", "market capitalization",
+                            "representat", "no longer", "committee",
+                            "index balance", "eligib")):
+        return "discretionary"
+    return "unknown"
 
 
 def coverage_report(member_tickers: list[str], prices: pd.DataFrame) -> dict:

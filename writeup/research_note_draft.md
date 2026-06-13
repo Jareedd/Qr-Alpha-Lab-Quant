@@ -70,9 +70,17 @@ sees.
 The residual bias is quantified rather than waved at
 (`results/sp500_pit_coverage.json`): 149 dead names are unpriceable on
 free data, and delisting returns — the final, usually catastrophic, price
-move of a dying stock — are missing entirely (Shumway 1997). Both effects
-push measured returns *up*, so our null is, if anything, generous to the
-signals.
+move of a dying stock — are missing (Shumway 1997). The second hole is
+**bounded, not assumed**: re-running the backtest with a synthetic −30%
+final print forced onto every name whose price series dies mid-window
+(29 of 661; most index-removed names keep trading) moves net Sharpe by
+only **+0.006** versus a 0% control in the same environment — the book
+was, on average, slightly short the dying names
+(`results/metrics_sp500_ridge_dlret*.json`). We bound rather than impute
+because delistings are missing *not at random* — they are missing
+because the company died, and any imputation fit on survivors re-injects
+survivorship bias by construction. The 149 never-priced names remain the
+unbounded residual; closing it requires CRSP.
 
 The static present-day universe is retained deliberately as a measured
 exhibit rather than deleted as a mistake. Same code, same features, same
@@ -198,6 +206,36 @@ This section is mandatory by project constitution.
   installed ad hoc on the development machine but absent from
   `requirements.txt`, which is all CI installs. A fresh environment is
   the only honest test of a requirements file.
+- **The synthetic lab caught a confound that would have faked our own
+  registered hypothesis.** While building regime-detection machinery
+  (falsification-first: the detector had to provably not see the future
+  before touching real data), signal-free synthetic worlds showed
+  residualized-label momentum diagnostics carrying vol-regime-dependent
+  IC of +0.06 to +0.13 — beta-estimation error and label machinery
+  interacting with volatility regimes. On real data this masquerades
+  exactly as "momentum works conditionally on volatility," the
+  pre-registered H3/H4 hypothesis. Consequence: those hypotheses now
+  require a paired artifact control before any run. Relatedly, the
+  standard HMM regime construction (forward–backward smoothed state
+  probabilities, the default output of off-the-shelf libraries) is
+  demonstrably anticausal — perturbing the future moves "past" state
+  estimates — and is pinned as a regression test, with only the causal
+  forward filter exposed to strategy code.
+- **Absolute levels lied where paired controls didn't — three separate
+  times** (regime world, carry world, delisting bound). In each case an
+  absolute-threshold test was seed-fragile or artifact-contaminated, and
+  the fix was the same: difference two worlds that share every random
+  draw and differ only in the planted effect. Paired controls are now
+  house doctrine, not a technique.
+- **The first data-revision measurement calibrated its own instrument.**
+  Day one of diffing consecutive vendor downloads of the *same past*
+  flagged 51% of 1.3M price cells at a 1e-9 tolerance: the vendor
+  re-serves history with ~1e-7 relative float wobble. Above that noise
+  floor sat real same-day rewrites: full-history dividend re-scalings
+  (0.3–1.1%) and one 90% split-factor repair touching 2,059 return
+  cells of a single name. The instrument now separates a noise band
+  from revisions; the miscalibrated first fingerprint stays committed
+  as the calibration record.
 
 ## 7. Capacity and execution realism
 
@@ -218,11 +256,15 @@ object is the **drag curve**: any strategy with this turnover profile
 to exist at $1M and ≥ 5%/yr at $100M — a quantified statement of
 Novy-Marx–Velikov cost mortality on our own book.
 
-Reproducibility note discovered en route: a fresh data download in a fresh
-environment on different hardware reproduced trial #5 to ~1e-7 relative.
-The residual drift is yfinance *retroactively re-adjusting* history for
-dividends/splits announced after the first download — "point-in-time data"
-has a data-revision dimension, not just a membership dimension.
+Reproducibility note discovered en route, then industrialized: a fresh
+data download in a fresh environment reproduced trial #5 to ~1e-7
+relative — yfinance *retroactively re-adjusts* history. "Point-in-time
+data" therefore has a data-revision dimension, not just a membership
+dimension, and the live infrastructure now measures it daily: every cycle
+diffs its fresh download against the previous cycle's snapshot of the
+same past and commits the fingerprint (`results/live/revisions_*.json`),
+separating real revisions (dividend re-scalings, split repairs) from the
+vendor's ~1e-7 serving noise (§6).
 
 ## 8. Live verification (running)
 
@@ -239,11 +281,23 @@ per-name-capped orders to an Alpaca paper endpoint (the client refuses
 non-paper URLs). The log is committed to the repository — an append-only,
 timestamped record.
 
-- First cycle 2026-06-10: 100-name book (50 long / 50 short) from ~500
-  members, 100/100 orders accepted.
-- First measurable live IC: ~2026-07-09 (cycles mature at 21 trading
-  days). A Newey–West t needs >23 matured cycles; until then live ICs are
-  reported but not interpreted.
+The experiment has a **control arm**: every cycle shadow-logs the 12-1
+momentum baseline's values on the same names (no orders). If live IC
+sags below backtest IC, the baseline's own live-vs-backtest gap
+separates "the model decayed" from "the period was hostile to
+everything" — a live test without a control cannot tell those apart.
+Each cycle also commits a data-revision fingerprint (§7) and, since
+2026-06-12, a daily short-borrow snapshot of the live universe (IBKR
+availability and fee rates — an unbackfillable record collected under a
+registered, collection-only protocol; first snapshot: median fee 1.2%,
+99th percentile 164%).
+
+- Cycles 1–3 (2026-06-10 → -12) traded clean: ~100-name books, all
+  orders accepted, zero failures. Cycle 1 predates prediction logging,
+  so the live-IC record is one cycle shorter than the trading record.
+- First measurable live IC: ~2026-07-10 (cycles mature at 21 trading
+  days). A Newey–West t needs ≥23 matured cycles; until then live ICs
+  are reported but not interpreted.
 - [TO UPDATE as cycles mature: live IC table, `results/live/live_ic.png`,
   realized-vs-broker P&L cross-check.]
 
@@ -259,10 +313,14 @@ the trading record (§6).
 ## 10. What institutional-grade would require
 
 CRSP-quality delisting returns; point-in-time fundamentals and GICS;
-borrow availability and fees on the short book; an impact model
-calibrated to actual fills rather than a literature constant; multi-market
-replication; and an order-of-magnitude more trials under the same logging
-discipline.
+borrow availability and fees on the short book (in-house daily collection
+of exactly this began 2026-06-12 — institutional history would still
+require a vendor); an impact model calibrated to actual fills rather than
+a literature constant; multi-market replication; and an
+order-of-magnitude more trials under the same logging discipline. New
+trials are themselves now machine-enforced: real-data runs refuse to
+start unless they name a pre-registered, still-PROPOSED hypothesis or
+declare themselves a reproduction of logged work.
 
 ## References
 
