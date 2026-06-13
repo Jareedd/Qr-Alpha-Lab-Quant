@@ -32,12 +32,17 @@ from __future__ import annotations
 import io
 import os
 import re
+import socket
 import time
 import urllib.error
 import urllib.request
 import zipfile
 
 import pandas as pd
+
+# Belt-and-braces against hung sockets (the machine sleeping mid-request
+# froze a download run for ~14h); no socket op blocks past this.
+socket.setdefaulttimeout(120)
 
 _UA = "Mozilla/5.0 (qr-alpha-lab research)"
 DUMP = "https://data.binance.vision/data/futures/um/monthly"
@@ -217,19 +222,27 @@ def build_panels(
     with no klines in the window are dropped (and listed in attrs).
     """
     end = end or pd.Timestamp.today().strftime("%Y-%m-01")
-    closes, vols, funds, missing = {}, {}, {}, []
+    closes, vols, funds, missing, errored = {}, {}, {}, [], []
     for i, sym in enumerate(symbols):
         if progress and i % 25 == 0:
             print(f"  [perp_data] {i}/{len(symbols)} {sym}", flush=True)
-        k = load_klines(sym, start, end, cache_dir)
-        if k is None or k.empty:
-            missing.append(sym)
-            continue
-        closes[sym] = k["close"].astype(float)
-        vols[sym] = k["quote_volume"].astype(float)
-        f = load_funding(sym, start, end, cache_dir)
-        if f is not None:
-            funds[sym] = f.astype(float)
+        # Per-symbol isolation: one bad symbol (a transient HTTP error, a
+        # malformed file) must never kill a 729-symbol run. It is recorded
+        # and skipped; re-running picks it up from cache or retries it.
+        try:
+            k = load_klines(sym, start, end, cache_dir)
+            if k is None or k.empty:
+                missing.append(sym)
+                continue
+            closes[sym] = k["close"].astype(float)
+            vols[sym] = k["quote_volume"].astype(float)
+            f = load_funding(sym, start, end, cache_dir)
+            if f is not None:
+                funds[sym] = f.astype(float)
+        except Exception as exc:  # noqa: BLE001 -- resilience over purity here
+            errored.append(sym)
+            print(f"  [perp_data] SKIP {sym}: {type(exc).__name__} "
+                  f"{str(exc)[:80]}", flush=True)
 
     price = pd.DataFrame(closes).sort_index()
     panels = {
@@ -239,5 +252,6 @@ def build_panels(
     }
     for p in panels.values():
         p.attrs["missing_symbols"] = missing
+        p.attrs["errored_symbols"] = errored
         p.attrs["data_end"] = end
     return panels
