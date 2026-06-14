@@ -238,3 +238,44 @@ def inject_delisting_returns(
     out.attrs["delist_injected"] = injected
     out.attrs["delist_return"] = float(delist_return)
     return out
+
+
+def inject_post_event_drift(
+    prices: pd.DataFrame,
+    events: list[tuple],
+    drift: float = 0.10,
+    horizon: int = 60,
+) -> pd.DataFrame:
+    """SCENARIO TOOL, not data: add a known cumulative ``drift`` to each
+    named ticker over the ``horizon`` trading days AFTER its event date,
+    persisting afterward. The falsification ground truth for the H8 event
+    study (quantlab.events): a correct event harness must RECOVER this
+    planted post-event drift, and find nothing when drift=0.
+
+    Mechanics: a geometric ramp multiplies the ticker's price so it gains
+    exactly ``drift`` over the window vs the no-event counterfactual, then
+    holds the level shift. Lives in synthetic.py per law #7 (fabricated
+    values only here, always labeled). ``events`` is a list of
+    (event_date, ticker) pairs.
+    """
+    out = prices.copy()
+    idx = out.index
+    injected = 0
+    for d, t in events:
+        if t not in out.columns:
+            continue
+        pos = int(idx.searchsorted(pd.Timestamp(d), side="right"))  # first day > d
+        if pos >= len(idx):
+            continue
+        bump = (1.0 + drift) ** (1.0 / horizon)
+        mult = np.ones(len(idx))
+        end = min(pos + horizon, len(idx))
+        ramp = bump ** np.arange(1, end - pos + 1)
+        mult[pos:end] = ramp
+        mult[end:] = ramp[-1] if end > pos else 1.0
+        out[t] = out[t].to_numpy() * mult
+        injected += 1
+    out.attrs = dict(prices.attrs)
+    out.attrs["event_drift_injected"] = injected
+    out.attrs["event_drift"] = float(drift)
+    return out

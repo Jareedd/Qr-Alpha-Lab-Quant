@@ -222,6 +222,25 @@ decay reproduced in-house in a *second* asset class. The negative skew
 of pennies, then a squeeze — and it is exactly why the skew-aware Deflated
 Sharpe, not the raw Sharpe, is the right adjudicator.
 
+### 5.2 A second in-house replication — the disappeared deletion effect (trial #9)
+
+A matched-control event study on discretionary S&P 500 deletions
+(2010–present, 75 usable events) asks whether deleted names rebound in the
+60 days after the effective date *beyond* a basket matched on size and
+trailing return. They do not: daily event-time portfolio net Sharpe −0.04,
+t_NW −0.10, Deflated Sharpe 0.05 — a clean null on every registered leg.
+The methodology is the result: deleted names *do* bounce (~+4.8% over 60
+days), but a size-and-momentum-matched control bounces +2.6% of it, and
+the +2.2% residual is insignificant (t 0.87) and negative before 2015.
+The rebound is small-loser mean reversion, not an index-deletion effect —
+Greenwood & Sammon's "disappeared index effect" reproduced in-house in the
+strictly post-effective window. A synthetic planted-event gate (recover a
+known drift, reject when none) passed first, so the null is the harness
+finding genuine absence. Together with trial #2's survivorship exhibit,
+this is the project's second from-scratch reproduction of the published
+record's null direction — using a control basket as the discipline that
+separates a real anomaly from a mechanical artifact.
+
 ## 6. What failed (and what the harness caught)
 
 This section is mandatory by project constitution.
