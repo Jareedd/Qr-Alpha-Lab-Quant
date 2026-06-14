@@ -1,0 +1,24 @@
+{
+  "ann_return_net": 0.3180302497757996,
+  "ann_vol": 0.3671594866394041,
+  "sharpe_gross": 0.9342775396263604,
+  "sharpe_net": 0.8661910187496926,
+  "max_drawdown": -0.7378591806468631,
+  "annual_turnover": 35.35160051216389,
+  "skew": -1.8697321512413052,
+  "psr": 0.9932150478061386,
+  "dsr": 0.865326618430891,
+  "n_trials_assumed": 8,
+  "n_days": 2342,
+  "mean_rank_ic": -0.036862589915875425,
+  "ic_tstat_newey_west": -3.539947557289999,
+  "funding_pnl_cumulative": 2.1037737385833335,
+  "price_pnl_cumulative": 1.0822665375076306,
+  "control_shuffled_funding_sharpe": 0.0810286083476473,
+  "sharpe_net_ex_top3": 0.6837163278626628,
+  "excluded_top3": [
+    "BNBUSDT",
+    "LINKUSDT",
+    "BTCUSDT"
+  ]
+}

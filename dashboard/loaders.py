@@ -141,7 +141,8 @@ def parse_hypotheses(md: str) -> list[dict]:
         m = re.match(r"(H\d+)\s*:\s*(.+)", head.strip())
         if not m:
             continue
-        sm = re.search(r"-\s*Status:\s*([A-Z]+)", body)
+        # Tolerate markdown bold around the label/value ('Status: **RUN').
+        sm = re.search(r"-\s*\**Status\**\s*:\s*\**\s*([A-Z]+)", body)
         out.append(
             {
                 "name": m.group(1),

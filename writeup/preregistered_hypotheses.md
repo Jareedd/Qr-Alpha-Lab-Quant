@@ -48,7 +48,19 @@ Template:
   to price+fundamental features.
 
 ### H2: The same pipeline finds (or honestly rejects) carry in crypto perpetuals, where survivorship bias and dead-name gaps do not exist
-- Status: PROPOSED
+- Status: **RUN (trial #8, 2026-06-13). Outcome: registered criteria NOT MET
+  — but the first NON-NULL the project has produced.** Net SR +0.87,
+  IC t_NW −3.54 (correctly signed), funding & price P&L both positive,
+  shuffled-funding control flat, survives ex-top-3. The single failed leg
+  is the pre-registered DSR ≥ 0.95 (got 0.865), and the return is
+  crash-skewed (−1.87, −74% maxDD). Adversarial diagnostics confirmed it
+  is a REAL edge, not an artifact (entry-lag decays gracefully → no timing
+  leak; only 2/28 dead names held at death → no delisting optimism) — but
+  it has DECAYED from SR 2.28 (2020–21) to ~0.4 post-2021 as basis farms
+  scaled (McLean–Pontiff in a second asset class). Criteria were NOT
+  relaxed post-hoc. Full record: research_log.md trial #8,
+  `results/metrics_h2_carry.json`, `results/h2_carry_diagnostics.json`,
+  `writeup/h2_carry_design.md`. (Was: PROPOSED.)
 - Economic prior: funding-rate carry in perps is a payment for taking the
   crowded side; it is directly observable, not estimated, and the
   CLAUDE.md stretch goal. Exchange data is complete (no delisting-return

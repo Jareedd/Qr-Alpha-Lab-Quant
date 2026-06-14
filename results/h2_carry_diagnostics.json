@@ -1,0 +1,32 @@
+{
+  "trial": 8,
+  "hypothesis": "H2",
+  "leak_test_entry_lag_net_sharpe": {
+    "1d": 0.866,
+    "2d": 0.712,
+    "3d": 0.639,
+    "5d": 0.391
+  },
+  "leak_test_verdict": "graceful decay with entry delay (0.87->0.39 over 1-5d) = real edge, NOT a timing leak (a leak collapses to ~0 immediately)",
+  "delisting_optimism": {
+    "dead_names_total": 28,
+    "held_at_death": 2,
+    "long": 1,
+    "short": 1,
+    "verdict": "negligible & symmetric in a top-30 liquid universe"
+  },
+  "regime_net_sharpe": {
+    "2020-2022": 2.284,
+    "2022-2024": 0.425,
+    "2024-2026": 0.41
+  },
+  "regime_verdict": "premium concentrated in 2020-21 leverage mania (SR 2.28); decayed to ~0.4 net post-2021 as basis farms scaled (McLean-Pontiff)",
+  "registered_criteria": {
+    "t_nw<=-2": "-3.54 PASS",
+    "net_sr>0": "0.87 PASS",
+    "dsr>=0.95": "0.865 FAIL",
+    "survives_ex_top3": "0.68 PASS",
+    "shuffled_control_flat": "0.08 PASS"
+  },
+  "verdict": "NOT MET (DSR 0.865<0.95). Carry is REAL but fails the pre-registered evidence bar; crash-skewed (-1.87, -74% DD) and decaying."
+}
