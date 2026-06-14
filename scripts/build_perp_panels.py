@@ -45,15 +45,18 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max", type=int, default=None, help="cap symbols (smoke test)")
     ap.add_argument("--start", default=START)
+    ap.add_argument("--workers", type=int, default=12, help="concurrent downloads")
     args = ap.parse_args()
 
     _keep_system_awake()
     syms = pd_.list_usdt_perp_symbols()
     if args.max:
         syms = syms[: args.max]
-    print(f"[build] {len(syms)} symbols from {args.start}", flush=True)
+    print(f"[build] {len(syms)} symbols from {args.start}, "
+          f"{args.workers} workers", flush=True)
 
-    panels = pd_.build_panels(syms, start=args.start, progress=True)
+    panels = pd_.build_panels(syms, start=args.start, progress=True,
+                              max_workers=args.workers)
     end = panels["price"].attrs["data_end"]
     out = os.path.join(pd_.CACHE, f"panels_{args.start}_{end}")
     for name, frame in panels.items():

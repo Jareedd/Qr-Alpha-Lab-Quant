@@ -208,41 +208,63 @@ def load_funding(symbol, start="2019-09-01", end=None, cache_dir=CACHE):
     return df.groupby("date")["last_funding_rate"].sum()
 
 
+def _fetch_symbol(sym: str, start: str, end: str, cache_dir: str):
+    """Download (or read from cache) one symbol's klines + funding. Pure
+    per-symbol unit of work for the thread pool: writes only this symbol's
+    own cache files, returns its series. Isolated -- a single bad symbol
+    returns an error tag instead of killing the pool."""
+    try:
+        k = load_klines(sym, start, end, cache_dir)
+        if k is None or k.empty:
+            return sym, None, None, None, "missing"
+        f = load_funding(sym, start, end, cache_dir)
+        return (sym, k["close"].astype(float), k["quote_volume"].astype(float),
+                f.astype(float) if f is not None else None, None)
+    except Exception as exc:  # noqa: BLE001 -- resilience over purity here
+        return sym, None, None, None, f"{type(exc).__name__}: {str(exc)[:80]}"
+
+
 def build_panels(
     symbols: list[str],
     start: str = "2019-09-01",
     end: str | None = None,
     cache_dir: str = CACHE,
     progress: bool = True,
+    max_workers: int = 12,
 ) -> dict[str, pd.DataFrame]:
     """(date x symbol) price, dollar-volume, and daily-funding panels.
 
     A symbol contributes only the dates it actually traded; everything
     else is NaN, so listing/delisting are represented honestly. Symbols
     with no klines in the window are dropped (and listed in attrs).
+
+    Symbols are fetched concurrently (``max_workers`` threads) -- the work
+    is network-I/O-bound (the GIL is released during socket waits), so the
+    request-latency tax that dominated the sequential version parallelizes
+    almost linearly. Per-symbol parquet caching keeps it resumable and
+    means workers never touch each other's files. Bounded at 12 to stay a
+    polite client of a free public bucket.
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     end = end or pd.Timestamp.today().strftime("%Y-%m-01")
     closes, vols, funds, missing, errored = {}, {}, {}, [], []
-    for i, sym in enumerate(symbols):
-        if progress and i % 25 == 0:
-            print(f"  [perp_data] {i}/{len(symbols)} {sym}", flush=True)
-        # Per-symbol isolation: one bad symbol (a transient HTTP error, a
-        # malformed file) must never kill a 729-symbol run. It is recorded
-        # and skipped; re-running picks it up from cache or retries it.
-        try:
-            k = load_klines(sym, start, end, cache_dir)
-            if k is None or k.empty:
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futs = {ex.submit(_fetch_symbol, s, start, end, cache_dir): s
+                for s in symbols}
+        for done, fut in enumerate(as_completed(futs)):
+            sym, close, vol, fund, err = fut.result()
+            if progress and done % 25 == 0:
+                print(f"  [perp_data] {done}/{len(symbols)} done", flush=True)
+            if err == "missing":
                 missing.append(sym)
-                continue
-            closes[sym] = k["close"].astype(float)
-            vols[sym] = k["quote_volume"].astype(float)
-            f = load_funding(sym, start, end, cache_dir)
-            if f is not None:
-                funds[sym] = f.astype(float)
-        except Exception as exc:  # noqa: BLE001 -- resilience over purity here
-            errored.append(sym)
-            print(f"  [perp_data] SKIP {sym}: {type(exc).__name__} "
-                  f"{str(exc)[:80]}", flush=True)
+            elif err:
+                errored.append(sym)
+                print(f"  [perp_data] SKIP {sym}: {err}", flush=True)
+            else:
+                closes[sym], vols[sym] = close, vol
+                if fund is not None:
+                    funds[sym] = fund
 
     price = pd.DataFrame(closes).sort_index()
     panels = {
