@@ -31,7 +31,9 @@ def registration_status(md_text: str, name: str) -> str | None:
         m = re.match(rf"{re.escape(name)}\s*:", head.strip())
         if not m:
             continue
-        sm = re.search(r"-\s*\**Status\**\s*:\s*([A-Z]+)", body)
+        # Tolerate markdown bold anywhere around the label OR the value
+        # ('- Status: **RUN ...' must parse as RUN, not UNKNOWN).
+        sm = re.search(r"-\s*\**Status\**\s*:\s*\**\s*([A-Z]+)", body)
         return sm.group(1) if sm else "UNKNOWN"
     return None
 

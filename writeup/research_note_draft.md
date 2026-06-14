@@ -30,6 +30,19 @@ infrastructure for *establishing* it — which recovered every planted
 signal and rejected every noise panel on demand — is the transferable
 contribution.
 
+As a cross-asset test of that same infrastructure, an eighth trial ports
+the pipeline to crypto-perpetual funding-rate carry (a premium with a
+structural reason to exist, on a universe with no survivorship gap since
+delisted contracts retain full histories). It is the project's first
+non-null: a correctly-signed, strongly significant signal (IC t_NW −3.5)
+with a positive raw net Sharpe (0.87) — yet it *still fails our
+pre-registered evidence bar* (Deflated Sharpe 0.865 < 0.95), is severely
+crash-skewed (−1.9), and has decayed from Sharpe 2.3 in 2020–21 to ~0.4
+since, as the trade institutionalized. That the pipeline detects a real
+premium where one exists, while the discipline still declines to claim it,
+is the strongest single validation that the seven equity nulls were
+genuine absence rather than pipeline impotence.
+
 ## 1. Question
 
 Can the most widely published price-only cross-sectional signals be
@@ -166,6 +179,48 @@ shallow net on identical features and harness) localizes the null in the
 *features*, not the learner: before each real-data run, every model class
 recovered the planted signal (MLP more weakly than ridge — the Gu, Kelly
 & Xiu shallow-net result) and rejected noise.
+
+### 5.1 Cross-asset extension — crypto-perp funding carry (trial #8)
+
+The seven equity trials share a weakness as evidence: all null, so a
+skeptic can argue the pipeline simply cannot find anything. Trial #8
+answers that by porting the *same* machinery to a market where a premium
+has a structural reason to exist — perpetual-futures funding carry, paid
+to whoever warehouses the crowded leveraged-long demand — on a universe
+with no survivorship gap (delisted perp contracts retain full terminal
+histories in the exchange's own public dumps; 729 USDT contracts ever,
+delisted ones included).
+
+Registered config (pre-data, `writeup/h2_carry_design.md`): PIT top-30 by
+trailing dollar volume, trailing-7d funding signal, **funding-inclusive**
+total-return label (the funding flows *are* the premium — a price-only
+label was shown in synthetic tests to reject a true premium), dollar-
+neutral weekly quartile long-short, 7 bps/side.
+
+| metric | value | registered bar | |
+|---|---|---|---|
+| IC t_NW | −3.54 | ≤ −2 | ✓ |
+| net Sharpe | +0.87 | > 0 | ✓ |
+| **Deflated Sharpe (N=8)** | **0.865** | **≥ 0.95** | **✗** |
+| survives ex-top-3 | 0.68 | > 0 | ✓ |
+| shuffled-funding control | 0.08 | ≈ 0 | ✓ |
+| skew / max drawdown | −1.87 / −74% | — | (crash-prone) |
+
+**Verdict: registered criteria NOT MET — the one failed leg is the
+Deflated Sharpe.** And the criteria were not relaxed afterward; "0.865 is
+close" is the exact rationalization the pre-registration protocol exists
+to forbid. Adversarial diagnostics (`results/h2_carry_diagnostics.json`)
+established the signal is *real*, not an artifact: net Sharpe decays
+gracefully (0.87→0.39) as entry is delayed 1→5 days — a timing leak would
+collapse at once; only 2 of 28 delisted names were ever held at death
+(one long, one short) — no delisting optimism; and the shuffled-funding
+control is flat. The honest killer is decay: the premium was Sharpe 2.3
+in the 2020–21 leverage mania and has fallen to ~0.4 since basis-trade
+funds (Ethena-style) industrialized it — McLean–Pontiff post-publication
+decay reproduced in-house in a *second* asset class. The negative skew
+(−1.9, a −74% drawdown) is the structural cost of selling funding: years
+of pennies, then a squeeze — and it is exactly why the skew-aware Deflated
+Sharpe, not the raw Sharpe, is the right adjudicator.
 
 ## 6. What failed (and what the harness caught)
 

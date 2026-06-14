@@ -40,6 +40,11 @@ def test_registration_status_parsing():
     assert registry.registration_status(FIXTURE, "H99") is None
     # 'H1' must not match 'H10' by prefix
     assert registry.registration_status(FIXTURE, "H1") != "UNKNOWN"
+    # markdown bold around the VALUE must still parse (real case: trial #8
+    # logged H2 as '- Status: **RUN (trial #8)...' and it read UNKNOWN until
+    # the parser learned to skip the bold markers after the colon).
+    bold = "### HX: bold status\n- Status: **RUN (trial #8). Outcome: ...**\n"
+    assert registry.registration_status(bold, "HX") == "RUN"
 
 
 def test_require_runnable_registration(tmp_path):
@@ -62,13 +67,17 @@ def test_require_runnable_registration(tmp_path):
 
 def test_against_the_real_registry():
     # The real file must authorize exactly the hypotheses the project
-    # believes are runnable today: H2/H3/H4 PROPOSED (runnable on
-    # sign-off), H7 REGISTERED collection-only (NOT runnable as a trial).
+    # believes are runnable today. After trial #8 spent H2, H2 is RUN
+    # (no longer runnable); H3 stays PROPOSED (runnable on sign-off); H7
+    # is REGISTERED collection-only (never runnable as a trial).
     path = os.path.join(ROOT, registry.REGISTRY_PATH)
     with open(path, encoding="utf-8") as f:
         md = f.read()
-    assert registry.registration_status(md, "H2") == "PROPOSED"
+    assert registry.registration_status(md, "H2") == "RUN"
+    assert registry.registration_status(md, "H3") == "PROPOSED"
     assert registry.registration_status(md, "H7") == "REGISTERED"
-    registry.require_runnable_registration("H2", path)
-    with pytest.raises(RuntimeError):
+    registry.require_runnable_registration("H3", path)  # PROPOSED -> ok
+    with pytest.raises(RuntimeError):  # already spent
+        registry.require_runnable_registration("H2", path)
+    with pytest.raises(RuntimeError):  # collection-only
         registry.require_runnable_registration("H7", path)
