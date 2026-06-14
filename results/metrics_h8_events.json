@@ -1,0 +1,13 @@
+{
+  "n_events_usable": 75,
+  "daily_net_sharpe": -0.037249723724942244,
+  "daily_t_nw": -0.09950759286202551,
+  "dsr": 0.05201313284719943,
+  "n_trials_assumed": 9,
+  "event_mean_excess_60d": 0.021643342914270915,
+  "event_tstat_simple": 0.8718027161228016,
+  "control_raw_rebound_60d": 0.026211617183378794,
+  "sharpe_2010_2014": -0.8497454911025056,
+  "sharpe_2015_plus": 0.12831227702130923,
+  "n_days": 2058
+}

@@ -216,10 +216,56 @@ Template:
   collection, log the attempt; the outcome still costs nothing and is a
   write-up sentence about data moats.
 
+### H8: Discretionary S&P 500 deletions earn positive post-effective returns vs a matched control
+- Status: **RUN (trial #9, 2026-06-13). Outcome: clean NULL — criteria not
+  met.** Daily event-time portfolio net SR −0.04, t_NW −0.10, DSR 0.05
+  (75 usable events). Deleted names rebound (~+4.8%/60d) but a
+  size+momentum-matched control rebounds +2.6% of it; the +2.2% residual
+  is insignificant (t 0.87) and negative pre-2015 — small-loser mean
+  reversion, not an index-deletion effect. Greenwood–Sammon's disappeared
+  effect reproduced in the post-effective window. Synthetic planted-event
+  gate passed first (drift recovered, null rejected), so this is genuine
+  absence, not harness impotence. Full record: research_log.md trial #9,
+  `results/metrics_h8_events.json`. (Was: PROPOSED.) Power gate had passed
+  at zero cost: 124 discretionary deletions since 2010 (`results/h8_event_census.json`).
+- Economic prior (weak, declared): index trackers sell at the effective
+  close with a tracking-error loss function; if residual overshoot exists
+  post-arbitrage it reverts. Counter-prior: Greenwood–Sammon (2025) find
+  the announcement→effective deletion effect decayed to ~0.1% for
+  2010–2020. This tests the strictly different POST-effective window, with
+  an expectation tilted toward a clean, citable null — bought for its
+  information value either way.
+- Construction: enter the close of effective-date + 1 (avoids the
+  depressed forced-flow close), hold 60 trading days, long the deleted
+  name vs a SHORT matched-control basket — the hedge IS the control:
+  deleted names are mechanically small recent losers, so any rebound must
+  beat a basket matched on size and trailing return, not zero. Daily
+  event-time portfolio (overlapping events averaged) feeds SR/DSR/t_NW;
+  10 bps/side cost per event.
+- Point-in-time safety: effective dates are exchange facts; entry t+1 uses
+  only data public at t; matching features use data through t only; the
+  matched pool is index membership at t.
+- **Amendment, 2026-06-13 (PRE-RUN): size matched by log trailing-63d
+  dollar volume**, not log-mcap — free point-in-time market cap is
+  unavailable; dollar volume is a standard PIT-computable size/liquidity
+  proxy. Declared before the run, per law #5 (not a post-hoc change).
+- Machinery gate (passed before the real run): synthetic planted post-
+  event drift recovered (positive excess + Sharpe), null rejected
+  one-sided (no manufactured rebound) — `tests/test_events.py`.
+- Success criteria (frozen): right-signed daily-portfolio t_NW ≥ +2 vs the
+  matched control AND net SR with DSR ≥ 0.95 at N=9 AND the effect is not
+  concentrated in 2010–2014 (pre-declared subperiod report).
+- Kill criteria: control rebounds comparably (it was a small-loser effect
+  in an index costume); t_NW < 2 → null, logged. NO entry-timing or
+  holding-period variants afterward (each is +1 trial, none authorized).
+- Failure interpretation: a free replication-with-control of a famous
+  disappeared anomaly — citable next to trial #2's survivorship exhibit
+  as the project's second in-house reproduction of the published record.
+
 ---
 
-Nothing in this file has been run. N remains 7. Each run requires owner
-sign-off, increments N by exactly 1, and gets logged in
-`research_log.md` regardless of outcome. (H7 is collection-only and
-exempt from the run/N language by construction; its Stage-2 analysis is
-not.)
+Run log: H2 RUN as trial #8 (2026-06-13, criteria not met — see its block
+above). N = 8. Each further run requires owner sign-off, increments N by
+exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7
+are collection-only/two-stage and exempt from the run/N language until
+their Stage-2 analysis is registered.
