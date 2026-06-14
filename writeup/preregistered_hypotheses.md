@@ -262,10 +262,69 @@ Template:
   disappeared anomaly — citable next to trial #2's survivorship exhibit
   as the project's second in-house reproduction of the published record.
 
+### H9: Long-tail perp funding carry — does the carry premium survive in the liquid tail (ADV ranks 31–150) beneath the majors, where funding is far wider but fills worse?
+- Status: **RUN (trial #10, 2026-06-14) — clean NULL, criteria not met** (net SR
+  −0.13, gross 0.26, IC t_NW −3.62 correctly signed, DSR 0.024; funding P&L +1.23
+  vs price P&L −0.85 → the tail carry is largely PRICED and 20 bps fills finish
+  it; shuffled control flat at −0.28; machinery gate passed → genuine economic
+  null; `results/metrics_h9_carry_tail.json`). Was PROPOSED as the C1 candidate
+  from `writeup/edge_candidates_2026-06-12.md`,
+  parked behind H2 with an explicit unparking condition: "if H2 shows
+  gross-but-not-net carry in the top-30, the tail version becomes a candidate
+  with a fee-first power analysis." H2 (trial #8) ran net-positive-but-DSR-failing
+  → the condition is triggered. The **fee-first power analysis ran FIRST** (zero
+  trials, `scripts/carry_tail_power.py`): tail = ADV ranks 31–150 has ~2081
+  usable days (~8 yr) since 2020-09, median 120 names/day, gross funding spread
+  **71.8%/yr** (median 42%) — 10–29× any realistic tail cost. Power exists;
+  this is necessary, NOT sufficient (a funding-only spread ignores the
+  price-drift offset and the crash skew). **NOT a salvage of #8:** a DISJOINT
+  universe (the majors are excluded), pre-declared before the run, judged at the
+  SAME bar with NO relaxation.
+- Economic prior: carry is proven real in this exact pipeline (trial #8). The
+  basis-trade farms that decayed the majors (Ethena-style) concentrate on
+  BTC/ETH; the tail is too small and venue-risky for them, so the tail premium
+  may be LESS decayed and is structurally wider (the power analysis confirms the
+  gross spread). Counter-prior (why it may still fail our bar): in the tail the
+  price drift may offset funding more completely (the priced-carry null), fills
+  are worse (pre-declared 20 bps/side), and the crash skew is plausibly MORE
+  severe than the majors' −1.87 — exactly the failure mode that sank #8 on DSR.
+- Point-in-time safety: identical to H2 — funding rates and prices are
+  timestamped exchange records; the signal uses funding settled through t only;
+  the universe uses trailing ADV through t; delisted contracts fall out when
+  their data ends (no survivorship; the cache holds 729 contracts ever, incl.
+  delisted).
+- Exact config (frozen): PIT tail universe = symbols whose trailing-30d
+  dollar-volume rank is in [31, 150] among contracts trading at t (min 20 names
+  to form quartiles); signal = trailing-7d mean daily funding; label =
+  funding-INCLUSIVE total return (mark_return − funding); book = dollar-neutral
+  equal-weight quartiles (SHORT top-funding quartile, LONG bottom), weekly
+  rebalance; costs = **20 bps/side** (5 taker + 15 spread, conservative for the
+  tail; linear headline, sqrt impact is the capacity dimension); `--n-trials 10`.
+  Registered paired control = cross-sectionally shuffled funding (must earn ~0).
+  Reported: funding-income vs price-drift decomposition, skew, maxDD,
+  ex-top-3-by-weight robustness, and a 2020–21 vs 2022+ subperiod split (the
+  decay check). Machinery gate (synthetic planted_carry recovered / priced_carry
+  rejected, paired) runs in-env immediately before the real run.
+- Success criteria (frozen, SAME as H2 — no relaxation): right-signed IC
+  t_NW ≤ −2 AND net SR > 0 AND DSR ≥ 0.95 at N=10 AND survives ex-top-3 AND
+  |shuffled-funding control SR| < 0.3. The skew-aware DSR is the judge precisely
+  because crash skew is this trade's known weakness ("Sharpe lies on negatively
+  -skewed books").
+- Kill criteria: machinery gate fails → ABORT, no trial spent; shuffled control
+  earns (|SR| ≥ 0.3) → artifact, not carry; t_NW wrong-signed or > −2 → null;
+  DSR < 0.95 → does not graduate (logged like #8, NOT relaxed). NO post-hoc
+  rank-band scans, cost re-tuning, holding-period or signal-lookback variants —
+  each is +1 trial and none is authorized by this registration.
+- Failure interpretation: real-but-DSR-failing/crash-skewed → "the tail carry
+  premium is real but the discipline refuses it too," McLean–Pontiff in a third
+  cut; outright null → "the tail carry is fully priced / consumed by tail fills."
+  Both are write-up sections; neither is hidden.
+
 ---
 
-Run log: H2 RUN as trial #8 (2026-06-13, criteria not met — see its block
-above). N = 8. Each further run requires owner sign-off, increments N by
-exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7
-are collection-only/two-stage and exempt from the run/N language until
-their Stage-2 analysis is registered.
+Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
+(2026-06-13, clean null). H9 RUN as trial #10 (2026-06-14, clean null — tail
+carry priced). **N = 10.** Each run requires owner sign-off, increments N by
+exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7 are
+collection-only/two-stage and exempt from the run/N language until their Stage-2
+analysis is registered.

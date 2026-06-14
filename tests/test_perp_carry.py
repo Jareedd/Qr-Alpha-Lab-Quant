@@ -106,6 +106,42 @@ def test_forward_total_return_timing_is_forward_only():
     assert fwd["A"].iloc[0] == pytest.approx(expected)
 
 
+def test_rank_band_universe_selects_the_tail_not_the_majors():
+    # H9: descending volume => rank A=1 (most liquid) ... F=6. The band
+    # [3,5] must select exactly the tail ranks C,D,E and exclude the majors.
+    cols = list("ABCDEF")
+    vol = _frame([[10, 9, 8, 7, 6, 5]] * 20, cols)
+    uni = perp_carry.rank_band_universe(vol, rank_lo=3, rank_hi=5,
+                                        lookback=5, min_names=2)
+    last = uni.iloc[-1]
+    assert set(last[last].index) == {"C", "D", "E"}   # ranks 3,4,5
+    assert not last["A"] and not last["B"]            # majors excluded
+    assert not last["F"]                              # below the band
+    # too few names to reach past rank_lo + min_names => empty universe
+    thin = perp_carry.rank_band_universe(vol, rank_lo=3, rank_hi=5,
+                                         lookback=5, min_names=5)
+    assert not thin.iloc[-1].any()
+
+
+def test_carry_backtest_uses_injected_universe():
+    # H9 injects a tail mask; carry_backtest must honour it and never put
+    # weight on names outside it (H2's top_n path is unaffected).
+    cols = [f"S{i}" for i in range(12)]
+    funding = _frame([[i / 1000 for i in range(12)]] * 30, cols)
+    price = _frame([[100.0] * 12] * 30, cols)
+    vol = _frame([[1.0] * 12] * 30, cols)
+    panels = {"price": price, "dollar_volume": vol, "funding": funding}
+    inside = cols[2:10]                       # 8 names => n_side=2 at q=0.25
+    outside = cols[:2] + cols[10:]
+    uni = pd.DataFrame(False, index=funding.index, columns=cols)
+    uni[inside] = True
+    res = perp_carry.carry_backtest(panels, universe=uni, cost_bps_per_side=0.0,
+                                    quantile=0.25, rebalance=7)
+    held = res["weights"].fillna(0.0)
+    assert (held[outside].abs().to_numpy() < 1e-12).all()   # majors never held
+    assert held.sum(axis=1).abs().max() < 1e-9              # stays dollar-neutral
+
+
 def test_machinery_gate_planted_beats_priced():
     # The synthetic falsification gate the real run runs first: planted
     # carry recovered, priced (null) rejected, paired per seed.
