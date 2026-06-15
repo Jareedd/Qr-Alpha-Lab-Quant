@@ -14,7 +14,8 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from quantlab import cef
+from quantlab import cef, metrics
+from quantlab.synthetic import make_cef_panel
 
 
 def _frame(vals, cols=("F",), start="2020-01-01"):
@@ -58,6 +59,22 @@ def test_discount_zscore_is_past_only():
     z2 = cef.discount_zscore(disc2, lookback=252, min_periods=126)
     # the z on the second-to-last day uses only past data -> identical
     assert z["F"].iloc[-2] == pytest.approx(z2["F"].iloc[-2], nan_ok=True)
+
+
+def test_machinery_gate_planted_reverts_null_does_not():
+    # The H6 falsification gate the real run runs first: the discount-reversion
+    # book must PROFIT in a planted mean-reverting world and earn ~nothing in a
+    # random-walk-discount null, paired per seed.
+    diffs = []
+    for seed in (1, 2, 3):
+        out = {}
+        for mode in ("planted_reversion", "null"):
+            p = make_cef_panel(60, 250, mode=mode, seed=seed)
+            ret = p.pct_change(fill_method=None)
+            res = cef.reversion_backtest(p.attrs["disc"], ret, cost_bps_per_side=0.0)
+            out[mode] = metrics.sharpe(res["net"], periods=52)
+        diffs.append(out["planted_reversion"] - out["null"])
+    assert min(diffs) > 0.8   # planted clearly beats null every seed
 
 
 def test_discount_zscore_flags_extremes_correctly_signed():

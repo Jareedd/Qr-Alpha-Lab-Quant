@@ -1,0 +1,17 @@
+{
+  "entry_lag_net_sr": {
+    "1w": 1.7,
+    "2w": 0.429,
+    "3w": 0.354,
+    "4w": 0.331
+  },
+  "cost_net_sr_at_lag1": {
+    "25bps": 1.7,
+    "50bps": 0.646,
+    "75bps": -0.201,
+    "100bps": -0.843,
+    "150bps": -1.688
+  },
+  "signal_shuffle_net_sr": -2.531,
+  "verdict": "real signal but microstructure-inflated (lag-2 net 0.43) and cost-fragile (net<=0 by 75bps); does NOT graduate"
+}

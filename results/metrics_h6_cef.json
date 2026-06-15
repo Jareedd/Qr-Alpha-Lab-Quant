@@ -1,0 +1,16 @@
+{
+  "sharpe_net": 1.7004821931634204,
+  "sharpe_gross": 2.850470439793604,
+  "dsr": 0.9871303146458528,
+  "mean_rank_ic": 0.11893938881080486,
+  "ic_tstat_newey_west": 6.67795870247384,
+  "ann_turnover": 10.898681961463861,
+  "skew": 0.845847433309705,
+  "max_drawdown": -0.020356800988784785,
+  "n_obs": 248,
+  "baseline_ew_cef_sharpe": -0.198086314746526,
+  "control_shuffle_sharpe": -1.4966359188025884,
+  "daily_nav_subuniverse_sharpe": 1.7062329056239194,
+  "n_daily_nav_funds": 345,
+  "ex_top_mcap_decile_sharpe": 1.7272574128361515
+}

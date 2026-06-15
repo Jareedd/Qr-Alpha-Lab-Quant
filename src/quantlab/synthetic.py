@@ -279,3 +279,48 @@ def inject_post_event_drift(
     out.attrs["event_drift_injected"] = injected
     out.attrs["event_drift"] = float(drift)
     return out
+
+
+def make_cef_panel(
+    n_funds: int = 60,
+    n_weeks: int = 250,
+    mode: str = "planted_reversion",
+    seed: int = 0,
+    phi: float = 0.85,
+) -> pd.DataFrame:
+    """Synthetic closed-end-fund world for the H6 falsification gate (LABELLED
+    SYNTHETIC, law #7). Returns a weekly PRICE panel with ``nav`` and ``disc``
+    (discount %) frames in ``.attrs``.
+
+    NAV is a per-fund geometric random walk. The discount is the planted object:
+      * ``planted_reversion``: AR(1) discount mean-reverting to a fund-specific
+        level (``phi`` persistence) -- a discount wide vs its own history
+        narrows, so the discount-z reversion book is monetizable.
+      * ``null``: the discount is a pure random walk (no reversion) -- the book
+        must earn ~nothing.
+    Price = NAV * (1 + disc/100); a discount-long earns when the discount
+    narrows faster than NAV drifts against it.
+    """
+    rng = np.random.default_rng(seed)
+    idx = pd.date_range("2021-01-03", periods=n_weeks, freq="W")
+    cols = [f"CEF{i:03d}" for i in range(n_funds)]
+    nav = pd.DataFrame(
+        100.0 * np.exp(np.cumsum(0.002 * rng.standard_normal((n_weeks, n_funds)), axis=0)),
+        index=idx, columns=cols)
+    fund_mean = rng.uniform(-12.0, -2.0, n_funds)  # each fund's structural discount
+    disc = np.zeros((n_weeks, n_funds))
+    disc[0] = fund_mean + rng.normal(0, 3, n_funds)
+    shock = rng.normal(0, 2.0, (n_weeks, n_funds))
+    for t in range(1, n_weeks):
+        if mode == "planted_reversion":
+            disc[t] = fund_mean + phi * (disc[t - 1] - fund_mean) + shock[t]
+        elif mode == "null":
+            disc[t] = disc[t - 1] + shock[t]  # random walk: no reversion
+        else:
+            raise ValueError(f"unknown cef mode {mode!r}")
+    disc = pd.DataFrame(disc, index=idx, columns=cols)
+    price = nav * (1 + disc / 100.0)
+    price.attrs["nav"] = nav
+    price.attrs["disc"] = disc
+    price.attrs["mode"] = mode
+    return price

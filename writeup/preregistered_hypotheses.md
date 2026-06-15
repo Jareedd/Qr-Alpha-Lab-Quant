@@ -181,6 +181,54 @@ Template:
   noise with no cross-sectional structure — still a write-up section,
   because measuring it is the only way anyone finds out.
 
+### H6: Closed-end-fund discounts mean-revert from own-history extremes (small-fund tail), net of costs
+- Status: **RUN (trial #11, 2026-06-14) — does NOT graduate; real signal, but
+  microstructure-inflated + cost-fragile.** Face value net SR 1.70 / DSR 0.987 /
+  IC t_NW +6.68 / skew +0.85 looked like graduation, but adversarial diagnostics
+  (`results/h6_cef_diagnostics.json`) showed the edge collapses on entry lag
+  (1.70→0.43 by lag-2w = a one-week bid-ask bounce) and on realistic costs
+  (−0.20 at 75 bps); signal-shuffle −2.53 confirms the signal is genuinely
+  predictive (not a structure artifact), but the monetizable edge net of the
+  bounce + honest CEF spreads is ≈ 0. Criteria NOT relaxed. Full record:
+  research_log.md trial #11, `results/metrics_h6_cef.json`. (Was: PROPOSED.)
+- Stage-1 census done (`scripts/build_cef_panels.py`,
+  `scripts/h6_*`): CEFConnect gives free daily-NAV/price/discount; live universe
+  356 funds (median mcap $381M — the small tail), 86% at a discount, median
+  distribution rate 8.4%. Deepest reliable free pull is **5Y WEEKLY (~249 obs)**
+  — the binding DSR constraint, declared before the run. Machinery gate built &
+  passed (`synthetic.make_cef_panel`: planted reversion recovered, random-walk
+  null rejected, paired; `tests/test_cef.py`).
+- Economic prior: no creation/redemption arb anchors CEF price to NAV; the
+  tail's holder base is retail; tax-season/panic widen discounts mechanically;
+  activist arb has a scale floor the tail sits under. The claim is reversion of
+  the discount *z vs the fund's own 252d/52w history* (NOT the absolute level —
+  that is a value trap).
+- Point-in-time safety: discount_z uses each fund's discount through t only
+  (past-only rolling mean/std); weights at t earn from t+1.
+- Exact config (frozen): universe = live US CEFs with ≥ ``min_periods`` history
+  and fresh (daily) NAV; signal = −discount_z (52-week lookback, 26-week min);
+  dollar-neutral equal-weight QUINTILE book (long widest-discount-vs-own-history,
+  short narrowest/premium), rebalance every 4 weeks, held; costs **25 bps/side**;
+  return = price-only (CONSERVATIVE primary — for a dollar-neutral book it
+  understates by the legs' differential distribution yield, which favours the
+  high-discount longs → biased against us) with a distribution-rate-adjusted
+  estimate reported alongside; `--n-trials 11`.
+- Controls (one run, pre-declared): daily-NAV-only subuniverse (NAV-staleness),
+  label-shuffle, ex-largest-mcap-decile, Dec–Jan seasonality split.
+- Success criteria (frozen): right-signed IC t_NW ≥ +2 AND net SR > 0 with
+  DSR ≥ 0.95 at N=11 AND beats an equal-weight CEF baseline net of costs AND the
+  label-shuffle control is flat.
+- Kill criteria: machinery gate fails → abort (no trial); DSR < 0.95 → does not
+  graduate (logged, NOT relaxed); shuffle control earns → artifact; effect only
+  in the stale-NAV subuniverse → artifact. NO z-window/quantile/rebalance scans
+  afterward (each is +1 trial).
+- Honest caveats declared pre-run: (a) free data is **5Y weekly (~249 obs)** so
+  the DSR is power-limited — depth, not edge, may be the binding constraint;
+  (b) **survivorship** — only live funds are in the source, but the bias
+  direction is CONSERVATIVE (dead CEFs wind down/open-end near NAV = a gain a
+  discount-long forgoes); (c) no exact distribution history on free data →
+  price-only is the conservative primary.
+
 ### H7: Daily borrow-fee/short-availability snapshots — collection-only (zero trials)
 - Status: REGISTERED 2026-06-12 with owner sign-off, COLLECTION-ONLY —
   the H5 two-stage structure, second instance. This registration
@@ -324,7 +372,8 @@ Template:
 
 Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
 (2026-06-13, clean null). H9 RUN as trial #10 (2026-06-14, clean null — tail
-carry priced). **N = 10.** Each run requires owner sign-off, increments N by
+carry priced). H6 RUN as trial #11 (2026-06-14, does not graduate — CEF
+reversion real but microstructure-inflated + cost-fragile). **N = 11.** Each run requires owner sign-off, increments N by
 exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7 are
 collection-only/two-stage and exempt from the run/N language until their Stage-2
 analysis is registered.

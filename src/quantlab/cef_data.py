@@ -35,13 +35,25 @@ def _get(url: str, timeout: int = 30) -> dict | list:
         return json.loads(r.read())
 
 
+def _rows(payload: dict) -> list:
+    """Extract the price-history rows, tolerating BOTH API shapes seen in the
+    wild: the flat ``{"Data":[ {row} ]}`` (older/cached scratch) and the live
+    nested ``{"Data":{"PriceHistory":[ {row} ]}}``."""
+    if not isinstance(payload, dict):
+        return []
+    d = payload.get("Data", [])
+    if isinstance(d, dict):
+        return d.get("PriceHistory", []) or []
+    return d or []
+
+
 def parse_price_history(payload: dict) -> pd.DataFrame:
-    """Parse a pricinghistory payload into a clean daily frame.
+    """Parse a pricinghistory payload into a clean frame.
 
     Columns: ``px`` (market price), ``nav``, ``disc`` (premium/discount %),
     indexed by date (ascending, de-duplicated). Pure function — no network — so
-    it is unit-tested on a synthetic fixture."""
-    rows = payload.get("Data", []) if isinstance(payload, dict) else []
+    it is unit-tested on a synthetic fixture. Handles both API shapes."""
+    rows = _rows(payload)
     if not rows:
         return pd.DataFrame(columns=["px", "nav", "disc"])
     df = pd.DataFrame(rows)
@@ -67,8 +79,15 @@ def universe(use_cache: bool = True) -> pd.DataFrame:
     return pd.DataFrame(payload)
 
 
-def price_history(ticker: str, rng: str = "MAX", use_cache: bool = True) -> pd.DataFrame:
-    """Daily price/NAV/discount history for one fund (cached per ticker+range)."""
+def price_history(ticker: str, rng: str = "5Y", use_cache: bool = True) -> pd.DataFrame:
+    """Price/NAV/discount history for one fund (cached per ticker+range).
+
+    NOTE on cadence (verified 2026-06-14): the live API serves 1Y at DAILY
+    cadence but 3Y/5Y at WEEKLY cadence, and MAX/10Y return empty. 5Y (~245
+    weekly points, ~5 yr) is the deepest reliable pull — used as the default
+    because depth (regimes) matters more than intra-week cadence for a
+    monthly-rebalanced discount-reversion book. The ~245-obs depth is the
+    binding constraint on the DSR and is reported as such."""
     os.makedirs(CACHE, exist_ok=True)
     path = os.path.join(CACHE, f"ph_{ticker}_{rng}.json")
     if use_cache and os.path.exists(path):
