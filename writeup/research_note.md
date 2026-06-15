@@ -1,4 +1,4 @@
-# Does anything survive an honest backtest? A falsification-first study across two asset classes
+# Does anything survive an honest backtest? A falsification-first study across three asset classes
 
 *A quantitative research note. Every number traces to a row in `research_log.md`
 or an artifact in `results/`; the code that produced each is in the repository.*
@@ -10,7 +10,7 @@ or an artifact in `results/`; the code that produced each is in the repository.*
 I set out to answer a narrow question honestly: do the standard published
 price signals still pay, in the markets a retail-data researcher can actually
 reach, once you remove every form of backtest inflation you have the
-discipline to remove? The answer, across nine pre-registered trials, is mostly
+discipline to remove? The answer, across eleven logged trials, is mostly
 no — and the *way* it is no is the contribution. On a survivorship-biased
 universe my pipeline produces a net Sharpe of 0.82; on the point-in-time
 universe, the same code on the same features produces −0.01. The alpha was the
@@ -21,10 +21,17 @@ to exist — and it found a real, strongly significant signal (t = −3.5, net
 Sharpe 0.87) that *still* failed my pre-registered evidence bar (Deflated
 Sharpe 0.865 < 0.95), is severely crash-skewed, and has decayed from Sharpe 2.3
 to ~0.4 as the trade institutionalized. A ninth trial showed the famous S&P
-deletion rebound is just matched small-loser mean reversion. The deliverable
-here is not a strategy. It is a research process that detects a real premium
-where one exists and refuses to claim it where one does not — and the evidence
-that I can tell the difference.
+deletion rebound is just matched small-loser mean reversion. A tenth ran the
+same carry machine into the liquid tail and found a signal just as significant
+(t = −3.6) that loses money net — the cleanest proof in the project that
+statistical significance and tradability are different objects. An eleventh
+cleared every pre-registered bar at once — net Sharpe 1.1, Deflated Sharpe
+0.999 — until a one-week entry lag collapsed it to nothing, exposing a
+microstructure artifact in a discount-reversion costume: the discipline
+overturning its own best-looking number. The deliverable here is not a strategy.
+It is a research process that detects a real premium where one exists, refuses
+to claim it where one does not, and overturns its own result when it is too good
+to be true — and the evidence that I can tell the difference.
 
 ---
 
@@ -53,7 +60,7 @@ suggestions:
    thresholds, the majority of published factors are likely false discoveries
    (Harvey, Liu & Zhu 2016). A t-stat of 2 means little after hundreds of
    attempts — so I count mine. The global trial count is logged and never
-   reset; it feeds the Deflated Sharpe directly. As of this note, N = 9.
+   reset; it feeds the Deflated Sharpe directly. As of this note, N = 11.
 3. **Turnover kills.** Anomaly profits concentrate in high-turnover
    implementations whose costs exceed their gross returns (Novy-Marx &
    Velikov 2016). I never report a gross-only number. Turnover is a headline.
@@ -220,6 +227,48 @@ so the null is the harness finding genuine absence. Without the control basket
 you would see "deleted names rebound 5%" and imagine alpha; the control is the
 discipline that separates a real anomaly from a mechanical artifact.
 
+### 5.3 A third cut at carry — the liquid tail (trial #10)
+
+Carry was real in the top-30; was a fresher, wider premium hiding in the tail
+(dollar-volume ranks 31–150), beneath the basis-trade funds that decayed the
+majors? I pre-registered the same machine on the disjoint tail universe — a
+genuinely new registration, not a salvage of trial #8 — judged at the same bar,
+with conservative 20 bps/side tail fills. The funding signal predicts the
+cross-section just as strongly as the majors — IC t_NW −3.62 versus the top-30's
+−3.54 — and it still loses money: net Sharpe −0.13 (gross 0.26). The
+decomposition is the lesson: funding income contributes +1.23 in cumulative
+P&L, but price drift gives −0.85 of it back, so the tail carry is almost fully
+priced, and 20 bps fills finish it. This is the cleanest IC-≠-P&L exhibit in the
+project — a t = −3.6 signal that loses money net — and it teaches at scale what
+trial #5 taught once: a strongly significant cross-sectional signal and a
+tradable edge are different objects, and only the net P&L decides.
+
+### 5.4 The graduation that wasn't — closed-end-fund discount reversion (trial #11)
+
+The one structurally-protected premium I had left was the closed-end-fund
+discount. A CEF has no creation/redemption mechanism, so price can sit away from
+NAV persistently, and in the sub-$400M tail no activist is large enough to
+arbitrage it. A two-stage, zero-trial Stage-1 first cleared the survivorship
+question that sinks most free-data ideas — the *opposite* way: I enumerated 151
+dead CEFs from SEC filings and found 94% died at NAV (liquidation, merger,
+open-ending, term maturity) with zero distress delistings, so omitting dead
+funds biases a discount-long *against* itself. For once, the survivorship gate
+cleared in my favor.
+
+The registered Stage-2 run then did what none of the others had: it passed every
+pre-registered criterion at once — net Sharpe 1.11, Deflated Sharpe 0.999 at
+N=11, IC t_NW −10.4, positive skew, beating the equal-weight baseline and
+surviving the controls. The prime directive says a result that good is first a
+suspected bug, so I ran the diagnostic that decides it: an entry-lag sweep. The
+Sharpe collapsed from 1.11 to 0.10 with a single week of delay, then went
+negative. The entire "edge" was a one-week bounce — a microstructure /
+shared-price artifact, because the discount at week *w* is built from the same
+noisy close the next week's return divides by; you cannot trade the print you
+measured. The implementable version is null. H6 did not graduate, and I did not
+relax the criteria to pretend otherwise. The lesson is now a registered
+requirement, not a footnote: a reversion strategy must pass an
+entry-lag/implementability gate, not merely the in-sample bar.
+
 ## 6. What failed, and what the harness caught
 
 This section is mandatory by my own rules, and it is the part I am most willing
@@ -262,6 +311,13 @@ to be judged on.
   rewrites: full-history dividend re-scalings and one 90% split repair on a
   single name. The backtest and the live model literally trained on different
   versions of 2020, and now I measure by how much.
+- **A pre-registered backtest that passed every bar, overturned by one
+  diagnostic** (trial #11). CEF discount reversion cleared net Sharpe 1.1,
+  Deflated Sharpe 0.999, and t = −10.4 — then an entry-lag sweep collapsed it
+  from 1.1 to 0.1 in a single week, exposing a one-week microstructure bounce
+  rather than reversion. The in-sample criteria were insufficient;
+  implementability had to be tested too. The strongest number I produced is the
+  one the discipline killed.
 
 ## 7. Capacity and execution
 
@@ -306,8 +362,10 @@ Residual survivorship bias (149 unpriceable dead names; missing delisting
 returns, bounded at ±0.006 Sharpe for the priceable diers); sectors as-of-today;
 estimated rather than known betas, with measured drift; linear costs in the
 headline with impact priced separately; the carry universe's exchange-side
-survivorship is small but nonzero; free daily data throughout; and two asset
-classes over roughly fifteen and six years respectively. Every one of these is
+survivorship is small but nonzero; free daily data throughout; and three asset
+classes over roughly fifteen and six years (equities and crypto) plus closed-end
+funds over ~14 years of weekly free data, the last of which cleared every
+in-sample bar but failed an entry-lag implementability check. Every one of these is
 named on purpose. Naming them is not a weakness of the work; it is the work.
 
 ## 10. What institutional-grade would require
@@ -322,7 +380,7 @@ hypothesis or declares itself a reproduction.
 
 ## 11. Conclusion
 
-I tested nine pre-registered hypotheses across two asset classes and graduated
+I tested eleven hypotheses across three asset classes and graduated
 none of them to production. Read carelessly, that is failure. Read correctly, it
 is the whole point: a research process is only worth anything if it can tell a
 real premium from a lucky one and a robust premium from a decaying, skewed one —
@@ -330,7 +388,9 @@ and then *act on that distinction even when the number in front of you is good*.
 My pipeline destroyed its own best result the moment I fixed the universe; it
 found genuine crypto carry and still refused it on a deflated-Sharpe technicality
 it was right to enforce; and it showed a famous anomaly to be a matched-control
-artifact. The strategies failed. The judgment did not. If I am going to act as
+artifact; and it overturned its own best-looking result — a discount-reversion
+backtest that cleared every bar — on a one-week implementability test. The
+strategies failed. The judgment did not. If I am going to act as
 though my analysis means something, even knowing how often analysis is luck, I
 would rather it be analysis that has earned the right — and this is the evidence
 that it has.
