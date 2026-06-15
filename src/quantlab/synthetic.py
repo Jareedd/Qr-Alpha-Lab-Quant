@@ -190,6 +190,71 @@ def make_perp_panel(
     return prices
 
 
+def make_cef_panel(
+    n_funds: int = 120,
+    n_weeks: int = 520,
+    mode: str = "planted_reversion",
+    seed: int = 7,
+    reversion_phi: float = 0.95,
+) -> pd.DataFrame:
+    """Synthetic closed-end-fund world for the H6 (trial #11) falsification gate.
+
+    Returns a (week x fund) TOTAL-RETURN price panel (distributions reinvested);
+    the NAV and discount panels ride in ``attrs["nav"]`` and ``attrs["discount"]``.
+    By construction ``discount = (price - nav)/nav`` exactly, so the harness's
+    ``cef.discount`` recovers it.
+
+    The H6-specific subtlety this world encodes: the NULL is not "no discount" —
+    discounts plainly exist — it is "discounts do not REVERT" (a random walk). A
+    discount-z book earns only if wide-discount extremes narrow on average. Two
+    paired modes (identical draws except the reversion coefficient):
+
+    - ``planted_reversion``: each fund's discount is AR(1) with ``reversion_phi``
+      < 1, so it mean-reverts toward its own level; a wide-discount extreme (low
+      z) drifts back up -> the price rises faster than NAV -> a LONG-low-z /
+      SHORT-high-z book harvests the reversion. The H6 machinery must RECOVER it.
+    - ``random_walk``: ``phi = 1`` — same shocks, but the discount is a random
+      walk with NO reversion; forward returns are unpredictable from the
+      discount z. The machinery must find NOTHING here (finding reversion in this
+      world = the harness is broken — the exact failure this world guards).
+
+    SYNTHETIC, harness-validation only, labeled as such (law #7).
+    """
+    if mode not in {"planted_reversion", "random_walk"}:
+        raise ValueError(
+            f"mode must be 'planted_reversion' or 'random_walk', got {mode!r}"
+        )
+    rng = np.random.default_rng(seed)
+    phi = reversion_phi if mode == "planted_reversion" else 1.0
+
+    # NAV total-return path: a common market factor + idiosyncratic, weekly.
+    betas = rng.uniform(0.6, 1.2, n_funds)
+    idio_vol = rng.uniform(0.010, 0.025, n_funds)
+    mkt = rng.standard_normal(n_weeks) * 0.02
+    nav_rets = (betas[None, :] * mkt[:, None]
+                + rng.standard_normal((n_weeks, n_funds)) * idio_vol)
+    nav = 100.0 * np.exp(np.cumsum(nav_rets, axis=0))
+
+    # Discount process. Shocks are drawn ONCE and shared across modes (paired
+    # control): only phi differs, so planted vs random-walk see identical luck.
+    d0 = rng.uniform(-0.15, 0.05, n_funds)          # typical CEF discount spread
+    dshock = rng.standard_normal((n_weeks, n_funds)) * 0.015
+    d = np.empty((n_weeks, n_funds))
+    d[0] = d0
+    for t in range(1, n_weeks):
+        d[t] = np.clip(phi * d[t - 1] + dshock[t], -0.6, 0.4)
+
+    price_tr = nav * (1.0 + d)
+    weeks = pd.bdate_range("2012-01-06", periods=n_weeks, freq="W-FRI")
+    funds = [f"CEF{i:03d}" for i in range(n_funds)]
+    price = pd.DataFrame(price_tr, index=weeks, columns=funds)
+    price.attrs["nav"] = pd.DataFrame(nav, index=weeks, columns=funds)
+    price.attrs["discount"] = pd.DataFrame(d, index=weeks, columns=funds)
+    price.attrs["mode"] = mode
+    price.attrs["reversion_phi"] = float(phi)
+    return price
+
+
 def inject_delisting_returns(
     prices: pd.DataFrame,
     delist_return: float,

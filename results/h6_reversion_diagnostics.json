@@ -1,0 +1,53 @@
+{
+  "entry_lag_sweep": {
+    "lag_0w": 1.112,
+    "lag_1w": 0.104,
+    "lag_2w": -0.07,
+    "lag_3w": -0.223,
+    "lag_4w": -0.437,
+    "lag_5w": -0.586
+  },
+  "entry_lag_interpretation": "graceful decay across lags => real multi-week reversion; a collapse from lag_0 to lag_1 => look-ahead or 1-week microstructure bounce.",
+  "subperiod": {
+    "pre_2020": {
+      "sharpe": 0.657,
+      "n_weeks": 520
+    },
+    "2020": {
+      "sharpe": 2.634,
+      "n_weeks": 52
+    },
+    "post_2020": {
+      "sharpe": 1.565,
+      "n_weeks": 286
+    }
+  },
+  "by_year_sharpe": {
+    "2010": -0.192,
+    "2011": 0.858,
+    "2012": 2.167,
+    "2013": -0.509,
+    "2014": 2.359,
+    "2015": 0.056,
+    "2016": 0.617,
+    "2017": -0.013,
+    "2018": 0.308,
+    "2019": 1.562,
+    "2020": 2.634,
+    "2021": 2.187,
+    "2022": 3.372,
+    "2023": 1.98,
+    "2024": 0.248,
+    "2025": -0.56,
+    "2026": 0.173
+  },
+  "shuffle_control_sharpe_by_seed": [
+    0.277,
+    -0.124,
+    0.413,
+    0.129,
+    -0.313,
+    0.519
+  ],
+  "shuffle_control_max_abs": 0.519
+}

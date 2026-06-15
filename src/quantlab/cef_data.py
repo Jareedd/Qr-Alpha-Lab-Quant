@@ -196,3 +196,61 @@ def price_nav_discount(
     df = parse_pricinghistory(payload)
     df.to_parquet(path)
     return df
+
+
+def build_weekly_panels(
+    tickers: list[str], start: str = "2010-01-01", cache_dir: str = CACHE,
+    refresh: bool = False, min_weeks: int = 26,
+) -> dict:
+    """Assemble the H6 weekly backtest panels for ``tickers``:
+
+    - ``price``: distribution-INCLUSIVE total-return price (yfinance adjusted
+      close, resampled to W-FRI) — the holder's actual total return.
+    - ``discount``: (price-NAV)/NAV from CEFConnect ``pricinghistory/All``
+      (weekly), aligned onto the Friday index PIT-safely (ffill within 10 days,
+      so a fund's discount never carries past its last real observation).
+
+    Both are (week x fund). Cached to parquet; ``refresh`` rebuilds. The weekly
+    cadence is the registration's (free NAV history is weekly beyond ~1yr).
+    """
+    os.makedirs(cache_dir, exist_ok=True)
+    p_path = os.path.join(cache_dir, "panels_weekly_price.parquet")
+    d_path = os.path.join(cache_dir, "panels_weekly_discount.parquet")
+    if os.path.exists(p_path) and os.path.exists(d_path) and not refresh:
+        return {"price": pd.read_parquet(p_path),
+                "discount": pd.read_parquet(d_path)}
+
+    # 1. CEFConnect weekly discount per fund (cached per ticker).
+    disc = {}
+    for i, t in enumerate(tickers):
+        h = price_nav_discount(t, period=FULL_PERIOD)
+        if len(h) >= min_weeks and h["nav"].notna().sum() >= min_weeks:
+            s = (h["price"] - h["nav"]) / h["nav"]
+            disc[t] = s[s.index >= pd.Timestamp(start)]
+        if (i + 1) % 40 == 0:
+            print(f"  [cef panels] discount {i+1}/{len(tickers)}", flush=True)
+    discount = pd.DataFrame(disc).sort_index()
+
+    # 2. yfinance distribution-inclusive total-return price -> weekly (W-FRI).
+    import yfinance as yf
+    raw = yf.download(list(tickers), start=start, auto_adjust=True,
+                      progress=False, threads=True)
+    adj = raw["Close"] if isinstance(raw.columns, pd.MultiIndex) else raw[["Close"]]
+    price_w = adj.resample("W-FRI").last()
+
+    # 3. align discount onto the Friday index, PIT-safe (asof within 10 days);
+    #    build all columns at once (avoids a fragmented-frame insert loop).
+    disc_w = pd.DataFrame(
+        {t: discount[t].dropna().reindex(
+            price_w.index, method="ffill", tolerance=pd.Timedelta("10D"))
+         for t in discount.columns},
+        index=price_w.index,
+    )
+
+    common = sorted(set(price_w.columns) & set(disc_w.columns))
+    price_w, disc_w = price_w[common], disc_w[common]
+    price_w.attrs["n_funds"] = len(common)
+    price_w.to_parquet(p_path)
+    disc_w.to_parquet(d_path)
+    print(f"  [cef panels] built {len(common)} funds x {len(price_w)} weeks")
+    return {"price": price_w, "discount": disc_w}

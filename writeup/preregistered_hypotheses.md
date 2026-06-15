@@ -181,6 +181,99 @@ Template:
   noise with no cross-sectional structure — still a write-up section,
   because measuring it is the only way anyone finds out.
 
+### H6: Closed-end-fund discounts mean-revert from extremes in the small-fund tail, net of costs
+- Status: **RUN (trial #11, 2026-06-15). Outcome: registered criteria nominally
+  MET at the registered config (net SR 1.11, DSR 0.999, IC t_NW −10.4, beats EW
+  0.64, positive skew +0.80, −6% maxDD) — BUT adversarial diagnostics OVERTURN
+  it.** The entry-lag sweep collapses the Sharpe **1.11 → 0.10 at a one-week lag**
+  (then negative): the entire "edge" is a single-week bounce, not multi-week
+  reversion — a microstructure / shared-price (bid-ask-bounce) reversal artifact
+  (the discount uses price_w and the next return divides by price_w; you can't
+  trade the noisy close you measured). The shuffle control is also seed-fragile
+  (breaches 0.3 on 3/6 seeds, max 0.52; the registered seed drew 0.277 by luck).
+  The implementable (1-week-lag) edge is **~null (SR 0.10)**. **H6 does NOT
+  graduate.** No criteria relaxation. Lesson: the frozen criteria lacked an
+  entry-lag / implementability gate (trial #8 ran it as a diagnostic; #11 shows
+  it must be a registered criterion for any reversion strategy). Full record:
+  research_log.md trial #11, `results/metrics_h6_reversion.json`,
+  `results/h6_reversion_diagnostics.json`. N=11. (Was: PROPOSED.) Origin spec:
+  `writeup/edge_candidates_2026-06-12.md` §H6.
+- Economic prior: a closed-end fund has no creation/redemption mechanism, so
+  price can diverge from NAV persistently and structurally — not a picked-over
+  statistical factor subject to McLean–Pontiff decay. The sub-$400M tail's
+  holder base is retail; tax-season and panic selling widen discounts
+  mechanically; Saba-class activists have a scale floor the tail sits beneath.
+  The claim is reversion of the discount **z-score vs its own history** (not the
+  absolute discount level — that is the value-trap confound). Counterparty: the
+  retail panic seller and the absent arbitrageur. Capacity is **$50k–$250k** —
+  "too small for Saba" is the why-it-exists, stated plainly.
+- **What Stage-1 settled (zero-trial, before this registration):**
+  1. A tradable tail exists: **185 funds** (mcap < $400M, dollar-ADV ≥ $250k);
+     median discount −7.6%, 101 funds at < −10% (`cef_stage1_census.json`).
+  2. NAV staleness is minor: **95% publish daily NAV** (lag ≤ 1d); the
+     daily-NAV-only filter retains almost the whole universe.
+  3. **Survivorship direction is CONSERVATIVE** (the make-or-break): the
+     dead-fund census (SEC EDGAR, 2021–2026, 151 CEF/BDC deaths) found **94%
+     are NAV events** (liquidation/merger/open-end/term) and **zero distress
+     delistings**. CEF deaths happen at ~NAV, so a current-funds-only backtest
+     OMITS winners-at-NAV → it is biased *against* a discount-long, a
+     conservative LOWER bound. This is the one idea where missing dead names is
+     a tailwind (`cef_dead_fund_census.json`).
+  4. Data cadence (constrains this registration): free NAV/discount history is
+     **weekly** beyond the trailing year (CEFConnect `All`), back to ~2012;
+     distribution-inclusive total-return price is daily via yfinance.
+- Exact config (FROZEN):
+  - Universe: current CEFConnect funds with mcap < $400M, dollar-ADV ≥ $250k,
+    **CEF-only** (CEFConnect lists CEFs; any BDC-category names excluded — BDC
+    deaths can distress, unlike CEFs, per the census). Stale-NAV funds are KEPT
+    in the main run and isolated by the NAV-staleness control below (refined
+    pre-run, before any result is seen, for control coherence — filtering
+    daily-NAV upfront would make that control trivially identical to the main
+    run). Current-listings-only, accepted as a conservative lower bound per
+    Stage-1's survivorship finding (direction measured, and against us).
+  - Signal: per fund, `z = (discount − mean_52w) / std_52w` on the **weekly**
+    discount series (past-only; ≥ 26w min history), discount = (price − NAV)/NAV
+    via `quantlab.cef.discount`.
+  - Book: dollar-neutral equal-weight quintiles — **LONG the most-negative-z**
+    (widest-discount extreme, expected to revert up), **SHORT the most-positive-z**
+    (richest), rebalanced every **4 weeks**, held between.
+  - Label / P&L: **weekly distribution-inclusive total return** (yfinance
+    adjusted close resampled W-FRI). **Cadence is weekly by design** — the
+    signal's information arrives weekly, so weekly is the honest observation
+    frequency; this sets n_obs ≈ #weeks and a DSR hurdle of ~1.4 net SR, HIGHER
+    than the daily-cadence ~1.1 the graduation doc assumed before Stage-1
+    revealed the data is weekly. Choosing the harder, honest hurdle is the point.
+  - Costs: **25 bps one-way** on turnover (linear headline; tail spreads are
+    wide so 25 bps is the conservative floor — Stage-1 found nothing forcing it
+    higher; sqrt-impact is the capacity dimension, reported separately).
+  - DSR at **N = 11**.
+- Point-in-time safety: discount at week w uses NAV/price published at or before
+  w; the z uses a trailing past-only window; weights formed at w earn from w+1.
+- Machinery gate (MUST pass in-env immediately before the real run, law #4):
+  a synthetic `planted_reversion` CEF world (discounts mean-revert) must be
+  recovered and a `random_walk` discount world (no reversion — the true null)
+  rejected, as a paired per-seed differential. If the harness cannot tell
+  reversion from its absence today, no real number is trusted — ABORT, no trial.
+- Registered paired controls (all reported in the single run, not extra trials):
+  1. **NAV-staleness control**: re-run on the daily-NAV-only subuniverse; the
+     effect must persist (stale NAVs manufacture fake extremes).
+  2. **Label-shuffle control**: forward returns permuted across funds within
+     each week must earn ~nothing (|SR| < 0.3).
+  3. **Seasonality subreport**: SR with and without Dec–Jan (tax-loss window),
+     pre-declared, reported not optimized.
+- Success criteria (FROZEN — met only if ALL hold): right-signed reversion IC
+  with **|t_NW| ≥ 2** AND **net SR > 0** beating an equal-weight-CEF baseline net
+  of costs AND **DSR ≥ 0.95 at N=11** AND survives removing the largest-mcap
+  decile AND both paired controls pass.
+- Kill criteria: machinery gate fails → ABORT (no trial spent); shuffle control
+  earns (|SR| ≥ 0.3) or staleness control fails → artifact, logged as such;
+  |t_NW| < 2 or wrong-signed → null; DSR < 0.95 → does not graduate (logged like
+  trial #8, **NOT relaxed**). NO post-hoc z-window/quantile/holding-period/cost
+  scans — each is +1 trial and none is authorized by this registration.
+- Failure interpretation: a real-but-DSR-failing or null result is still a
+  write-up section ("the one structurally-protected premium, tested honestly on
+  free data, and the discipline's verdict") — citable next to the carry trial.
+
 ### H7: Daily borrow-fee/short-availability snapshots — collection-only (zero trials)
 - Status: REGISTERED 2026-06-12 with owner sign-off, COLLECTION-ONLY —
   the H5 two-stage structure, second instance. This registration
@@ -324,7 +417,9 @@ Template:
 
 Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
 (2026-06-13, clean null). H9 RUN as trial #10 (2026-06-14, clean null — tail
-carry priced). **N = 10.** Each run requires owner sign-off, increments N by
+carry priced). H6 RUN as trial #11 (2026-06-15, criteria nominally met but
+OVERTURNED by entry-lag diagnostic — microstructure reversal artifact, does not
+graduate). **N = 11.** Each run requires owner sign-off, increments N by
 exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7 are
 collection-only/two-stage and exempt from the run/N language until their Stage-2
 analysis is registered.
