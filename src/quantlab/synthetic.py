@@ -255,6 +255,50 @@ def make_cef_panel(
     return price
 
 
+def make_quality_panel(
+    n_firms: int = 200,
+    n_periods: int = 180,
+    mode: str = "planted_quality",
+    seed: int = 7,
+    premium: float = 0.02,
+) -> pd.DataFrame:
+    """Synthetic fundamentals world for the H1 (quality) falsification gate.
+
+    Returns a (period x firm) price panel; the GROSS-PROFITABILITY panel (GP/A)
+    rides in ``attrs["gp_a"]``. Each firm has a persistent latent quality ``q``
+    that drives its observable GP/A. Two paired modes (identical draws except the
+    return link):
+
+    - ``planted_quality``: high-quality firms earn a small return ``premium`` per
+      period, so a long-high-GP/A / short-low-GP/A book harvests it. The H1
+      machinery must RECOVER this.
+    - ``null_quality``: ``premium = 0`` — GP/A is real but unrelated to returns;
+      the book must earn ~nothing (finding quality alpha here = harness broken).
+
+    SYNTHETIC, harness-validation only, labeled as such (law #7).
+    """
+    if mode not in {"planted_quality", "null_quality"}:
+        raise ValueError(f"mode must be 'planted_quality' or 'null_quality', got {mode!r}")
+    rng = np.random.default_rng(seed)
+    q = rng.standard_normal(n_firms)                              # persistent quality
+    gp_noise = rng.standard_normal((n_periods, n_firms))
+    gp_a = 0.15 + 0.05 * q[None, :] + 0.01 * gp_noise            # observable GP/A ~0.1–0.2
+
+    betas = rng.uniform(0.6, 1.2, n_firms)
+    mkt = rng.standard_normal(n_periods) * 0.04
+    idio = rng.standard_normal((n_periods, n_firms)) * 0.06
+    qz = (q - q.mean()) / (q.std() + 1e-12)
+    prem = premium * qz[None, :] if mode == "planted_quality" else 0.0
+    rets = betas[None, :] * mkt[:, None] + idio + prem
+
+    periods = pd.bdate_range("2010-01-31", periods=n_periods, freq="BME")
+    firms = [f"FIRM{i:03d}" for i in range(n_firms)]
+    price = pd.DataFrame(100.0 * np.exp(np.cumsum(rets, axis=0)), index=periods, columns=firms)
+    price.attrs["gp_a"] = pd.DataFrame(gp_a, index=periods, columns=firms)
+    price.attrs["mode"] = mode
+    return price
+
+
 def inject_delisting_returns(
     prices: pd.DataFrame,
     delist_return: float,
