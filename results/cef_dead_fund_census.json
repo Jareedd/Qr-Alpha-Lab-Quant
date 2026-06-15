@@ -1,0 +1,1387 @@
+{
+  "window": "2021-2026",
+  "source": "SEC EDGAR EFTS form 25-NSE (delistings) + submissions JSON",
+  "method_note": "Deaths = N-2 filers (closed-end/BDC) that FULLY delisted (no current ticker; preferred/note redemptions of still-listed funds excluded). Outcome from filing-type signature + name; unknowns shown, not guessed. liquidation-vs-merger split needs filing text (deferred); the NAV-event vs distress BINARY is what the gate needs.",
+  "counts": {
+    "form25_delistings_scanned": 5326,
+    "fund_name_candidates": 924,
+    "closed_end_or_bdc_filers": 191,
+    "fund_deaths_fully_delisted": 151,
+    "of_which_bdc": 10,
+    "of_which_cef": 141
+  },
+  "outcome_distribution": {
+    "liquidation_or_merger": 79,
+    "open_ending_or_conversion": 47,
+    "term_liquidation": 16,
+    "delisted_unknown": 9
+  },
+  "nav_event": {
+    "nav_event_true": 142,
+    "unknown_shown_not_guessed": 9,
+    "distress_non_nav": 0,
+    "frac_nav_event_of_deaths": 0.94
+  },
+  "deaths": [
+    {
+      "cik": "878198",
+      "name": "NUVEEN MICHIGAN QUALITY MUNICIPAL INCOME FUND",
+      "delist_date": "2021-02-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1512931",
+      "name": "MONROE CAPITAL Corp",
+      "delist_date": "2021-02-18",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1655544",
+      "name": "Nuveen Municipal 2021 Target Term Fund",
+      "delist_date": "2021-02-24",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1058234",
+      "name": "BLACKROCK MUNIHOLDINGS QUALITY FUND, INC.",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1038190",
+      "name": "BLACKROCK MUNIHOLDINGS FUND II, INC.",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1167467",
+      "name": "BLACKROCK MUNICIPAL BOND TRUST",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1181026",
+      "name": "BLACKROCK MUNICIPAL INCOME INVESTMENT QUALITY TRUST",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1454978",
+      "name": "Nuveen Pennsylvania Municipal Value Fund",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1454980",
+      "name": "Nuveen New Jersey Municipal Value Fund",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1454979",
+      "name": "Nuveen California Municipal Value Fund 2",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "894239",
+      "name": "DUFF & PHELPS UTILITY & CORPORATE BOND TRUST INC",
+      "delist_date": "2021-03-08",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1577791",
+      "name": "Oaktree Strategic Income Corp",
+      "delist_date": "2021-03-19",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "3906",
+      "name": "ALLIED CAPITAL CORP",
+      "delist_date": "2021-03-25",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1395627",
+      "name": "Voya International High Dividend Equity Income Fund",
+      "delist_date": "2021-04-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1454981",
+      "name": "Nuveen New York Municipal Value Fund 2",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "891188",
+      "name": "BLACKROCK MUNIYIELD INVESTMENT QUALITY FUND",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "897424",
+      "name": "NUVEEN MARYLAND QUALITY MUNICIPAL INCOME FUND",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1089094",
+      "name": "BLACKROCK STRATEGIC MUNICIPAL TRUST",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1137392",
+      "name": "BLACKROCK MUNICIPAL INCOME INVESTMENT TRUST",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1181024",
+      "name": "BLACKROCK NEW YORK MUNICIPAL INCOME QUALITY TRUST",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1176197",
+      "name": "BLACKROCK NEW YORK MUNICIPAL INCOME TRUST II",
+      "delist_date": "2021-04-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "911308",
+      "name": "BLACKROCK MUNIYIELD ARIZONA FUND, INC.",
+      "delist_date": "2021-04-19",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "882153",
+      "name": "BLACKROCK MUNIYIELD INVESTMENT FUND",
+      "delist_date": "2021-04-19",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "901824",
+      "name": "BLACKROCK MASSACHUSETTS TAX-EXEMPT TRUST",
+      "delist_date": "2021-04-19",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "844172",
+      "name": "BLACKROCK MUNIENHANCED FUND, INC.",
+      "delist_date": "2021-04-19",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1169029",
+      "name": "BLACKROCK MARYLAND MUNICIPAL BOND TRUST",
+      "delist_date": "2021-04-19",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1454021",
+      "name": "Western Asset Municipal Defined Opportunity Trust Inc.",
+      "delist_date": "2021-05-03",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1559909",
+      "name": "Harvest Capital Credit Corp",
+      "delist_date": "2021-06-09",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1372117",
+      "name": "Voya Natural Resources Equity Income Fund",
+      "delist_date": "2021-06-14",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1525759",
+      "name": "FS KKR Capital Corp. II",
+      "delist_date": "2021-06-17",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1464963",
+      "name": "First Eagle Alternative Capital BDC, Inc.",
+      "delist_date": "2021-06-21",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1573698",
+      "name": "Eaton Vance Floating-Rate Income Plus Fund",
+      "delist_date": "2021-06-21",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1665817",
+      "name": "Eaton Vance 2021 Target Term Trust",
+      "delist_date": "2021-06-28",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1603998",
+      "name": "Duff & Phelps Select MLP & Midstream Energy Fund Inc.",
+      "delist_date": "2021-06-28",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1583001",
+      "name": "First Eagle Senior Loan Fund",
+      "delist_date": "2021-06-29",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1564216",
+      "name": "Cohen & Steers MLP Income & Energy Opportunity Fund",
+      "delist_date": "2021-08-03",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1074685",
+      "name": "EATON VANCE NEW YORK MUNICIPAL INCOME TRUST",
+      "delist_date": "2021-08-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1635193",
+      "name": "Gabelli Go Anywhere Trust",
+      "delist_date": "2021-09-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1310709",
+      "name": "Guggenheim Enhanced Equity Income Fund",
+      "delist_date": "2021-10-25",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1551949",
+      "name": "Guggenheim Credit Allocation Fund",
+      "delist_date": "2021-10-25",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1647933",
+      "name": "Nuveen Corporate Income November 2021 Target Term Fund",
+      "delist_date": "2021-10-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1393662",
+      "name": "Invesco Dynamic Credit Opportunities Fund",
+      "delist_date": "2021-10-29",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1397173",
+      "name": "Nuveen Tax-Advantaged Dividend Growth Fund",
+      "delist_date": "2021-11-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1265708",
+      "name": "NUVEEN TAX ADVANTAGED TOTAL RETURN STRATEGY FUND",
+      "delist_date": "2021-11-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1255821",
+      "name": "NUVEEN DIVERSIFIED DIVIDEND & INCOME FUND",
+      "delist_date": "2021-11-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "885733",
+      "name": "NUVEEN SELECT TAX FREE INCOME PORTFOLIO 2",
+      "delist_date": "2021-12-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "888411",
+      "name": "NUVEEN SELECT TAX FREE INCOME PORTFOLIO 3",
+      "delist_date": "2021-12-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1687081",
+      "name": "FIRST TRUST SENIOR FLOATING RATE 2022 TARGET TERM FUND",
+      "delist_date": "2021-12-10",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1558629",
+      "name": "PIMCO Dynamic Credit & Mortgage Income Fund",
+      "delist_date": "2021-12-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1412350",
+      "name": "PIMCO Income Opportunity Fund",
+      "delist_date": "2021-12-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1691433",
+      "name": "BlackRock 2022 Global Income Opportunity Trust",
+      "delist_date": "2022-01-03",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "895658",
+      "name": "DELAWARE INVESTMENTS MINNESOTA MUNICIPAL INCOME FUND II, INC",
+      "delist_date": "2022-02-14",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "907573",
+      "name": "Delaware Investments Colorado Municipal Income Fund, Inc.",
+      "delist_date": "2022-02-14",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1305197",
+      "name": "FIDUCIARY/CLAYMORE ENERGY INFRASTRUCTURE FUND",
+      "delist_date": "2022-03-07",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1508171",
+      "name": "SLR Senior Investment Corp.",
+      "delist_date": "2022-04-01",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "882152",
+      "name": "BLACKROCK MUNIYIELD CALIFORNIA FUND, INC.",
+      "delist_date": "2022-04-11",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "888410",
+      "name": "BLACKROCK MUNIYIELD CALIFORNIA QUALITY FUND, INC.",
+      "delist_date": "2022-04-11",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "884216",
+      "name": "BLACKROCK MUNIYIELD NEW JERSEY FUND, INC.",
+      "delist_date": "2022-04-11",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1045126",
+      "name": "BLACKROCK MUNIHOLDINGS INVESTMENT QUALITY FUND",
+      "delist_date": "2022-04-11",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1686142",
+      "name": "Nuveen Credit Opportunities 2022 Target Term Fund",
+      "delist_date": "2022-05-26",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1469392",
+      "name": "Nuveen Enhanced Municipal Value Fund",
+      "delist_date": "2022-06-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1794287",
+      "name": "Angel Oak Dynamic Financial Strategies Income Term Trust",
+      "delist_date": "2022-08-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1534293",
+      "name": "Salient Midstream & MLP Fund",
+      "delist_date": "2022-09-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1701167",
+      "name": "Eaton Vance Floating-Rate 2022 Target Term Trust",
+      "delist_date": "2022-10-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1708261",
+      "name": "Nuveen Emerging Markets Debt 2022 Target Term Fund",
+      "delist_date": "2022-12-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1363438",
+      "name": "FIRST TRUST/ABRDN EMERGING OPPORTUNITY FUND",
+      "delist_date": "2022-12-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "858707",
+      "name": "NEW IRELAND FUND INC",
+      "delist_date": "2023-03-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1396167",
+      "name": "Delaware Enhanced Global Dividend & Income Fund",
+      "delist_date": "2023-03-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "896923",
+      "name": "DELAWARE INVESTMENTS DIVIDEND & INCOME FUND, INC",
+      "delist_date": "2023-03-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1568292",
+      "name": "Delaware Ivy High Income Opportunities Fund",
+      "delist_date": "2023-03-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1326390",
+      "name": "Macquarie Global Infrastructure Total Return Fund Inc.",
+      "delist_date": "2023-03-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1557915",
+      "name": "Nuveen Intermediate Duration Municipal Term Fund",
+      "delist_date": "2023-03-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1480999",
+      "name": "Eaton Vance Tax-Managed Buy-Write Strategy Fund",
+      "delist_date": "2023-04-17",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "878200",
+      "name": "NUVEEN OHIO QUALITY MUNICIPAL INCOME FUND",
+      "delist_date": "2023-04-17",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1177219",
+      "name": "NUVEEN GEORGIA QUALITY MUNICIPAL INCOME FUND",
+      "delist_date": "2023-04-17",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1564584",
+      "name": "Nuveen Intermediate Duration Quality Municipal Term Fund",
+      "delist_date": "2023-06-30",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1612875",
+      "name": "GOLDMAN SACHS MLP & ENERGY RENAISSANCE FUND",
+      "delist_date": "2023-07-10",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1093428",
+      "name": "NUVEEN SENIOR INCOME FUND",
+      "delist_date": "2023-07-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1509253",
+      "name": "Nuveen Short Duration Credit Opportunities Fund",
+      "delist_date": "2023-07-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1289213",
+      "name": "Nuveen Floating Rate Income Opportunity Fund",
+      "delist_date": "2023-07-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1576340",
+      "name": "CENTER COAST BROOKFIELD MLP & ENERGY INFRASTRUCTURE FUND",
+      "delist_date": "2023-10-10",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "894351",
+      "name": "WESTERN ASSET MUNICIPAL PARTNERS FUND INC.",
+      "delist_date": "2023-10-16",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1178840",
+      "name": "NEUBERGER BERMAN CALIFORNIA MUNICIPAL FUND INC.",
+      "delist_date": "2023-10-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1178841",
+      "name": "NEUBERGER BERMAN NEW YORK MUNICIPAL FUND INC.",
+      "delist_date": "2023-10-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1176433",
+      "name": "Nuveen Preferred & Income Securities Fund",
+      "delist_date": "2023-11-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1679033",
+      "name": "Nuveen Preferred & Income Fund",
+      "delist_date": "2023-11-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1500096",
+      "name": "Kayne Anderson NextGen Energy & Infrastructure, Inc.",
+      "delist_date": "2023-11-13",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1646109",
+      "name": "FIRST TRUST DYNAMIC EUROPE EQUITY INCOME FUND",
+      "delist_date": "2023-11-21",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1753217",
+      "name": "Nuveen Corporate Income 2023 Target Term Fund",
+      "delist_date": "2023-12-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1682811",
+      "name": "INVESCO HIGH INCOME 2023 TARGET TERM FUND",
+      "delist_date": "2023-12-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1551040",
+      "name": "Virtus Stone Harbor Emerging Markets Total Income Fund",
+      "delist_date": "2023-12-18",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1347652",
+      "name": "CorEnergy Infrastructure Trust, Inc.",
+      "delist_date": "2024-02-27",
+      "sic": "Real Estate Investment Trusts",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1326003",
+      "name": "BlackRock Capital Investment Corp",
+      "delist_date": "2024-03-18",
+      "sic": "",
+      "is_bdc": true,
+      "outcome": "delisted_unknown",
+      "nav_event": null
+    },
+    {
+      "cik": "1396502",
+      "name": "John Hancock Tax-Advantaged Global Shareholder Yield Fund",
+      "delist_date": "2024-04-29",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1513789",
+      "name": "FIRST TRUST ENERGY INFRASTRUCTURE FUND",
+      "delist_date": "2024-05-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1589420",
+      "name": "FIRST TRUST NEW OPPORTUNITIES MLP & ENERGY FUND",
+      "delist_date": "2024-05-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1556336",
+      "name": "FIRST TRUST MLP & ENERGY INCOME FUND",
+      "delist_date": "2024-05-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1284940",
+      "name": "FIRST TRUST ENERGY INCOME & GROWTH FUND",
+      "delist_date": "2024-05-06",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1502573",
+      "name": "Apollo Senior Floating Rate Fund Inc.",
+      "delist_date": "2024-07-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1526697",
+      "name": "Apollo Tactical Income Fund Inc.",
+      "delist_date": "2024-07-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1494530",
+      "name": "FIRST TRUST HIGH INCOME LONG/SHORT FUND",
+      "delist_date": "2024-07-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1701809",
+      "name": "Virtus Convertible & Income 2024 Target Term Fund",
+      "delist_date": "2024-09-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1488775",
+      "name": "ClearBridge MLP & Midstream Fund Inc.",
+      "delist_date": "2024-09-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1547341",
+      "name": "ClearBridge MLP & Midstream Total Return Fund Inc.",
+      "delist_date": "2024-09-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1302624",
+      "name": "FIRST TRUST/ABRDN GLOBAL OPPORTUNITY INCOME FUND",
+      "delist_date": "2024-09-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1276469",
+      "name": "MACQUARIE/FIRST TRUST GLOBAL INFRASTR/UTIL DIV & INC FUND",
+      "delist_date": "2024-09-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "846596",
+      "name": "DWS STRATEGIC MUNICIPAL INCOME TRUST",
+      "delist_date": "2024-11-20",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1519505",
+      "name": "Miller/Howard High Income Equity Fund",
+      "delist_date": "2024-11-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1627854",
+      "name": "BNY Mellon Alcentra Global Credit Income 2024 Target Term Fund, Inc.",
+      "delist_date": "2024-11-25",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1698508",
+      "name": "Invesco High Income 2024 Target Term Fund",
+      "delist_date": "2024-12-02",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "1408201",
+      "name": "TORTOISE POWER & ENERGY INFRASTRUCTURE FUND INC",
+      "delist_date": "2024-12-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1526329",
+      "name": "TORTOISE PIPELINE & ENERGY FUND, INC.",
+      "delist_date": "2024-12-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1547158",
+      "name": "TORTOISE ENERGY INDEPENDENCE FUND, INC.",
+      "delist_date": "2024-12-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1490286",
+      "name": "Tortoise Midstream Energy Fund, Inc.",
+      "delist_date": "2024-12-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "30125",
+      "name": "Insight Select Income Fund",
+      "delist_date": "2025-02-07",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1336050",
+      "name": "BlackRock Enhanced Government Fund, Inc.",
+      "delist_date": "2025-03-24",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1232860",
+      "name": "BlackRock Municipal Credit Alpha Portfolio, Inc.",
+      "delist_date": "2025-03-24",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "825345",
+      "name": "NEW AMERICA HIGH INCOME FUND INC",
+      "delist_date": "2025-04-01",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "839122",
+      "name": "BNY MELLON MUNICIPAL INCOME, INC.",
+      "delist_date": "2025-06-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1392994",
+      "name": "FIRST TRUST SPECIALTY FINANCE & FINANCIAL OPPORTUNITIES FUND",
+      "delist_date": "2025-06-30",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1181504",
+      "name": "PIMCO CALIFORNIA MUNICIPAL INCOME FUND III",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1170300",
+      "name": "PIMCO CALIFORNIA MUNICIPAL INCOME FUND II",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1181505",
+      "name": "PIMCO NEW YORK MUNICIPAL INCOME FUND III",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1140410",
+      "name": "PIMCO NEW YORK MUNICIPAL INCOME FUND",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1181506",
+      "name": "PIMCO MUNICIPAL INCOME FUND III",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1140392",
+      "name": "PIMCO MUNICIPAL INCOME FUND",
+      "delist_date": "2025-08-04",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1864290",
+      "name": "Pioneer Municipal High Income Opportunities Fund, Inc.",
+      "delist_date": "2025-08-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1258943",
+      "name": "PIONEER MUNICIPAL HIGH INCOME ADVANTAGE FUND, INC.",
+      "delist_date": "2025-08-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1223026",
+      "name": "PIONEER MUNICIPAL HIGH INCOME FUND, INC.",
+      "delist_date": "2025-08-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "893739",
+      "name": "180 DEGREE CAPITAL CORP. /NY/",
+      "delist_date": "2025-09-12",
+      "sic": "Investment Advice",
+      "is_bdc": true,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1547994",
+      "name": "Nuveen Preferred Securities & Income Opportunities Fund",
+      "delist_date": "2025-09-22",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1388126",
+      "name": "Pioneer Diversified High Income Fund, Inc.",
+      "delist_date": "2025-09-30",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1166258",
+      "name": "PIONEER HIGH INCOME FUND, INC.",
+      "delist_date": "2025-09-30",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1177162",
+      "name": "Eaton Vance New York Municipal Bond Fund",
+      "delist_date": "2025-10-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1177161",
+      "name": "Eaton Vance California Municipal Bond Fund",
+      "delist_date": "2025-10-27",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "845379",
+      "name": "China Fund, Inc.",
+      "delist_date": "2025-10-31",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "liquidation_or_merger",
+      "nav_event": true
+    },
+    {
+      "cik": "1704299",
+      "name": "TORTOISE SUSTAINABLE & SOCIAL IMPACT TERM FUND",
+      "delist_date": "2025-11-10",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "term_liquidation",
+      "nav_event": true
+    },
+    {
+      "cik": "885732",
+      "name": "NUVEEN CALIFORNIA SELECT TAX FREE INCOME PORTFOLIO",
+      "delist_date": "2026-01-12",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1071899",
+      "name": "BLACKROCK MUNIHOLDINGS QUALITY FUND II, INC.",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1137393",
+      "name": "BLACKROCK MUNICIPAL INCOME TRUST",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1181187",
+      "name": "BLACKROCK MUNICIPAL INCOME QUALITY TRUST",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1176194",
+      "name": "BLACKROCK MUNICIPAL INCOME TRUST II",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1137390",
+      "name": "BLACKROCK NEW YORK MUNICIPAL INCOME TRUST",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1038186",
+      "name": "BLACKROCK MUNIHOLDINGS NEW YORK QUALITY FUND, INC.",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1137391",
+      "name": "BLACKROCK CALIFORNIA MUNICIPAL INCOME TRUST",
+      "delist_date": "2026-02-09",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "835948",
+      "name": "BLACKROCK MUNIVEST FUND, INC.",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "887394",
+      "name": "BLACKROCK MUNIYIELD QUALITY FUND II, INC.",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "879361",
+      "name": "BLACKROCK MUNIYIELD FUND, INC.",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "894242",
+      "name": "BLACKROCK INVESTMENT QUALITY MUNICIPAL TRUST, INC.",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "897269",
+      "name": "BLACKROCK MUNIVEST FUND II, INC.",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    },
+    {
+      "cik": "1343793",
+      "name": "BlackRock Long-Term Municipal Advantage Trust",
+      "delist_date": "2026-02-23",
+      "sic": "",
+      "is_bdc": false,
+      "outcome": "open_ending_or_conversion",
+      "nav_event": true
+    }
+  ],
+  "conservative_direction_verdict": "CONSERVATIVE DIRECTION HOLDS: 94% of 151 dead CEFs are NAV events (liquidation/merger/open-end/term), ZERO distress delistings found, 9 unknown (bounded residual). Omitting dead funds biases a discount-long backtest AGAINST itself \u2014 the H6 survivorship gate CLEARS on direction. Residual: confirm the 9 unknowns + any BDCs by filing text before Stage-2."
+}
