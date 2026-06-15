@@ -1,0 +1,27 @@
+{
+  "ann_return_net": -0.020252540204663258,
+  "ann_vol": 0.15479097266775835,
+  "sharpe_gross": 0.26113453112005175,
+  "sharpe_net": -0.13083799304067356,
+  "max_drawdown": -0.4581766597337079,
+  "annual_turnover": 30.310531589872824,
+  "skew": -0.4290861552942877,
+  "psr": 0.34477678999012507,
+  "dsr": 0.024054299095364086,
+  "n_trials_assumed": 10,
+  "n_days": 2342,
+  "mean_rank_ic": -0.024002258510529305,
+  "ic_tstat_newey_west": -3.619973326318706,
+  "funding_pnl_cumulative": 1.2259331699610228,
+  "price_pnl_cumulative": -0.8501286281376522,
+  "median_tail_names": 120,
+  "control_shuffled_funding_sharpe": -0.2832267795049956,
+  "sharpe_net_ex_top3": -0.1828208073465584,
+  "excluded_top3": [
+    "BALUSDT",
+    "ALGOUSDT",
+    "XMRUSDT"
+  ],
+  "sharpe_2020_2021": 0.3636618059478993,
+  "sharpe_2022_plus": -0.34331989583558686
+}

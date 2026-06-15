@@ -60,6 +60,31 @@ def pit_universe(
     return mask
 
 
+def rank_band_universe(
+    dollar_volume: pd.DataFrame,
+    rank_lo: int,
+    rank_hi: int,
+    lookback: int = 30,
+    min_names: int = 20,
+) -> pd.DataFrame:
+    """Boolean (date x symbol): trailing-ADV rank in [``rank_lo``, ``rank_hi``]
+    (rank 1 = most liquid) among symbols trading at t — the liquid TAIL beneath
+    the majors. Past-only. A date is skipped unless it has at least
+    ``rank_lo + min_names`` trading names (you cannot reach past ``rank_lo`` and
+    still leave ``min_names`` to quartile otherwise). Used by H9 (long-tail
+    carry, trial #10); H2's top-N path (``pit_universe``) is untouched."""
+    adv = dollar_volume.rolling(lookback, min_periods=max(5, lookback // 2)).mean()
+    mask = pd.DataFrame(False, index=adv.index, columns=adv.columns)
+    arr = adv.to_numpy()
+    for i in range(len(adv.index)):
+        row = pd.Series(arr[i], index=adv.columns).dropna()
+        if len(row) < rank_lo + min_names:
+            continue
+        band = row.sort_values(ascending=False).iloc[rank_lo - 1:rank_hi].index
+        mask.iloc[i, mask.columns.get_indexer(band)] = True
+    return mask
+
+
 def carry_signal(funding: pd.DataFrame, lookback: int = 7) -> pd.DataFrame:
     """Trailing mean daily funding through t (the rank signal)."""
     return funding.rolling(lookback, min_periods=lookback).mean()
@@ -108,12 +133,16 @@ def carry_backtest(
     rebalance: int = 7,
     sig_lookback: int = 7,
     top_n: int = 30,
+    universe: pd.DataFrame | None = None,
 ) -> dict:
     """Run the registered carry book. Returns daily gross/net total
     returns, turnover, and the funding-income vs price-drag decomposition.
-    Weights at t earn from t+1 (PIT)."""
+    Weights at t earn from t+1 (PIT). If ``universe`` (a boolean date x symbol
+    mask) is given it is used as-is — this is how H9 injects the tail band;
+    otherwise the H2 top-``top_n`` mask is built, behaviour unchanged."""
     price, vol, funding = panels["price"], panels["dollar_volume"], panels["funding"]
-    universe = pit_universe(vol, top_n=top_n)
+    if universe is None:
+        universe = pit_universe(vol, top_n=top_n)
     signal = carry_signal(funding, lookback=sig_lookback)
     weights = carry_weights(signal, universe, quantile=quantile, rebalance=rebalance)
 
