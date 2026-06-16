@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "synthetic": true,
+    "trial_count_impact": 0,
+    "seed": 7,
+    "n_firms": 180,
+    "n_periods": 120,
+    "periods_per_year": 12,
+    "lookback": 36
+  },
+  "honest_property": {
+    "planted_avg_gross_exposure": 1.7,
+    "null_avg_gross_exposure": 0.0,
+    "planted_net_ann_sharpe": 7.097692618404009,
+    "null_net_ann_sharpe": 0.0,
+    "planted_net_mean_period": 0.04070505746859694,
+    "planted_ann_turnover": 6.561066758365222
+  },
+  "confidence_ramp": {
+    "early_third_avg_gross": 1.1,
+    "late_third_avg_gross": 2.0
+  },
+  "limits": {
+    "max_abs_weight": 0.045809498594571035,
+    "max_gross": 2.000000000000002
+  },
+  "neutralization": {
+    "net_beta_exposure_raw": 0.06783600905444881,
+    "net_beta_exposure_neutralized": 2.2898349882893854e-16
+  },
+  "execution": {
+    "equity": 1000000.0,
+    "n_orders": 180,
+    "gross_notional": 1987134.4739740323,
+    "net_notional": -12871.345579696881,
+    "shares_are_integer": true,
+    "gross_within_cap": true,
+    "sample_orders": {
+      "FIRM026": -381101,
+      "FIRM126": -176733,
+      "FIRM020": -106643,
+      "FIRM099": -87020,
+      "FIRM123": -49235
+    }
+  },
+  "combiner": {
+    "trailing_ic_quality": 0.29831870668161914,
+    "trailing_ic_noise": -0.05265097345254139
+  }
+}
