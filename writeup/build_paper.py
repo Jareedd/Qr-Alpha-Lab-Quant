@@ -148,7 +148,7 @@ def build():
     S.append(Spacer(1, 8))
     S.append(p("Does Anything Survive an Honest Backtest?", TITLE))
     S.append(p("Falsification-First Evidence on Cross-Sectional Anomalies "
-               "in Equities and Crypto", style("sub", parent=TITLE,
+               "in Equities, Crypto, and Closed-End Funds", style("sub", parent=TITLE,
                fontSize=12.5, leading=16, spaceAfter=2)))
     S.append(p("Jared Galvez<super><font size=7>*</font></super>", AUTH))
     S.append(p("Arizona State University — B.S. Data Science (Junior)", AFF))
@@ -166,8 +166,9 @@ def build():
     S.append(p(
         "I ask whether the standard published price signals still pay, in the "
         "markets a free-data researcher can reach, once every removable form of "
-        "backtest inflation is removed. Across nine pre-registered trials the "
-        "answer is largely no, and the manner of the failure is the "
+        "backtest inflation is removed. Across eleven pre-registered trials "
+        "spanning three asset classes the answer is largely no, and the manner "
+        "of the failure is the "
         "contribution. On a survivorship-biased universe the pipeline yields a "
         "net Sharpe of 0.82; on a point-in-time universe the identical code "
         "yields -0.01 — the apparent alpha was the bias. Seven equity trials, "
@@ -177,10 +178,17 @@ def build():
         "premium (t = -3.5, net Sharpe 0.87) that nonetheless fails the "
         "pre-registered evidence bar (Deflated Sharpe 0.865), is severely "
         "left-skewed, and has decayed from a Sharpe of 2.3 to roughly 0.4 as the "
-        "trade institutionalized. A ninth trial shows the post-effective S&P 500 "
-        "deletion rebound is matched small-loser mean reversion, not an index "
-        "effect. The deliverable is a research process that detects a genuine "
-        "premium where one exists and declines to claim it where one does not.",
+        "trade institutionalized; pushed into the liquid tail the same funding "
+        "signal is as significant (t = -3.6) yet loses money net, the cleanest "
+        "demonstration that significance and tradability are distinct. A "
+        "matched-control study shows the post-effective S&amp;P 500 deletion "
+        "rebound is small-loser mean reversion, not an index effect. A "
+        "closed-end-fund discount-reversion strategy then cleared every "
+        "pre-registered bar at once (net Sharpe 1.1, Deflated Sharpe 0.999) before "
+        "a one-week entry lag collapsed it to nothing — the discipline overturning "
+        "its own best result. The deliverable is a research process that detects a "
+        "genuine premium where one exists, declines to claim it where one does "
+        "not, and overturns its own result when it is too good to be true.",
         ABS))
     S.append(p("<b>Keywords:</b> market efficiency; cross-sectional anomalies; "
                "survivorship bias; deflated Sharpe ratio; funding-rate carry; "
@@ -221,7 +229,7 @@ def build():
         "and 58% post-publication (McLean and Pontiff, 2016). (ii) At honest "
         "multiple-testing thresholds, most published factors are likely false "
         "discoveries (Harvey, Liu, and Zhu, 2016); I therefore count every trial "
-        "and never reset the count, which presently stands at N = 9 and feeds the "
+        "and never reset the count, which presently stands at N = 11 and feeds the "
         "Deflated Sharpe Ratio directly. (iii) Anomaly profits concentrate in "
         "high-turnover implementations whose costs exceed their gross returns "
         "(Novy-Marx and Velikov, 2016); no gross-only number is reported and "
@@ -367,6 +375,41 @@ def build():
         "effect reproduced in the post-effective window, with the control basket "
         "as the discipline that separates a real anomaly from a mechanical one."))
 
+    S.append(p("5.4&nbsp;&nbsp;The liquid-tail carry: significance without tradability", H2))
+    S.append(p(
+        "Carry was real in the top-30; trial 10 asks whether a wider premium "
+        "hides in the liquid tail (dollar-volume ranks 31–150), beneath the "
+        "basis-trade capital that decayed the majors. Pre-registered on the "
+        "disjoint tail universe at conservative 20 bps-per-side fills, the funding "
+        "signal predicts the cross-section as strongly as the majors — a "
+        "Newey-West t of -3.62 versus -3.54 — yet loses money net: a Sharpe of "
+        "-0.13 on a gross of 0.26. The decomposition is the lesson: funding income "
+        "contributes +1.23 in cumulative P&amp;L while price drift returns -0.85 of "
+        "it, so the tail carry is almost fully priced and the fills finish it. It "
+        "is the cleanest illustration in the study that a strongly significant "
+        "signal and a tradable edge are different objects."))
+
+    S.append(p("5.5&nbsp;&nbsp;A graduation overturned: closed-end-fund discount reversion", H2))
+    S.append(p(
+        "The one structurally protected premium remaining was the closed-end-fund "
+        "discount: with no creation or redemption mechanism, price can persist "
+        "away from NAV, and in the sub-$400M tail no arbitrageur is large enough "
+        "to close it. A zero-trial Stage 1 first cleared the survivorship question "
+        "the opposite way — 151 dead closed-end funds enumerated from SEC filings, "
+        "94% dying at NAV (liquidation, merger, open-ending, term maturity) with "
+        "no distress delistings — so omitting dead funds biases a discount-long "
+        "book against itself. The registered Stage 2 then passed every "
+        "pre-registered criterion at once: net Sharpe 1.11, Deflated Sharpe 0.999 "
+        "at N=11, a Newey-West t of -10.4, positive skew. The prime directive "
+        "treats a result that good as a suspected defect, so an entry-lag sweep "
+        "was run: the Sharpe collapsed from 1.11 to 0.10 at one week of delay and "
+        "turned negative beyond, exposing a one-week microstructure bounce — the "
+        "discount in week w is built from the same close the next week's return "
+        "divides by — rather than durable reversion. The implementable strategy is "
+        "null and the criteria were not relaxed; the lesson is now a registered "
+        "requirement, that a reversion strategy must pass an entry-lag "
+        "implementability gate and not merely the in-sample bar."))
+
     # ---- 6 ----
     S.append(p("6.&nbsp;&nbsp;What the falsification harness caught", H))
     S.append(p(
@@ -422,27 +465,38 @@ def build():
         "Residual survivorship bias remains (149 unpriceable names; missing "
         "delisting returns, bounded at 0.006 Sharpe for priceable failures); "
         "sectors are as-of-today; betas are estimated; headline costs are linear "
-        "with impact priced separately; and the evidence spans two asset classes "
-        "over roughly fifteen and six years. An institutional-grade version would "
-        "require CRSP-quality delisting returns, point-in-time fundamentals and "
-        "classifications, borrow availability and fees on the short book, an "
+        "with impact priced separately; and the evidence spans three asset classes "
+        "— equities and crypto over roughly fifteen and six years, and closed-end "
+        "funds over fourteen years of weekly data. An institutional-grade version "
+        "would require CRSP-quality delisting returns, point-in-time fundamentals "
+        "and classifications, borrow availability and fees on the short book, an "
         "impact model calibrated to fills, multi-market replication, and an order "
-        "of magnitude more trials under the same logging discipline. Each "
-        "limitation is named deliberately; naming them is part of the result."))
+        "of magnitude more trials under the same logging discipline. That the "
+        "binding constraint is now data is itself a measured finding: a free "
+        "historical ticker-to-CIK recovery over the dead names lifts "
+        "survivorship-safe fundamentals coverage only from 73% to 75%, most "
+        "resolved names carrying ticker-reassignment risk, so the "
+        "quality-fundamentals hypothesis waits on institutional data rather than "
+        "another free-data trial. Each limitation is named deliberately; naming "
+        "them is part of the result."))
 
     # ---- 10 ----
     S.append(p("10.&nbsp;&nbsp;Conclusion", H))
     S.append(p(
-        "I tested nine pre-registered hypotheses across two asset classes and "
+        "I tested eleven pre-registered hypotheses across three asset classes and "
         "graduated none to production. Read carelessly that is failure; read "
         "correctly it is the point. A research process is valuable only if it can "
         "distinguish a real premium from a lucky one and a robust premium from a "
         "decaying, skewed one, and then act on the distinction even when the "
         "number in front of it is good. The pipeline destroyed its own best result "
         "upon correcting the universe, recovered genuine crypto carry yet declined "
-        "it on a deflated-Sharpe standard it was right to enforce, and showed a "
-        "famous anomaly to be a matched-control artifact. The strategies failed; "
-        "the judgment did not."))
+        "it on a deflated-Sharpe standard it was right to enforce, showed a famous "
+        "anomaly to be a matched-control artifact, and overturned its own "
+        "best-looking backtest — a closed-end-fund reversion that cleared every "
+        "bar — on a one-week implementability test. The execution and risk engine "
+        "that would size any graduated edge is built and shown on synthetic ground "
+        "truth to commit to a real signal and size a null to zero; the missing "
+        "piece is the edge. The strategies failed; the judgment did not."))
 
     # ---- references ----
     S.append(p("References", H))
@@ -458,6 +512,8 @@ def build():
         "Expected Returns. <i>Review of Financial Studies</i> 29(1), 5–68.",
         "Jegadeesh, N., and S. Titman (1993). Returns to Buying Winners and "
         "Selling Losers. <i>Journal of Finance</i> 48(1), 65–91.",
+        "Lo, A. (2002). The Statistics of Sharpe Ratios. <i>Financial Analysts "
+        "Journal</i> 58(4), 36–52.",
         "Lopez de Prado, M. (2018). <i>Advances in Financial Machine Learning.</i> "
         "Wiley.",
         "McLean, R. D., and J. Pontiff (2016). Does Academic Research Destroy "

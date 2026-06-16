@@ -378,7 +378,45 @@ the same logging discipline. New trials are already machine-enforced — a
 real-data run refuses to start unless it names a pre-registered, still-open
 hypothesis or declares itself a reproduction.
 
-## 11. Conclusion
+The binding constraint is now data, not ideas. A post-trial-#11 ideation pass
+screened the remaining free-data candidates — post-earnings drift, systematic
+short volatility, crypto cash-and-carry basis, index additions, lottery/MAX,
+pairs stat-arb, calendar seasonality — against the scars this project earned
+(survivorship, borrow on the short leg, cost mortality, and now the trial-#11
+microstructure trap) and none survived. Free-data cross-sectional alpha,
+honestly screened, is largely exhausted, and that is itself a result. The
+clearest next step is the quality-fundamentals hypothesis (H1) on a
+survivorship-safe source, whose harness is already built, tested, and one
+source-swap from a graded trial #12 the day CRSP/Compustat access lands. I
+checked whether free data could substitute and measured that it cannot: a
+historical ticker→CIK recovery over the 217 dead-and-unmapped S&P names lifts
+survivorship-safe coverage only from 73% to 75%, and more than half of the names
+it *does* resolve carry ticker-reassignment risk — a naive free map would
+silently bind a dead constituent to a living company's fundamentals, the exact
+survivorship sin in a new disguise. The hole that defined trial #2 cannot be
+closed for free. That boundary is the one between a student project and an
+institutional desk, and naming where it falls is the honest version of "what's
+next."
+
+## 11. The engine room — ready for the edge I don't yet have
+
+A research process that graduates nothing still has to answer the question a
+desk asks next: when something *does* clear the bar, how do you size and run it?
+I built that machinery and proved its single most important property on
+synthetic ground truth, because there is no real edge to drive it. The engine
+composes a multi-signal combiner, factor-neutralization, position/gross/drawdown
+limits, and integer-share execution around a sizing rule that levers on the
+*lower confidence bound* of the trailing Sharpe (Lo 2002), not its point
+estimate. Fed a real (planted) edge it commits capital — average gross exposure
+1.7, profitable net — and ramps in slowly as evidence accumulates; fed an
+identically-built null it sizes to **exactly zero**. That is the trial-#11
+lesson cast in code: an engine that refuses to lever an edge it is not
+statistically sure of, the structural opposite of the Kelly-on-a-mirage instinct
+that ruins accounts. Order submission stays in the frozen, paper-only live path —
+the engine only ever produces a plan. The infrastructure is ready; the missing
+piece is the edge, and finding one honestly is the rest of the project.
+
+## 12. Conclusion
 
 I tested eleven hypotheses across three asset classes and graduated
 none of them to production. Read carelessly, that is failure. Read correctly, it
@@ -401,6 +439,7 @@ Bailey & López de Prado (2014), "The Deflated Sharpe Ratio"; Greenwood & Sammon
 (2025), "The Disappearing Index Effect," *Journal of Finance*; Gu, Kelly & Xiu
 (2020), "Empirical Asset Pricing via Machine Learning"; Harvey, Liu & Zhu
 (2016), "…and the Cross-Section of Expected Returns"; Jegadeesh & Titman (1993);
+Lo (2002), "The Statistics of Sharpe Ratios," *Financial Analysts Journal*;
 López de Prado (2018), *Advances in Financial Machine Learning*; McLean &
 Pontiff (2016), "Does Academic Research Destroy Stock Return Predictability?";
 Novy-Marx & Velikov (2016), "A Taxonomy of Anomalies and Their Trading Costs";
