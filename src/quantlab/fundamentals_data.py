@@ -48,6 +48,8 @@ FIELD_TAGS = {
     "cogs": ["CostOfGoodsAndServicesSold", "CostOfGoodsSold", "CostOfRevenue"],
     "gross_profit": ["GrossProfit"],
 }
+PERIODIC_FORMS = ("10-K", "10-Q", "10-K/A", "10-Q/A")
+ANNUAL_FORMS = ("10-K", "10-K/A")
 
 
 def _get(url: str, timeout: int = 60, retries: int = 4) -> bytes:
@@ -84,29 +86,49 @@ def _get(url: str, timeout: int = 60, retries: int = 4) -> bytes:
 # Pure parsers (no network) — pinned by tests.
 # --------------------------------------------------------------------------- #
 
-def parse_company_concept(
-    payload: dict, forms: tuple[str, ...] = ("10-K", "10-Q", "10-K/A", "10-Q/A"),
-) -> pd.Series:
-    """SEC ``companyconcept`` JSON → a series indexed by FILING date (``filed``)
-    of the reported USD value, restricted to periodic-report ``forms``. When a
-    filing date carries several period values (a 10-K reports multiple periods),
-    keep the one with the LATEST period ``end`` — the freshest figure the filing
-    disclosed. Empty series if the concept/units are absent (the caller falls
-    back to the next tag)."""
+def parse_company_concept_frame(
+    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS,
+) -> pd.DataFrame:
+    """SEC ``companyconcept`` JSON → filing-date-indexed rows with ``value``,
+    ``form``, and ``end`` columns.
+
+    The free SEC path needs this metadata so H1 can request ANNUAL-ONLY flow
+    numerators (10-K/10-KA) while leaving assets as every known stock value.
+    When a filing date carries several period values, keep the row with the
+    latest period ``end`` — the freshest figure disclosed in that filing.
+    """
     units = (payload or {}).get("units", {}) or {}
     rows = units.get("USD") or []
     recs = []
     for r in rows:
         if r.get("form") in forms and r.get("filed") and r.get("val") is not None:
-            recs.append((r["filed"], r.get("end", ""), float(r["val"])))
+            recs.append(
+                (r["filed"], r.get("end", ""), r["form"], float(r["val"]))
+            )
     if not recs:
-        return pd.Series(dtype=float, name="value")
-    df = pd.DataFrame(recs, columns=["filed", "end", "val"]).sort_values(["filed", "end"])
-    df = df.drop_duplicates("filed", keep="last")          # latest period per filing
-    out = pd.Series(df["val"].to_numpy(),
-                    index=pd.to_datetime(df["filed"]), name="value")
+        return pd.DataFrame(columns=["value", "form", "end"])
+    df = pd.DataFrame(
+        recs, columns=["filed", "end", "form", "value"]
+    ).sort_values(["filed", "end"])
+    df = df.drop_duplicates("filed", keep="last")
+    out = df.set_index(pd.to_datetime(df["filed"]))[["value", "form", "end"]]
     out.index.name = "filed"
     return out[~out.index.duplicated(keep="last")].sort_index()
+
+
+def parse_company_concept(
+    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS,
+) -> pd.Series:
+    """SEC ``companyconcept`` JSON → filing-date-indexed USD values.
+
+    Kept as a Series wrapper for callers/tests that only need the values.
+    """
+    frame = parse_company_concept_frame(payload, forms=forms)
+    if frame.empty:
+        return pd.Series(dtype=float, name="value")
+    out = frame["value"].copy()
+    out.index.name = "filed"
+    return out
 
 
 def parse_ticker_cik_map(payload: dict) -> dict[str, str]:
@@ -130,7 +152,9 @@ class FundamentalsSource:
 
     survivorship_safe: bool = False
 
-    def field_series(self, ticker: str, field: str) -> pd.Series:  # pragma: no cover
+    def field_series(
+        self, ticker: str, field: str, *, annual_only: bool = False
+    ) -> pd.Series:  # pragma: no cover
         raise NotImplementedError
 
 
@@ -156,29 +180,39 @@ class FreeSECSource(FundamentalsSource):
             self._map = parse_ticker_cik_map(payload)
         return self._map.get(ticker.upper())
 
-    def _concept(self, cik: str, tag: str) -> pd.Series:
+    def _concept_frame(self, cik: str, tag: str) -> pd.DataFrame:
         path = os.path.join(self.cache_dir, f"cc_{cik}_{tag}.parquet")
         if os.path.exists(path):
-            s = pd.read_parquet(path)["value"]
-            s.index.name = "filed"
-            return s
+            cached = pd.read_parquet(path)
+            if {"value", "form", "end"}.issubset(cached.columns):
+                cached.index.name = "filed"
+                return cached[["value", "form", "end"]].sort_index()
         url = f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/{tag}.json"
         try:
-            series = parse_company_concept(json.loads(_get(url)))
+            frame = parse_company_concept_frame(json.loads(_get(url)))
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                series = pd.Series(dtype=float, name="value")
+                frame = pd.DataFrame(columns=["value", "form", "end"])
             else:
                 raise
-        series.to_frame("value").to_parquet(path)
-        return series
+        frame.to_parquet(path)
+        return frame
 
-    def field_series(self, ticker: str, field: str) -> pd.Series:
+    def field_series(
+        self, ticker: str, field: str, *, annual_only: bool = False
+    ) -> pd.Series:
         cik = self.ticker_cik(ticker)
         if cik is None:
             return pd.Series(dtype=float, name="value")     # unmapped (the hole)
+        forms = ANNUAL_FORMS if annual_only else PERIODIC_FORMS
         for tag in FIELD_TAGS[field]:
-            s = self._concept(cik, tag)
+            frame = self._concept_frame(cik, tag)
+            if frame.empty:
+                s = pd.Series(dtype=float, name="value")
+            else:
+                filtered = frame[frame["form"].isin(forms)]
+                s = filtered["value"].copy()
+                s.index.name = "filed"
             if not s.empty:
                 return s
         return pd.Series(dtype=float, name="value")
@@ -192,7 +226,9 @@ class CompustatSource(FundamentalsSource):
 
     survivorship_safe = True
 
-    def field_series(self, ticker: str, field: str) -> pd.Series:
+    def field_series(
+        self, ticker: str, field: str, *, annual_only: bool = False
+    ) -> pd.Series:
         raise NotImplementedError(
             "CompustatSource is a slot — connect WRDS/Compustat (filing-date-PIT "
             "fundamentals + delisting-inclusive prices) here. See "

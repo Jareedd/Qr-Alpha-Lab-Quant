@@ -30,6 +30,17 @@ def test_parse_company_concept_filing_date_pit_and_form_filter():
     assert fdat.parse_company_concept({"units": {}}).empty
 
 
+def test_parse_company_concept_can_filter_annual_forms_only():
+    payload = {"units": {"USD": [
+        {"end": "2022-12-31", "val": 120, "form": "10-K", "filed": "2023-02-15"},
+        {"end": "2023-03-31", "val": 35, "form": "10-Q", "filed": "2023-05-01"},
+        {"end": "2023-06-30", "val": 38, "form": "10-Q", "filed": "2023-08-01"},
+    ]}}
+    annual = fdat.parse_company_concept(payload, forms=fdat.ANNUAL_FORMS)
+    assert list(annual.index) == [pd.Timestamp("2023-02-15")]
+    assert annual.iloc[0] == 120
+
+
 def test_parse_ticker_cik_map_zero_pads():
     payload = {"0": {"cik_str": 320193, "ticker": "aapl", "title": "Apple"},
                "1": {"cik_str": 789019, "ticker": "MSFT", "title": "Microsoft"}}
@@ -55,6 +66,57 @@ def test_gp_and_accruals_over_assets():
     cfo = pd.Series([7.0], index=[pd.Timestamp("2023-02-15")])
     a = pd.Series([100.0], index=[pd.Timestamp("2023-02-15")])
     assert fnd.accruals_over_assets(ni, cfo, a).iloc[0] == pytest.approx(0.03)
+
+
+class _StubFundamentalsSource(fdat.FundamentalsSource):
+    survivorship_safe = True
+
+    def __init__(self):
+        self.calls: list[tuple[str, bool]] = []
+
+    def field_series(
+        self, ticker: str, field: str, *, annual_only: bool = False
+    ) -> pd.Series:
+        self.calls.append((field, annual_only))
+        annual_idx = pd.to_datetime(["2023-02-15"])
+        quarterly_idx = pd.to_datetime(["2023-02-15", "2023-05-01"])
+        if field == "assets":
+            return pd.Series([100.0, 110.0], index=quarterly_idx)
+        if field == "gross_profit":
+            return (
+                pd.Series([40.0], index=annual_idx)
+                if annual_only
+                else pd.Series([40.0, 12.0], index=quarterly_idx)
+            )
+        if field == "net_income":
+            return (
+                pd.Series([16.0], index=annual_idx)
+                if annual_only
+                else pd.Series([16.0, 5.0], index=quarterly_idx)
+            )
+        if field == "cfo":
+            return (
+                pd.Series([10.0], index=annual_idx)
+                if annual_only
+                else pd.Series([10.0, 2.0], index=quarterly_idx)
+            )
+        return pd.Series(dtype=float)
+
+
+def test_pit_feature_panels_use_annual_flow_numerators_before_assets_division():
+    source = _StubFundamentalsSource()
+    asof = pd.to_datetime(["2023-02-28", "2023-05-31"])
+    panels = fnd.pit_feature_panels(source, ["ABC"], asof)
+    gp_a = panels["gp_a"]["ABC"]
+    acc_a = panels["accruals_a"]["ABC"]
+
+    assert gp_a.loc["2023-02-28"] == pytest.approx(0.40)
+    assert gp_a.loc["2023-05-31"] == pytest.approx(40.0 / 110.0)
+    assert acc_a.loc["2023-05-31"] == pytest.approx((16.0 - 10.0) / 110.0)
+    assert ("assets", False) in source.calls
+    assert ("gross_profit", True) in source.calls
+    assert ("net_income", True) in source.calls
+    assert ("cfo", True) in source.calls
 
 
 def test_quality_signal_high_profitability_high_accruals():
