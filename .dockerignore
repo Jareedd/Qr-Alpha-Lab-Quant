@@ -1,0 +1,16 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.python-version
+.pytest_cache
+.venv
+venv
+.env
+.env.*
+data_cache
+results/live
+__MACOSX
+*.log

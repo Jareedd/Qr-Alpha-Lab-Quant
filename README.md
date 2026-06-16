@@ -103,6 +103,14 @@ One-time setup: repo → Settings → Secrets and variables → Actions → add 
 
 One read-only Streamlit page over `results/` and the research log — falsification-gate status, the live experiment (cycle continuity, maturity countdown, live-vs-backtest IC with the momentum control arm), the trial ledger with the DSR-vs-N luck hurdle, data-revision tracking, and the capacity curve. It can display, and never change, the research record: `pip install -r requirements-dashboard.txt && streamlit run dashboard/app.py` (dashboard deps are deliberately separate so the nightly trading cycle can never be broken by them).
 
+Containerized deployment is also supported from the repo root:
+
+- Build: `docker build -t qr-alpha-lab-dashboard .`
+- Run: `docker run --rm -p 8501:8501 -v "$PWD/results:/app/results" -v "$PWD/research_log.md:/app/research_log.md" qr-alpha-lab-dashboard`
+- Or with compose: `docker compose up --build`
+
+For hosted platforms that support `Procfile`-based Python apps, the included `Procfile` starts the dashboard on the platform-provided `$PORT`.
+
 ![dashboard](dashboard/screenshot.png)
 
 ## Known limitations (deliberate honesty)
