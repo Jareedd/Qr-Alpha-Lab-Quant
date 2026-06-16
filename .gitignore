@@ -8,6 +8,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 pytest-cache-files-*/
+.pytest_tmp/   # workspace-local TMP redirect used by sandboxed test runs
 
 # Data caches (regenerable; never commit market data)
 data_cache/
