@@ -20,5 +20,8 @@ data_cache/
 results_baseline/
 results/results/
 
+# Ad-hoc exploration dumps (raw API responses, source samples) — never committed
+scratch/
+
 # Machine-local Claude Code settings
 .claude/settings.local.json

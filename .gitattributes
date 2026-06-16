@@ -1,0 +1,17 @@
+# Binary assets — never apply end-of-line conversion. Without this, a clone on a
+# machine with core.autocrlf=true would smudge LF->CRLF inside these files and
+# corrupt them (notably the ASU working-paper PDF and the result/equity PNGs).
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.parquet binary
+*.gz binary
+
+# Keep text/code line endings stable across platforms (LF in the repo).
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf

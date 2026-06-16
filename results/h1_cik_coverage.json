@@ -1,0 +1,384 @@
+{
+  "_meta": {
+    "trial_count_impact": 0,
+    "source": "EDGAR getcompany (free)",
+    "probed": 217,
+    "dead_unmapped_total": 217
+  },
+  "baseline_coverage_frac": 0.7305,
+  "edgar_resolved": 52,
+  "resolution_classes": {
+    "plausible_dead": 20,
+    "possible_reassignment": 28,
+    "unknown": 4
+  },
+  "survivorship_safe_recovered": 20,
+  "survivorship_safe_coverage_frac": 0.7534,
+  "residual_hole_frac": 0.2466,
+  "detail": [
+    {
+      "ticker": "ABMD",
+      "cik": 815094,
+      "last_10k": "2022-05-20",
+      "deletion": "2022-12-22",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "ALTR",
+      "cik": 1701732,
+      "last_10k": "2025-02-20",
+      "deletion": "2015-12-29",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "ANSS",
+      "cik": 1013462,
+      "last_10k": "2025-02-19",
+      "deletion": "2025-07-18",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "ARNC",
+      "cik": 1790982,
+      "last_10k": "2023-02-21",
+      "deletion": "2020-04-01",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "ATVI",
+      "cik": 718877,
+      "last_10k": "2023-02-23",
+      "deletion": "2023-10-18",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "BIG",
+      "cik": 768835,
+      "last_10k": "2024-04-18",
+      "deletion": "2013-02-15",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "CHK",
+      "cik": 895126,
+      "last_10k": "2026-02-18",
+      "deletion": "2018-03-19",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "CMA",
+      "cik": 28412,
+      "last_10k": "2025-02-24",
+      "deletion": "2024-06-24",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "CTLT",
+      "cik": 1596783,
+      "last_10k": "2024-09-06",
+      "deletion": "2024-12-23",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "CTRA",
+      "cik": 858470,
+      "last_10k": "2026-02-27",
+      "deletion": "2026-05-07",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "CTXS",
+      "cik": 877890,
+      "last_10k": "2022-02-16",
+      "deletion": "2022-10-03",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "DFS",
+      "cik": 1393612,
+      "last_10k": "2025-02-20",
+      "deletion": "2025-05-19",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "DISH",
+      "cik": 1001082,
+      "last_10k": "2025-03-12",
+      "deletion": "2023-06-20",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "DNB",
+      "cik": 1799208,
+      "last_10k": "2025-02-21",
+      "deletion": "2017-04-05",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "DO",
+      "cik": 949039,
+      "last_10k": "2024-02-28",
+      "deletion": "2016-09-30",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "DRE",
+      "cik": 783280,
+      "last_10k": "2022-02-18",
+      "deletion": "2022-10-03",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "FBHS",
+      "cik": 1519751,
+      "last_10k": "2026-02-23",
+      "deletion": "2022-12-19",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "FL",
+      "cik": 850209,
+      "last_10k": "2025-03-27",
+      "deletion": "2019-08-09",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "FRC",
+      "cik": 1132979,
+      "last_10k": null,
+      "deletion": "2023-05-04",
+      "class": "unknown"
+    },
+    {
+      "ticker": "GPS",
+      "cik": 39911,
+      "last_10k": "2026-03-17",
+      "deletion": "2022-02-03",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "HBI",
+      "cik": 1359841,
+      "last_10k": "2025-02-14",
+      "deletion": "2021-12-20",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "HES",
+      "cik": 4447,
+      "last_10k": "2025-02-27",
+      "deletion": "2025-07-23",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "HOLX",
+      "cik": 859737,
+      "last_10k": "2025-11-18",
+      "deletion": "2026-04-09",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "IGT",
+      "cik": 1619762,
+      "last_10k": null,
+      "deletion": "2014-06-20",
+      "class": "unknown"
+    },
+    {
+      "ticker": "IPG",
+      "cik": 51644,
+      "last_10k": "2025-02-20",
+      "deletion": "2025-11-28",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "JNPR",
+      "cik": 1043604,
+      "last_10k": "2025-02-21",
+      "deletion": "2025-07-09",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "JWN",
+      "cik": 72333,
+      "last_10k": "2025-03-21",
+      "deletion": "2020-06-22",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "K",
+      "cik": 55067,
+      "last_10k": "2025-02-21",
+      "deletion": "2025-12-11",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "LLL",
+      "cik": 1546383,
+      "last_10k": null,
+      "deletion": "2019-07-01",
+      "class": "unknown"
+    },
+    {
+      "ticker": "LSI",
+      "cik": 944314,
+      "last_10k": "2023-02-24",
+      "deletion": "2014-05-08",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "MON",
+      "cik": 1828325,
+      "last_10k": "2022-03-31",
+      "deletion": "2018-06-07",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "MRO",
+      "cik": 101778,
+      "last_10k": "2024-02-22",
+      "deletion": "2024-11-26",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "NCR",
+      "cik": 70866,
+      "last_10k": "2026-02-26",
+      "deletion": "2007-10-01",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "NLSN",
+      "cik": 1492633,
+      "last_10k": "2022-02-28",
+      "deletion": "2022-10-12",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "NYX",
+      "cik": 1679379,
+      "last_10k": "2024-08-22",
+      "deletion": "2013-11-13",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "ODP",
+      "cik": 800240,
+      "last_10k": "2025-02-26",
+      "deletion": "2010-12-17",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "PDCO",
+      "cik": 891024,
+      "last_10k": "2024-06-18",
+      "deletion": "2018-03-19",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "PLL",
+      "cik": 1728205,
+      "last_10k": "2025-02-26",
+      "deletion": "2015-08-28",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "PXD",
+      "cik": 1038357,
+      "last_10k": "2024-02-22",
+      "deletion": "2024-05-08",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "RAD",
+      "cik": 84129,
+      "last_10k": "2023-05-01",
+      "deletion": "2000-07-27",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "SAI",
+      "cik": 1847075,
+      "last_10k": "2022-02-18",
+      "deletion": "2013-09-20",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "SBNY",
+      "cik": 1288784,
+      "last_10k": null,
+      "deletion": "2023-03-15",
+      "class": "unknown"
+    },
+    {
+      "ticker": "SEE",
+      "cik": 1012100,
+      "last_10k": "2026-03-02",
+      "deletion": "2023-12-18",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "SIVB",
+      "cik": 719739,
+      "last_10k": "2023-02-24",
+      "deletion": "2023-03-15",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "SRCL",
+      "cik": 861878,
+      "last_10k": "2024-02-28",
+      "deletion": "2018-12-03",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "STR",
+      "cik": 1703785,
+      "last_10k": "2022-03-11",
+      "deletion": "2010-06-30",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "SWN",
+      "cik": 7332,
+      "last_10k": "2024-02-22",
+      "deletion": "2017-04-04",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "TGNA",
+      "cik": 39899,
+      "last_10k": "2026-03-02",
+      "deletion": "2017-06-02",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "TWTR",
+      "cik": 1418091,
+      "last_10k": "2022-02-16",
+      "deletion": "2022-11-01",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "WBA",
+      "cik": 1618921,
+      "last_10k": "2024-10-15",
+      "deletion": "2025-08-28",
+      "class": "plausible_dead"
+    },
+    {
+      "ticker": "X",
+      "cik": 1163302,
+      "last_10k": "2025-01-31",
+      "deletion": "2014-07-02",
+      "class": "possible_reassignment"
+    },
+    {
+      "ticker": "XL",
+      "cik": 1772720,
+      "last_10k": "2026-03-31",
+      "deletion": "2018-09-14",
+      "class": "possible_reassignment"
+    }
+  ]
+}
