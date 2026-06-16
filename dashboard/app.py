@@ -192,7 +192,7 @@ else:
         )
         ax.set_title("cycle continuity (green = logged; grey = missing — "
                      "NYSE holidays are not modeled and appear grey)", fontsize=9)
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig)
         plt.close(fig)
         _src("results/live/weights_*.csv dates vs pandas bdate_range")
 
@@ -275,7 +275,7 @@ else:
                                  f"{backtest_stats['mean_rank_ic']:+.4f}")
             ax.axhline(0, c="k", lw=0.5)
             ax.legend(fontsize=8)
-            st.pyplot(fig, width="stretch")
+            st.pyplot(fig)
             plt.close(fig)
             st.caption(
                 "The control arm separates 'the model decayed' from 'the "
@@ -416,7 +416,7 @@ if trials:
     ax1.legend(h1 + h2, l1 + l2, fontsize=8, loc="center right")
     ax1.set_title("the cost of every trial: the luck hurdle rises with N; "
                   "all post-bias-fix trials sit at the floor", fontsize=10)
-    st.pyplot(fig, width="stretch")
+    st.pyplot(fig)
     plt.close(fig)
     if n_obs:
         st.caption(
@@ -449,7 +449,7 @@ if trials:
                          if len(t["conclusion"]) > 110 else t["conclusion"])}
          for t in trials]
     ).set_index("#")
-    st.dataframe(table, width="stretch")
+    st.dataframe(table, use_container_width=True)
     st.caption("Nulls are results too — nothing here is colored green.")
     with st.expander("full hypothesis / conclusion text per trial"):
         for t in trials:
@@ -470,7 +470,7 @@ hypos = loaders.parse_hypotheses(hypo_md)
 if hypos:
     st.write("**Pre-registered queue** — declared before they run, never edited after:")
     st.dataframe(
-        pd.DataFrame(hypos).set_index("name"), width="stretch", height=200
+        pd.DataFrame(hypos).set_index("name"), use_container_width=True, height=200
     )
 else:
     st.info("Pre-registered queue: no registrations parsed from "
@@ -507,7 +507,7 @@ if rev_files:
             ax.set_xticks(range(len(df)))
             ax.set_xticklabels([f["file"][10:20] for f in revs], fontsize=7,
                                rotation=45)
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig)
         plt.close(fig)
         last = revs[-1]
         if last.get("top_affected_tickers"):
@@ -550,7 +550,7 @@ with e1:
         ax.set_title(f"square-root impact sweep "
                      f"(ADV coverage {cap.get('adv_coverage', float('nan')):.1%})",
                      fontsize=9)
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig)
         plt.close(fig)
         st.caption(
             "Any future strategy with this turnover profile needs ≥1.4%/yr "
@@ -569,7 +569,7 @@ with e2:
         tdf = pd.DataFrame(
             [{"trial": t["trial_no"], "turnover/yr": t["turnover"]} for t in trials]
         ).set_index("trial")
-        st.dataframe(tdf, width="stretch")
+        st.dataframe(tdf, use_container_width=True)
         st.caption("Turnover is a headline metric here: it is what kills "
                    "weak edges at real costs.")
         _src("research_log.md trial rows")
