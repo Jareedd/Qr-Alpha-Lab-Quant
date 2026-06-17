@@ -58,6 +58,51 @@ Template:
 - Failure interpretation: large-cap US quality is also arbitraged away at
   free-data fidelity; the write-up's conclusion extends from price-only
   to price+fundamental features.
+- **Amendment, 2026-06-16 — PRE-DATA (status stays PROPOSED; no trial run; still
+  blocked on the data-source decision). Refines the spec from the OSAP
+  cheapest-kill verification — full record in `research/06_h1_osap_verification.md`.
+  Pre-data refinement is legitimate (no H1 result has been seen); the rationale
+  is documented here per protocol.**
+  1. **Profitability leg = cash-based operating profitability (CBOP), value-weighted
+     — NOT the original `z(GP/A) − z(accruals/A)` blend.** Accruals is *subsumed*
+     by profitability (Ball, Gerakos, Linnainmaa & Nikolaev 2016), so blending
+     double-counts and adds a decayed, microcap/short-leg-concentrated leg. CBOP
+     (operating profitability net of accruals, over total assets) captures the
+     accruals information cleanly. Any accruals claim is run ONLY as a separate,
+     separately-reported, gated hedged claim — never blended.
+  2. **Universe: PIT S&P 500, excluding GICS Financials AND Real Estate** (no
+     CoGS line). This is **~21% by count** (107/503), not the "~40%" the original
+     note implied — ~396 non-financial names → ~40–79 per quintile (stable;
+     ≥38/quintile even under coverage haircuts). Large-cap by construction.
+  3. **Construction (frozen): value-weighted QUINTILE long-short** (not decile —
+     the VW extreme-decile weakens to t=1.88 post-2013). Denominator =
+     **current** assets as primary; the **lagged-assets** version reported as a
+     robustness leg (it is the cut Hou–Xue–Zhang 2020 find *insignificant*, t=1.04
+     — a declared risk). h ≈ 63d, quarterly rebalance (low turnover).
+  4. **Data source (the gate): survivorship-safe AND filing-date point-in-time.**
+     Sharadar SF1 on an **As-Reported** dimension (ARQ/ART, keyed on `DATEKEY`) —
+     NOT MRQ/MRT (restatement look-ahead); OR **WRDS Compustat PIT/Snapshot** —
+     NOT vanilla (restated) Compustat. The free SEC source is forbidden
+     (survivorship-blocked ~39–75%). Run via `run_fundamentals.py --source
+     compustat/sharadar` after the machinery + data gates.
+  5. **Annualization fix (confirmed bug):** flow fundamentals (CBOP components)
+     must be annualized (TTM / ART, or 10-K-only) BEFORE dividing by point-in-time
+     Assets — the free pull mixed 10-Q quarterly flows with stock Assets. Fix
+     before the graded run (the machinery gate does not catch it).
+  6. **Success criteria (frozen, N=12):** right-signed t_NW ≥ +2 AND net SR > 0
+     beating equal-weight and 12-1 momentum baselines net of costs AND **DSR ≥ 0.95
+     at N=12** — hurdle **≈ 0.90 net annual SR (daily, ~15-yr) / ≈ 0.86 (weekly)**
+     (corrected from the stale 0.83, which was the N=10 value). Value-weighted,
+     net of cost. Machinery gate (synthetic `planted_quality` recovered /
+     `null_quality` rejected) runs in-env first.
+  7. **Honest prior (updated by the verification):** gross profitability is ALIVE
+     as a factor (OSAP post-2013 VW NW t≈2.9–3.2, and *strengthened* per
+     Novy-Marx & Medhat 2025) — so this is NOT a free kill. BUT the large-cap,
+     value-weighted, **net-of-cost** raw cut H1 actually trades is the *marginal*
+     version (in-sample large-cap raw t=1.88; the large-cap result is an FF3
+     alpha; the lagged-assets denominator is insignificant). **Expected outcome:
+     a credible NULL or a marginal pass** — logged whatever it says; either
+     extends the survivorship/cost-mortality story to fundamentals.
 
 ### H2: The same pipeline finds (or honestly rejects) carry in crypto perpetuals, where survivorship bias and dead-name gaps do not exist
 - Status: **RUN (trial #8, 2026-06-13). Outcome: registered criteria NOT MET

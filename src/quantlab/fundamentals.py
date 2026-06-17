@@ -5,10 +5,12 @@ Features (Novy-Marx 2013 profitability; Sloan 1996 accruals):
 - accruals/A   = (net income − CFO) / assets   (high = bad; accrual reversal)
 
 All filing-date point-in-time: feature series are indexed by ``filed`` and
-as-of-aligned to rebalance dates (latest filing ≤ date). The quality signal is
-cross-sectional ``z(GP/A) − z(accruals/A)``; the book longs the high-quality
-quintile, shorts the low. Slow rebalance keeps cost mortality low — the failure
-mode that killed the price-feature trials.
+as-of-aligned to rebalance dates (latest filing ≤ date). On the free SEC path,
+FLOW numerators use annual-only filings before division by point-in-time assets,
+which avoids the confirmed bug of mixing 10-Q quarterly flows with stock values.
+The quality signal is cross-sectional ``z(GP/A) − z(accruals/A)``; the book
+longs the high-quality quintile, shorts the low. Slow rebalance keeps cost
+mortality low — the failure mode that killed the price-feature trials.
 
 The synthetic machinery gate (``machinery_gate``) must pass before any real run:
 ``planted_quality`` recovered, ``null_quality`` rejected, paired per seed. Mirrors
@@ -47,10 +49,12 @@ def accruals_over_assets(net_income: pd.Series, cfo: pd.Series,
 def _gross_profit(source: FundamentalsSource, ticker: str) -> pd.Series:
     """GP = GrossProfit if tagged, else Revenue − CoGS (the audit's finding:
     direct GrossProfit is ~0% tagged; the subtraction caps ~59% on non-financials)."""
-    gp = source.field_series(ticker, "gross_profit")
+    gp = source.field_series(ticker, "gross_profit", annual_only=True)
     if not gp.empty:
         return gp
-    rev, cogs = (source.field_series(ticker, f) for f in ("revenue", "cogs"))
+    rev, cogs = (
+        source.field_series(ticker, f, annual_only=True) for f in ("revenue", "cogs")
+    )
     if rev.empty or cogs.empty:
         return pd.Series(dtype=float)
     idx = rev.index.union(cogs.index)
@@ -61,8 +65,10 @@ def pit_feature_panels(
     source: FundamentalsSource, tickers: list[str], asof_dates: pd.DatetimeIndex,
 ) -> dict[str, pd.DataFrame]:
     """Assemble (asof_date x ticker) GP/A and accruals/A panels, PIT: each cell
-    is the latest filing on or before that date. Unmapped/blank tickers drop out
-    (NaN), surfaced honestly rather than imputed."""
+    is the latest filing on or before that date. Flow numerators are annual-only
+    on the free SEC path, so GP/A and accruals/A are not understated by quarter
+    values divided by stock assets. Unmapped/blank tickers drop out (NaN),
+    surfaced honestly rather than imputed."""
     gp_a, acc_a = {}, {}
     for t in tickers:
         assets = source.field_series(t, "assets")
@@ -71,7 +77,8 @@ def pit_feature_panels(
         gp = _gross_profit(source, t)
         if not gp.empty:
             gp_a[t] = gp_over_assets(gp, assets).reindex(asof_dates, method="ffill")
-        ni, cfo = source.field_series(t, "net_income"), source.field_series(t, "cfo")
+        ni = source.field_series(t, "net_income", annual_only=True)
+        cfo = source.field_series(t, "cfo", annual_only=True)
         if not ni.empty and not cfo.empty:
             acc_a[t] = accruals_over_assets(ni, cfo, assets).reindex(asof_dates, method="ffill")
     return {"gp_a": pd.DataFrame(gp_a, index=asof_dates),
