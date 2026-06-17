@@ -4,6 +4,21 @@ An honest cross-sectional alpha research pipeline: data → features → walk-fo
 
 Most retail backtests are statistical fiction. The published evidence says so: anomaly returns fall 26% out-of-sample and 58% post-publication (McLean & Pontiff, JF 2016), most published factors fail honest multiple-testing corrections (Harvey–Liu–Zhu, RFS 2016), and the maximum in-sample Sharpe across enough trials looks brilliant even on pure noise (Bailey & López de Prado, 2014). This project is built around *not fooling myself*, which is the actual job of a quantitative researcher.
 
+## See the falsification gate catch a leak (one command)
+
+The differentiator, made visible: the gate recovers a planted signal, rejects pure noise, and goes **red the instant a one-line look-ahead leak enters the pipeline**.
+
+```
+$ python scripts/leak_demo.py
+
+[1] PLANTED signal                 IC=+0.0629  DSR=0.9919   gate(DSR>=0.95): PASS -- signal recovered
+[2] PURE NOISE                     IC=-0.0199  DSR=0.0004   gate(DSR<=0.5):  PASS -- nothing found
+[3] NOISE + 1-line lookahead leak  IC=+1.0000  DSR=1.0000   gate(DSR<=0.5):  FAIL -- noise "found alpha"
+    (injected: panel['leak_fwd_return'] = panel['label'])
+```
+
+That exact gate runs in CI on every push — so a future-peeking feature anywhere in the pipeline turns the build red, not just my confidence. Full transcript: [`results/leak_demo_transcript.txt`](results/leak_demo_transcript.txt). (For an inline GIF, `asciinema rec` the command above.)
+
 ## What makes this pipeline defensible
 
 **Planted-signal / pure-noise validation.** Before trusting any result on real data, the pipeline must pass two falsification tests:
