@@ -74,7 +74,7 @@ You are the research co-pilot on **qr-alpha-lab**, a multi-month quantitative re
 
 **Key scripts (`scripts/`):** `run_pipeline.py` (planted/noise/yfinance/sp500); `engine_demo.py`; `leak_demo.py`; registered runs `run_carry.py`/`run_carry_tail.py`/`run_cef_reversion.py`/`run_events.py`/`run_fundamentals.py`; audits `h1_cik_coverage.py`/`h1_fundamentals_audit.py`/`cef_stage1_census.py`/`cef_dead_fund_census.py`/`cef_reversion_diagnostics.py`/`h8_event_census.py`; eval `pbo_equity.py`/`graduation_hurdle.py`; live `live_trade.py`/`live_report.py`/`collect_borrow.py`; utilities `summarize_trials.py`/`check_account.py`.
 
-**Tests:** 199 tests across 38 files under `tests/`. Run the full suite with `.venv\Scripts\python.exe -m pytest tests/ -q`.
+**Tests:** 201 tests across 38 files under `tests/`. Run the full suite with `.venv\Scripts\python.exe -m pytest tests/ -q`.
 
 **The CI gate (`.github/workflows/ci.yml`)** runs pytest on Python 3.11 + 3.12, then the dual falsification gate:
 ```
@@ -89,13 +89,15 @@ Planted must recover (DSR ≥ 0.95); noise must reject (DSR ≤ 0.5 on a 20-tria
 
 **Live cron (`.github/workflows/live.yml`):** 22:30 UTC weekdays — restores cache → paper trade → monitoring report → H7 borrow snapshot → prune to 7 snapshot dirs → commit prediction log back as an immutable live-IC record.
 
+**Parallel research notes (`research/00–06`):** a literature scan, idea backlog, cull, registration drafts, and an H1 cheapest-kill (OSAP) verification from a parallel exploration session. Read `research/05_summary.md` for the overview and `research/06_h1_osap_verification.md` for the H1 refinement. Note: that backlog independently surfaced the same Form-4 opportunistic-insider idea now registered as H10 — complementary, not a duplicate.
+
 ---
 
 ## 5. Open registrations & pending decisions
 
 | Reg | Title | Status | Blocked on |
 |---|---|---|---|
-| **H1** | Fundamental quality (GP/A, accruals/A) | **PROPOSED** — next north star | **CRSP/Compustat required.** Free SEC XBRL covers only 73% of PIT S&P (dead names unmapped); ticker→CIK recovery lifts only to ~75% with reassignment risk; joint GP/A coverage on free data ≈39% (REITs/banks lack a CoGS line). Harness fully built, tested, machinery-gated — one source-swap from trial #12: `scripts/run_fundamentals.py --hypothesis H1 --source compustat`. Audit: `results/h1_cik_coverage.json`, `results/h1_fundamentals_audit.json`. Sponsorship emails sent to Wahal/Aragon for CRSP. |
+| **H1** | Fundamental quality (GP/A, accruals/A) | **PROPOSED** — next north star | **CRSP/Compustat required.** Free SEC XBRL covers only 73% of PIT S&P (dead names unmapped); ticker→CIK recovery lifts only to ~75% with reassignment risk; joint GP/A coverage on free data ≈39% (REITs/banks lack a CoGS line). Harness fully built, tested, machinery-gated — one source-swap from trial #12: `scripts/run_fundamentals.py --hypothesis H1 --source compustat`. Audit: `results/h1_cik_coverage.json`, `results/h1_fundamentals_audit.json`. **Refined by the 2026-06-16 pre-data amendment** (`research/06_h1_osap_verification.md`): cash-based operating profitability value-weighted, exclude Financials+Real Estate (~21% by count, not ~40%), Sharadar/Compustat As-Reported source, DSR hurdle ≈0.90 at N=12, flow numerators annualized — read the registration, not this row, before any run. Sponsorship emails sent for CRSP. |
 | **H2** | Crypto-perp funding carry (majors) | **RUN as trial #8** | Criteria NOT MET (DSR 0.865 < 0.95); no relaxation. Signal real, decayed. `writeup/h2_carry_design.md`, `results/h2_carry_diagnostics.json`. |
 | **H3** | Momentum in low-dispersion regimes | **PROPOSED** — weak-prior trap check | Owner sign-off. Can run anytime; registered against overfitting. |
 | **H4** | Causal HMM vol-regime gate for momentum | **PROPOSED** — machinery built, gated, not run | Owner sign-off. Separate trial from H3. Synthetic lab caught a vol-regime×residualization IC artifact (+0.06–0.13 on signal-free data) → paired-control now required. |
@@ -153,7 +155,7 @@ Parked/contingent: H3/H4 (await sign-off), H5/H7 Stage-2 (await ≥60 cycles, ~S
 ## 8. First actions for your first session
 
 1. **Sync & orient.** Read `CLAUDE.md`, `research_log.md`, `ROADMAP.md`, `writeup/preregistered_hypotheses.md`. State the current phase (Phase 7) and propose a single milestone — do not start work until the owner confirms.
-2. **Confirm green.** With `.venv\Scripts\python.exe`, run `pytest tests/ -q` (199 tests across 38 files; all must pass) and the falsification gate (planted DSR ≥ 0.95, noise DSR ≤ 0.5). If anything is red, stop and diagnose — a red gate outranks all other work.
+2. **Confirm green.** With `.venv\Scripts\python.exe`, run `pytest tests/ -q` (201 tests across 38 files; all must pass) and the falsification gate (planted DSR ≥ 0.95, noise DSR ≤ 0.5). If anything is red, stop and diagnose — a red gate outranks all other work.
 3. **Re-read the ledger.** Confirm N = 11 and that you can recite the #1–#11 outcomes and the central thesis before proposing anything that spends N.
 4. **(Done — verify.)** The PBO equity result is already folded in: `results/pbo_equity.json` (PBO 0.24), `research_log.md` (2026-06-17 row), and `writeup/research_note.md` §4. Confirm it's present and that PBO stays scoped family-wise (#2/#3/#5/#6/#7 on the shared return matrix), never across the 11 heterogeneous trials.
 5. **Surface the branch state, do not act on it.** Note PR #8 is open and `pbo-leak-h10-dera` is an unpushed local branch. Pushes are held — ask the owner before any push or PR action.
