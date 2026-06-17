@@ -25,3 +25,6 @@ scratch/
 
 # Machine-local Claude Code settings
 .claude/settings.local.json
+
+# Editor/workspace cruft (Obsidian vault config, etc.)
+.obsidian/
