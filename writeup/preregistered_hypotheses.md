@@ -12,6 +12,14 @@ seeing results is prohibited; a revised idea is a new registration. This
 is the difference between testing seven hypotheses and running one
 hypothesis seven times until it works.
 
+**Power before spend (MDE).** Every registration must state its minimum
+detectable effect — the smallest true net Sharpe it could detect at DSR ≥ 0.95
+for its n_obs at the current N — BEFORE running (the fee-first power checks for
+the carry tail, trial #10, were the first instance; this makes it universal). A
+trial whose plausible edge sits below its MDE is underpowered by construction and
+should be redesigned (longer sample, lower turnover) or not run. This spends
+thought, not trials.
+
 Template:
 
 ```
@@ -22,6 +30,10 @@ Template:
 - Exact config: data, features, label, horizon, model, neutralization, costs
 - Success criteria (set BEFORE the run): e.g. t_NW ≥ +2 AND DSR ≥ 0.95 at
   the then-current N, net of costs, beats both baselines
+- Minimum detectable effect (MDE) — MANDATORY: the smallest TRUE net annual
+  Sharpe this trial could clear at DSR ≥ 0.95 given its n_obs and the current N
+  (from `scripts/graduation_hurdle.py`). Stated BEFORE the run so an
+  underpowered trial is known to be underpowered before it spends N.
 - Failure interpretation: what we conclude if it fails
 ```
 
@@ -413,6 +425,111 @@ Template:
   cut; outright null → "the tail carry is fully priced / consumed by tail fills."
   Both are write-up sections; neither is hidden.
 
+### H10: Opportunistic insider cluster-buying (Form 4) earns positive forward returns — the first EDGAR alternative-data candidate
+- Status: **PROPOSED (draft 2026-06-16) — DRAFT ONLY, not run.** Running spends a
+  trial and needs explicit owner sign-off, a Stage-1 data audit (Form 4 coverage
+  + the price-side survivorship bound below), and the machinery gate. Originated
+  from the post-#11 EDGAR alternative-data ideation — the first candidate to clear
+  all five free-data screens since the price/crypto funnel went dry
+  (`writeup/edge_candidates_2026-06-15.md` screened only price/crypto and missed
+  EDGAR alt-data; this fills that gap).
+- Economic prior (weak-to-moderate, declared): insiders trade on private
+  information, and the INFORMATIVE subset is OPPORTUNISTIC trades — off the
+  insider's routine calendar — not routine pre-scheduled ones (Cohen, Malloy &
+  Pomorski 2012; Lakonishok & Lee 2001). A CLUSTER (≥k distinct insiders buying in
+  a short window) is a stronger, lower-noise signal than a single trade.
+  Counterparty: liquidity sellers and a market under-reacting to a
+  disclosed-but-noisy signal. **Counter-prior (why it may fail our bar):** the
+  effect is PUBLISHED → McLean–Pontiff decay (traded for a decade); it
+  concentrates in small-caps (cost/liquidity); and Form 4s are public within 2
+  business days, so any edge lives in under-reaction — exactly what arbitrage
+  erodes.
+- Why it clears the five screens (the reason to test it): (1) **Survivorship,
+  signal side — safe:** Form 4 is filed under the issuer CIK and PERSISTS after a
+  ticker dies/renames — the exact hole that blocks H1 and killed trials #1–7, on
+  the signal side. (2) **Borrow:** the edge is a LONG signal (cluster BUYS) →
+  long-tilt dodges the short-leg assassin. (3) **Cost mortality:** event-driven,
+  low turnover (hold weeks–quarter). (4) **Implementability (#11 lesson):** the
+  signal IS the filing — a discrete public event with its own timestamp, not a
+  price-derived quantity — so it cannot be a bid-ask-bounce artifact; the entry-lag
+  gate is still required. (5) **Capacity-honest:** small-cap concentration caps
+  capacity; declared, not hidden.
+- **CRITICAL honest caveat — the price-side survivorship hole is NOT closed, and
+  for a LONG signal it is NOT conservative.** "Survivorship-safe by CIK" holds for
+  the SIGNAL only. Realized returns still need price history, which free data drops
+  for dead/bankrupt names. For a long-insider-BUY signal that gap is OPTIMISTIC
+  (insiders who bought names that then went to zero are missing from the priceable
+  universe → the long leg looks better than reality) — the OPPOSITE of H6's
+  conservative direction. A graded H10 MUST therefore either (a) bound it with a
+  synthetic terminal-return scenario on names that go unpriceable mid-window (reuse
+  the trial-#2 delisting-return bound), or (b) use delisting-inclusive prices
+  (CRSP). Stage-1 must measure how many cluster-buy names go unpriceable before any
+  run. (This tempers the ideation's "survivorship-safe by CIK" claim, which is only
+  half-true.)
+- Point-in-time safety: Form 4 carries a transaction date AND an EDGAR
+  acceptance/filed timestamp (filed within 2 business days of the trade); the
+  signal at t uses only filings ACCEPTED at or before t. The routine-vs-
+  opportunistic classifier uses each insider's trailing-12-month history through t
+  only (Cohen–Malloy: "routine" = traded in the same calendar month for ≥3 prior
+  years; opportunistic otherwise) — past-only.
+- Exact config (to be FROZEN at Stage-2; sketch): universe = PIT S&P (or a broader
+  liquid common-stock universe, with the price-survivorship bound stated); signal =
+  trailing-W (≈90d) count/dollar of OPPORTUNISTIC open-market BUYS (Form 4 code P)
+  by ≥2 distinct insiders, net of opportunistic sells, cross-sectionally ranked;
+  label = forward 21–63d return; book = LONG-tilt (long top-decile cluster-buy;
+  short leg only if borrow-feasible per H7 data, else long-vs-equal-weight); 10
+  bps/side; sector/beta neutral.
+- Machinery gate (MUST pass in-env before any run): a synthetic `planted_insider`
+  world (planted post-cluster-buy forward drift) recovered, and a null world
+  (Form-4 events with no forward drift) rejected, paired per-seed.
+- Registered paired controls: (1) **routine-vs-opportunistic differential** —
+  routine (calendar-scheduled) cluster buys must be MARKEDLY less informative than
+  opportunistic ones (Cohen–Malloy's central result; if routine buys predict
+  equally, the signal is generic buying pressure, not information); (2) label-
+  shuffle ~0; (3) the price-side survivorship bound, reported as a paired ±scenario.
+- Success criteria (frozen at Stage-2): right-signed forward-return IC with t_NW ≥
+  +2 AND net SR > 0 beating equal-weight AND 12-1 momentum baselines AND DSR ≥ 0.95
+  at then-current N AND survives the one-period entry-lag gate (SR does not collapse
+  at +1 period — the #11 requirement, now a criterion not a diagnostic) AND the
+  routine-vs-opportunistic differential is right-signed and material.
+- Minimum detectable effect (MDE): to be stated at Stage-2 from
+  `graduation_hurdle.py` for the realized n_obs. Event-time n_obs on a sparse
+  cluster-buy set is modest → a HIGH hurdle; this must be checked FIRST — an
+  underpowered event study is the H10-specific risk (the reason the power gate is
+  mandatory).
+- Kill criteria: machinery gate fails → ABORT; routine control predicts as well as
+  opportunistic → generic-buying artifact, logged; entry-lag collapse →
+  microstructure, logged like #11; price-survivorship bound flips the sign → the
+  long leg was a survivorship mirage, logged. NO post-hoc W/k/horizon scans (each
+  is +1 trial).
+- Failure interpretation: a null or DSR-failing result is "the most-cited free
+  alternative-data anomaly, tested with the same discipline, does not clear the bar
+  on free data" — citable next to the carry and CEF trials.
+
+### H11: 13F institutional-ownership change (crowding) is cross-sectionally informative — secondary EDGAR candidate, WEAK prior
+- Status: **PROPOSED (draft 2026-06-16) — DRAFT ONLY, not run.** The weaker sibling
+  of H10; registered for completeness of the EDGAR alt-data sweep.
+- Economic prior (WEAK, declared): a change in aggregate institutional holdings (Δ
+  13F) may carry information OR signal CROWDING that precedes reversal — the two
+  point in OPPOSITE directions, which is a reason for skepticism, not confidence.
+- **Why it is the weaker bet (counter-prior, up front):** 13F is filed up to **45
+  days after quarter-end**, is LONG-ONLY (no shorts, no intra-quarter timing), and
+  is window-dressing-prone — so the signal is stale by construction and heavily
+  studied. The 45-day lag MUST be hard-enforced (a 13F enters only on its filing
+  date, never quarter-end), which alone may kill any edge.
+- Survivorship: signal side safe (13F filed under filer CIK, persists); the SAME
+  price-side survivorship caveat as H10 applies (and is not conservative for a long
+  tilt).
+- Point-in-time safety: a quarter-end 13F enters the signal only on its EDGAR
+  filing date (≤45d lag), never the period it reports.
+- Exact config (to be frozen at Stage-2): Δ institutional ownership
+  breadth/concentration, cross-sectionally ranked, long-tilt, slow rebalance, 45-day
+  filing lag hard-enforced; SAME machinery gate, paired controls, MDE, and entry-lag
+  discipline as H10.
+- Success / kill / failure: SAME bar as H10, no relaxation. Given the weak prior,
+  the expected and most-citable outcome is a clean null — "free 13F crowding,
+  lagged honestly, carries no tradable cross-sectional edge."
+
 ---
 
 Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
@@ -422,4 +539,8 @@ OVERTURNED by entry-lag diagnostic — microstructure reversal artifact, does no
 graduate). **N = 11.** Each run requires owner sign-off, increments N by
 exactly 1, and is logged in `research_log.md` regardless of outcome. H5/H7 are
 collection-only/two-stage and exempt from the run/N language until their Stage-2
-analysis is registered.
+analysis is registered. **H10 (Form 4 opportunistic insider clusters) and H11
+(13F crowding) are PROPOSED drafts (2026-06-16), DRAFT-ONLY** — the first EDGAR
+alternative-data candidates; neither has run, both await a Stage-1 data audit +
+owner sign-off, and **MDE (minimum detectable effect) is now a mandatory pre-run
+field for every registration** (the protocol note above).
