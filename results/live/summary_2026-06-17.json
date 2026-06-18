@@ -1,0 +1,14 @@
+{
+  "asof": "2026-06-17",
+  "n_names": 100,
+  "submitted": true,
+  "equity": 1026506.34,
+  "orders_sent": 117,
+  "orders_failed": [],
+  "n_failed": 0,
+  "revisions": {
+    "compared_to": "2026-06-16",
+    "frac_price_cells_changed": 0.06590804659837284,
+    "n_return_cells_changed": 288
+  }
+}
