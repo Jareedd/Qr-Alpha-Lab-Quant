@@ -21,7 +21,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from quantlab import metrics
+from quantlab import metrics, risk_model
 from quantlab.fundamentals_data import FundamentalsSource
 
 PERIODS_PER_YEAR = 12
@@ -147,3 +147,34 @@ def machinery_gate(seeds=(7, 11, 23), n_firms: int = 200, n_periods: int = 180,
         diffs.append(sr_p - sr_n); planted.append(sr_p); null.append(sr_n)
     return {"passed": min(diffs) > min_differential, "diffs": diffs,
             "planted_sr": planted, "null_sr": null}
+
+
+def value_neutralized_signal(
+    gp_a: pd.DataFrame,
+    value_loading: pd.DataFrame,
+    accruals_a: pd.DataFrame | None = None,
+) -> pd.DataFrame:
+    """``quality_signal(gp_a, accruals_a)`` then, per date, cross-sectionally
+    residualize against the value loading (HML proxy) + a ones column (dollar-
+    neutral demean), via ``risk_model.cross_sectional_neutralize``. The 'neutral'
+    arm of the H1 raw-vs-neutral test.
+
+    Point-in-time: ``value_loading`` must be known at t — a synthetic ground-truth
+    attr in the lab, or a trailing past-only ``rolling_factor_betas`` HML loading
+    on real data. A date whose value_loading row is all-NaN degenerates to a plain
+    demean (no value-neutralization that date) rather than crashing — the
+    conservative, documented convention. A date absent from ``value_loading.index``
+    is left as the raw signal."""
+    sig = quality_signal(gp_a, accruals_a)
+    out = sig.copy()
+    for d in sig.index:
+        if d not in value_loading.index:
+            continue  # leave as-is (no loading known)
+        L = pd.DataFrame(
+            {"value": value_loading.loc[d].reindex(sig.columns), "dollar": 1.0},
+            index=sig.columns,
+        )
+        out.loc[d] = risk_model.cross_sectional_neutralize(sig.loc[d], L).reindex(
+            sig.columns
+        )
+    return out
