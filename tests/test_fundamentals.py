@@ -51,8 +51,13 @@ def test_parse_ticker_cik_map_zero_pads():
 def test_source_adapters_flags_and_slot():
     assert fdat.FreeSECSource().survivorship_safe is False
     assert fdat.CompustatSource().survivorship_safe is True
-    with pytest.raises(NotImplementedError):
-        fdat.CompustatSource().field_series("AAPL", "assets")
+    # CompustatSource is now implemented (reads local WRDS/CRSP extracts). With no
+    # extracts present it must fail LOUDLY with the export recipe (FileNotFoundError),
+    # never silently — the survivorship-safe path is real, just awaiting the data.
+    with pytest.raises(FileNotFoundError, match="WRDS"):
+        fdat.CompustatSource(data_dir="does_not_exist_compustat_dir").field_series(
+            "AAPL", "assets"
+        )
 
 
 # --- features / signal ----------------------------------------------------- #
