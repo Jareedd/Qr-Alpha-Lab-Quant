@@ -102,6 +102,20 @@ are future work with their own pre-registered trials.
 
 ## Notes
 
+- 2026-06-24: **Trial #12 ATTEMPTED, not yet a result — N STAYS 11.** Owner
+  authorized the graded H1 run on `--source free_xwalk`. The SEC fundamentals leg
+  for all ~812 PIT survivorship-safe names PULLED + CACHED successfully (the novel
+  unlock works end-to-end, pre-flight verified: CELG/MON/XLNX/RHT resolve to the
+  right CIK with filing-date-PIT fundamentals ending exactly at acquisition). The
+  PRICE leg is blocked: Tiingo's daily quota was exhausted (a guaranteed-covered
+  name, AAPL, returns 0 rows = rate-limited, not absent), so the run produced no
+  backtest. No valid result → N unchanged (a trial increments N only on a logged
+  result). `tiingo_data` hardened to be rate-limit-RESILIENT + RESUMABLE (slower
+  pacing, harder 429 backoff, skip-without-caching so a re-run fills gaps). RESUME
+  after the Tiingo quota resets: `python scripts/run_fundamentals.py --source
+  free_xwalk --hypothesis H1 --n-trials 12` (SEC is cached; only Tiingo prices
+  refetch). Did NOT fall back to yfinance prices — that would re-inject
+  survivorship bias on the price side and void the trial's entire point.
 - 2026-06-10: N = 2 (trial #1 biased universe, trial #2 PIT universe).
   The Newey–West caveat from trial #1 is now fixed; all t-stats quoted are NW.
 - Phase 2 AND Phase 3 complete: real data, CI falsification gate, PIT universe

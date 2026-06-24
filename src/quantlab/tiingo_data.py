@@ -26,7 +26,7 @@ from quantlab.env import load_env
 
 _BASE = "https://api.tiingo.com"
 _SUPPORTED_URL = "https://apimedia.tiingo.com/docs/tiingo/daily/supported_tickers.zip"
-_MIN_INTERVAL = 0.1  # polite spacing; Tiingo free allows far more than we use
+_MIN_INTERVAL = 0.5  # conservative spacing to avoid 429 on large universe pulls
 _US_EXCHANGES = {"NYSE", "NASDAQ", "NYSE ARCA", "AMEX", "BATS", "NYSE MKT", "NMS"}
 
 
@@ -90,7 +90,7 @@ class TiingoSource:
         os.makedirs(cache_dir, exist_ok=True)
         self._last = 0.0
 
-    def _get(self, url: str, timeout: int = 30, retries: int = 4) -> bytes:
+    def _get(self, url: str, timeout: int = 30, retries: int = 6) -> bytes:
         req = urllib.request.Request(
             url, headers={"Content-Type": "application/json",
                           "Authorization": f"Token {self.key}"})
@@ -108,7 +108,7 @@ class TiingoSource:
                 if e.code == 404:
                     raise
                 if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
-                    time.sleep(2 ** attempt)
+                    time.sleep(min(60, 3 * 2 ** attempt))   # harder backoff for 429
                     continue
                 raise
             except urllib.error.URLError:
@@ -147,7 +147,11 @@ class TiingoSource:
             rows = json.loads(self._get(url))
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                rows = []
+                rows = []                       # genuinely absent -> cache empty
+            elif e.code == 429:
+                # rate-limited after retries: SKIP without caching, so a later
+                # resumable pass retries this name. Never crashes the pull.
+                return pd.Series(dtype=float, name=field)
             else:
                 raise
         s = parse_eod_prices(rows, field=field)
