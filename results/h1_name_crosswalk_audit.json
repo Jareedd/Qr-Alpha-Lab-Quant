@@ -1,0 +1,1865 @@
+{
+  "n_dead": 309,
+  "n_with_wikipedia_name": 309,
+  "baseline_ticker_cik_pct": 0.3916,
+  "name_crosswalk_cik_pct": 0.9385,
+  "either_route_pct": 0.9515,
+  "gate_applied": true,
+  "note": "name_cik = Wikipedia removed-name -> normalize -> cik-lookup-data.txt -> latest-10-K operating filer. Resolves by NAME, so ticker reassignment (e.g. MON->SPAC) cannot leak; residual risk is a dead/live NAMESAKE collision (dead_by date gate is the next refinement). Coverage here = a CIK with 10-K filings exists; pulling its SEC fundamentals is the graded run.",
+  "rows": [
+    {
+      "ticker": "AA",
+      "name": "Alcoa",
+      "baseline_ticker_cik": "0001675149",
+      "name_cik": "0000004281"
+    },
+    {
+      "ticker": "AAL",
+      "name": "American Airlines Group",
+      "baseline_ticker_cik": "0000006201",
+      "name_cik": "0000004515"
+    },
+    {
+      "ticker": "AAP",
+      "name": "Advance Auto Parts",
+      "baseline_ticker_cik": "0001158449",
+      "name_cik": "0001158449"
+    },
+    {
+      "ticker": "ABMD",
+      "name": "Abiomed",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000815094"
+    },
+    {
+      "ticker": "ACE",
+      "name": "Chubb",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000896159"
+    },
+    {
+      "ticker": "ADS",
+      "name": "Alliance Data Systems",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001101215"
+    },
+    {
+      "ticker": "ADT",
+      "name": "ADT",
+      "baseline_ticker_cik": "0001703056",
+      "name_cik": "0000833444"
+    },
+    {
+      "ticker": "AET",
+      "name": "Aetna",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001122304"
+    },
+    {
+      "ticker": "AGN",
+      "name": "Allergan",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001578845"
+    },
+    {
+      "ticker": "AIV",
+      "name": "Apartment Investment & Management",
+      "baseline_ticker_cik": "0000922864",
+      "name_cik": "0000922864"
+    },
+    {
+      "ticker": "AKS",
+      "name": "AK Steel",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000918160"
+    },
+    {
+      "ticker": "ALK",
+      "name": "Alaska Air Group",
+      "baseline_ticker_cik": "0000766421",
+      "name_cik": "0000766421"
+    },
+    {
+      "ticker": "ALTR",
+      "name": "Altera",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000768251"
+    },
+    {
+      "ticker": "ALXN",
+      "name": "Alexion Pharmaceuticals",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000899866"
+    },
+    {
+      "ticker": "AMG",
+      "name": "Affiliated Managers Group",
+      "baseline_ticker_cik": "0001004434",
+      "name_cik": "0001004434"
+    },
+    {
+      "ticker": "AMTM",
+      "name": "Amentum",
+      "baseline_ticker_cik": "0002011286",
+      "name_cik": "0002011286"
+    },
+    {
+      "ticker": "AN",
+      "name": "AutoNation",
+      "baseline_ticker_cik": "0000350698",
+      "name_cik": "0000350698"
+    },
+    {
+      "ticker": "ANDV",
+      "name": "Andeavor",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000050104"
+    },
+    {
+      "ticker": "ANF",
+      "name": "Abercrombie & Fitch",
+      "baseline_ticker_cik": "0001018840",
+      "name_cik": "0001018840"
+    },
+    {
+      "ticker": "ANR",
+      "name": "Alpha Natural Resources",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001301063"
+    },
+    {
+      "ticker": "ANSS",
+      "name": "Ansys",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001013462"
+    },
+    {
+      "ticker": "APC",
+      "name": "Anadarko Petroleum",
+      "baseline_ticker_cik": "0002080921",
+      "name_cik": "0000773910"
+    },
+    {
+      "ticker": "APOL",
+      "name": "Apollo Education Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000929887"
+    },
+    {
+      "ticker": "ARG",
+      "name": "Airgas",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000804212"
+    },
+    {
+      "ticker": "ARNC",
+      "name": "Arconic",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000004281"
+    },
+    {
+      "ticker": "ATI",
+      "name": "Allegheny Technologies",
+      "baseline_ticker_cik": "0001018963",
+      "name_cik": "0001018963"
+    },
+    {
+      "ticker": "ATVI",
+      "name": "Activision Blizzard",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000718877"
+    },
+    {
+      "ticker": "AVP",
+      "name": "Avon Products",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000008868"
+    },
+    {
+      "ticker": "AYE",
+      "name": "Allegheny Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000003673"
+    },
+    {
+      "ticker": "AYI",
+      "name": "Acuity Brands",
+      "baseline_ticker_cik": "0001144215",
+      "name_cik": "0001144215"
+    },
+    {
+      "ticker": "BBBY",
+      "name": "Bed Bath & Beyond",
+      "baseline_ticker_cik": "0001130713",
+      "name_cik": "0001130713"
+    },
+    {
+      "ticker": "BBWI",
+      "name": "Bath & Body Works, Inc.",
+      "baseline_ticker_cik": "0000701985",
+      "name_cik": "0000701985"
+    },
+    {
+      "ticker": "BCR",
+      "name": "CR Bard",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "BEAM",
+      "name": "Suntory Global Spirits",
+      "baseline_ticker_cik": "0001745999",
+      "name_cik": null
+    },
+    {
+      "ticker": "BHF",
+      "name": "Brighthouse Financial",
+      "baseline_ticker_cik": "0001685040",
+      "name_cik": "0001685040"
+    },
+    {
+      "ticker": "BHI",
+      "name": "Baker Hughes",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001701605"
+    },
+    {
+      "ticker": "BIG",
+      "name": "Big Lots",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000768835"
+    },
+    {
+      "ticker": "BIO",
+      "name": "Bio-Rad Laboratories",
+      "baseline_ticker_cik": "0000012208",
+      "name_cik": "0000012208"
+    },
+    {
+      "ticker": "BJS",
+      "name": "BJ Services",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000864328"
+    },
+    {
+      "ticker": "BMC",
+      "name": "BMC Software",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000835729"
+    },
+    {
+      "ticker": "BMS",
+      "name": "Bemis",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000011199"
+    },
+    {
+      "ticker": "BRCM",
+      "name": "Broadcom Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001730168"
+    },
+    {
+      "ticker": "BTU",
+      "name": "Peabody Energy",
+      "baseline_ticker_cik": "0001064728",
+      "name_cik": "0001064728"
+    },
+    {
+      "ticker": "BWA",
+      "name": "BorgWarner",
+      "baseline_ticker_cik": "0000908255",
+      "name_cik": "0000908255"
+    },
+    {
+      "ticker": "BXLT",
+      "name": "Baxalta",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001620546"
+    },
+    {
+      "ticker": "CA",
+      "name": "CA Technologies",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000356028"
+    },
+    {
+      "ticker": "CAM",
+      "name": "Cameron International",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000941548"
+    },
+    {
+      "ticker": "CBE",
+      "name": "Cooper Industries",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001141982"
+    },
+    {
+      "ticker": "CCE",
+      "name": "Coca-Cola Enterprises",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001491675"
+    },
+    {
+      "ticker": "CE",
+      "name": "Celanese",
+      "baseline_ticker_cik": "0001306830",
+      "name_cik": "0001306830"
+    },
+    {
+      "ticker": "CELG",
+      "name": "Celgene",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000816284"
+    },
+    {
+      "ticker": "CEPH",
+      "name": "Cephalon",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000873364"
+    },
+    {
+      "ticker": "CERN",
+      "name": "Cerner",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000804753"
+    },
+    {
+      "ticker": "CFN",
+      "name": "Carefusion",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001457543"
+    },
+    {
+      "ticker": "CHK",
+      "name": "Chesapeake Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000895126"
+    },
+    {
+      "ticker": "CLF",
+      "name": "Cliffs Natural Resources",
+      "baseline_ticker_cik": "0000764065",
+      "name_cik": "0000764065"
+    },
+    {
+      "ticker": "CMA",
+      "name": "Comerica",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000028412"
+    },
+    {
+      "ticker": "CMCSK",
+      "name": "Comcast Class K Special",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001166691"
+    },
+    {
+      "ticker": "CNX",
+      "name": "Consol Energy",
+      "baseline_ticker_cik": "0001070412",
+      "name_cik": "0001070412"
+    },
+    {
+      "ticker": "COL",
+      "name": "Rockwell Collins",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001137411"
+    },
+    {
+      "ticker": "COTY",
+      "name": "Coty",
+      "baseline_ticker_cik": "0001024305",
+      "name_cik": "0001024305"
+    },
+    {
+      "ticker": "COV",
+      "name": "Covidien",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001385187"
+    },
+    {
+      "ticker": "CPB",
+      "name": "Campbell's",
+      "baseline_ticker_cik": "0000016732",
+      "name_cik": "0000016732"
+    },
+    {
+      "ticker": "CPGX",
+      "name": "Columbia Pipeline Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001629995"
+    },
+    {
+      "ticker": "CPRI",
+      "name": "Capri Holdings",
+      "baseline_ticker_cik": "0001530721",
+      "name_cik": "0001530721"
+    },
+    {
+      "ticker": "CPWR",
+      "name": "Compuware",
+      "baseline_ticker_cik": "0000827099",
+      "name_cik": "0000859014"
+    },
+    {
+      "ticker": "CSC",
+      "name": "Computer Sciences Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000023082"
+    },
+    {
+      "ticker": "CSRA",
+      "name": "CSRA",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001646383"
+    },
+    {
+      "ticker": "CTLT",
+      "name": "Catalent",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001596783"
+    },
+    {
+      "ticker": "CTRA",
+      "name": "Coterra Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000858470"
+    },
+    {
+      "ticker": "CTXS",
+      "name": "Citrix Systems",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000877890"
+    },
+    {
+      "ticker": "CVC",
+      "name": "Cablevision",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "CVH",
+      "name": "Coventry Health Care",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001054833"
+    },
+    {
+      "ticker": "CXO",
+      "name": "Concho Resources",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001358071"
+    },
+    {
+      "ticker": "CZR",
+      "name": "Caesars Entertainment",
+      "baseline_ticker_cik": "0001590895",
+      "name_cik": "0001590895"
+    },
+    {
+      "ticker": "DAY",
+      "name": "Dayforce",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001725057"
+    },
+    {
+      "ticker": "DF",
+      "name": "Dean Foods",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000931336"
+    },
+    {
+      "ticker": "DFS",
+      "name": "Discover Financial",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "DISCA",
+      "name": "Discovery, Inc.",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001437107"
+    },
+    {
+      "ticker": "DISCK",
+      "name": "Discovery Communications",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001437107"
+    },
+    {
+      "ticker": "DISH",
+      "name": "Dish Network",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001001082"
+    },
+    {
+      "ticker": "DNB",
+      "name": "Dun & Bradstreet",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001059556"
+    },
+    {
+      "ticker": "DNR",
+      "name": "Denbury Resources",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000945764"
+    },
+    {
+      "ticker": "DO",
+      "name": "Diamond Offshore Drilling",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000949039"
+    },
+    {
+      "ticker": "DPS",
+      "name": "Dr Pepper Snapple Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001418135"
+    },
+    {
+      "ticker": "DRE",
+      "name": "Duke Realty Corp",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000783280"
+    },
+    {
+      "ticker": "DTV",
+      "name": "DirecTV",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001465112"
+    },
+    {
+      "ticker": "DV",
+      "name": "DeVry",
+      "baseline_ticker_cik": "0001819928",
+      "name_cik": "0000730464"
+    },
+    {
+      "ticker": "DWDP",
+      "name": "DuPont",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "DXC",
+      "name": "DXC Technology",
+      "baseline_ticker_cik": "0001688568",
+      "name_cik": "0001688568"
+    },
+    {
+      "ticker": "EK",
+      "name": "Eastman Kodak",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000031235"
+    },
+    {
+      "ticker": "EMC",
+      "name": "EMC Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000790070"
+    },
+    {
+      "ticker": "EMN",
+      "name": "Eastman Chemical Co.",
+      "baseline_ticker_cik": "0000915389",
+      "name_cik": "0000915389"
+    },
+    {
+      "ticker": "ENDP",
+      "name": "Endo International",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001593034"
+    },
+    {
+      "ticker": "ENPH",
+      "name": "Enphase Energy",
+      "baseline_ticker_cik": "0001463101",
+      "name_cik": "0001463101"
+    },
+    {
+      "ticker": "EP",
+      "name": "El Paso Corporation",
+      "baseline_ticker_cik": "0000887396",
+      "name_cik": "0001066107"
+    },
+    {
+      "ticker": "EPAM",
+      "name": "EPAM Systems",
+      "baseline_ticker_cik": "0001352010",
+      "name_cik": "0001352010"
+    },
+    {
+      "ticker": "ESRX",
+      "name": "Express Scripts",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001532063"
+    },
+    {
+      "ticker": "ESV",
+      "name": "Ensco",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000314808"
+    },
+    {
+      "ticker": "ETFC",
+      "name": "E-Trade",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001015780"
+    },
+    {
+      "ticker": "ETSY",
+      "name": "Etsy",
+      "baseline_ticker_cik": "0001370637",
+      "name_cik": "0001370637"
+    },
+    {
+      "ticker": "EVHC",
+      "name": "Envision Healthcare",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001678531"
+    },
+    {
+      "ticker": "FBHS",
+      "name": "Fortune Brands Home & Security",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001519751"
+    },
+    {
+      "ticker": "FDO",
+      "name": "Family Dollar",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "FHN",
+      "name": "First Horizon",
+      "baseline_ticker_cik": "0000036966",
+      "name_cik": "0000036966"
+    },
+    {
+      "ticker": "FII",
+      "name": "Federated Investors",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001056288"
+    },
+    {
+      "ticker": "FL",
+      "name": "Foot Locker",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000850209"
+    },
+    {
+      "ticker": "FLIR",
+      "name": "FLIR Systems",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000354908"
+    },
+    {
+      "ticker": "FLR",
+      "name": "Fluor Corporation",
+      "baseline_ticker_cik": "0001124198",
+      "name_cik": "0001124198"
+    },
+    {
+      "ticker": "FLS",
+      "name": "Flowserve",
+      "baseline_ticker_cik": "0000030625",
+      "name_cik": "0000030625"
+    },
+    {
+      "ticker": "FMC",
+      "name": "FMC Corporation",
+      "baseline_ticker_cik": "0000037785",
+      "name_cik": "0000037785"
+    },
+    {
+      "ticker": "FOSL",
+      "name": "Fossil",
+      "baseline_ticker_cik": "0000883569",
+      "name_cik": "0000883569"
+    },
+    {
+      "ticker": "FRC",
+      "name": "First Republic Bank",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "FRX",
+      "name": "Forest Laboratories",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000038074"
+    },
+    {
+      "ticker": "FTI",
+      "name": "FMC Technologies",
+      "baseline_ticker_cik": "0001681459",
+      "name_cik": "0001135152"
+    },
+    {
+      "ticker": "FTR",
+      "name": "Frontier Communications",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000020520"
+    },
+    {
+      "ticker": "GAS",
+      "name": "AGL Resources.",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001004155"
+    },
+    {
+      "ticker": "GENZ",
+      "name": "Genzyme",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000732485"
+    },
+    {
+      "ticker": "GGP",
+      "name": "General Growth Properties",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001496048"
+    },
+    {
+      "ticker": "GHC",
+      "name": "Graham Holdings",
+      "baseline_ticker_cik": "0000104889",
+      "name_cik": "0000716314"
+    },
+    {
+      "ticker": "GMCR",
+      "name": "Keurig Green Mountain",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000909954"
+    },
+    {
+      "ticker": "GME",
+      "name": "GameStop",
+      "baseline_ticker_cik": "0001326380",
+      "name_cik": "0001326380"
+    },
+    {
+      "ticker": "GNW",
+      "name": "Genworth Financial",
+      "baseline_ticker_cik": "0001276520",
+      "name_cik": "0001276520"
+    },
+    {
+      "ticker": "GPS",
+      "name": "Gap",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000039911"
+    },
+    {
+      "ticker": "GR",
+      "name": "Goodrich Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000042542"
+    },
+    {
+      "ticker": "GT",
+      "name": "The Goodyear Tire & Rubber Company",
+      "baseline_ticker_cik": "0000042582",
+      "name_cik": "0000042582"
+    },
+    {
+      "ticker": "HAR",
+      "name": "Harman International",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000800459"
+    },
+    {
+      "ticker": "HBI",
+      "name": "Hanesbrands",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001359841"
+    },
+    {
+      "ticker": "HCBK",
+      "name": "Hudson City Bancorp",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000921847"
+    },
+    {
+      "ticker": "HES",
+      "name": "Hess Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000004447"
+    },
+    {
+      "ticker": "HFC",
+      "name": "HollyFrontier",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000048039"
+    },
+    {
+      "ticker": "HNZ",
+      "name": "Heinz",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "HOG",
+      "name": "Harley-Davidson",
+      "baseline_ticker_cik": "0000793952",
+      "name_cik": "0000793952"
+    },
+    {
+      "ticker": "HOLX",
+      "name": "Hologic",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000859737"
+    },
+    {
+      "ticker": "HOT",
+      "name": "Starwood",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "HP",
+      "name": "Helmerich & Payne",
+      "baseline_ticker_cik": "0000046765",
+      "name_cik": "0000046765"
+    },
+    {
+      "ticker": "HRB",
+      "name": "H&R Block",
+      "baseline_ticker_cik": "0000012659",
+      "name_cik": "0000012659"
+    },
+    {
+      "ticker": "HSP",
+      "name": "Hospira",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001274057"
+    },
+    {
+      "ticker": "IGT",
+      "name": "International Game Technology",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000353944"
+    },
+    {
+      "ticker": "ILMN",
+      "name": "Illumina",
+      "baseline_ticker_cik": "0001110803",
+      "name_cik": "0001110803"
+    },
+    {
+      "ticker": "INFO",
+      "name": "IHS Markit",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001598014"
+    },
+    {
+      "ticker": "IPG",
+      "name": "Interpublic Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000051644"
+    },
+    {
+      "ticker": "IPGP",
+      "name": "IPG Photonics",
+      "baseline_ticker_cik": "0001111928",
+      "name_cik": "0001111928"
+    },
+    {
+      "ticker": "ITT",
+      "name": "ITT",
+      "baseline_ticker_cik": "0000216228",
+      "name_cik": "0000216228"
+    },
+    {
+      "ticker": "JCP",
+      "name": "JCPenney",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "JDSU",
+      "name": "JDS Uniphase",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000912093"
+    },
+    {
+      "ticker": "JEF",
+      "name": "Jefferies Financial Group",
+      "baseline_ticker_cik": "0000096223",
+      "name_cik": "0000096223"
+    },
+    {
+      "ticker": "JNPR",
+      "name": "Juniper Networks",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001043604"
+    },
+    {
+      "ticker": "JNS",
+      "name": "Janus Capital Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001065865"
+    },
+    {
+      "ticker": "JOY",
+      "name": "Joy Global",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000801898"
+    },
+    {
+      "ticker": "JWN",
+      "name": "Nordstrom",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000072333"
+    },
+    {
+      "ticker": "K",
+      "name": "Kellanova",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000055067"
+    },
+    {
+      "ticker": "KFT",
+      "name": "Kraft Foods",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001103982"
+    },
+    {
+      "ticker": "KG",
+      "name": "King Pharmaceuticals",
+      "baseline_ticker_cik": "0002055116",
+      "name_cik": "0001047699"
+    },
+    {
+      "ticker": "KMX",
+      "name": "CarMax",
+      "baseline_ticker_cik": "0001170010",
+      "name_cik": "0001170010"
+    },
+    {
+      "ticker": "KRFT",
+      "name": "Kraft Foods",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001103982"
+    },
+    {
+      "ticker": "KSS",
+      "name": "Kohl's",
+      "baseline_ticker_cik": "0000885639",
+      "name_cik": null
+    },
+    {
+      "ticker": "KSU",
+      "name": "Kansas City Southern",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000054480"
+    },
+    {
+      "ticker": "LEG",
+      "name": "Leggett & Platt",
+      "baseline_ticker_cik": "0000058492",
+      "name_cik": "0000058492"
+    },
+    {
+      "ticker": "LIFE",
+      "name": "Life Technologies",
+      "baseline_ticker_cik": "0001788451",
+      "name_cik": "0001073431"
+    },
+    {
+      "ticker": "LKQ",
+      "name": "LKQ Corporation",
+      "baseline_ticker_cik": "0001065696",
+      "name_cik": "0001065696"
+    },
+    {
+      "ticker": "LLL",
+      "name": "L3 Technologies",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001039101"
+    },
+    {
+      "ticker": "LLTC",
+      "name": "Linear Technology",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000791907"
+    },
+    {
+      "ticker": "LM",
+      "name": "Legg Mason",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000704051"
+    },
+    {
+      "ticker": "LNC",
+      "name": "Lincoln National Corporation",
+      "baseline_ticker_cik": "0000059558",
+      "name_cik": "0000059558"
+    },
+    {
+      "ticker": "LO",
+      "name": "Lorillard Tobacco Company",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "LSI",
+      "name": "LSI Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000703360"
+    },
+    {
+      "ticker": "LUMN",
+      "name": "Lumen Technologies",
+      "baseline_ticker_cik": "0000018926",
+      "name_cik": "0000018926"
+    },
+    {
+      "ticker": "LVLT",
+      "name": "Level 3 Communications",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000794323"
+    },
+    {
+      "ticker": "LW",
+      "name": "Lamb Weston",
+      "baseline_ticker_cik": "0001679273",
+      "name_cik": "0001679273"
+    },
+    {
+      "ticker": "LXK",
+      "name": "Lexmark",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001001288"
+    },
+    {
+      "ticker": "M",
+      "name": "Macy's",
+      "baseline_ticker_cik": "0000794367",
+      "name_cik": "0000794367"
+    },
+    {
+      "ticker": "MAC",
+      "name": "Macerich",
+      "baseline_ticker_cik": "0000912242",
+      "name_cik": "0000912242"
+    },
+    {
+      "ticker": "MAT",
+      "name": "Mattel",
+      "baseline_ticker_cik": "0000063276",
+      "name_cik": "0000063276"
+    },
+    {
+      "ticker": "MBC",
+      "name": "MasterBrand",
+      "baseline_ticker_cik": "0001941365",
+      "name_cik": "0001941365"
+    },
+    {
+      "ticker": "MDP",
+      "name": "Meredith Corp",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000065011"
+    },
+    {
+      "ticker": "MEE",
+      "name": "Massey Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000037748"
+    },
+    {
+      "ticker": "MFE",
+      "name": "McAfee",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001783317"
+    },
+    {
+      "ticker": "MHK",
+      "name": "Mohawk Industries",
+      "baseline_ticker_cik": "0000851968",
+      "name_cik": "0000851968"
+    },
+    {
+      "ticker": "MHS",
+      "name": "Medco Health Solutions",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001170650"
+    },
+    {
+      "ticker": "MI",
+      "name": "Marshall & Ilsley",
+      "baseline_ticker_cik": "0001958713",
+      "name_cik": "0001399315"
+    },
+    {
+      "ticker": "MIL",
+      "name": "Millipore",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000066479"
+    },
+    {
+      "ticker": "MJN",
+      "name": "Mead Johnson Nutrition",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001452575"
+    },
+    {
+      "ticker": "MKTX",
+      "name": "MarketAxess",
+      "baseline_ticker_cik": "0001278021",
+      "name_cik": "0001278021"
+    },
+    {
+      "ticker": "MMI",
+      "name": "Motorola Mobility",
+      "baseline_ticker_cik": "0001578732",
+      "name_cik": "0001495569"
+    },
+    {
+      "ticker": "MNK",
+      "name": "Mallinckrodt",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001567892"
+    },
+    {
+      "ticker": "MOH",
+      "name": "Molina Healthcare",
+      "baseline_ticker_cik": "0001179929",
+      "name_cik": "0001179929"
+    },
+    {
+      "ticker": "MOLX",
+      "name": "Molex",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000067472"
+    },
+    {
+      "ticker": "MON",
+      "name": "Monsanto",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001110783"
+    },
+    {
+      "ticker": "MRO",
+      "name": "Marathon Oil",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000101778"
+    },
+    {
+      "ticker": "MTCH",
+      "name": "Match Group",
+      "baseline_ticker_cik": "0000891103",
+      "name_cik": "0000891103"
+    },
+    {
+      "ticker": "MUR",
+      "name": "Murphy Oil",
+      "baseline_ticker_cik": "0000717423",
+      "name_cik": "0000717423"
+    },
+    {
+      "ticker": "MWW",
+      "name": "Monster Worldwide",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001020416"
+    },
+    {
+      "ticker": "MXIM",
+      "name": "Maxim Integrated",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "NAVI",
+      "name": "Navient",
+      "baseline_ticker_cik": "0001593538",
+      "name_cik": "0001593538"
+    },
+    {
+      "ticker": "NBL",
+      "name": "Noble Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000072207"
+    },
+    {
+      "ticker": "NBR",
+      "name": "Nabors Industries",
+      "baseline_ticker_cik": "0001163739",
+      "name_cik": "0001163739"
+    },
+    {
+      "ticker": "NE",
+      "name": "Noble Corporation",
+      "baseline_ticker_cik": "0001895262",
+      "name_cik": "0001895262"
+    },
+    {
+      "ticker": "NFX",
+      "name": "Newfield Exploration",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000912750"
+    },
+    {
+      "ticker": "NKTR",
+      "name": "Nektar Therapeutics",
+      "baseline_ticker_cik": "0000906709",
+      "name_cik": "0000906709"
+    },
+    {
+      "ticker": "NLSN",
+      "name": "Nielsen Holdings",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001492633"
+    },
+    {
+      "ticker": "NOV",
+      "name": "Nov",
+      "baseline_ticker_cik": "0001021860",
+      "name_cik": "0001021860"
+    },
+    {
+      "ticker": "NOVL",
+      "name": "Novell",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000758004"
+    },
+    {
+      "ticker": "NSM",
+      "name": "National Semiconductor",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000070530"
+    },
+    {
+      "ticker": "NVLS",
+      "name": "Novellus Systems",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000836106"
+    },
+    {
+      "ticker": "NWL",
+      "name": "Newell Brands",
+      "baseline_ticker_cik": "0000814453",
+      "name_cik": "0000814453"
+    },
+    {
+      "ticker": "NYT",
+      "name": "The New York Times Company",
+      "baseline_ticker_cik": "0000071691",
+      "name_cik": "0000071691"
+    },
+    {
+      "ticker": "NYX",
+      "name": "NYSE Euronext",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001368007"
+    },
+    {
+      "ticker": "ODP",
+      "name": "Office Depot",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000800240"
+    },
+    {
+      "ticker": "OGN",
+      "name": "Organon & Co.",
+      "baseline_ticker_cik": "0001821825",
+      "name_cik": "0001821825"
+    },
+    {
+      "ticker": "OI",
+      "name": "Owens-Illinois",
+      "baseline_ticker_cik": "0000812074",
+      "name_cik": "0000812074"
+    },
+    {
+      "ticker": "PAYC",
+      "name": "Paycom",
+      "baseline_ticker_cik": "0001590955",
+      "name_cik": "0001590955"
+    },
+    {
+      "ticker": "PBCT",
+      "name": "People's United Financial",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001378946"
+    },
+    {
+      "ticker": "PBI",
+      "name": "Pitney Bowes",
+      "baseline_ticker_cik": "0000078814",
+      "name_cik": "0000078814"
+    },
+    {
+      "ticker": "PCL",
+      "name": "Plum Creek Timber",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000849213"
+    },
+    {
+      "ticker": "PCP",
+      "name": "Precision Castparts Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000079958"
+    },
+    {
+      "ticker": "PCS",
+      "name": "MetroPCS",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001121026"
+    },
+    {
+      "ticker": "PDCO",
+      "name": "Patterson Companies",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000891024"
+    },
+    {
+      "ticker": "PENN",
+      "name": "Penn National Gaming",
+      "baseline_ticker_cik": "0000921738",
+      "name_cik": "0000921738"
+    },
+    {
+      "ticker": "PETM",
+      "name": "PetSmart",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000863157"
+    },
+    {
+      "ticker": "PGN",
+      "name": "Progress Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001094093"
+    },
+    {
+      "ticker": "PLL",
+      "name": "Pall Corporation",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000075829"
+    },
+    {
+      "ticker": "POM",
+      "name": "Pepco Holdings",
+      "baseline_ticker_cik": "0001877971",
+      "name_cik": "0001135971"
+    },
+    {
+      "ticker": "POOL",
+      "name": "Pool Corporation",
+      "baseline_ticker_cik": "0000945841",
+      "name_cik": "0000945841"
+    },
+    {
+      "ticker": "PRGO",
+      "name": "Perrigo",
+      "baseline_ticker_cik": "0001585364",
+      "name_cik": "0001585364"
+    },
+    {
+      "ticker": "PTV",
+      "name": "Pactiv",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001089976"
+    },
+    {
+      "ticker": "PVH",
+      "name": "PVH",
+      "baseline_ticker_cik": "0000078239",
+      "name_cik": "0000078239"
+    },
+    {
+      "ticker": "PXD",
+      "name": "Pioneer Natural Resources",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001038357"
+    },
+    {
+      "ticker": "QEP",
+      "name": "QEP Resources",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001108827"
+    },
+    {
+      "ticker": "QRVO",
+      "name": "Qorvo",
+      "baseline_ticker_cik": "0001604778",
+      "name_cik": "0001604778"
+    },
+    {
+      "ticker": "R",
+      "name": "Ryder System",
+      "baseline_ticker_cik": "0000085961",
+      "name_cik": "0000085961"
+    },
+    {
+      "ticker": "RAI",
+      "name": "Reynolds American",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001275283"
+    },
+    {
+      "ticker": "RDC",
+      "name": "Rowan Companies",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000085408"
+    },
+    {
+      "ticker": "RHI",
+      "name": "Robert Half",
+      "baseline_ticker_cik": "0000315213",
+      "name_cik": "0000315213"
+    },
+    {
+      "ticker": "RHT",
+      "name": "Red Hat",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001087423"
+    },
+    {
+      "ticker": "RIG",
+      "name": "Transocean",
+      "baseline_ticker_cik": "0001451505",
+      "name_cik": "0001451505"
+    },
+    {
+      "ticker": "RRC",
+      "name": "Range Resources",
+      "baseline_ticker_cik": "0000315852",
+      "name_cik": "0000315852"
+    },
+    {
+      "ticker": "RRD",
+      "name": "RR Donnelley",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "RSH",
+      "name": "RadioShack",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000096289"
+    },
+    {
+      "ticker": "RTN",
+      "name": "Raytheon Company",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001047122"
+    },
+    {
+      "ticker": "RX",
+      "name": "IMS Health",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001595262"
+    },
+    {
+      "ticker": "S",
+      "name": "Sprint Nextel",
+      "baseline_ticker_cik": "0001583708",
+      "name_cik": "0000101830"
+    },
+    {
+      "ticker": "SAI",
+      "name": "SAIC",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001336920"
+    },
+    {
+      "ticker": "SBNY",
+      "name": "Signature Bank",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "SCG",
+      "name": "SCANA",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000754737"
+    },
+    {
+      "ticker": "SE",
+      "name": "Spectra Energy",
+      "baseline_ticker_cik": "0001703399",
+      "name_cik": "0001373835"
+    },
+    {
+      "ticker": "SEDG",
+      "name": "SolarEdge",
+      "baseline_ticker_cik": "0001419612",
+      "name_cik": null
+    },
+    {
+      "ticker": "SEE",
+      "name": "Sealed Air",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001012100"
+    },
+    {
+      "ticker": "SHLD",
+      "name": "Sears Holdings",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001310067"
+    },
+    {
+      "ticker": "SIAL",
+      "name": "Sigma-Aldrich",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000090185"
+    },
+    {
+      "ticker": "SIG",
+      "name": "Signet Jewelers",
+      "baseline_ticker_cik": "0000832988",
+      "name_cik": "0000832988"
+    },
+    {
+      "ticker": "SII",
+      "name": "Smith International",
+      "baseline_ticker_cik": "0001512920",
+      "name_cik": "0000721083"
+    },
+    {
+      "ticker": "SIVB",
+      "name": "SVB Financial Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000719739"
+    },
+    {
+      "ticker": "SLE",
+      "name": "Sara Lee Corporation",
+      "baseline_ticker_cik": "0001621672",
+      "name_cik": "0000023666"
+    },
+    {
+      "ticker": "SLG",
+      "name": "SL Green Realty",
+      "baseline_ticker_cik": "0001040971",
+      "name_cik": "0001040971"
+    },
+    {
+      "ticker": "SLM",
+      "name": "SLM Corporation",
+      "baseline_ticker_cik": "0001032033",
+      "name_cik": "0001032033"
+    },
+    {
+      "ticker": "SNI",
+      "name": "Scripps Networks Interactive",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001430602"
+    },
+    {
+      "ticker": "SOLS",
+      "name": "Solstice Advanced Materials",
+      "baseline_ticker_cik": "0002064953",
+      "name_cik": "0002064953"
+    },
+    {
+      "ticker": "SPLS",
+      "name": "Staples",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000791519"
+    },
+    {
+      "ticker": "SRCL",
+      "name": "Stericycle",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000861878"
+    },
+    {
+      "ticker": "STI",
+      "name": "SunTrust Banks",
+      "baseline_ticker_cik": "0001881551",
+      "name_cik": "0000750556"
+    },
+    {
+      "ticker": "STJ",
+      "name": "St Jude Medical",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000203077"
+    },
+    {
+      "ticker": "STR",
+      "name": "Questar",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000751652"
+    },
+    {
+      "ticker": "SUN",
+      "name": "Sunoco",
+      "baseline_ticker_cik": "0001552275",
+      "name_cik": "0001552275"
+    },
+    {
+      "ticker": "SVU",
+      "name": "Supervalu",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000095521"
+    },
+    {
+      "ticker": "SWN",
+      "name": "Southwestern Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000007332"
+    },
+    {
+      "ticker": "SWY",
+      "name": "Safeway",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000086144"
+    },
+    {
+      "ticker": "TDC",
+      "name": "Teradata",
+      "baseline_ticker_cik": "0000816761",
+      "name_cik": "0000816761"
+    },
+    {
+      "ticker": "TE",
+      "name": "TECO Energy",
+      "baseline_ticker_cik": "0001992243",
+      "name_cik": "0000350563"
+    },
+    {
+      "ticker": "TEG",
+      "name": "Integrys Energy Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000916863"
+    },
+    {
+      "ticker": "TFX",
+      "name": "Teleflex",
+      "baseline_ticker_cik": "0000096943",
+      "name_cik": "0000096943"
+    },
+    {
+      "ticker": "TGNA",
+      "name": "Tegna",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000039899"
+    },
+    {
+      "ticker": "THC",
+      "name": "Tenet Healthcare",
+      "baseline_ticker_cik": "0000070318",
+      "name_cik": "0000070318"
+    },
+    {
+      "ticker": "TIE",
+      "name": "Titanium Metals",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001011657"
+    },
+    {
+      "ticker": "TIF",
+      "name": "Tiffany & Co",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000098246"
+    },
+    {
+      "ticker": "TLAB",
+      "name": "Tellabs",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000317771"
+    },
+    {
+      "ticker": "TRIP",
+      "name": "TripAdvisor",
+      "baseline_ticker_cik": "0001526520",
+      "name_cik": "0001526520"
+    },
+    {
+      "ticker": "TSS",
+      "name": "TSYS",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "TWC",
+      "name": "Time Warner Cable",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001377013"
+    },
+    {
+      "ticker": "TWTR",
+      "name": "Twitter",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001418091"
+    },
+    {
+      "ticker": "TWX",
+      "name": "Time Warner",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001105705"
+    },
+    {
+      "ticker": "TYC",
+      "name": "Tyco International",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000833444"
+    },
+    {
+      "ticker": "UA",
+      "name": "Under Armour (Class C)",
+      "baseline_ticker_cik": "0001336917",
+      "name_cik": "0001336917"
+    },
+    {
+      "ticker": "UAA",
+      "name": "Under Armour (Class A)",
+      "baseline_ticker_cik": "0001336917",
+      "name_cik": "0001336917"
+    },
+    {
+      "ticker": "UNM",
+      "name": "Unum",
+      "baseline_ticker_cik": "0000005513",
+      "name_cik": "0000005513"
+    },
+    {
+      "ticker": "URBN",
+      "name": "Urban Outfitters",
+      "baseline_ticker_cik": "0000912615",
+      "name_cik": "0000912615"
+    },
+    {
+      "ticker": "VAR",
+      "name": "Varian Medical Systems",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000203527"
+    },
+    {
+      "ticker": "VFC",
+      "name": "VF Corporation",
+      "baseline_ticker_cik": "0000103379",
+      "name_cik": null
+    },
+    {
+      "ticker": "VIAB",
+      "name": "Viacom",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000813828"
+    },
+    {
+      "ticker": "VNO",
+      "name": "Vornado Realty Trust",
+      "baseline_ticker_cik": "0000899689",
+      "name_cik": "0000899689"
+    },
+    {
+      "ticker": "VNT",
+      "name": "Vontier",
+      "baseline_ticker_cik": "0001786842",
+      "name_cik": "0001786842"
+    },
+    {
+      "ticker": "WBA",
+      "name": "Walgreens Boots Alliance",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001618921"
+    },
+    {
+      "ticker": "WCG",
+      "name": "WellCare",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001279363"
+    },
+    {
+      "ticker": "WFM",
+      "name": "Whole Foods Market",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000865436"
+    },
+    {
+      "ticker": "WFR",
+      "name": "MEMC Electronic Materials",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000945436"
+    },
+    {
+      "ticker": "WHR",
+      "name": "Whirlpool Corporation",
+      "baseline_ticker_cik": "0000106640",
+      "name_cik": "0000106640"
+    },
+    {
+      "ticker": "WIN",
+      "name": "Windstream Communications",
+      "baseline_ticker_cik": null,
+      "name_cik": null
+    },
+    {
+      "ticker": "WPX",
+      "name": "WPX Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001518832"
+    },
+    {
+      "ticker": "WU",
+      "name": "Western Union",
+      "baseline_ticker_cik": "0001365135",
+      "name_cik": "0001365135"
+    },
+    {
+      "ticker": "WYN",
+      "name": "Wyndham Worldwide",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001361658"
+    },
+    {
+      "ticker": "X",
+      "name": "United States Steel",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001163302"
+    },
+    {
+      "ticker": "XEC",
+      "name": "Cimarex Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001168054"
+    },
+    {
+      "ticker": "XL",
+      "name": "XL Group",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000875159"
+    },
+    {
+      "ticker": "XLNX",
+      "name": "Xilinx",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000743988"
+    },
+    {
+      "ticker": "XRAY",
+      "name": "Dentsply Sirona",
+      "baseline_ticker_cik": "0000818479",
+      "name_cik": "0000818479"
+    },
+    {
+      "ticker": "XRX",
+      "name": "Xerox",
+      "baseline_ticker_cik": "0001770450",
+      "name_cik": "0001770450"
+    },
+    {
+      "ticker": "XTO",
+      "name": "XTO Energy",
+      "baseline_ticker_cik": null,
+      "name_cik": "0000868809"
+    },
+    {
+      "ticker": "YHOO",
+      "name": "Yahoo!",
+      "baseline_ticker_cik": null,
+      "name_cik": "0001011006"
+    },
+    {
+      "ticker": "ZION",
+      "name": "Zions Bancorporation",
+      "baseline_ticker_cik": "0000109380",
+      "name_cik": "0000109380"
+    }
+  ]
+}
