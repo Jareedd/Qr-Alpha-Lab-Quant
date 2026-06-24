@@ -71,3 +71,41 @@ def test_flat_column_never_selected_in_sample():
     R[2] = 0.0
     out = cscv_pbo(R, n_splits=10)
     assert 0.0 <= out["pbo"] <= 1.0 and np.isfinite(out["median_logit"])
+
+
+# --- Deterministic arithmetic pins -------------------------------------------
+# The statistical tests above anchor the *behaviour* (noise -> high, skill ->
+# low). These two pin the exact rank/omega/logit arithmetic on hand-built
+# matrices with a known closed-form answer, so a future refactor of the rank,
+# the (N+1) denominator, or the lambda<0 convention is caught immediately.
+# Both values were re-derived in-env before being frozen.
+
+
+def test_pbo_deterministic_persistent_edge_is_zero():
+    # Config A is positive every period, B negative every period -> A is the
+    # IS best AND the OOS best in every one of the C(4,2)=6 symmetric splits.
+    # OOS rank of the winner among 2 configs = 2 -> omega = 2/3 -> lambda =
+    # ln(2) > 0 for all splits -> PBO = 0 exactly.
+    A = np.array([0.03, 0.02, 0.04, 0.03, 0.02, 0.05, 0.03, 0.04])
+    B = np.array([-0.02, -0.03, -0.01, -0.02, -0.04, -0.01, -0.03, -0.02])
+    out = cscv_pbo(pd.DataFrame(np.column_stack([A, B])), n_splits=4)
+    assert out["pbo"] == 0.0
+    assert out["prob_oos_loss"] == 0.0
+    assert out["n_combinations"] == 6 and out["n_configs"] == 2
+    assert out["median_logit"] == pytest.approx(np.log(2), abs=1e-12)
+
+
+def test_pbo_deterministic_overfit_is_one():
+    # B's per-BLOCK means negate A's (A blocks [4,1,-2,-3], B blocks
+    # [-4,-1,2,3]); B is NOT the elementwise negation of A (the within-block
+    # wiggle keeps stds equal while flipping every block mean). Because the
+    # block means sum to zero, whichever config is IS-best is OOS-worst in all
+    # 6 splits -> omega = 1/3 -> lambda = -ln(2) < 0 -> PBO = 1 exactly.
+    A = np.array([4.5, 3.5, 1.5, 0.5, -1.5, -2.5, -2.5, -3.5])
+    B = np.array([-3.5, -4.5, -0.5, -1.5, 2.5, 1.5, 3.5, 2.5])
+    assert not np.allclose(B, -A)  # guard: NOT elementwise negation
+    out = cscv_pbo(pd.DataFrame(np.column_stack([A, B])), n_splits=4)
+    assert out["pbo"] == 1.0
+    assert out["prob_oos_loss"] == 1.0
+    assert out["median_logit"] == pytest.approx(-np.log(2), abs=1e-12)
+    assert out["perf_degradation_slope"] < 0  # IS Sharpe anti-predicts OOS
