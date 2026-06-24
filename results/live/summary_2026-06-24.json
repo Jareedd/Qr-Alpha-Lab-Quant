@@ -1,0 +1,21 @@
+{
+  "asof": "2026-06-24",
+  "n_names": 98,
+  "submitted": true,
+  "equity": 1028567.22,
+  "orders_sent": 97,
+  "orders_failed": [
+    {
+      "symbol": "KVUE",
+      "qty": 6,
+      "side": "sell",
+      "error": "{\"code\":42210000,\"message\":\"asset \\\"KVUE\\\" cannot be sold short\"}"
+    }
+  ],
+  "n_failed": 1,
+  "revisions": {
+    "compared_to": "2026-06-23",
+    "frac_price_cells_changed": 0.006882771210947388,
+    "n_return_cells_changed": 355
+  }
+}
