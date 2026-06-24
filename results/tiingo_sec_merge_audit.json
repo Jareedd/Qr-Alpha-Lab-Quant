@@ -1,0 +1,1865 @@
+{
+  "n_members_ever": 812,
+  "n_current": 503,
+  "n_dead_probed": 309,
+  "dead_tiingo_price_pct": 0.8511,
+  "dead_sec_cik_pct": 0.3916,
+  "dead_both_pct": 0.3883,
+  "note": "Tiingo = survivorship-safe PRICE leg. sec_cik via CURRENT-only company_tickers.json (the documented crosswalk hole). A dead ticker that DOES map MAY be a REASSIGNMENT to a living company (prior finding: >1/2 of recovered links) -> a cik_history reassignment-safety cross-check is the next refinement before any graded trial. This audit measures the BASELINE merge coverage.",
+  "rows": [
+    {
+      "ticker": "AA",
+      "sec_cik": "0001675149",
+      "tiingo_start": "2016-10-18",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AAL",
+      "sec_cik": "0000006201",
+      "tiingo_start": "2005-09-27",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AAP",
+      "sec_cik": "0001158449",
+      "tiingo_start": "2001-11-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ABMD",
+      "sec_cik": null,
+      "tiingo_start": "1987-07-30",
+      "tiingo_end": "2023-01-03"
+    },
+    {
+      "ticker": "ACE",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "ADS",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "ADT",
+      "sec_cik": "0001703056",
+      "tiingo_start": "2018-01-19",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AET",
+      "sec_cik": null,
+      "tiingo_start": "1977-01-03",
+      "tiingo_end": "2018-11-28"
+    },
+    {
+      "ticker": "AGN",
+      "sec_cik": null,
+      "tiingo_start": "1989-06-22",
+      "tiingo_end": "2020-05-08"
+    },
+    {
+      "ticker": "AIV",
+      "sec_cik": "0000922864",
+      "tiingo_start": "1994-07-22",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AKS",
+      "sec_cik": null,
+      "tiingo_start": "1994-03-30",
+      "tiingo_end": "2020-03-13"
+    },
+    {
+      "ticker": "ALK",
+      "sec_cik": "0000766421",
+      "tiingo_start": "1983-01-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ALTR",
+      "sec_cik": null,
+      "tiingo_start": "2017-11-01",
+      "tiingo_end": "2025-03-26"
+    },
+    {
+      "ticker": "ALXN",
+      "sec_cik": null,
+      "tiingo_start": "1996-02-28",
+      "tiingo_end": "2021-07-28"
+    },
+    {
+      "ticker": "AMG",
+      "sec_cik": "0001004434",
+      "tiingo_start": "1997-11-21",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AMTM",
+      "sec_cik": "0002011286",
+      "tiingo_start": "2024-09-24",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "AN",
+      "sec_cik": "0000350698",
+      "tiingo_start": "1992-03-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ANDV",
+      "sec_cik": null,
+      "tiingo_start": "1983-04-06",
+      "tiingo_end": "2018-09-28"
+    },
+    {
+      "ticker": "ANF",
+      "sec_cik": "0001018840",
+      "tiingo_start": "1996-09-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ANR",
+      "sec_cik": null,
+      "tiingo_start": "2005-02-15",
+      "tiingo_end": "2015-07-16"
+    },
+    {
+      "ticker": "ANSS",
+      "sec_cik": null,
+      "tiingo_start": "1996-06-21",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "APC",
+      "sec_cik": "0002080921",
+      "tiingo_start": "2026-02-12",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "APOL",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2017-02-09"
+    },
+    {
+      "ticker": "ARG",
+      "sec_cik": null,
+      "tiingo_start": "1986-12-22",
+      "tiingo_end": "2016-05-31"
+    },
+    {
+      "ticker": "ARNC",
+      "sec_cik": null,
+      "tiingo_start": "2020-04-01",
+      "tiingo_end": "2023-08-17"
+    },
+    {
+      "ticker": "ATI",
+      "sec_cik": "0001018963",
+      "tiingo_start": "1999-11-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ATVI",
+      "sec_cik": null,
+      "tiingo_start": "1993-10-25",
+      "tiingo_end": "2023-10-13"
+    },
+    {
+      "ticker": "AVP",
+      "sec_cik": null,
+      "tiingo_start": "1972-06-01",
+      "tiingo_end": "2020-01-03"
+    },
+    {
+      "ticker": "AYE",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2011-11-30"
+    },
+    {
+      "ticker": "AYI",
+      "sec_cik": "0001144215",
+      "tiingo_start": "2001-12-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BBBY",
+      "sec_cik": "0001130713",
+      "tiingo_start": "2002-05-30",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BBWI",
+      "sec_cik": "0000701985",
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BCR",
+      "sec_cik": null,
+      "tiingo_start": "1983-04-06",
+      "tiingo_end": "2017-12-29"
+    },
+    {
+      "ticker": "BEAM",
+      "sec_cik": "0001745999",
+      "tiingo_start": "2020-02-06",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BHF",
+      "sec_cik": "0001685040",
+      "tiingo_start": "2017-07-17",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BHI",
+      "sec_cik": null,
+      "tiingo_start": "1987-04-06",
+      "tiingo_end": "2017-07-05"
+    },
+    {
+      "ticker": "BIG",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "BIO",
+      "sec_cik": "0000012208",
+      "tiingo_start": "1980-02-27",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BJS",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2011-05-09"
+    },
+    {
+      "ticker": "BMC",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "BMS",
+      "sec_cik": null,
+      "tiingo_start": "1984-09-07",
+      "tiingo_end": "2019-06-28"
+    },
+    {
+      "ticker": "BRCM",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2016-02-09"
+    },
+    {
+      "ticker": "BTU",
+      "sec_cik": "0001064728",
+      "tiingo_start": "2017-04-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BWA",
+      "sec_cik": "0000908255",
+      "tiingo_start": "1993-08-13",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "BXLT",
+      "sec_cik": null,
+      "tiingo_start": "2015-06-30",
+      "tiingo_end": "2016-06-16"
+    },
+    {
+      "ticker": "CA",
+      "sec_cik": null,
+      "tiingo_start": "1984-09-07",
+      "tiingo_end": "2018-11-06"
+    },
+    {
+      "ticker": "CAM",
+      "sec_cik": null,
+      "tiingo_start": "1995-07-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "CBE",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "CCE",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "CE",
+      "sec_cik": "0001306830",
+      "tiingo_start": "2005-01-21",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "CELG",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2019-11-22"
+    },
+    {
+      "ticker": "CEPH",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "CERN",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2022-09-08"
+    },
+    {
+      "ticker": "CFN",
+      "sec_cik": null,
+      "tiingo_start": "2009-08-21",
+      "tiingo_end": "2015-03-17"
+    },
+    {
+      "ticker": "CHK",
+      "sec_cik": null,
+      "tiingo_start": "1993-02-16",
+      "tiingo_end": "2024-10-04"
+    },
+    {
+      "ticker": "CLF",
+      "sec_cik": "0000764065",
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "CMA",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-01-30"
+    },
+    {
+      "ticker": "CMCSK",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2015-12-21"
+    },
+    {
+      "ticker": "CNX",
+      "sec_cik": "0001070412",
+      "tiingo_start": "1999-04-30",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "COL",
+      "sec_cik": null,
+      "tiingo_start": "2001-06-15",
+      "tiingo_end": "2018-11-26"
+    },
+    {
+      "ticker": "COTY",
+      "sec_cik": "0001024305",
+      "tiingo_start": "2013-06-13",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "COV",
+      "sec_cik": null,
+      "tiingo_start": "2007-06-14",
+      "tiingo_end": "2015-02-03"
+    },
+    {
+      "ticker": "CPB",
+      "sec_cik": "0000016732",
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "CPGX",
+      "sec_cik": null,
+      "tiingo_start": "2015-07-01",
+      "tiingo_end": "2016-07-01"
+    },
+    {
+      "ticker": "CPRI",
+      "sec_cik": "0001530721",
+      "tiingo_start": "2011-12-15",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "CPWR",
+      "sec_cik": "0000827099",
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "CSC",
+      "sec_cik": null,
+      "tiingo_start": "2001-01-02",
+      "tiingo_end": "2017-04-10"
+    },
+    {
+      "ticker": "CSRA",
+      "sec_cik": null,
+      "tiingo_start": "2015-11-30",
+      "tiingo_end": "2018-04-04"
+    },
+    {
+      "ticker": "CTLT",
+      "sec_cik": null,
+      "tiingo_start": "2014-07-31",
+      "tiingo_end": "2024-12-18"
+    },
+    {
+      "ticker": "CTRA",
+      "sec_cik": null,
+      "tiingo_start": "1990-02-08",
+      "tiingo_end": "2026-05-06"
+    },
+    {
+      "ticker": "CTXS",
+      "sec_cik": null,
+      "tiingo_start": "1995-12-08",
+      "tiingo_end": "2022-11-02"
+    },
+    {
+      "ticker": "CVC",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2016-06-21"
+    },
+    {
+      "ticker": "CVH",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2013-10-17"
+    },
+    {
+      "ticker": "CXO",
+      "sec_cik": null,
+      "tiingo_start": "2007-08-03",
+      "tiingo_end": "2021-01-15"
+    },
+    {
+      "ticker": "CZR",
+      "sec_cik": "0001590895",
+      "tiingo_start": "2014-09-22",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "DAY",
+      "sec_cik": null,
+      "tiingo_start": "2018-04-26",
+      "tiingo_end": "2026-02-03"
+    },
+    {
+      "ticker": "DF",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "DFS",
+      "sec_cik": null,
+      "tiingo_start": "2007-06-14",
+      "tiingo_end": "2025-05-16"
+    },
+    {
+      "ticker": "DISCA",
+      "sec_cik": null,
+      "tiingo_start": "2022-04-06",
+      "tiingo_end": "2022-09-16"
+    },
+    {
+      "ticker": "DISCK",
+      "sec_cik": null,
+      "tiingo_start": "2008-09-18",
+      "tiingo_end": "2022-09-16"
+    },
+    {
+      "ticker": "DISH",
+      "sec_cik": null,
+      "tiingo_start": "1995-06-21",
+      "tiingo_end": "2024-01-09"
+    },
+    {
+      "ticker": "DNB",
+      "sec_cik": null,
+      "tiingo_start": "2020-07-01",
+      "tiingo_end": "2025-08-25"
+    },
+    {
+      "ticker": "DNR",
+      "sec_cik": null,
+      "tiingo_start": "1995-09-06",
+      "tiingo_end": "2020-07-30"
+    },
+    {
+      "ticker": "DO",
+      "sec_cik": null,
+      "tiingo_start": "2022-03-30",
+      "tiingo_end": "2024-09-04"
+    },
+    {
+      "ticker": "DPS",
+      "sec_cik": null,
+      "tiingo_start": "2008-05-07",
+      "tiingo_end": "2018-07-09"
+    },
+    {
+      "ticker": "DRE",
+      "sec_cik": null,
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2022-10-03"
+    },
+    {
+      "ticker": "DTV",
+      "sec_cik": null,
+      "tiingo_start": "2016-09-30",
+      "tiingo_end": "2019-09-30"
+    },
+    {
+      "ticker": "DV",
+      "sec_cik": "0001819928",
+      "tiingo_start": "2021-04-21",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "DWDP",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "DXC",
+      "sec_cik": "0001688568",
+      "tiingo_start": "2017-02-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "EK",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "EMC",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "EMN",
+      "sec_cik": "0000915389",
+      "tiingo_start": "1993-12-14",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ENDP",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "ENPH",
+      "sec_cik": "0001463101",
+      "tiingo_start": "2012-03-30",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "EP",
+      "sec_cik": "0000887396",
+      "tiingo_start": "2011-02-23",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "EPAM",
+      "sec_cik": "0001352010",
+      "tiingo_start": "2012-02-08",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ESRX",
+      "sec_cik": null,
+      "tiingo_start": "1992-06-09",
+      "tiingo_end": "2018-12-20"
+    },
+    {
+      "ticker": "ESV",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "ETFC",
+      "sec_cik": null,
+      "tiingo_start": "1996-08-16",
+      "tiingo_end": "2020-10-02"
+    },
+    {
+      "ticker": "ETSY",
+      "sec_cik": "0001370637",
+      "tiingo_start": "2015-04-16",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "EVHC",
+      "sec_cik": null,
+      "tiingo_start": "2013-08-14",
+      "tiingo_end": "2018-12-14"
+    },
+    {
+      "ticker": "FBHS",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "FDO",
+      "sec_cik": null,
+      "tiingo_start": "1985-02-25",
+      "tiingo_end": "2015-07-13"
+    },
+    {
+      "ticker": "FHN",
+      "sec_cik": "0000036966",
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FII",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "FL",
+      "sec_cik": null,
+      "tiingo_start": "1970-01-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FLIR",
+      "sec_cik": null,
+      "tiingo_start": "1993-06-22",
+      "tiingo_end": "2021-05-14"
+    },
+    {
+      "ticker": "FLR",
+      "sec_cik": "0001124198",
+      "tiingo_start": "2000-12-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FLS",
+      "sec_cik": "0000030625",
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FMC",
+      "sec_cik": "0000037785",
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FOSL",
+      "sec_cik": "0000883569",
+      "tiingo_start": "1993-04-08",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FRC",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "FRX",
+      "sec_cik": null,
+      "tiingo_start": "1988-04-19",
+      "tiingo_end": "2014-07-01"
+    },
+    {
+      "ticker": "FTI",
+      "sec_cik": "0001681459",
+      "tiingo_start": "2001-06-14",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "FTR",
+      "sec_cik": null,
+      "tiingo_start": "2020-04-23",
+      "tiingo_end": "2021-06-01"
+    },
+    {
+      "ticker": "GAS",
+      "sec_cik": null,
+      "tiingo_start": "1973-05-03",
+      "tiingo_end": "2016-07-01"
+    },
+    {
+      "ticker": "GENZ",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "GGP",
+      "sec_cik": null,
+      "tiingo_start": "1993-04-08",
+      "tiingo_end": "2018-08-28"
+    },
+    {
+      "ticker": "GHC",
+      "sec_cik": "0000104889",
+      "tiingo_start": "1990-01-24",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "GMCR",
+      "sec_cik": null,
+      "tiingo_start": "2001-01-12",
+      "tiingo_end": "2016-03-04"
+    },
+    {
+      "ticker": "GME",
+      "sec_cik": "0001326380",
+      "tiingo_start": "2002-02-13",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "GNW",
+      "sec_cik": "0001276520",
+      "tiingo_start": "2004-05-25",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "GPS",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "GR",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "GT",
+      "sec_cik": "0000042582",
+      "tiingo_start": "1970-01-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "HAR",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2017-03-10"
+    },
+    {
+      "ticker": "HBI",
+      "sec_cik": null,
+      "tiingo_start": "2006-09-06",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "HCBK",
+      "sec_cik": null,
+      "tiingo_start": "1999-07-13",
+      "tiingo_end": "2015-10-30"
+    },
+    {
+      "ticker": "HES",
+      "sec_cik": null,
+      "tiingo_start": "1983-04-06",
+      "tiingo_end": "2025-07-18"
+    },
+    {
+      "ticker": "HFC",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "HNZ",
+      "sec_cik": null,
+      "tiingo_start": "2001-01-02",
+      "tiingo_end": "2013-10-17"
+    },
+    {
+      "ticker": "HOG",
+      "sec_cik": "0000793952",
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "HOLX",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-04-07"
+    },
+    {
+      "ticker": "HOT",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "HP",
+      "sec_cik": "0000046765",
+      "tiingo_start": "1980-10-15",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "HRB",
+      "sec_cik": "0000012659",
+      "tiingo_start": "1986-11-12",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "HSP",
+      "sec_cik": null,
+      "tiingo_start": "2004-05-03",
+      "tiingo_end": "2015-09-02"
+    },
+    {
+      "ticker": "IGT",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "ILMN",
+      "sec_cik": "0001110803",
+      "tiingo_start": "2000-07-28",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "INFO",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "IPG",
+      "sec_cik": null,
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2025-11-26"
+    },
+    {
+      "ticker": "IPGP",
+      "sec_cik": "0001111928",
+      "tiingo_start": "2006-12-13",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "ITT",
+      "sec_cik": "0000216228",
+      "tiingo_start": "1995-12-18",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "JCP",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "JDSU",
+      "sec_cik": null,
+      "tiingo_start": "1993-11-17",
+      "tiingo_end": "2015-08-03"
+    },
+    {
+      "ticker": "JEF",
+      "sec_cik": "0000096223",
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "JNPR",
+      "sec_cik": null,
+      "tiingo_start": "1999-06-25",
+      "tiingo_end": "2025-07-02"
+    },
+    {
+      "ticker": "JNS",
+      "sec_cik": null,
+      "tiingo_start": "2000-06-26",
+      "tiingo_end": "2017-05-30"
+    },
+    {
+      "ticker": "JOY",
+      "sec_cik": null,
+      "tiingo_start": "2001-05-25",
+      "tiingo_end": "2017-04-13"
+    },
+    {
+      "ticker": "JWN",
+      "sec_cik": null,
+      "tiingo_start": "1986-07-09",
+      "tiingo_end": "2025-05-20"
+    },
+    {
+      "ticker": "K",
+      "sec_cik": null,
+      "tiingo_start": "1984-12-17",
+      "tiingo_end": "2025-12-11"
+    },
+    {
+      "ticker": "KFT",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "KG",
+      "sec_cik": "0002055116",
+      "tiingo_start": "2011-02-28",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "KMX",
+      "sec_cik": "0001170010",
+      "tiingo_start": "1997-02-04",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "KRFT",
+      "sec_cik": null,
+      "tiingo_start": "2012-09-17",
+      "tiingo_end": "2015-07-10"
+    },
+    {
+      "ticker": "KSS",
+      "sec_cik": "0000885639",
+      "tiingo_start": "1992-05-19",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "KSU",
+      "sec_cik": null,
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2021-12-13"
+    },
+    {
+      "ticker": "LEG",
+      "sec_cik": "0000058492",
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LIFE",
+      "sec_cik": "0001788451",
+      "tiingo_start": "2026-01-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LKQ",
+      "sec_cik": "0001065696",
+      "tiingo_start": "2003-10-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LLL",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "LLTC",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2017-03-20"
+    },
+    {
+      "ticker": "LM",
+      "sec_cik": null,
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2020-07-31"
+    },
+    {
+      "ticker": "LNC",
+      "sec_cik": "0000059558",
+      "tiingo_start": "1984-10-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LO",
+      "sec_cik": null,
+      "tiingo_start": "2002-02-01",
+      "tiingo_end": "2015-06-22"
+    },
+    {
+      "ticker": "LSI",
+      "sec_cik": null,
+      "tiingo_start": "1995-06-21",
+      "tiingo_end": "2023-07-19"
+    },
+    {
+      "ticker": "LUMN",
+      "sec_cik": "0000018926",
+      "tiingo_start": "1987-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LVLT",
+      "sec_cik": null,
+      "tiingo_start": "1998-03-31",
+      "tiingo_end": "2017-11-01"
+    },
+    {
+      "ticker": "LW",
+      "sec_cik": "0001679273",
+      "tiingo_start": "2016-11-10",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "LXK",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2016-11-29"
+    },
+    {
+      "ticker": "M",
+      "sec_cik": "0000794367",
+      "tiingo_start": "1992-02-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MAC",
+      "sec_cik": "0000912242",
+      "tiingo_start": "1994-03-10",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MAT",
+      "sec_cik": "0000063276",
+      "tiingo_start": "1982-01-04",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MBC",
+      "sec_cik": "0001941365",
+      "tiingo_start": "2022-12-09",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MDP",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "MEE",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "MFE",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2011-03-01"
+    },
+    {
+      "ticker": "MHK",
+      "sec_cik": "0000851968",
+      "tiingo_start": "1992-04-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MHS",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2013-04-10"
+    },
+    {
+      "ticker": "MI",
+      "sec_cik": "0001958713",
+      "tiingo_start": "2023-09-18",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MIL",
+      "sec_cik": null,
+      "tiingo_start": "1996-05-08",
+      "tiingo_end": "2016-02-12"
+    },
+    {
+      "ticker": "MJN",
+      "sec_cik": null,
+      "tiingo_start": "2009-02-11",
+      "tiingo_end": "2017-07-14"
+    },
+    {
+      "ticker": "MKTX",
+      "sec_cik": "0001278021",
+      "tiingo_start": "2004-11-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MMI",
+      "sec_cik": "0001578732",
+      "tiingo_start": "2013-10-31",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MNK",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "MOH",
+      "sec_cik": "0001179929",
+      "tiingo_start": "2003-07-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MOLX",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "MON",
+      "sec_cik": null,
+      "tiingo_start": "2021-03-16",
+      "tiingo_end": "2022-12-23"
+    },
+    {
+      "ticker": "MRO",
+      "sec_cik": null,
+      "tiingo_start": "1970-01-02",
+      "tiingo_end": "2024-11-22"
+    },
+    {
+      "ticker": "MTCH",
+      "sec_cik": "0000891103",
+      "tiingo_start": "2015-11-19",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MUR",
+      "sec_cik": "0000717423",
+      "tiingo_start": "1983-04-06",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "MWW",
+      "sec_cik": null,
+      "tiingo_start": "2008-11-11",
+      "tiingo_end": "2016-11-09"
+    },
+    {
+      "ticker": "MXIM",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2021-09-01"
+    },
+    {
+      "ticker": "NAVI",
+      "sec_cik": "0001593538",
+      "tiingo_start": "2014-04-17",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NBL",
+      "sec_cik": null,
+      "tiingo_start": "1982-01-04",
+      "tiingo_end": "2020-10-06"
+    },
+    {
+      "ticker": "NBR",
+      "sec_cik": "0001163739",
+      "tiingo_start": "1991-02-28",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NE",
+      "sec_cik": "0001895262",
+      "tiingo_start": "2021-06-09",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NFX",
+      "sec_cik": null,
+      "tiingo_start": "1993-11-12",
+      "tiingo_end": "2019-02-14"
+    },
+    {
+      "ticker": "NKTR",
+      "sec_cik": "0000906709",
+      "tiingo_start": "1994-05-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NLSN",
+      "sec_cik": null,
+      "tiingo_start": "2011-01-27",
+      "tiingo_end": "2022-10-11"
+    },
+    {
+      "ticker": "NOV",
+      "sec_cik": "0001021860",
+      "tiingo_start": "1996-10-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NOVL",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "NSM",
+      "sec_cik": null,
+      "tiingo_start": "2012-03-08",
+      "tiingo_end": "2018-07-31"
+    },
+    {
+      "ticker": "NVLS",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "NWL",
+      "sec_cik": "0000814453",
+      "tiingo_start": "1984-07-19",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NYT",
+      "sec_cik": "0000071691",
+      "tiingo_start": "1973-05-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "NYX",
+      "sec_cik": null,
+      "tiingo_start": "2007-06-04",
+      "tiingo_end": "2013-11-12"
+    },
+    {
+      "ticker": "ODP",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "OGN",
+      "sec_cik": "0001821825",
+      "tiingo_start": "2021-05-14",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "OI",
+      "sec_cik": "0000812074",
+      "tiingo_start": "1991-12-11",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PAYC",
+      "sec_cik": "0001590955",
+      "tiingo_start": "2014-04-15",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PBCT",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2022-04-04"
+    },
+    {
+      "ticker": "PBI",
+      "sec_cik": "0000078814",
+      "tiingo_start": "1972-06-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PCL",
+      "sec_cik": null,
+      "tiingo_start": "1989-06-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PCP",
+      "sec_cik": null,
+      "tiingo_start": "2016-01-04",
+      "tiingo_end": "2016-02-08"
+    },
+    {
+      "ticker": "PCS",
+      "sec_cik": null,
+      "tiingo_start": "2007-04-19",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PDCO",
+      "sec_cik": null,
+      "tiingo_start": "1992-10-28",
+      "tiingo_end": "2025-04-17"
+    },
+    {
+      "ticker": "PENN",
+      "sec_cik": "0000921738",
+      "tiingo_start": "1994-05-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PETM",
+      "sec_cik": null,
+      "tiingo_start": "1993-07-23",
+      "tiingo_end": "2015-03-11"
+    },
+    {
+      "ticker": "PGN",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "PLL",
+      "sec_cik": null,
+      "tiingo_start": "2018-01-02",
+      "tiingo_end": "2025-08-29"
+    },
+    {
+      "ticker": "POM",
+      "sec_cik": "0001877971",
+      "tiingo_start": "2025-10-08",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "POOL",
+      "sec_cik": "0000945841",
+      "tiingo_start": "1995-10-13",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PRGO",
+      "sec_cik": "0001585364",
+      "tiingo_start": "1991-12-17",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PTV",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "PVH",
+      "sec_cik": "0000078239",
+      "tiingo_start": "1987-07-10",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "PXD",
+      "sec_cik": null,
+      "tiingo_start": "1997-08-08",
+      "tiingo_end": "2024-05-03"
+    },
+    {
+      "ticker": "QEP",
+      "sec_cik": null,
+      "tiingo_start": "2010-06-16",
+      "tiingo_end": "2021-03-18"
+    },
+    {
+      "ticker": "QRVO",
+      "sec_cik": "0001604778",
+      "tiingo_start": "2015-01-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "R",
+      "sec_cik": "0000085961",
+      "tiingo_start": "1980-01-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "RAI",
+      "sec_cik": null,
+      "tiingo_start": "1999-06-01",
+      "tiingo_end": "2017-08-17"
+    },
+    {
+      "ticker": "RDC",
+      "sec_cik": null,
+      "tiingo_start": "1983-04-06",
+      "tiingo_end": "2019-04-11"
+    },
+    {
+      "ticker": "RHI",
+      "sec_cik": "0000315213",
+      "tiingo_start": "1992-03-10",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "RHT",
+      "sec_cik": null,
+      "tiingo_start": "1999-08-11",
+      "tiingo_end": "2019-07-08"
+    },
+    {
+      "ticker": "RIG",
+      "sec_cik": "0001451505",
+      "tiingo_start": "1993-05-28",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "RRC",
+      "sec_cik": "0000315852",
+      "tiingo_start": "1992-12-28",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "RRD",
+      "sec_cik": null,
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2022-02-25"
+    },
+    {
+      "ticker": "RSH",
+      "sec_cik": null,
+      "tiingo_start": "1982-01-04",
+      "tiingo_end": "2015-02-02"
+    },
+    {
+      "ticker": "RTN",
+      "sec_cik": null,
+      "tiingo_start": "1981-12-31",
+      "tiingo_end": "2020-04-03"
+    },
+    {
+      "ticker": "RX",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "S",
+      "sec_cik": "0001583708",
+      "tiingo_start": "2021-06-30",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SAI",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "SBNY",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "SCG",
+      "sec_cik": null,
+      "tiingo_start": "1987-12-30",
+      "tiingo_end": "2018-12-31"
+    },
+    {
+      "ticker": "SE",
+      "sec_cik": "0001703399",
+      "tiingo_start": "2017-10-20",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SEDG",
+      "sec_cik": "0001419612",
+      "tiingo_start": "2015-03-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SEE",
+      "sec_cik": null,
+      "tiingo_start": "1987-12-30",
+      "tiingo_end": "2026-04-09"
+    },
+    {
+      "ticker": "SHLD",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "SIAL",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2015-11-18"
+    },
+    {
+      "ticker": "SIG",
+      "sec_cik": "0000832988",
+      "tiingo_start": "1994-10-31",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SII",
+      "sec_cik": "0001512920",
+      "tiingo_start": "2020-06-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SIVB",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "SLE",
+      "sec_cik": "0001621672",
+      "tiingo_start": "2019-02-26",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SLG",
+      "sec_cik": "0001040971",
+      "tiingo_start": "1997-08-15",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SLM",
+      "sec_cik": "0001032033",
+      "tiingo_start": "1988-01-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SNI",
+      "sec_cik": null,
+      "tiingo_start": "2008-06-12",
+      "tiingo_end": "2018-03-16"
+    },
+    {
+      "ticker": "SOLS",
+      "sec_cik": "0002064953",
+      "tiingo_start": "2025-10-29",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SPLS",
+      "sec_cik": null,
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-04-10"
+    },
+    {
+      "ticker": "SRCL",
+      "sec_cik": null,
+      "tiingo_start": "1996-08-23",
+      "tiingo_end": "2024-11-04"
+    },
+    {
+      "ticker": "STI",
+      "sec_cik": "0001881551",
+      "tiingo_start": "2024-02-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "STJ",
+      "sec_cik": null,
+      "tiingo_start": "1989-12-07",
+      "tiingo_end": "2017-01-18"
+    },
+    {
+      "ticker": "STR",
+      "sec_cik": null,
+      "tiingo_start": "2017-09-08",
+      "tiingo_end": "2025-08-18"
+    },
+    {
+      "ticker": "SUN",
+      "sec_cik": "0001552275",
+      "tiingo_start": "2012-09-20",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "SVU",
+      "sec_cik": null,
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2018-12-14"
+    },
+    {
+      "ticker": "SWN",
+      "sec_cik": null,
+      "tiingo_start": "1987-12-30",
+      "tiingo_end": "2024-10-01"
+    },
+    {
+      "ticker": "SWY",
+      "sec_cik": null,
+      "tiingo_start": "1990-04-26",
+      "tiingo_end": "2015-02-09"
+    },
+    {
+      "ticker": "TDC",
+      "sec_cik": "0000816761",
+      "tiingo_start": "2007-10-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "TE",
+      "sec_cik": "0001992243",
+      "tiingo_start": "2021-07-08",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "TEG",
+      "sec_cik": null,
+      "tiingo_start": "1988-01-05",
+      "tiingo_end": "2015-06-29"
+    },
+    {
+      "ticker": "TFX",
+      "sec_cik": "0000096943",
+      "tiingo_start": "1988-02-18",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "TGNA",
+      "sec_cik": null,
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2026-03-20"
+    },
+    {
+      "ticker": "THC",
+      "sec_cik": "0000070318",
+      "tiingo_start": "1982-01-04",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "TIE",
+      "sec_cik": null,
+      "tiingo_start": "2006-12-28",
+      "tiingo_end": "2013-01-07"
+    },
+    {
+      "ticker": "TIF",
+      "sec_cik": null,
+      "tiingo_start": "1987-12-30",
+      "tiingo_end": "2021-01-08"
+    },
+    {
+      "ticker": "TLAB",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "TRIP",
+      "sec_cik": "0001526520",
+      "tiingo_start": "2011-12-07",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "TSS",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "TWC",
+      "sec_cik": null,
+      "tiingo_start": "2007-03-01",
+      "tiingo_end": "2016-05-26"
+    },
+    {
+      "ticker": "TWTR",
+      "sec_cik": null,
+      "tiingo_start": "2013-11-07",
+      "tiingo_end": "2022-10-28"
+    },
+    {
+      "ticker": "TWX",
+      "sec_cik": null,
+      "tiingo_start": "1992-03-19",
+      "tiingo_end": "2018-06-15"
+    },
+    {
+      "ticker": "TYC",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "UA",
+      "sec_cik": "0001336917",
+      "tiingo_start": "2016-04-07",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "UAA",
+      "sec_cik": "0001336917",
+      "tiingo_start": "2005-11-18",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "UNM",
+      "sec_cik": "0000005513",
+      "tiingo_start": "1986-11-06",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "URBN",
+      "sec_cik": "0000912615",
+      "tiingo_start": "1993-11-09",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "VAR",
+      "sec_cik": null,
+      "tiingo_start": "1988-01-05",
+      "tiingo_end": "2021-04-16"
+    },
+    {
+      "ticker": "VFC",
+      "sec_cik": "0000103379",
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "VIAB",
+      "sec_cik": null,
+      "tiingo_start": "2005-12-05",
+      "tiingo_end": "2019-12-04"
+    },
+    {
+      "ticker": "VNO",
+      "sec_cik": "0000899689",
+      "tiingo_start": "1988-01-05",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "VNT",
+      "sec_cik": "0001786842",
+      "tiingo_start": "2020-09-25",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "WBA",
+      "sec_cik": null,
+      "tiingo_start": "1985-07-01",
+      "tiingo_end": "2025-08-28"
+    },
+    {
+      "ticker": "WCG",
+      "sec_cik": null,
+      "tiingo_start": "2004-07-01",
+      "tiingo_end": "2020-01-23"
+    },
+    {
+      "ticker": "WFM",
+      "sec_cik": null,
+      "tiingo_start": "1992-01-23",
+      "tiingo_end": "2017-08-29"
+    },
+    {
+      "ticker": "WFR",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "WHR",
+      "sec_cik": "0000106640",
+      "tiingo_start": "1983-06-10",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "WIN",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "WPX",
+      "sec_cik": null,
+      "tiingo_start": "2011-12-12",
+      "tiingo_end": "2021-01-14"
+    },
+    {
+      "ticker": "WU",
+      "sec_cik": "0001365135",
+      "tiingo_start": "2006-10-02",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "WYN",
+      "sec_cik": null,
+      "tiingo_start": "2006-07-19",
+      "tiingo_end": "2018-05-31"
+    },
+    {
+      "ticker": "X",
+      "sec_cik": null,
+      "tiingo_start": "1991-04-12",
+      "tiingo_end": "2025-06-18"
+    },
+    {
+      "ticker": "XEC",
+      "sec_cik": null,
+      "tiingo_start": "2002-09-25",
+      "tiingo_end": "2021-10-04"
+    },
+    {
+      "ticker": "XL",
+      "sec_cik": null,
+      "tiingo_start": "1991-07-19",
+      "tiingo_end": "2018-09-13"
+    },
+    {
+      "ticker": "XLNX",
+      "sec_cik": null,
+      "tiingo_start": "1990-06-18",
+      "tiingo_end": "2022-02-14"
+    },
+    {
+      "ticker": "XRAY",
+      "sec_cik": "0000818479",
+      "tiingo_start": "1991-04-25",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "XRX",
+      "sec_cik": "0001770450",
+      "tiingo_start": "1977-01-03",
+      "tiingo_end": "2026-06-23"
+    },
+    {
+      "ticker": "XTO",
+      "sec_cik": null,
+      "tiingo_start": null,
+      "tiingo_end": null
+    },
+    {
+      "ticker": "YHOO",
+      "sec_cik": null,
+      "tiingo_start": "1996-04-12",
+      "tiingo_end": "2017-06-26"
+    },
+    {
+      "ticker": "ZION",
+      "sec_cik": "0000109380",
+      "tiingo_start": "1990-03-26",
+      "tiingo_end": "2026-06-23"
+    }
+  ]
+}
