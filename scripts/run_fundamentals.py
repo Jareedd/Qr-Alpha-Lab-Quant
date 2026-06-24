@@ -7,11 +7,20 @@ Order of operations (the registration's):
 2. Machinery gate: synthetic planted_quality recovered, null_quality rejected
    (paired). Proves the harness can tell a quality premium from its absence.
 3. DATA GATE: a graded trial requires a SURVIVORSHIP-SAFE source. The free SEC
-   source is current-ticker-only (~73% coverage; audit 2026-06-14) — running H1
-   on it would re-commit trial #1's original sin, so the script REFUSES and
-   spends no trial. The day WRDS lands, implement CompustatSource.field_series
-   (+ delisting-inclusive prices) and re-run with --source compustat: same
-   harness, one command, clean trial #12.
+   source (--source free_sec) is current-ticker-only (~73% coverage; audit
+   2026-06-14) — running H1 on it would re-commit trial #1's original sin, so
+   the script REFUSES and spends no trial. The day WRDS lands, implement
+   CompustatSource.field_series (+ delisting-inclusive prices) and re-run with
+   --source compustat: same harness, one command, clean trial #12.
+
+Sources:
+- free_sec    : free SEC fundamentals via current-only ticker->CIK map +
+                Tiingo prices. SURVIVORSHIP-BLOCKED — fails the DATA GATE.
+- compustat   : WRDS slot — survivorship-safe, awaiting access.
+- free_xwalk  : SEC fundamentals via the name->CIK crosswalk (recovers dead/
+                renamed names) + Tiingo prices — the FREE survivorship-safe
+                path. Passes the DATA GATE, but a graded trial still requires
+                explicit sign-off (N stays put until then).
 
 This is the prep promised while sponsorship emails are out: everything except
 the data is built and tested.
@@ -26,6 +35,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from quantlab import fundamentals, metrics
 from quantlab.fundamentals_data import CompustatSource, FreeSECSource
+from quantlab.sec_xwalk_source import SurvivorshipSafeSECSource
 from quantlab.registry import require_runnable_registration
 
 
@@ -51,7 +61,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--hypothesis", default="H1")
     ap.add_argument("--n-trials", type=int, default=12)
-    ap.add_argument("--source", choices=["free_sec", "compustat"], default="free_sec")
+    ap.add_argument(
+        "--source",
+        choices=["free_sec", "compustat", "free_xwalk"],
+        default="free_sec",
+    )
     args = ap.parse_args()
 
     try:
@@ -69,7 +83,16 @@ def main() -> None:
                  "<= 0.5 — harness cannot tell quality from its absence; abort.")
     print(f"[gate] PASS (min paired differential {min(gate['diffs']):.2f})")
 
-    source = FreeSECSource() if args.source == "free_sec" else CompustatSource()
+    # free_xwalk = SEC fundamentals via the name->CIK crosswalk (recovers dead/
+    # renamed names) + Tiingo prices: the free survivorship-safe path. It clears
+    # the DATA GATE below (survivorship_safe=True) and reaches _run_trial, but a
+    # graded trial still requires explicit sign-off per the registration.
+    sources = {
+        "free_sec": FreeSECSource,
+        "compustat": CompustatSource,
+        "free_xwalk": SurvivorshipSafeSECSource,
+    }
+    source = sources[args.source]()
     if not source.survivorship_safe:
         sys.exit(
             "\nDATA GATE: the free SEC source is SURVIVORSHIP-BLOCKED -- its "
