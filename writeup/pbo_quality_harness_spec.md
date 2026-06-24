@@ -7,6 +7,8 @@
 
 All numerical claims below were re-derived in-env (numpy 1.26.4 / scipy 1.13.1) before this spec was frozen; every pinned value is a measured byte value, not an estimate. Permitted deps only: numpy / pandas / scipy / sklearn.
 
+> **RECONCILIATION NOTE (2026-06-24, at merge).** While this branch was in flight, parallel work landed a PBO/CSCV module on `main` as `quantlab.pbo.cscv_pbo` (commit `908acd4`, family-wise complement to the DSR, consumed by `scripts/pbo_equity.py`). To avoid a duplicate module, this PR **adopts the canonical `cscv_pbo`** and DROPS the `pbo.cscv` / `probability_of_backtest_overfitting` / `performance_degradation` API drafted in §1 below. §1 is retained as the design rationale; the only live consumer here — the four-arm adjudication test — calls `pbo.cscv_pbo`. §§2–4 (rolling factor betas, FF loader, two-world quality panel, `value_neutralized_signal`) are unaffected and land as written.
+
 ---
 
 ## 0. How the surviving critiques are resolved (read first)

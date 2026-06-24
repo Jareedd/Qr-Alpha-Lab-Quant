@@ -235,6 +235,7 @@ def test_cscv_adjudicates_the_four_arms():
     start, end = valid.index.min(), valid.index.max()
     df = df.loc[start:end]
     assert not df.isna().any().any()  # contiguous & gap-free after slice
-    out = pbo.cscv(df, n_splits=6)
+    # uses the canonical family-wise PBO module (quantlab.pbo.cscv_pbo)
+    out = pbo.cscv_pbo(df, n_splits=6)
     assert out["n_combinations"] == 20
-    assert out["logits"].shape == (20,)
+    assert out["n_configs"] == 4

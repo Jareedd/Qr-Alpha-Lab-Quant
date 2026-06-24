@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-06-17",
+  "n_shared_dates": 2126,
+  "n_shared_tickers": 654,
+  "n_cells_compared": 1297539,
+  "n_price_cells_changed": 6384,
+  "frac_price_cells_changed": 0.004920083326975143,
+  "max_abs_rel_price_change": 0.008949764164955631,
+  "n_return_cells_compared": 1296775,
+  "n_return_cells_changed": 240,
+  "frac_return_cells_changed": 0.00018507451176958222,
+  "max_abs_return_change": 0.008785002196570302,
+  "n_tickers_affected": 12,
+  "n_price_cells_noise_band": 665386,
+  "n_return_cells_noise_band": 790470,
+  "n_cells_appeared": 3,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "LRCX",
+      "n_price_cells": 2125,
+      "max_abs_rel_change": 0.0007045207882887539,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "MSI",
+      "n_price_cells": 2125,
+      "max_abs_rel_change": 0.002988788188786118,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "HBAN",
+      "n_price_cells": 2125,
+      "max_abs_rel_change": 0.008949764164955631,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "AAPL",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.022881030321443e-06,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "GEN",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.00020903106686365192,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "COIN",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 3.0348258292178798e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "AKAM",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 3.908531763929801e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "GENZ",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.00011002925014225173,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "IBKR",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.014605484739306e-06,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "POM",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.0011481250712125357,
+      "n_return_cells": 1
+    }
+  ]
+}

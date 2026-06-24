@@ -1,0 +1,18 @@
+======================================================================
+ FALSIFICATION GATE DEMO  --  watch CI catch a look-ahead leak
+======================================================================
+
+[1] PLANTED signal     IC=+0.0629  DSR=0.9919
+    gate (DSR >= 0.95): PASS -- signal recovered
+
+[2] PURE NOISE         IC=-0.0199  DSR=0.0004
+    gate (DSR <= 0.5): PASS -- nothing found, as it must be
+
+[3] NOISE + 1-line look-ahead leak   IC=+1.0000  DSR=1.0000
+    (injected: panel['leak_fwd_return'] = panel['label'])
+    gate (DSR <= 0.5): FAIL -- noise FOUND ALPHA: CI goes RED, hunt the leak
+
+----------------------------------------------------------------------
+  RESULT: planted recovered, clean noise rejected, and the leak flipped noise from DSR 0.0004 -> 1.0000.
+  The gate that is green on clean noise goes RED the instant a future-peeking feature enters -- on every push.
+  Demo WORKED (leak caught).

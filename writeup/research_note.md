@@ -140,6 +140,26 @@ A multi-feature model is not automatically better than its strongest
 ingredient, and a baseline that looks too good is as informative as a strategy
 that does (§6).
 
+**Family-wise overfitting (PBO).** The Deflated Sharpe deflates a *single*
+result for the number of trials; its family-wise complement is the Probability
+of Backtest Overfitting (Bailey–López de Prado, combinatorially-symmetric
+cross-validation), which asks of a family of comparable configs on the *same*
+data: how often does the in-sample-best land below the out-of-sample median?
+Over the comparable equity family (trials #2/#3/#5/#6/#7 on the shared
+point-in-time universe — 3,253 aligned days, 12,870 symmetric splits) PBO is
+0.24. A low PBO would normally reassure, but here it is *not* a green light: it
+reflects persistent **structural** ordering among uniformly-unprofitable configs
+(the residual-label variants reliably do worse than the raw-label one), while
+the in-sample→out-of-sample Sharpe degradation slope (−0.89) and the 71%
+probability that the selected config loses money out-of-sample confirm there is
+no monetizable edge to overfit *to*. Read together the three numbers reaffirm
+the equity null; read alone, PBO would mislead — which is the methodological
+point, and the reason I report it alongside, not instead of, the per-trial DSR.
+I never compute PBO *across* the eleven trials: they live on different
+universes, horizons and asset classes, so they share no return matrix to rank on
+— and pretending otherwise is exactly the overfitting an overfitting metric
+should be the first to refuse.
+
 ## 5. Results
 
 All out-of-sample, all net of costs, all at the true N for the Deflated Sharpe.

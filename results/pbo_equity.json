@@ -1,0 +1,29 @@
+{
+  "pbo": 0.23597513597513597,
+  "n_configs": 5,
+  "n_obs": 3253,
+  "n_splits": 16,
+  "n_combinations": 12870,
+  "median_logit": 0.0,
+  "perf_degradation_slope": -0.8891195183593954,
+  "prob_oos_loss": 0.7149184149184149,
+  "config_net_sharpe": {
+    "t2_ridge_raw": 0.009185456892760565,
+    "t3_ridge_neutral": -0.41989100658636636,
+    "t5_ridge_residual": -0.7747850264018366,
+    "t6_gbr_residual": -0.27669570615843087,
+    "t7_mlp_residual": 0.06558844733935815
+  },
+  "_meta": {
+    "trial_count_impact": 0,
+    "kind": "reproduction-diagnostic",
+    "configs": [
+      "t2_ridge_raw",
+      "t3_ridge_neutral",
+      "t5_ridge_residual",
+      "t6_gbr_residual",
+      "t7_mlp_residual"
+    ],
+    "excluded": "trial #1 (biased universe), #4 (63d horizon)"
+  }
+}

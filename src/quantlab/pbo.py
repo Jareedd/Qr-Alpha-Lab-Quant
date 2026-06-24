@@ -1,171 +1,93 @@
-"""Combinatorially-Symmetric Cross-Validation (CSCV) and the Probability of
-Backtest Overfitting (PBO), Bailey-Borwein-Lopez de Prado-Zhu 2015.
+"""Probability of Backtest Overfitting (PBO) via Combinatorially Symmetric
+Cross-Validation (CSCV) — Bailey & López de Prado (2014), "The Probability of
+Backtest Overfitting," Journal of Computational Finance.
 
-PBO complements the Deflated Sharpe Ratio (metrics.deflated_sharpe_ratio), it
-does not duplicate it:
-  - DSR takes ONE return series + a scalar trial count N and asks whether the
-    final track record beats the luckiest of N noise draws.
-  - PBO takes the full (T periods x N configs) matrix and asks whether the
-    SELECTION RULE ("pick the in-sample best") generalizes out-of-sample.
-Report both. DSR guards the track record against luck-of-N; PBO guards the
-selection PROCESS that chose it.
+The family-wise complement to the per-trial Deflated Sharpe Ratio in metrics.py.
+DSR asks, of ONE strategy: is this Sharpe the lucky maximum of N noise draws?
+PBO asks, of a FAMILY of N comparable variants backtested on the SAME data: if I
+select the in-sample best, what is the probability it ranks BELOW the median
+out-of-sample? PBO ≈ 0.5 means selection carries no OOS information (a coin
+flip); PBO ≈ 0 means the in-sample winner reliably stays a winner OOS.
 
-Rows MUST be per-period RETURNS (not prices) on a common, time-ordered,
-gap-free index. CSCV is symmetric under the IS<->OOS swap of complementary
-block sets, but it is NOT invariant to row permutation: blocks are CONTIGUOUS,
-so callers must pass a contiguous slice, never a dropna'd union of series with
-different warm-up lengths.
+SCOPE — read before applying. CSCV needs a single (T × N) matrix whose columns
+are the per-period returns of COMPARABLE variants over the SAME T observations.
+It is a within-backtest, within-family diagnostic. It is NOT valid across
+heterogeneous trials on different universes, frequencies, or asset classes — you
+cannot rank those on a shared OOS slice, and pretending you can is exactly the
+overfitting error this metric exists to catch. This project applies it to the
+equity price-feature config family on the shared point-in-time universe (trials
+#2/#3/#5/#6/#7 — same universe, same 21-day horizon), never across all 11 trials.
 """
-
 from __future__ import annotations
 
-import itertools
-import math
+from itertools import combinations
 
 import numpy as np
 import pandas as pd
-from scipy.stats import rankdata
 
 
-def _column_sharpes(matrix: np.ndarray) -> np.ndarray:
-    """Per-config per-period Sharpe (mean / std, ddof=1) for every column of a
-    (rows x N) block; returns shape (N,). A column with std exactly 0.0 maps to
-    0.0 (no divide-by-zero); a bit-constant float column has ~1e-18 std (not
-    exactly 0.0) and is NOT special-cased -- harmless because such columns tie
-    and only relative rank order is used downstream. NOT annualized: only the
-    RELATIVE ORDER is used for
-    ranking, so the sqrt(periods) factor in metrics.sharpe is a positive
-    monotone constant deliberately omitted. ddof=1 matches metrics.sharpe and
-    the pandas convention. Assumes ``matrix`` is a contiguous row-slice of one
-    config-return matrix."""
-    mu = matrix.mean(axis=0)
-    sd = matrix.std(axis=0, ddof=1)
-    safe = np.where(sd > 0, sd, 1.0)  # avoid div-by-zero warning
-    return np.where(sd > 0, mu / safe, 0.0)
+def _sharpe_columns(block: np.ndarray) -> np.ndarray:
+    """Per-period Sharpe of each column (mean/std). Annualization is a positive
+    monotone scaling that cancels in the within-split ranking, so it is omitted.
+    A flat (zero-variance) column ranks last — it can never be the IS 'best'."""
+    mu = block.mean(axis=0)
+    sd = block.std(axis=0, ddof=1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return np.where(sd > 0, mu / sd, -np.inf)
 
 
-def _make_blocks(n_periods: int, n_splits: int) -> list[np.ndarray]:
-    """Partition row indices [0, n_periods) into n_splits disjoint CONTIGUOUS
-    equal blocks of size n_periods // n_splits. Assumes n_periods % n_splits == 0
-    (the caller drops the trailing remainder first). Returns n_splits int index
-    arrays."""
-    bs = n_periods // n_splits
-    return [np.arange(i * bs, (i + 1) * bs) for i in range(n_splits)]
+def cscv_pbo(returns: pd.DataFrame, n_splits: int = 16) -> dict:
+    """PBO via CSCV over a (T periods × N configs) return matrix.
 
-
-def cscv(returns: pd.DataFrame | np.ndarray, n_splits: int = 16) -> dict:
-    """Full CSCV on a (T periods x N configs) per-period return matrix.
-
-    Splits T into n_splits (S, must be EVEN) contiguous blocks. For each of the
-    C(S, S/2) ways to choose S/2 blocks as in-sample (complement = out-of-sample):
-    rank configs by IS Sharpe, take the IS-argmax n*, compute n*'s OOS Sharpe
-    rank among all N configs (average ranks for ties, 1=worst..N=best), relative
-    rank w = rank/(N+1), logit lambda = ln(w/(1-w)).
-
-    Returns dict:
-      'pbo'             : float, fraction of splits with lambda < 0 (STRICT).
-      'logits'          : np.ndarray (n_combinations,)
-      'n_splits'        : int (== S, the input n_splits)
-      'n_combinations'  : int (== math.comb(S, S/2) == len(logits))
-      'is_sharpe'       : np.ndarray (n_combinations,) IS-best config's IS Sharpe
-      'oos_sharpe'      : np.ndarray (n_combinations,) IS-best config's OOS Sharpe
-      'degradation'     : dict('slope','intercept','r_squared') OLS of oos_sharpe
-                          on is_sharpe across all splits
-      'prob_oos_loss'   : float, fraction of splits where IS-best OOS Sharpe < 0
-
-    Assumes columns are independent candidate configs; rows are per-period
-    returns on a contiguous time index. The last (T mod S) periods are DROPPED
-    (trailing rows) to keep equal contiguous blocks (Bailey et al. assume
-    divisible T); this keeps the OLDEST data. S and the equal-block partition
-    are researcher degrees of freedom (law #3): S is a pinned, logged default."""
-    if isinstance(returns, pd.DataFrame):
-        M = returns.to_numpy(dtype=float)
-    else:
-        M = np.asarray(returns, dtype=float)
-    if M.ndim != 2:
-        raise ValueError(f"returns must be 2-D (T x N), got shape {M.shape}")
-    T, N = M.shape
-
+    Split the T rows into ``n_splits`` contiguous equal blocks; for every way to
+    choose half the blocks as in-sample (the complement is out-of-sample):
+      1. pick the config with the best IS Sharpe (the selection a researcher makes);
+      2. find that config's OOS Sharpe RANK among all configs;
+      3. logit of its relative rank ω∈(0,1):  λ = ln(ω / (1−ω)).
+    PBO = P(λ < 0) = the fraction of symmetric splits in which the IS-best config
+    lands below the OOS median. Also returns the IS→OOS Sharpe degradation slope
+    (of the selected config) and the probability it loses money OOS.
+    """
     if n_splits % 2 != 0:
-        raise ValueError(f"n_splits must be even, got {n_splits}")
-    if n_splits < 2:
-        raise ValueError(f"n_splits must be >= 2, got {n_splits}")
+        raise ValueError(f"n_splits must be even (CSCV is symmetric), got {n_splits}")
+    R = returns.dropna(how="any")
+    T, N = R.shape
     if N < 2:
         raise ValueError(f"need >= 2 configs to rank, got {N}")
-    if T < n_splits:
-        raise ValueError(f"need T >= n_splits, got T={T}, n_splits={n_splits}")
-    if not np.isfinite(M).all():
-        raise ValueError("returns contains non-finite values")
+    if n_splits > T:
+        raise ValueError(f"n_splits ({n_splits}) exceeds observations ({T})")
+    M = R.to_numpy(dtype=float)
+    block = T // n_splits
+    blocks = [M[i * block:(i + 1) * block] for i in range(n_splits)]
+    idx = list(range(n_splits))
 
-    usable = T - (T % n_splits)
-    M = M[:usable]
-    T = usable
-    blocks = _make_blocks(T, n_splits)
-    half = n_splits // 2
-
-    logits: list[float] = []
-    is_best_is: list[float] = []
-    is_best_oos: list[float] = []
-    for combo in itertools.combinations(range(n_splits), half):
-        combo_set = set(combo)
-        is_rows = np.concatenate([blocks[b] for b in combo])
-        oos_rows = np.concatenate(
-            [blocks[b] for b in range(n_splits) if b not in combo_set]
-        )
-        is_sh = _column_sharpes(M[is_rows])
-        oos_sh = _column_sharpes(M[oos_rows])
-        n_star = int(np.argmax(is_sh))  # lowest index on IS ties (deterministic)
-        ranks = rankdata(oos_sh, method="average")  # 1=worst OOS .. N=best
-        rank_star = ranks[n_star]
-        w = rank_star / (N + 1)  # in (0,1) by construction -> finite logit, no clamp
-        logits.append(math.log(w / (1.0 - w)))
-        is_best_is.append(is_sh[n_star])
-        is_best_oos.append(oos_sh[n_star])
+    logits, sel_is_sr, sel_oos_sr = [], [], []
+    for is_combo in combinations(idx, n_splits // 2):
+        is_set = set(is_combo)
+        IS = np.vstack([blocks[i] for i in is_combo])
+        OOS = np.vstack([blocks[i] for i in idx if i not in is_set])
+        is_perf = _sharpe_columns(IS)
+        oos_perf = _sharpe_columns(OOS)
+        n_star = int(np.argmax(is_perf))                       # the IS selection
+        ranks = pd.Series(oos_perf).rank(method="average").to_numpy()  # ties averaged
+        omega = ranks[n_star] / (N + 1)
+        omega = min(max(omega, 1e-6), 1 - 1e-6)
+        logits.append(float(np.log(omega / (1.0 - omega))))
+        sel_is_sr.append(float(is_perf[n_star]))
+        sel_oos_sr.append(float(oos_perf[n_star]))
 
     logits = np.asarray(logits)
-    x = np.asarray(is_best_is)
-    y = np.asarray(is_best_oos)
-    pbo = float(np.mean(logits < 0))  # STRICT: lambda==0 (OOS median) is NOT overfit
-
-    if len(x) >= 2 and np.var(x) > 0:
-        slope, intercept = np.polyfit(x, y, 1)
-        yhat = slope * x + intercept
-        ss_tot = float(np.sum((y - y.mean()) ** 2))
-        ss_res = float(np.sum((y - yhat) ** 2))
-        r_squared = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
-    else:
-        slope = intercept = r_squared = float("nan")
-
-    prob_oos_loss = float(np.mean(y < 0))
+    sel_is_sr = np.asarray(sel_is_sr)
+    sel_oos_sr = np.asarray(sel_oos_sr)
+    slope = (float(np.polyfit(sel_is_sr, sel_oos_sr, 1)[0])
+             if len(sel_is_sr) > 1 and np.ptp(sel_is_sr) > 0 else float("nan"))
     return {
-        "pbo": pbo,
-        "logits": logits,
+        "pbo": float((logits < 0).mean()),
+        "n_configs": int(N),
+        "n_obs": int(T),
         "n_splits": int(n_splits),
-        "n_combinations": math.comb(n_splits, half),
-        "is_sharpe": x,
-        "oos_sharpe": y,
-        "degradation": {
-            "slope": float(slope),
-            "intercept": float(intercept),
-            "r_squared": float(r_squared),
-        },
-        "prob_oos_loss": prob_oos_loss,
+        "n_combinations": int(len(logits)),
+        "median_logit": float(np.median(logits)),
+        "perf_degradation_slope": slope,        # < 1 ⇒ OOS Sharpe decays vs IS
+        "prob_oos_loss": float((sel_oos_sr < 0.0).mean()),
     }
-
-
-def probability_of_backtest_overfitting(
-    returns: pd.DataFrame | np.ndarray, n_splits: int = 16
-) -> float:
-    """Convenience wrapper returning cscv(returns, n_splits)['pbo']. PBO in
-    [0,1]; high => the IS-selection rule does not generalize OOS."""
-    return cscv(returns, n_splits)["pbo"]
-
-
-def performance_degradation(
-    returns: pd.DataFrame | np.ndarray, n_splits: int = 16
-) -> dict:
-    """Convenience wrapper returning cscv(returns, n_splits)['degradation'] =
-    {'slope','intercept','r_squared'}: OLS of the IS-best config's OOS Sharpe on
-    its IS Sharpe across all C(S, S/2) splits. Negative slope / low R^2 => IS
-    performance does not carry to OOS (an overfitting signature)."""
-    return cscv(returns, n_splits)["degradation"]
