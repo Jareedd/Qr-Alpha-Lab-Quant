@@ -103,6 +103,42 @@ Template:
      alpha; the lagged-assets denominator is insignificant). **Expected outcome:
      a credible NULL or a marginal pass** — logged whatever it says; either
      extends the survivorship/cost-mortality story to fundamentals.
+- **Amendment, 2026-06-24 — PRE-DATA, MACHINERY-ONLY (status stays PROPOSED; ZERO
+  trials; N unchanged at 11; H1 remains blocked on the survivorship-safe PIT
+  data-source decision). Declares the adjudication protocol BEFORE any real H1 run.**
+  (A) RAW-vs-NEUTRAL is now a PRE-REGISTERED, PAIRED success criterion, not a
+  post-hoc robustness leg. The H1 quality book is run in TWO arms on the same
+  universe / dates / costs: RAW = z(profitability) [CBOP per the 2026-06-16
+  amendment]; NEUTRAL = the same signal cross-sectionally residualized against an
+  HML/value loading (+ a ones column for dollar-neutrality) via
+  `risk_model.cross_sectional_neutralize`, the value loading from a trailing
+  past-only `rolling_factor_betas` HML beta (fit_intercept=True — required;
+  point-in-time, law #1). H1 GRADUATES on the NEUTRAL arm: a quality claim that is
+  merely the value factor re-labeled must NOT count. Criterion: right-signed
+  t_NW ≥ +2 AND net SR > 0 beating both baselines AND DSR ≥ 0.95 at the
+  then-current N on the NEUTRAL arm; the RAW arm is reported alongside, and a large
+  raw-minus-neutral gap is declared IN ADVANCE as evidence the edge was
+  value-collinear (interpreted, not hidden).
+  (B) PBO/CSCV is now a PRE-REGISTERED selection-overfit gate COMPLEMENTING the
+  DSR. Whatever set of H1 configs is considered (raw vs neutral; current- vs
+  lagged-assets denominator; quintile vs declared robustness cuts), their OOS
+  return paths are assembled into a contiguous, gap-free (T × M) matrix and
+  `pbo.cscv_pbo` is reported. Pre-declared threshold:
+  PBO ≤ 0.5 required to graduate (PBO > 0.5 means the IS-selection rule does not
+  generalize OOS — a hard stop regardless of the chosen config's DSR). DSR guards
+  the final track record against luck-of-N; PBO guards the selection PROCESS that
+  chose it; BOTH must pass.
+  (C) SYNTHETIC TWO-WORLD VALIDATION (run in-env immediately before any real H1
+  run, law #4, like the carry/CEF/event gates): `synthetic.make_quality_panel`
+  `quality_is_value` (edge IS value → NEUTRAL arm must collapse: static-loading
+  neutral SR < 0.3) and `quality_orthogonal` (edge is value-orthogonal → NEUTRAL
+  arm must SURVIVE: static-loading neutral SR > 1.0), with the worlds SR-MATCHED on
+  the raw arm (discrimination attributable to neutralization, not a Sharpe gap) and
+  a placebo-factor control proving the collapse requires the TRUE value factor
+  (neutral_true < 0.5 × neutral_placebo). Pinned in `tests/test_quality_value.py`.
+  If neutralization cannot tell a value-disguised edge from a genuine one TODAY, no
+  real raw-vs-neutral number is trusted → ABORT, no trial spent. Machinery +
+  synthetic validation ONLY; spends ZERO trials; N still 11.
 
 ### H2: The same pipeline finds (or honestly rejects) carry in crypto perpetuals, where survivorship bias and dead-name gaps do not exist
 - Status: **RUN (trial #8, 2026-06-13). Outcome: registered criteria NOT MET

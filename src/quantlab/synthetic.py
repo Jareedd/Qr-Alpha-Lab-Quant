@@ -255,6 +255,25 @@ def make_cef_panel(
     return price
 
 
+_VALUE_SEED_OFFSET = 5150   # separate-rng offset for ALL value-world randomness;
+                            # distinct from make_panel's seed+777. Never reuse the
+                            # main seed or the value draws correlate with q/idio.
+_VALUE_PREMIUM = 0.05       # mean of the HML factor return series val_f (the value
+                            # premium that makes World A's raw SR positive). MUST be
+                            # nonzero: a zero-mean factor gives E[ret]=loading*0=0
+                            # and the discrimination evaporates.
+_VALUE_VOL = 0.08           # per-period std of val_f; > idio (0.06) so a 36/18
+                            # rolling HML beta is identifiable and neutralization bites.
+_WORLD_B_PREMIUM = 0.004    # World B's genuine value-ORTHOGONAL quality alpha,
+                            # CALIBRATED so World B raw SR overlaps World A's (~2.4),
+                            # NOT premium=0.02 which gave SR ~12 and made the worlds
+                            # separable by raw SR alone (the discrimination must come
+                            # from neutralization, not headroom). Hardcoded — NOT a
+                            # tunable knob (these are falsification worlds).
+_QUALITY_MODES = {"planted_quality", "null_quality",
+                  "quality_is_value", "quality_orthogonal"}
+
+
 def make_quality_panel(
     n_firms: int = 200,
     n_periods: int = 180,
@@ -275,10 +294,24 @@ def make_quality_panel(
     - ``null_quality``: ``premium = 0`` — GP/A is real but unrelated to returns;
       the book must earn ~nothing (finding quality alpha here = harness broken).
 
+    Two additional modes turn the H1 raw-vs-HML-neutral decision into a known-
+    answer test (the discrimination must come from neutralization, not a
+    Sharpe-level gap — see ``_WORLD_B_PREMIUM``):
+
+    - ``quality_is_value``: the firm's value loading IS its quality z-score
+      (collinear), and the predictable return arrives via the value factor — so
+      a raw quality book has positive Sharpe but an HML-neutralized book
+      COLLAPSES (the "alpha" was the value tilt).
+    - ``quality_orthogonal``: quality predicts idiosyncratic return orthogonal
+      to value — so both raw and HML-neutralized books KEEP their Sharpe.
+
     SYNTHETIC, harness-validation only, labeled as such (law #7).
     """
-    if mode not in {"planted_quality", "null_quality"}:
-        raise ValueError(f"mode must be 'planted_quality' or 'null_quality', got {mode!r}")
+    if mode not in _QUALITY_MODES:
+        raise ValueError(
+            "mode must be one of 'planted_quality', 'null_quality', "
+            f"'quality_is_value', 'quality_orthogonal', got {mode!r}"
+        )
     rng = np.random.default_rng(seed)
     q = rng.standard_normal(n_firms)                              # persistent quality
     gp_noise = rng.standard_normal((n_periods, n_firms))
@@ -288,14 +321,50 @@ def make_quality_panel(
     mkt = rng.standard_normal(n_periods) * 0.04
     idio = rng.standard_normal((n_periods, n_firms)) * 0.06
     qz = (q - q.mean()) / (q.std() + 1e-12)
-    prem = premium * qz[None, :] if mode == "planted_quality" else 0.0
-    rets = betas[None, :] * mkt[:, None] + idio + prem
+
+    value_loading = None
+    value_factor = None
+    if mode in ("planted_quality", "null_quality"):
+        prem = premium * qz[None, :] if mode == "planted_quality" else 0.0
+        rets = betas[None, :] * mkt[:, None] + idio + prem
+    else:
+        # SEPARATE rng, created AFTER all 5 main draws so the old modes' byte
+        # stream is untouched (val_rng never instantiated for them).
+        val_rng = np.random.default_rng(seed + _VALUE_SEED_OFFSET)
+        val_f = _VALUE_PREMIUM + val_rng.standard_normal(n_periods) * _VALUE_VOL
+        raw = val_rng.standard_normal(n_firms)
+        if mode == "quality_is_value":
+            # World A: value loading IS the quality z-score (collinear). The
+            # entire predictable return arrives through the value factor's
+            # positive mean times the loading: E[ret] = qz * _VALUE_PREMIUM.
+            value_loading = qz.copy()
+            rets = (betas[None, :] * mkt[:, None] + idio
+                    + value_loading[None, :] * val_f[:, None])
+        else:  # quality_orthogonal — World B
+            # Gram-Schmidt residualize the value loading AGAINST qz so
+            # corr(value_loading, qz) == 0, then re-zscore to match scale.
+            vl0 = raw - (raw @ qz / (qz @ qz)) * qz
+            value_loading = (vl0 - vl0.mean()) / (vl0.std() + 1e-12)
+            prem = _WORLD_B_PREMIUM * qz       # genuine value-ORTHOGONAL alpha
+            rets = (betas[None, :] * mkt[:, None] + idio + prem[None, :]
+                    + value_loading[None, :] * val_f[:, None])
+        value_factor = val_f
 
     periods = pd.bdate_range("2010-01-31", periods=n_periods, freq="BME")
     firms = [f"FIRM{i:03d}" for i in range(n_firms)]
     price = pd.DataFrame(100.0 * np.exp(np.cumsum(rets, axis=0)), index=periods, columns=firms)
     price.attrs["gp_a"] = pd.DataFrame(gp_a, index=periods, columns=firms)
     price.attrs["mode"] = mode
+    if value_loading is not None:                                # NEW modes ONLY
+        price.attrs["value_loading"] = pd.Series(value_loading, index=firms)
+        price.attrs["book_to_market"] = pd.Series(value_loading, index=firms)  # alias
+        price.attrs["value_factor"] = pd.Series(value_factor, index=periods)
+        price.attrs["betas"] = pd.Series(betas, index=firms)
+        # deterministic sector map drawn from val_rng AFTER the two value draws
+        # (stream stays clean); defensive ground truth for a future
+        # market+sector+HML neutralization test.
+        sect = val_rng.integers(0, 6, n_firms)
+        price.attrs["sector"] = {firms[i]: f"S{int(sect[i])}" for i in range(n_firms)}
     return price
 
 
