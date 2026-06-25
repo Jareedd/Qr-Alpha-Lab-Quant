@@ -40,7 +40,7 @@ Template:
 ---
 
 ### H1: Fundamental quality tilts (profitability/accruals) carry cross-sectional signal where price features did not
-- Status: PROPOSED — blocked on a data-source decision
+- Status: **RUN (trial #12, 2026-06-25). Outcome: does NOT graduate** — the CBOP "quality" edge was VALUE IN DISGUISE (RAW net SR +0.58/t_NW +2.30, but the HML-NEUTRAL arm where graduation is judged collapses to -0.18/DSR 0.009; raw-neutral gap +0.76 = the pre-registered value-collinearity signature). N=12. Was PROPOSED (blocked on a data-source decision), resolved free via the SEC name-crosswalk + Tiingo; reproduced leak-fixed on independent data (research_log 2026-06-25).
 - Economic prior: quality measures (gross profitability, accrual
   reversal) have survived publication better than price anomalies
   (Novy-Marx 2013); they rebalance slowly, so cost mortality is low —
