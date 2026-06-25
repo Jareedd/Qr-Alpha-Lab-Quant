@@ -46,6 +46,7 @@ this environment, so the live HML path is the default.
 from __future__ import annotations
 
 import argparse
+import inspect
 import os
 import sys
 
@@ -68,6 +69,13 @@ REBALANCE_FREQ = "BQE"     # quarterly business-quarter-end (slow, low turnover)
 # (~1.73x) and the MDE alike (B4 fix). The book's cadence sets its annualizer.
 PERIODS_PER_YEAR = 4
 COST_BPS_PER_SIDE = 10.0
+# Fundamentals staleness cap (post-trial-#12 robustness fix). A filing's value is
+# carried forward at most this many days. WITHOUT it, reindex(ffill) carried a dead
+# company's last fundamental FOREVER and paired it with prices from a REASSIGNED
+# ticker (Monsanto's 2017 financials x the 2021 "MON" entity, + 12 others). 18
+# months exceeds the annual filing cycle, so live names are never dropped; a name
+# that stops filing for >18mo goes NaN -> drops out (the reassigned tail is unreachable).
+STALENESS_DAYS = 548
 QUANTILE = 0.2             # quintiles (frozen — NOT deciles)
 # Registered N=12 graduation hurdle from the 2026-06-16 amendment (success
 # criterion 6): ~0.90 net annual SR (daily, ~15-yr). Printed next to the
@@ -113,7 +121,7 @@ def cbop_and_cap_panels(
         if gp.empty or ni.empty or cfo.empty:
             continue
         cbop_a[t] = fundamentals.cbop_over_assets(gp, ni, cfo, assets).reindex(
-            asof, method="ffill")
+            asof, method="ffill", tolerance=pd.Timedelta(days=STALENESS_DAYS))
         # Lagged-assets leg: divide the SAME flow numerators by the PRIOR annual
         # filing's assets. Lag the annual-only assets series by one filing; if no
         # annual assets exist, the name simply has no lagged leg (NaN, dropped).
@@ -122,10 +130,13 @@ def cbop_and_cap_panels(
             assets_lagged = assets_annual.sort_index().shift(1).dropna()
             if not assets_lagged.empty:
                 cbop_a_lagged[t] = fundamentals.cbop_over_assets(
-                    gp, ni, cfo, assets_lagged).reindex(asof, method="ffill")
+                    gp, ni, cfo, assets_lagged).reindex(
+                        asof, method="ffill",
+                        tolerance=pd.Timedelta(days=STALENESS_DAYS))
         sh = source.field_series(t, "shares")           # any form (stock value)
         if not sh.empty:
-            shares[t] = sh.reindex(asof, method="ffill")
+            shares[t] = sh.reindex(
+                asof, method="ffill", tolerance=pd.Timedelta(days=STALENESS_DAYS))
     cbop_df = pd.DataFrame(cbop_a, index=asof)
     cbop_lag_df = pd.DataFrame(cbop_a_lagged, index=asof)
     shares_df = pd.DataFrame(shares, index=asof)
@@ -444,6 +455,18 @@ def _run_trial(source, n_trials: int) -> None:
     }
 
 
+def build_source(name: str, sources: dict, asof_end: str | None = None):
+    """Construct the chosen FundamentalsSource, threading an optional FIXED as-of
+    END date to sources that accept one. ``asof_end=None`` preserves the prior
+    behavior EXACTLY (end -> today inside the source). Pinning the end makes a run
+    reproducible (law #8) AND lets it reuse a date-keyed price cache; the pin is
+    passed only to sources whose ctor accepts ``end`` (a no-op otherwise)."""
+    cls = sources[name]
+    if asof_end and "end" in inspect.signature(cls).parameters:
+        return cls(end=asof_end)
+    return cls()
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--hypothesis", default="H1")
@@ -452,6 +475,11 @@ def main() -> None:
         "--source",
         choices=["free_sec", "compustat", "free_xwalk"],
         default="free_sec",
+    )
+    ap.add_argument(
+        "--asof-end", default=None, metavar="YYYY-MM-DD",
+        help="Pin the data-window END date for reproducibility and to reuse a "
+             "date-keyed price cache. Default: today (UTC) — the prior behavior.",
     )
     args = ap.parse_args()
 
@@ -505,7 +533,10 @@ def main() -> None:
         sources = {"free_sec": FreeSECSource, "free_xwalk": SurvivorshipSafeSECSource}
     else:
         sources = {"compustat": CompustatSource}
-    source = sources[args.source]()
+    if args.asof_end:
+        print(f"[data] as-of END pinned to {args.asof_end} (reproducible window; "
+              "stable price-cache key).")
+    source = build_source(args.source, sources, args.asof_end)
     if not source.survivorship_safe:
         sys.exit(
             "\nDATA GATE: the free SEC source is SURVIVORSHIP-BLOCKED -- its "
