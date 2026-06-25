@@ -26,6 +26,16 @@ Sources:
                 renamed names) + Tiingo prices — the FREE survivorship-safe path.
                 Routes to the registered construction; a graded trial still
                 requires explicit sign-off (N stays put until then).
+   source is current-ticker-only (~73% coverage; audit 2026-06-14) — running H1
+   on it would re-commit trial #1's original sin, so the script REFUSES and
+   spends no trial. CompustatSource is now IMPLEMENTED (reads local WRDS/CRSP
+   extracts: filing-date-PIT fundamentals + delisting-inclusive prices). The day
+   access lands, export the funda/CRSP extracts into data_cache/compustat (exact
+   recipe in CompustatSource's docstring) and re-run with --source compustat:
+   same harness, one command, clean trial #12.
+
+This is the prep promised while sponsorship emails are out: everything except
+the data itself is built and tested — the adapter included.
 """
 from __future__ import annotations
 
