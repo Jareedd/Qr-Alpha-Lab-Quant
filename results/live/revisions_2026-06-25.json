@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-06-24",
+  "n_shared_dates": 2130,
+  "n_shared_tickers": 655,
+  "n_cells_compared": 1302197,
+  "n_price_cells_changed": 6396,
+  "frac_price_cells_changed": 0.004911699228304166,
+  "max_abs_rel_price_change": 17.000000827842324,
+  "n_return_cells_compared": 1301432,
+  "n_return_cells_changed": 287,
+  "frac_return_cells_changed": 0.0002205263125541711,
+  "max_abs_return_change": 18.364198058343973,
+  "n_tickers_affected": 11,
+  "n_price_cells_noise_band": 666430,
+  "n_return_cells_noise_band": 792160,
+  "n_cells_appeared": 3,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "NXPI",
+      "n_price_cells": 2129,
+      "max_abs_rel_change": 0.003381190267968015,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "STX",
+      "n_price_cells": 2129,
+      "max_abs_rel_change": 0.0007131093319623361,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "DD",
+      "n_price_cells": 2126,
+      "max_abs_rel_change": 0.7021166003736607,
+      "n_return_cells": 41
+    },
+    {
+      "ticker": "SLG",
+      "n_price_cells": 4,
+      "max_abs_rel_change": 1.1535188797484608e-06,
+      "n_return_cells": 26
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 2,
+      "max_abs_rel_change": 1.290548142685033e-06,
+      "n_return_cells": 23
+    },
+    {
+      "ticker": "APA",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.00015006955741148076,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "ADP",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 2.2764471627967353e-05,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "EMC",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.0626011003544988e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "INTU",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.9085488558223673e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "POM",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 17.000000827842324,
+      "n_return_cells": 2
+    }
+  ]
+}

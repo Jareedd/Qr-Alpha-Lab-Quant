@@ -1,0 +1,21 @@
+{
+  "asof": "2026-06-25",
+  "n_names": 98,
+  "submitted": true,
+  "equity": 1032711.45,
+  "orders_sent": 86,
+  "orders_failed": [
+    {
+      "symbol": "DD",
+      "qty": 137,
+      "side": "sell",
+      "error": "{\"available\":\"83\",\"code\":40310000,\"existing_qty\":\"83\",\"held_for_orders\":\"0\",\"message\":\"insufficient qty available for or"
+    }
+  ],
+  "n_failed": 1,
+  "revisions": {
+    "compared_to": "2026-06-24",
+    "frac_price_cells_changed": 0.004911699228304166,
+    "n_return_cells_changed": 287
+  }
+}
