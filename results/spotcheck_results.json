@@ -1,0 +1,4836 @@
+[
+ {
+  "ticker": "AA",
+  "wiki": "Alcoa",
+  "name_cik": "0000004281",
+  "baseline_cik": "0001675149",
+  "sec_name": "Howmet Aerospace Inc.",
+  "former": [
+   "Arconic Inc.",
+   "ALCOA INC.",
+   "ALCOA INC",
+   "ALUMINUM CO OF AMERICA"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "HWM"
+  ],
+  "sic": "Rolling Drawing & Extruding of  Nonferrous Metals",
+  "best_match_name": "ALCOA INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AAL",
+  "wiki": "American Airlines Group",
+  "name_cik": "0000004515",
+  "baseline_cik": "0000006201",
+  "sec_name": "AMERICAN AIRLINES, INC.",
+  "former": [
+   "AMERICAN AIRLINES INC"
+  ],
+  "last_10k": "2026-02-18",
+  "last_any": "2026-06-24",
+  "tickers": [],
+  "sic": "Air Transportation, Scheduled",
+  "best_match_name": "AMERICAN AIRLINES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AAP",
+  "wiki": "Advance Auto Parts",
+  "name_cik": "0001158449",
+  "baseline_cik": "0001158449",
+  "sec_name": "ADVANCE AUTO PARTS INC",
+  "former": [],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "AAP"
+  ],
+  "sic": "Retail-Auto & Home Supply Stores",
+  "best_match_name": "ADVANCE AUTO PARTS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ABMD",
+  "wiki": "Abiomed",
+  "name_cik": "0000815094",
+  "baseline_cik": null,
+  "sec_name": "ABIOMED INC",
+  "former": [],
+  "last_10k": "2022-05-20",
+  "last_any": "2023-01-06",
+  "tickers": [],
+  "sic": "Surgical & Medical Instruments & Apparatus",
+  "best_match_name": "ABIOMED INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ACE",
+  "wiki": "Chubb",
+  "name_cik": "0000896159",
+  "baseline_cik": null,
+  "sec_name": "Chubb Ltd",
+  "former": [
+   "ACE LTD",
+   "ACE Ltd"
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-10",
+  "tickers": [
+   "CB"
+  ],
+  "sic": "Fire, Marine & Casualty Insurance",
+  "best_match_name": "Chubb Ltd",
+  "score": 1.0
+ },
+ {
+  "ticker": "ADS",
+  "wiki": "Alliance Data Systems",
+  "name_cik": "0001101215",
+  "baseline_cik": null,
+  "sec_name": "BREAD FINANCIAL HOLDINGS, INC.",
+  "former": [
+   "ALLIANCE DATA SYSTEMS CORP"
+  ],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "BFH",
+   "BFH-PA",
+   "BFH-PB"
+  ],
+  "sic": "Personal Credit Institutions",
+  "best_match_name": "ALLIANCE DATA SYSTEMS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "ADT",
+  "wiki": "ADT",
+  "name_cik": "0000833444",
+  "baseline_cik": "0001703056",
+  "sec_name": "Johnson Controls International plc",
+  "former": [
+   "TYCO INTERNATIONAL plc",
+   "TYCO INTERNATIONAL LTD",
+   "TYCO INTERNATIONAL LTD /BER/",
+   "ADT LIMITED"
+  ],
+  "last_10k": "2025-11-14",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "JCI"
+  ],
+  "sic": "Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip",
+  "best_match_name": "ADT LIMITED",
+  "score": 1.0
+ },
+ {
+  "ticker": "AET",
+  "wiki": "Aetna",
+  "name_cik": "0001122304",
+  "baseline_cik": null,
+  "sec_name": "AETNA INC /PA/",
+  "former": [
+   "AETNA U S HEALTHCARE INC"
+  ],
+  "last_10k": "2018-02-23",
+  "last_any": "2019-02-14",
+  "tickers": [],
+  "sic": "Hospital & Medical Service Plans",
+  "best_match_name": "AETNA INC /PA/",
+  "score": 0.5
+ },
+ {
+  "ticker": "AGN",
+  "wiki": "Allergan",
+  "name_cik": "0001578845",
+  "baseline_cik": null,
+  "sec_name": "Allergan plc",
+  "former": [
+   "Actavis plc",
+   "Actavis Ltd"
+  ],
+  "last_10k": "2020-02-18",
+  "last_any": "2020-05-21",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Allergan plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "AIV",
+  "wiki": "Apartment Investment & Management",
+  "name_cik": "0000922864",
+  "baseline_cik": "0000922864",
+  "sec_name": "APARTMENT INVESTMENT & MANAGEMENT CO",
+  "former": [],
+  "last_10k": "2026-03-02",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "AIV"
+  ],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "APARTMENT INVESTMENT & MANAGEMENT CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "AKS",
+  "wiki": "AK Steel",
+  "name_cik": "0000918160",
+  "baseline_cik": null,
+  "sec_name": "Cleveland-Cliffs Steel Holding Corp",
+  "former": [
+   "AK STEEL HOLDING CORP"
+  ],
+  "last_10k": "2020-02-20",
+  "last_any": "2021-03-25",
+  "tickers": [],
+  "sic": "Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",
+  "best_match_name": "AK STEEL HOLDING CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "ALK",
+  "wiki": "Alaska Air Group",
+  "name_cik": "0000766421",
+  "baseline_cik": "0000766421",
+  "sec_name": "ALASKA AIR GROUP, INC.",
+  "former": [
+   "ALASKA AIR GROUP INC"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "ALK"
+  ],
+  "sic": "Air Transportation, Scheduled",
+  "best_match_name": "ALASKA AIR GROUP, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ALTR",
+  "wiki": "Altera",
+  "name_cik": "0000768251",
+  "baseline_cik": null,
+  "sec_name": "ALTERA CORP",
+  "former": [],
+  "last_10k": "2015-02-13",
+  "last_any": "2016-01-11",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "ALTERA CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "ALXN",
+  "wiki": "Alexion Pharmaceuticals",
+  "name_cik": "0000899866",
+  "baseline_cik": null,
+  "sec_name": "ALEXION PHARMACEUTICALS, INC.",
+  "former": [
+   "ALEXION PHARMACEUTICALS INC"
+  ],
+  "last_10k": "2021-02-08",
+  "last_any": "2022-11-16",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "ALEXION PHARMACEUTICALS, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AMG",
+  "wiki": "Affiliated Managers Group",
+  "name_cik": "0001004434",
+  "baseline_cik": "0001004434",
+  "sec_name": "AFFILIATED MANAGERS GROUP, INC.",
+  "former": [
+   "AFFILIATED MANAGERS GROUP INC"
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "AMG",
+   "MGR",
+   "MGRB",
+   "MGRD",
+   "MGRE"
+  ],
+  "sic": "Investment Advice",
+  "best_match_name": "AFFILIATED MANAGERS GROUP, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AMTM",
+  "wiki": "Amentum",
+  "name_cik": "0002011286",
+  "baseline_cik": "0002011286",
+  "sec_name": "Amentum Holdings, Inc.",
+  "former": [
+   "Amazon Holdco Inc."
+  ],
+  "last_10k": "2025-11-25",
+  "last_any": "2026-05-12",
+  "tickers": [
+   "AMTM"
+  ],
+  "sic": "Services-Business Services, NEC",
+  "best_match_name": "Amentum Holdings, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AN",
+  "wiki": "AutoNation",
+  "name_cik": "0000350698",
+  "baseline_cik": "0000350698",
+  "sec_name": "AUTONATION, INC.",
+  "former": [
+   "AUTONATION INC /FL",
+   "REPUBLIC INDUSTRIES INC",
+   "REPUBLIC WASTE INDUSTRIES INC"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-05-07",
+  "tickers": [
+   "AN"
+  ],
+  "sic": "Retail-Auto Dealers & Gasoline Stations",
+  "best_match_name": "AUTONATION, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ANDV",
+  "wiki": "Andeavor",
+  "name_cik": "0000050104",
+  "baseline_cik": null,
+  "sec_name": "ANDEAVOR LLC",
+  "former": [
+   "ANDEAVOR",
+   "TESORO CORP /NEW/",
+   "TESORO PETROLEUM CORP /NEW/"
+  ],
+  "last_10k": "2018-02-21",
+  "last_any": "2021-02-03",
+  "tickers": [],
+  "sic": "Petroleum Refining",
+  "best_match_name": "ANDEAVOR LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ANF",
+  "wiki": "Abercrombie & Fitch",
+  "name_cik": "0001018840",
+  "baseline_cik": "0001018840",
+  "sec_name": "ABERCROMBIE & FITCH CO /DE/",
+  "former": [
+   "ABERCROMBIE & FITCH CO /DE/"
+  ],
+  "last_10k": "2026-03-26",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "ANF"
+  ],
+  "sic": "Retail-Family Clothing Stores",
+  "best_match_name": "ABERCROMBIE & FITCH CO /DE/",
+  "score": 0.67
+ },
+ {
+  "ticker": "ANR",
+  "wiki": "Alpha Natural Resources",
+  "name_cik": "0001301063",
+  "baseline_cik": null,
+  "sec_name": "Alpha Natural Resources, Inc.",
+  "former": [
+   "Foundation Coal Holdings, Inc."
+  ],
+  "last_10k": "2015-02-26",
+  "last_any": "2016-07-27",
+  "tickers": [],
+  "sic": "Bituminous Coal & Lignite Surface Mining",
+  "best_match_name": "Alpha Natural Resources, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ANSS",
+  "wiki": "Ansys",
+  "name_cik": "0001013462",
+  "baseline_cik": null,
+  "sec_name": "ANSYS INC",
+  "former": [],
+  "last_10k": "2025-02-19",
+  "last_any": "2025-07-30",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "ANSYS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "APC",
+  "wiki": "Anadarko Petroleum",
+  "name_cik": "0000773910",
+  "baseline_cik": "0002080921",
+  "sec_name": "ANADARKO PETROLEUM CORP",
+  "former": [],
+  "last_10k": "2019-02-14",
+  "last_any": "2026-02-05",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "ANADARKO PETROLEUM CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "APOL",
+  "wiki": "Apollo Education Group",
+  "name_cik": "0000929887",
+  "baseline_cik": null,
+  "sec_name": "APOLLO EDUCATION GROUP INC",
+  "former": [
+   "APOLLO GROUP INC"
+  ],
+  "last_10k": "2016-10-20",
+  "last_any": "2017-02-14",
+  "tickers": [],
+  "sic": "Services-Educational Services",
+  "best_match_name": "APOLLO EDUCATION GROUP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ARG",
+  "wiki": "Airgas",
+  "name_cik": "0000804212",
+  "baseline_cik": null,
+  "sec_name": "AIRGAS INC",
+  "former": [],
+  "last_10k": "2016-05-10",
+  "last_any": "2016-06-02",
+  "tickers": [],
+  "sic": "Wholesale-Industrial Machinery & Equipment",
+  "best_match_name": "AIRGAS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ARNC",
+  "wiki": "Arconic",
+  "name_cik": "0000004281",
+  "baseline_cik": null,
+  "sec_name": "Howmet Aerospace Inc.",
+  "former": [
+   "Arconic Inc.",
+   "ALCOA INC.",
+   "ALCOA INC",
+   "ALUMINUM CO OF AMERICA"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "HWM"
+  ],
+  "sic": "Rolling Drawing & Extruding of  Nonferrous Metals",
+  "best_match_name": "Arconic Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ATI",
+  "wiki": "Allegheny Technologies",
+  "name_cik": "0001018963",
+  "baseline_cik": "0001018963",
+  "sec_name": "ATI INC",
+  "former": [
+   "ALLEGHENY TECHNOLOGIES INC",
+   "ALLEGHENY TELEDYNE INC"
+  ],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "ATI"
+  ],
+  "sic": "Steel Pipe & Tubes",
+  "best_match_name": "ALLEGHENY TECHNOLOGIES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ATVI",
+  "wiki": "Activision Blizzard",
+  "name_cik": "0000718877",
+  "baseline_cik": null,
+  "sec_name": "Activision Blizzard, Inc.",
+  "former": [
+   "ACTIVISION INC /NY"
+  ],
+  "last_10k": "2023-02-23",
+  "last_any": "2024-06-11",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "Activision Blizzard, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "AVP",
+  "wiki": "Avon Products",
+  "name_cik": "0000008868",
+  "baseline_cik": null,
+  "sec_name": "AVON PRODUCTS INC",
+  "former": [],
+  "last_10k": "2023-03-14",
+  "last_any": "2023-08-09",
+  "tickers": [],
+  "sic": "Perfumes, Cosmetics & Other Toilet Preparations",
+  "best_match_name": "AVON PRODUCTS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "AYE",
+  "wiki": "Allegheny Energy",
+  "name_cik": "0000003673",
+  "baseline_cik": null,
+  "sec_name": "ALLEGHENY ENERGY, INC",
+  "former": [
+   "ALLEGHENY ENERGY INC",
+   "ALLEGHENY POWER SYSTEM INC"
+  ],
+  "last_10k": "2011-02-23",
+  "last_any": "2012-02-13",
+  "tickers": [],
+  "sic": "Electric Services",
+  "best_match_name": "ALLEGHENY ENERGY, INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "AYI",
+  "wiki": "Acuity Brands",
+  "name_cik": "0001144215",
+  "baseline_cik": "0001144215",
+  "sec_name": "ACUITY INC. (DE)",
+  "former": [
+   "ACUITY BRANDS INC",
+   "L&C SPINCO INC"
+  ],
+  "last_10k": "2025-10-27",
+  "last_any": "2026-06-03",
+  "tickers": [
+   "AYI"
+  ],
+  "sic": "Electric Lighting & Wiring Equipment",
+  "best_match_name": "ACUITY BRANDS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BBBY",
+  "wiki": "Bed Bath & Beyond",
+  "name_cik": "0001130713",
+  "baseline_cik": "0001130713",
+  "sec_name": "BED BATH & BEYOND, INC.",
+  "former": [
+   "BEYOND, INC.",
+   "OVERSTOCK.COM, INC",
+   "OVERSTOCK COM INC"
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "BBBY",
+   "BBBY-WT"
+  ],
+  "sic": "Retail-Catalog & Mail-Order Houses",
+  "best_match_name": "BED BATH & BEYOND, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "BBWI",
+  "wiki": "Bath & Body Works, Inc.",
+  "name_cik": "0000701985",
+  "baseline_cik": "0000701985",
+  "sec_name": "Bath & Body Works, Inc.",
+  "former": [
+   "L Brands, Inc.",
+   "LIMITED BRANDS INC",
+   "LIMITED INC"
+  ],
+  "last_10k": "2026-03-12",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "BBWI"
+  ],
+  "sic": "Retail-Retail Stores, NEC",
+  "best_match_name": "Bath & Body Works, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "BHF",
+  "wiki": "Brighthouse Financial",
+  "name_cik": "0001685040",
+  "baseline_cik": "0001685040",
+  "sec_name": "Brighthouse Financial, Inc.",
+  "former": [],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-04",
+  "tickers": [
+   "BHF",
+   "BHFAL",
+   "BHFAM",
+   "BHFAN",
+   "BHFAO",
+   "BHFAP"
+  ],
+  "sic": "Life Insurance",
+  "best_match_name": "Brighthouse Financial, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "BHI",
+  "wiki": "Baker Hughes",
+  "name_cik": "0001701605",
+  "baseline_cik": null,
+  "sec_name": "Baker Hughes Co",
+  "former": [
+   "Baker Hughes a GE Co",
+   "Bear Newco, Inc."
+  ],
+  "last_10k": "2026-02-05",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "BKR"
+  ],
+  "sic": "Oil & Gas Field Machinery & Equipment",
+  "best_match_name": "Baker Hughes Co",
+  "score": 1.0
+ },
+ {
+  "ticker": "BIG",
+  "wiki": "Big Lots",
+  "name_cik": "0000768835",
+  "baseline_cik": null,
+  "sec_name": "FORMER BL STORES INC",
+  "former": [
+   "BIG LOTS INC",
+   "CONSOLIDATED STORES CORP /DE/"
+  ],
+  "last_10k": "2024-04-18",
+  "last_any": "2025-11-13",
+  "tickers": [],
+  "sic": "Retail-Variety Stores",
+  "best_match_name": "BIG LOTS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BIO",
+  "wiki": "Bio-Rad Laboratories",
+  "name_cik": "0000012208",
+  "baseline_cik": "0000012208",
+  "sec_name": "BIO-RAD LABORATORIES, INC.",
+  "former": [
+   "BIO RAD LABORATORIES INC"
+  ],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-05-28",
+  "tickers": [
+   "BIO",
+   "BIO-B"
+  ],
+  "sic": "Laboratory Analytical Instruments",
+  "best_match_name": "BIO-RAD LABORATORIES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "BJS",
+  "wiki": "BJ Services",
+  "name_cik": "0000864328",
+  "baseline_cik": null,
+  "sec_name": "BJ SERVICES CO LLC",
+  "former": [
+   "BJ SERVICES CO"
+  ],
+  "last_10k": "2009-11-23",
+  "last_any": "2011-02-11",
+  "tickers": [],
+  "sic": "Oil & Gas Field Services, NEC",
+  "best_match_name": "BJ SERVICES CO LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BMC",
+  "wiki": "BMC Software",
+  "name_cik": "0000835729",
+  "baseline_cik": null,
+  "sec_name": "BMC SOFTWARE INC",
+  "former": [],
+  "last_10k": "2013-05-09",
+  "last_any": "2014-02-13",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "BMC SOFTWARE INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BMS",
+  "wiki": "Bemis",
+  "name_cik": "0000011199",
+  "baseline_cik": null,
+  "sec_name": "Amcor Flexibles North America, Inc.",
+  "former": [
+   "BEMIS CO INC"
+  ],
+  "last_10k": "2019-02-15",
+  "last_any": "2026-03-09",
+  "tickers": [],
+  "sic": "Converted Paper & Paperboard Prods (No Contaners/Boxes)",
+  "best_match_name": "BEMIS CO INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BRCM",
+  "wiki": "Broadcom Corporation",
+  "name_cik": "0001730168",
+  "baseline_cik": null,
+  "sec_name": "Broadcom Inc.",
+  "former": [
+   "Broadcom Ltd"
+  ],
+  "last_10k": "2025-12-18",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "AVGO"
+  ],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "Broadcom Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "BTU",
+  "wiki": "Peabody Energy",
+  "name_cik": "0001064728",
+  "baseline_cik": "0001064728",
+  "sec_name": "PEABODY ENERGY CORP",
+  "former": [
+   "P&L COAL HOLDINGS CORP"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "BTU"
+  ],
+  "sic": "Bituminous Coal & Lignite Surface Mining",
+  "best_match_name": "PEABODY ENERGY CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "BWA",
+  "wiki": "BorgWarner",
+  "name_cik": "0000908255",
+  "baseline_cik": "0000908255",
+  "sec_name": "BORGWARNER INC",
+  "former": [
+   "BORG WARNER AUTOMOTIVE INC"
+  ],
+  "last_10k": "2026-02-11",
+  "last_any": "2026-06-08",
+  "tickers": [
+   "BWA"
+  ],
+  "sic": "Motor Vehicle Parts & Accessories",
+  "best_match_name": "BORGWARNER INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "BXLT",
+  "wiki": "Baxalta",
+  "name_cik": "0001620546",
+  "baseline_cik": null,
+  "sec_name": "Baxalta Inc",
+  "former": [],
+  "last_10k": "2016-03-03",
+  "last_any": "2019-02-07",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Baxalta Inc",
+  "score": 1.0
+ },
+ {
+  "ticker": "CA",
+  "wiki": "CA Technologies",
+  "name_cik": "0000356028",
+  "baseline_cik": null,
+  "sec_name": "CA, INC.",
+  "former": [
+   "COMPUTER ASSOCIATES INTERNATIONAL INC"
+  ],
+  "last_10k": "2018-05-09",
+  "last_any": "2018-11-15",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "CA, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CAM",
+  "wiki": "Cameron International",
+  "name_cik": "0000941548",
+  "baseline_cik": null,
+  "sec_name": "CAMERON INTERNATIONAL CORP",
+  "former": [
+   "COOPER CAMERON CORP"
+  ],
+  "last_10k": "2016-01-29",
+  "last_any": "2016-04-14",
+  "tickers": [],
+  "sic": "Oil & Gas Field Machinery & Equipment",
+  "best_match_name": "CAMERON INTERNATIONAL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "CBE",
+  "wiki": "Cooper Industries",
+  "name_cik": "0001141982",
+  "baseline_cik": null,
+  "sec_name": "Cooper Industries plc",
+  "former": [
+   "COOPER INDUSTRIES LTD"
+  ],
+  "last_10k": "2012-02-21",
+  "last_any": "2013-02-11",
+  "tickers": [],
+  "sic": "Electronic Components & Accessories",
+  "best_match_name": "Cooper Industries plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "CCE",
+  "wiki": "Coca-Cola Enterprises",
+  "name_cik": "0001491675",
+  "baseline_cik": null,
+  "sec_name": "COCA-COLA EUROPEAN PARTNERS US, LLC",
+  "former": [
+   "COCA-COLA ENTERPRISES, INC.",
+   "International CCE Inc."
+  ],
+  "last_10k": "2016-02-11",
+  "last_any": "2018-03-12",
+  "tickers": [],
+  "sic": "Bottled & Canned Soft Drinks & Carbonated Waters",
+  "best_match_name": "COCA-COLA ENTERPRISES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CE",
+  "wiki": "Celanese",
+  "name_cik": "0001306830",
+  "baseline_cik": "0001306830",
+  "sec_name": "Celanese Corp",
+  "former": [],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "CE"
+  ],
+  "sic": "Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",
+  "best_match_name": "Celanese Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "CELG",
+  "wiki": "Celgene",
+  "name_cik": "0000816284",
+  "baseline_cik": null,
+  "sec_name": "CELGENE CORP /DE/",
+  "former": [],
+  "last_10k": "2019-02-26",
+  "last_any": "2020-07-13",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "CELGENE CORP /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "CEPH",
+  "wiki": "Cephalon",
+  "name_cik": "0000873364",
+  "baseline_cik": null,
+  "sec_name": "CEPHALON INC",
+  "former": [],
+  "last_10k": "2011-02-11",
+  "last_any": "2017-03-31",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "CEPHALON INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "CERN",
+  "wiki": "Cerner",
+  "name_cik": "0000804753",
+  "baseline_cik": null,
+  "sec_name": "CERNER Corp",
+  "former": [
+   "CERNER CORP /MO/"
+  ],
+  "last_10k": "2022-02-22",
+  "last_any": "2022-06-23",
+  "tickers": [],
+  "sic": "Services-Computer Integrated Systems Design",
+  "best_match_name": "CERNER Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "CFN",
+  "wiki": "Carefusion",
+  "name_cik": "0001457543",
+  "baseline_cik": null,
+  "sec_name": "CAREFUSION Corp",
+  "former": [],
+  "last_10k": "2014-08-11",
+  "last_any": "2015-04-27",
+  "tickers": [],
+  "sic": "Surgical & Medical Instruments & Apparatus",
+  "best_match_name": "CAREFUSION Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "CHK",
+  "wiki": "Chesapeake Energy",
+  "name_cik": "0000895126",
+  "baseline_cik": null,
+  "sec_name": "EXPAND ENERGY Corp",
+  "former": [
+   "CHESAPEAKE ENERGY CORP"
+  ],
+  "last_10k": "2026-02-18",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "EXE"
+  ],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "CHESAPEAKE ENERGY CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "CLF",
+  "wiki": "Cliffs Natural Resources",
+  "name_cik": "0000764065",
+  "baseline_cik": "0000764065",
+  "sec_name": "CLEVELAND-CLIFFS INC.",
+  "former": [
+   "CLIFFS NATURAL RESOURCES INC.",
+   "CLEVELAND CLIFFS INC"
+  ],
+  "last_10k": "2026-02-09",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "CLF"
+  ],
+  "sic": "Metal Mining",
+  "best_match_name": "CLIFFS NATURAL RESOURCES INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CMA",
+  "wiki": "Comerica",
+  "name_cik": "0000028412",
+  "baseline_cik": null,
+  "sec_name": "COMERICA INC",
+  "former": [
+   "COMERICA INC /NEW/"
+  ],
+  "last_10k": "2025-02-24",
+  "last_any": "2026-02-12",
+  "tickers": [],
+  "sic": "National Commercial Banks",
+  "best_match_name": "COMERICA INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "CMCSK",
+  "wiki": "Comcast Class K Special",
+  "name_cik": "0001166691",
+  "baseline_cik": null,
+  "sec_name": "COMCAST CORP",
+  "former": [
+   "AT&T COMCAST CORP"
+  ],
+  "last_10k": "2026-02-03",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "CMCSA",
+   "CCZ"
+  ],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "COMCAST CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "CNX",
+  "wiki": "Consol Energy",
+  "name_cik": "0001070412",
+  "baseline_cik": "0001070412",
+  "sec_name": "CNX Resources Corp",
+  "former": [
+   "CONSOL ENERGY INC",
+   "CONSOL Energy Inc"
+  ],
+  "last_10k": "2026-02-10",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "CNX"
+  ],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "CONSOL ENERGY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "COL",
+  "wiki": "Rockwell Collins",
+  "name_cik": "0001137411",
+  "baseline_cik": null,
+  "sec_name": "ROCKWELL COLLINS INC",
+  "former": [
+   "NEW ROCKWELL COLLINS INC"
+  ],
+  "last_10k": "2018-11-26",
+  "last_any": "2018-12-07",
+  "tickers": [],
+  "sic": "Aircraft Parts & Auxiliary Equipment, NEC",
+  "best_match_name": "ROCKWELL COLLINS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "COTY",
+  "wiki": "Coty",
+  "name_cik": "0001024305",
+  "baseline_cik": "0001024305",
+  "sec_name": "COTY INC.",
+  "former": [
+   "COTY INC /"
+  ],
+  "last_10k": "2025-08-21",
+  "last_any": "2026-05-29",
+  "tickers": [
+   "COTY"
+  ],
+  "sic": "Perfumes, Cosmetics & Other Toilet Preparations",
+  "best_match_name": "COTY INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "COV",
+  "wiki": "Covidien",
+  "name_cik": "0001385187",
+  "baseline_cik": null,
+  "sec_name": "Covidien plc",
+  "former": [
+   "Covidien Ltd.",
+   "Tyco Healthcare Ltd."
+  ],
+  "last_10k": "2014-11-24",
+  "last_any": "2015-02-27",
+  "tickers": [],
+  "sic": "Surgical & Medical Instruments & Apparatus",
+  "best_match_name": "Covidien plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "CPB",
+  "wiki": "Campbell's",
+  "name_cik": "0000016732",
+  "baseline_cik": "0000016732",
+  "sec_name": "CAMPBELL'S Co",
+  "former": [
+   "CAMPBELL SOUP CO"
+  ],
+  "last_10k": "2025-09-18",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "CPB"
+  ],
+  "sic": "Food and Kindred Products",
+  "best_match_name": "CAMPBELL'S Co",
+  "score": 1.0
+ },
+ {
+  "ticker": "CPGX",
+  "wiki": "Columbia Pipeline Group",
+  "name_cik": "0001629995",
+  "baseline_cik": null,
+  "sec_name": "Columbia Pipeline Group, Inc.",
+  "former": [],
+  "last_10k": "2017-02-17",
+  "last_any": "2017-02-27",
+  "tickers": [],
+  "sic": "Natural Gas Transmission",
+  "best_match_name": "Columbia Pipeline Group, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CPRI",
+  "wiki": "Capri Holdings",
+  "name_cik": "0001530721",
+  "baseline_cik": "0001530721",
+  "sec_name": "Capri Holdings Ltd",
+  "former": [
+   "Michael Kors Holdings Ltd"
+  ],
+  "last_10k": "2026-05-27",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "CPRI"
+  ],
+  "sic": "Leather & Leather Products",
+  "best_match_name": "Capri Holdings Ltd",
+  "score": 1.0
+ },
+ {
+  "ticker": "CPWR",
+  "wiki": "Compuware",
+  "name_cik": "0000859014",
+  "baseline_cik": "0000827099",
+  "sec_name": "COMPUWARE CORP",
+  "former": [
+   "COMPUWARE CORPORATION"
+  ],
+  "last_10k": "2014-05-30",
+  "last_any": "2015-04-30",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "COMPUWARE CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "CSC",
+  "wiki": "Computer Sciences Corporation",
+  "name_cik": "0000023082",
+  "baseline_cik": null,
+  "sec_name": "COMPUTER SCIENCES CORP",
+  "former": [],
+  "last_10k": "2017-05-26",
+  "last_any": "2018-02-12",
+  "tickers": [],
+  "sic": "Services-Computer Integrated Systems Design",
+  "best_match_name": "COMPUTER SCIENCES CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "CSRA",
+  "wiki": "CSRA",
+  "name_cik": "0001646383",
+  "baseline_cik": null,
+  "sec_name": "CSRA Inc.",
+  "former": [
+   "Computer Sciences Government Services Inc."
+  ],
+  "last_10k": "2017-05-25",
+  "last_any": "2018-05-10",
+  "tickers": [],
+  "sic": "Services-Computer Integrated Systems Design",
+  "best_match_name": "CSRA Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CTLT",
+  "wiki": "Catalent",
+  "name_cik": "0001596783",
+  "baseline_cik": null,
+  "sec_name": "Catalent, Inc.",
+  "former": [
+   "PTS Holdings Corp."
+  ],
+  "last_10k": "2024-09-06",
+  "last_any": "2024-12-30",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Catalent, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CTRA",
+  "wiki": "Coterra Energy",
+  "name_cik": "0000858470",
+  "baseline_cik": null,
+  "sec_name": "Coterra Energy Inc.",
+  "former": [
+   "CABOT OIL & GAS CORP"
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-05",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "Coterra Energy Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "CTXS",
+  "wiki": "Citrix Systems",
+  "name_cik": "0000877890",
+  "baseline_cik": null,
+  "sec_name": "CITRIX SYSTEMS INC",
+  "former": [],
+  "last_10k": "2022-02-16",
+  "last_any": "2022-10-12",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "CITRIX SYSTEMS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "CVH",
+  "wiki": "Coventry Health Care",
+  "name_cik": "0001054833",
+  "baseline_cik": null,
+  "sec_name": "COVENTRY HEALTH CARE INC",
+  "former": [],
+  "last_10k": "2013-02-27",
+  "last_any": "2013-05-17",
+  "tickers": [],
+  "sic": "Hospital & Medical Service Plans",
+  "best_match_name": "COVENTRY HEALTH CARE INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "CXO",
+  "wiki": "Concho Resources",
+  "name_cik": "0001358071",
+  "baseline_cik": null,
+  "sec_name": "CONCHO RESOURCES INC",
+  "former": [
+   "CONCO RESOURCES INC"
+  ],
+  "last_10k": "2020-02-19",
+  "last_any": "2021-11-09",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "CONCHO RESOURCES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "CZR",
+  "wiki": "Caesars Entertainment",
+  "name_cik": "0001590895",
+  "baseline_cik": "0001590895",
+  "sec_name": "Caesars Entertainment, Inc.",
+  "former": [
+   "Eldorado Resorts, Inc.",
+   "Eclair Holdings Co"
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "CZR"
+  ],
+  "sic": "Hotels & Motels",
+  "best_match_name": "Caesars Entertainment, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DAY",
+  "wiki": "Dayforce",
+  "name_cik": "0001725057",
+  "baseline_cik": null,
+  "sec_name": "Dayforce, Inc.",
+  "former": [
+   "Ceridian HCM Holding Inc."
+  ],
+  "last_10k": "2025-02-28",
+  "last_any": "2026-05-15",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "Dayforce, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DF",
+  "wiki": "Dean Foods",
+  "name_cik": "0000931336",
+  "baseline_cik": null,
+  "sec_name": "DEAN FOODS CO",
+  "former": [
+   "DEAN FOODS CO/",
+   "SUIZA FOODS CORP"
+  ],
+  "last_10k": "2020-03-20",
+  "last_any": "2021-06-01",
+  "tickers": [],
+  "sic": "Dairy Products",
+  "best_match_name": "DEAN FOODS CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "DISCA",
+  "wiki": "Discovery, Inc.",
+  "name_cik": "0001437107",
+  "baseline_cik": null,
+  "sec_name": "Warner Bros. Discovery, Inc.",
+  "former": [
+   "Discovery, Inc.",
+   "Discovery Communications, Inc."
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "WBD"
+  ],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "Discovery, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DISCK",
+  "wiki": "Discovery Communications",
+  "name_cik": "0001437107",
+  "baseline_cik": null,
+  "sec_name": "Warner Bros. Discovery, Inc.",
+  "former": [
+   "Discovery, Inc.",
+   "Discovery Communications, Inc."
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "WBD"
+  ],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "Discovery Communications, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DISH",
+  "wiki": "Dish Network",
+  "name_cik": "0001001082",
+  "baseline_cik": null,
+  "sec_name": "DISH Network CORP",
+  "former": [
+   "ECHOSTAR COMMUNICATIONS CORP"
+  ],
+  "last_10k": "2025-03-12",
+  "last_any": "2026-03-31",
+  "tickers": [],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "DISH Network CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "DNB",
+  "wiki": "Dun & Bradstreet",
+  "name_cik": "0001059556",
+  "baseline_cik": null,
+  "sec_name": "MOODYS CORP /DE/",
+  "former": [
+   "DUN & BRADSTREET CORP /DE/",
+   "NEW DUN & BRADSTREET CORP"
+  ],
+  "last_10k": "2026-02-18",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "MCO"
+  ],
+  "sic": "Services-Consumer Credit Reporting, Collection Agencies",
+  "best_match_name": "DUN & BRADSTREET CORP /DE/",
+  "score": 0.67
+ },
+ {
+  "ticker": "DNR",
+  "wiki": "Denbury Resources",
+  "name_cik": "0000945764",
+  "baseline_cik": null,
+  "sec_name": "DENBURY INC",
+  "former": [
+   "DENBURY RESOURCES INC"
+  ],
+  "last_10k": "2023-02-23",
+  "last_any": "2024-02-07",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "DENBURY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "DO",
+  "wiki": "Diamond Offshore Drilling",
+  "name_cik": "0000949039",
+  "baseline_cik": null,
+  "sec_name": "DIAMOND OFFSHORE DRILLING, INC.",
+  "former": [
+   "DIAMOND OFFSHORE DRILLING INC"
+  ],
+  "last_10k": "2024-02-28",
+  "last_any": "2024-11-12",
+  "tickers": [],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "DIAMOND OFFSHORE DRILLING, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DPS",
+  "wiki": "Dr Pepper Snapple Group",
+  "name_cik": "0001418135",
+  "baseline_cik": null,
+  "sec_name": "Keurig Dr Pepper Inc.",
+  "former": [
+   "Dr Pepper Snapple Group, Inc.",
+   "CSAB Inc."
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "KDP"
+  ],
+  "sic": "Beverages",
+  "best_match_name": "Dr Pepper Snapple Group, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "DRE",
+  "wiki": "Duke Realty Corp",
+  "name_cik": "0000783280",
+  "baseline_cik": null,
+  "sec_name": "DUKE REALTY CORP",
+  "former": [
+   "DUKE WEEKS REALTY CORP",
+   "DUKE REALTY INVESTMENTS INC"
+  ],
+  "last_10k": "2022-02-18",
+  "last_any": "2023-02-14",
+  "tickers": [],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "DUKE REALTY CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "DTV",
+  "wiki": "DirecTV",
+  "name_cik": "0001465112",
+  "baseline_cik": null,
+  "sec_name": "DIRECTV",
+  "former": [],
+  "last_10k": "2015-02-25",
+  "last_any": "2015-11-09",
+  "tickers": [],
+  "sic": "Communications Services, NEC",
+  "best_match_name": "DIRECTV",
+  "score": 1.0
+ },
+ {
+  "ticker": "DV",
+  "wiki": "DeVry",
+  "name_cik": "0000730464",
+  "baseline_cik": "0001819928",
+  "sec_name": "Covista Inc.",
+  "former": [
+   "Adtalem Global Education Inc.",
+   "Adtalem Global Education",
+   "DEVRY EDUCATION GROUP INC.",
+   "DEVRY EDUCATION GROUP",
+   "DEVRY INC"
+  ],
+  "last_10k": "2025-08-07",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "CVSA"
+  ],
+  "sic": "Services-Educational Services",
+  "best_match_name": "DEVRY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "DXC",
+  "wiki": "DXC Technology",
+  "name_cik": "0001688568",
+  "baseline_cik": "0001688568",
+  "sec_name": "DXC Technology Co",
+  "former": [
+   "Everett SpinCo, Inc."
+  ],
+  "last_10k": "2026-05-08",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "DXC"
+  ],
+  "sic": "Services-Computer Processing & Data Preparation",
+  "best_match_name": "DXC Technology Co",
+  "score": 1.0
+ },
+ {
+  "ticker": "EK",
+  "wiki": "Eastman Kodak",
+  "name_cik": "0000031235",
+  "baseline_cik": null,
+  "sec_name": "EASTMAN KODAK CO",
+  "former": [],
+  "last_10k": "2026-03-12",
+  "last_any": "2026-05-29",
+  "tickers": [
+   "KODK"
+  ],
+  "sic": "Photographic Equipment & Supplies",
+  "best_match_name": "EASTMAN KODAK CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "EMC",
+  "wiki": "EMC Corporation",
+  "name_cik": "0000790070",
+  "baseline_cik": null,
+  "sec_name": "EMC CORP",
+  "former": [],
+  "last_10k": "2016-02-25",
+  "last_any": "2026-06-15",
+  "tickers": [],
+  "sic": "Computer Storage Devices",
+  "best_match_name": "EMC CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "EMN",
+  "wiki": "Eastman Chemical Co.",
+  "name_cik": "0000915389",
+  "baseline_cik": "0000915389",
+  "sec_name": "EASTMAN CHEMICAL CO",
+  "former": [],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-03",
+  "tickers": [
+   "EMN"
+  ],
+  "sic": "Plastic Materials, Synth Resins & Nonvulcan Elastomers",
+  "best_match_name": "EASTMAN CHEMICAL CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "ENDP",
+  "wiki": "Endo International",
+  "name_cik": "0001593034",
+  "baseline_cik": null,
+  "sec_name": "Endo International plc",
+  "former": [
+   "Endo International Ltd"
+  ],
+  "last_10k": "2024-03-06",
+  "last_any": "2025-02-14",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Endo International plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "ENPH",
+  "wiki": "Enphase Energy",
+  "name_cik": "0001463101",
+  "baseline_cik": "0001463101",
+  "sec_name": "Enphase Energy, Inc.",
+  "former": [],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "ENPH"
+  ],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "Enphase Energy, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "EP",
+  "wiki": "El Paso Corporation",
+  "name_cik": "0001066107",
+  "baseline_cik": "0000887396",
+  "sec_name": "EL PASO LLC",
+  "former": [
+   "EL PASO CORP/DE",
+   "EL PASO ENERGY CORP/DE"
+  ],
+  "last_10k": "2012-02-27",
+  "last_any": "2025-04-23",
+  "tickers": [],
+  "sic": "Natural Gas Transmission",
+  "best_match_name": "EL PASO LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "EPAM",
+  "wiki": "EPAM Systems",
+  "name_cik": "0001352010",
+  "baseline_cik": "0001352010",
+  "sec_name": "EPAM Systems, Inc.",
+  "former": [
+   "EPAM SYSTEMS INC"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-05-26",
+  "tickers": [
+   "EPAM"
+  ],
+  "sic": "Services-Computer Programming Services",
+  "best_match_name": "EPAM Systems, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ESRX",
+  "wiki": "Express Scripts",
+  "name_cik": "0001532063",
+  "baseline_cik": null,
+  "sec_name": "Express Scripts Holding Co.",
+  "former": [
+   "Aristotle Holding, Inc."
+  ],
+  "last_10k": "2018-02-27",
+  "last_any": "2019-07-26",
+  "tickers": [],
+  "sic": "Retail-Drug Stores and Proprietary Stores",
+  "best_match_name": "Express Scripts Holding Co.",
+  "score": 1.0
+ },
+ {
+  "ticker": "ESV",
+  "wiki": "Ensco",
+  "name_cik": "0000314808",
+  "baseline_cik": null,
+  "sec_name": "Valaris Ltd",
+  "former": [
+   "Valaris plc",
+   "Ensco Rowan plc",
+   "Ensco plc",
+   "Ensco International plc",
+   "ENSCO INTERNATIONAL INC",
+   "ENERGY SERVICE COMPANY INC"
+  ],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "VAL",
+   "VAL-WT"
+  ],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "Ensco plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "ETFC",
+  "wiki": "E-Trade",
+  "name_cik": "0001015780",
+  "baseline_cik": null,
+  "sec_name": "E TRADE FINANCIAL CORP",
+  "former": [
+   "E TRADE GROUP INC"
+  ],
+  "last_10k": "2020-02-19",
+  "last_any": "2020-10-13",
+  "tickers": [],
+  "sic": "Savings Institution, Federally Chartered",
+  "best_match_name": "E TRADE GROUP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ETSY",
+  "wiki": "Etsy",
+  "name_cik": "0001370637",
+  "baseline_cik": "0001370637",
+  "sec_name": "ETSY INC",
+  "former": [],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "ETSY"
+  ],
+  "sic": "Services-Business Services, NEC",
+  "best_match_name": "ETSY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "EVHC",
+  "wiki": "Envision Healthcare",
+  "name_cik": "0001678531",
+  "baseline_cik": null,
+  "sec_name": "Envision Healthcare Corp",
+  "former": [
+   "New Amethyst Corp."
+  ],
+  "last_10k": "2018-03-01",
+  "last_any": "2019-02-14",
+  "tickers": [],
+  "sic": "Services-Offices & Clinics of  Doctors of  Medicine",
+  "best_match_name": "Envision Healthcare Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "FBHS",
+  "wiki": "Fortune Brands Home & Security",
+  "name_cik": "0001519751",
+  "baseline_cik": null,
+  "sec_name": "Fortune Brands Innovations, Inc.",
+  "former": [
+   "Fortune Brands Home & Security, Inc.",
+   "Fortune Brands Home & Security LLC"
+  ],
+  "last_10k": "2026-02-23",
+  "last_any": "2026-06-11",
+  "tickers": [
+   "FBIN"
+  ],
+  "sic": "Millwood, Veneer, Plywood, & Structural Wood Members",
+  "best_match_name": "Fortune Brands Home & Security, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "FHN",
+  "wiki": "First Horizon",
+  "name_cik": "0000036966",
+  "baseline_cik": "0000036966",
+  "sec_name": "FIRST HORIZON CORP",
+  "former": [
+   "FIRST HORIZON NATIONAL CORP",
+   "FIRST TENNESSEE NATIONAL CORP"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-05-14",
+  "tickers": [
+   "FHN",
+   "FHN-PC",
+   "FHN-PE",
+   "FHN-PF",
+   "FHN-PH"
+  ],
+  "sic": "National Commercial Banks",
+  "best_match_name": "FIRST HORIZON CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "FII",
+  "wiki": "Federated Investors",
+  "name_cik": "0001056288",
+  "baseline_cik": null,
+  "sec_name": "FEDERATED HERMES, INC.",
+  "former": [
+   "FEDERATED INVESTORS INC /PA/"
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "FHI"
+  ],
+  "sic": "Investment Advice",
+  "best_match_name": "FEDERATED INVESTORS INC /PA/",
+  "score": 0.67
+ },
+ {
+  "ticker": "FL",
+  "wiki": "Foot Locker",
+  "name_cik": "0000850209",
+  "baseline_cik": null,
+  "sec_name": "FOOT LOCKER, INC.",
+  "former": [
+   "FOOT LOCKER INC",
+   "VENATOR GROUP INC",
+   "WOOLWORTH CORPORATION"
+  ],
+  "last_10k": "2025-03-27",
+  "last_any": "2025-11-13",
+  "tickers": [],
+  "sic": "Retail-Shoe Stores",
+  "best_match_name": "FOOT LOCKER, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "FLIR",
+  "wiki": "FLIR Systems",
+  "name_cik": "0000354908",
+  "baseline_cik": null,
+  "sec_name": "Teledyne FLIR, LLC",
+  "former": [
+   "FLIR SYSTEMS INC"
+  ],
+  "last_10k": "2021-02-25",
+  "last_any": "2021-05-24",
+  "tickers": [],
+  "sic": "Search, Detection, Navigation, Guidance, Aeronautical Sys",
+  "best_match_name": "FLIR SYSTEMS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "FLR",
+  "wiki": "Fluor Corporation",
+  "name_cik": "0001124198",
+  "baseline_cik": "0001124198",
+  "sec_name": "FLUOR CORP",
+  "former": [],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-11",
+  "tickers": [
+   "FLR"
+  ],
+  "sic": "Heavy Construction Other Than Bldg Const - Contractors",
+  "best_match_name": "FLUOR CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "FLS",
+  "wiki": "Flowserve",
+  "name_cik": "0000030625",
+  "baseline_cik": "0000030625",
+  "sec_name": "FLOWSERVE CORP",
+  "former": [
+   "DURCO INTERNATIONAL INC",
+   "DURIRON CO INC"
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "FLS"
+  ],
+  "sic": "Pumps & Pumping Equipment",
+  "best_match_name": "FLOWSERVE CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "FMC",
+  "wiki": "FMC Corporation",
+  "name_cik": "0000037785",
+  "baseline_cik": "0000037785",
+  "sec_name": "FMC CORP",
+  "former": [],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "FMC"
+  ],
+  "sic": "Chemicals & Allied Products",
+  "best_match_name": "FMC CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "FOSL",
+  "wiki": "Fossil",
+  "name_cik": "0000883569",
+  "baseline_cik": "0000883569",
+  "sec_name": "Fossil Group, Inc.",
+  "former": [
+   "FOSSIL INC",
+   "FOSSIL INCORPORATED"
+  ],
+  "last_10k": "2026-03-12",
+  "last_any": "2026-05-21",
+  "tickers": [
+   "FOSL"
+  ],
+  "sic": "Watches, Clocks, Clockwork Operated Devices/Parts",
+  "best_match_name": "Fossil Group, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "FRX",
+  "wiki": "Forest Laboratories",
+  "name_cik": "0000038074",
+  "baseline_cik": null,
+  "sec_name": "Forest Laboratories, LLC",
+  "former": [
+   "Tango Merger Sub 2 LLC",
+   "FOREST LABORATORIES INC"
+  ],
+  "last_10k": "2014-05-30",
+  "last_any": "2014-07-15",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Forest Laboratories, LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "FTI",
+  "wiki": "FMC Technologies",
+  "name_cik": "0001135152",
+  "baseline_cik": "0001681459",
+  "sec_name": "FMC TECHNOLOGIES INC",
+  "former": [],
+  "last_10k": "2016-02-24",
+  "last_any": "2017-02-14",
+  "tickers": [],
+  "sic": "Oil & Gas Field Machinery & Equipment",
+  "best_match_name": "FMC TECHNOLOGIES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "FTR",
+  "wiki": "Frontier Communications",
+  "name_cik": "0000020520",
+  "baseline_cik": null,
+  "sec_name": "Frontier Communications Parent, Inc.",
+  "former": [
+   "FRONTIER COMMUNICATIONS CORP",
+   "CITIZENS COMMUNICATIONS CO",
+   "CITIZENS UTILITIES CO"
+  ],
+  "last_10k": "2025-02-20",
+  "last_any": "2026-02-12",
+  "tickers": [],
+  "sic": "Telephone Communications (No Radiotelephone)",
+  "best_match_name": "FRONTIER COMMUNICATIONS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "GAS",
+  "wiki": "AGL Resources.",
+  "name_cik": "0001004155",
+  "baseline_cik": null,
+  "sec_name": "SOUTHERN CO GAS",
+  "former": [
+   "AGL RESOURCES INC"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-05-22",
+  "tickers": [],
+  "sic": "Natural Gas Distribution",
+  "best_match_name": "AGL RESOURCES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "GENZ",
+  "wiki": "Genzyme",
+  "name_cik": "0000732485",
+  "baseline_cik": null,
+  "sec_name": "GENZYME CORP",
+  "former": [],
+  "last_10k": "2011-03-01",
+  "last_any": "2011-04-18",
+  "tickers": [],
+  "sic": "Biological Products, (No Diagnostic Substances)",
+  "best_match_name": "GENZYME CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "GGP",
+  "wiki": "General Growth Properties",
+  "name_cik": "0001496048",
+  "baseline_cik": null,
+  "sec_name": "Brookfield Property REIT Inc.",
+  "former": [
+   "GGP Inc.",
+   "General Growth Properties, Inc.",
+   "New GGP, Inc."
+  ],
+  "last_10k": "2021-02-26",
+  "last_any": "2021-08-30",
+  "tickers": [],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "General Growth Properties, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "GHC",
+  "wiki": "Graham Holdings",
+  "name_cik": "0000716314",
+  "baseline_cik": "0000104889",
+  "sec_name": "GRAHAM CORP",
+  "former": [],
+  "last_10k": "2026-06-08",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "GHM"
+  ],
+  "sic": "General Industrial Machinery & Equipment",
+  "best_match_name": "GRAHAM CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "GMCR",
+  "wiki": "Keurig Green Mountain",
+  "name_cik": "0000909954",
+  "baseline_cik": null,
+  "sec_name": "KEURIG GREEN MOUNTAIN, INC.",
+  "former": [
+   "GREEN MOUNTAIN COFFEE ROASTERS INC",
+   "GREEN MOUNTAIN COFFEE INC"
+  ],
+  "last_10k": "2015-11-19",
+  "last_any": "2016-04-11",
+  "tickers": [],
+  "sic": "Miscellaneous Food Preparations & Kindred Products",
+  "best_match_name": "KEURIG GREEN MOUNTAIN, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "GME",
+  "wiki": "GameStop",
+  "name_cik": "0001326380",
+  "baseline_cik": "0001326380",
+  "sec_name": "GameStop Corp.",
+  "former": [
+   "GSC Holdings Corp."
+  ],
+  "last_10k": "2026-03-24",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "GME",
+   "GME-WT"
+  ],
+  "sic": "Retail-Computer & Computer Software Stores",
+  "best_match_name": "GameStop Corp.",
+  "score": 1.0
+ },
+ {
+  "ticker": "GNW",
+  "wiki": "Genworth Financial",
+  "name_cik": "0001276520",
+  "baseline_cik": "0001276520",
+  "sec_name": "GENWORTH FINANCIAL INC",
+  "former": [],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "GNW"
+  ],
+  "sic": "Life Insurance",
+  "best_match_name": "GENWORTH FINANCIAL INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "GPS",
+  "wiki": "Gap",
+  "name_cik": "0000039911",
+  "baseline_cik": null,
+  "sec_name": "GAP INC",
+  "former": [],
+  "last_10k": "2026-03-17",
+  "last_any": "2026-06-09",
+  "tickers": [
+   "GAP"
+  ],
+  "sic": "Retail-Family Clothing Stores",
+  "best_match_name": "GAP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "GR",
+  "wiki": "Goodrich Corporation",
+  "name_cik": "0000042542",
+  "baseline_cik": null,
+  "sec_name": "GOODRICH CORP",
+  "former": [
+   "GOODRICH B F CO"
+  ],
+  "last_10k": "2012-02-23",
+  "last_any": "2012-08-23",
+  "tickers": [],
+  "sic": "Guided Missiles & Space Vehicles & Parts",
+  "best_match_name": "GOODRICH CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "GT",
+  "wiki": "The Goodyear Tire & Rubber Company",
+  "name_cik": "0000042582",
+  "baseline_cik": "0000042582",
+  "sec_name": "GOODYEAR TIRE & RUBBER CO /OH/",
+  "former": [],
+  "last_10k": "2026-02-10",
+  "last_any": "2026-06-08",
+  "tickers": [
+   "GT"
+  ],
+  "sic": "Tires & Inner Tubes",
+  "best_match_name": "GOODYEAR TIRE & RUBBER CO /OH/",
+  "score": 0.75
+ },
+ {
+  "ticker": "HAR",
+  "wiki": "Harman International",
+  "name_cik": "0000800459",
+  "baseline_cik": null,
+  "sec_name": "HARMAN INTERNATIONAL INDUSTRIES INC /DE/",
+  "former": [],
+  "last_10k": "2016-08-11",
+  "last_any": "2017-03-31",
+  "tickers": [],
+  "sic": "Household Audio & Video Equipment",
+  "best_match_name": "HARMAN INTERNATIONAL INDUSTRIES INC /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "HBI",
+  "wiki": "Hanesbrands",
+  "name_cik": "0001359841",
+  "baseline_cik": null,
+  "sec_name": "Hanesbrands Inc.",
+  "former": [
+   "Hanesbrands Inc."
+  ],
+  "last_10k": "2025-02-14",
+  "last_any": "2026-02-12",
+  "tickers": [],
+  "sic": "Retail-Apparel & Accessory Stores",
+  "best_match_name": "Hanesbrands Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "HCBK",
+  "wiki": "Hudson City Bancorp",
+  "name_cik": "0000921847",
+  "baseline_cik": null,
+  "sec_name": "HUDSON CITY BANCORP INC",
+  "former": [],
+  "last_10k": "2015-03-02",
+  "last_any": "2015-11-09",
+  "tickers": [],
+  "sic": "Savings Institutions, Not Federally Chartered",
+  "best_match_name": "HUDSON CITY BANCORP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "HES",
+  "wiki": "Hess Corporation",
+  "name_cik": "0000004447",
+  "baseline_cik": null,
+  "sec_name": "HESS CORP",
+  "former": [
+   "AMERADA HESS CORP"
+  ],
+  "last_10k": "2025-02-27",
+  "last_any": "2026-03-04",
+  "tickers": [],
+  "sic": "Petroleum Refining",
+  "best_match_name": "HESS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "HFC",
+  "wiki": "HollyFrontier",
+  "name_cik": "0000048039",
+  "baseline_cik": null,
+  "sec_name": "HollyFrontier Corp",
+  "former": [
+   "HOLLY CORP"
+  ],
+  "last_10k": "2022-02-23",
+  "last_any": "2023-02-13",
+  "tickers": [],
+  "sic": "Petroleum Refining",
+  "best_match_name": "HollyFrontier Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "HOG",
+  "wiki": "Harley-Davidson",
+  "name_cik": "0000793952",
+  "baseline_cik": "0000793952",
+  "sec_name": "HARLEY-DAVIDSON, INC.",
+  "former": [
+   "HARLEY DAVIDSON INC"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-04",
+  "tickers": [
+   "HOG"
+  ],
+  "sic": "Motorcycles, Bicycles & Parts",
+  "best_match_name": "HARLEY-DAVIDSON, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "HOLX",
+  "wiki": "Hologic",
+  "name_cik": "0000859737",
+  "baseline_cik": null,
+  "sec_name": "HOLOGIC INC",
+  "former": [
+   "HOLOGIC INC"
+  ],
+  "last_10k": "2025-11-18",
+  "last_any": "2026-04-30",
+  "tickers": [],
+  "sic": "X-Ray Apparatus & Tubes & Related Irradiation Apparatus",
+  "best_match_name": "HOLOGIC INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "HP",
+  "wiki": "Helmerich & Payne",
+  "name_cik": "0000046765",
+  "baseline_cik": "0000046765",
+  "sec_name": "Helmerich & Payne, Inc.",
+  "former": [
+   "HELMERICH & PAYNE INC"
+  ],
+  "last_10k": "2025-11-21",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "HP"
+  ],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "Helmerich & Payne, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "HRB",
+  "wiki": "H&R Block",
+  "name_cik": "0000012659",
+  "baseline_cik": "0000012659",
+  "sec_name": "H&R BLOCK INC",
+  "former": [],
+  "last_10k": "2025-08-15",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "HRB"
+  ],
+  "sic": "Services-Personal Services",
+  "best_match_name": "H&R BLOCK INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "HSP",
+  "wiki": "Hospira",
+  "name_cik": "0001274057",
+  "baseline_cik": null,
+  "sec_name": "HOSPIRA INC",
+  "former": [],
+  "last_10k": "2015-02-12",
+  "last_any": "2015-10-06",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "HOSPIRA INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "IGT",
+  "wiki": "International Game Technology",
+  "name_cik": "0000353944",
+  "baseline_cik": null,
+  "sec_name": "INTERNATIONAL GAME TECHNOLOGY",
+  "former": [],
+  "last_10k": "2014-11-25",
+  "last_any": "2015-04-17",
+  "tickers": [],
+  "sic": "Miscellaneous Manufacturing Industries",
+  "best_match_name": "INTERNATIONAL GAME TECHNOLOGY",
+  "score": 1.0
+ },
+ {
+  "ticker": "ILMN",
+  "wiki": "Illumina",
+  "name_cik": "0001110803",
+  "baseline_cik": "0001110803",
+  "sec_name": "ILLUMINA, INC.",
+  "former": [
+   "ILLUMINA INC"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "ILMN"
+  ],
+  "sic": "Laboratory Analytical Instruments",
+  "best_match_name": "ILLUMINA, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "INFO",
+  "wiki": "IHS Markit",
+  "name_cik": "0001598014",
+  "baseline_cik": null,
+  "sec_name": "IHS Markit Ltd.",
+  "former": [
+   "Markit Ltd."
+  ],
+  "last_10k": "2022-01-24",
+  "last_any": "2022-03-11",
+  "tickers": [],
+  "sic": "Services-Computer Programming, Data Processing, Etc.",
+  "best_match_name": "IHS Markit Ltd.",
+  "score": 1.0
+ },
+ {
+  "ticker": "IPG",
+  "wiki": "Interpublic Group",
+  "name_cik": "0000051644",
+  "baseline_cik": null,
+  "sec_name": "INTERPUBLIC GROUP OF COMPANIES, INC.",
+  "former": [
+   "INTERPUBLIC GROUP OF COMPANIES INC"
+  ],
+  "last_10k": "2025-02-20",
+  "last_any": "2025-12-08",
+  "tickers": [],
+  "sic": "Services-Advertising Agencies",
+  "best_match_name": "INTERPUBLIC GROUP OF COMPANIES, INC.",
+  "score": 0.5
+ },
+ {
+  "ticker": "IPGP",
+  "wiki": "IPG Photonics",
+  "name_cik": "0001111928",
+  "baseline_cik": "0001111928",
+  "sec_name": "IPG PHOTONICS CORP",
+  "former": [],
+  "last_10k": "2026-02-23",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "IPGP"
+  ],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "IPG PHOTONICS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "ITT",
+  "wiki": "ITT",
+  "name_cik": "0000216228",
+  "baseline_cik": "0000216228",
+  "sec_name": "ITT INC.",
+  "former": [
+   "ITT CORP",
+   "ITT Corp",
+   "ITT INDUSTRIES INC"
+  ],
+  "last_10k": "2026-02-09",
+  "last_any": "2026-06-03",
+  "tickers": [
+   "ITT"
+  ],
+  "sic": "Pumps & Pumping Equipment",
+  "best_match_name": "ITT INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "JDSU",
+  "wiki": "JDS Uniphase",
+  "name_cik": "0000912093",
+  "baseline_cik": null,
+  "sec_name": "VIAVI SOLUTIONS INC.",
+  "former": [
+   "JDS UNIPHASE CORP /CA/",
+   "UNIPHASE CORP /CA/"
+  ],
+  "last_10k": "2025-08-11",
+  "last_any": "2026-06-01",
+  "tickers": [
+   "VIAV"
+  ],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "JDS UNIPHASE CORP /CA/",
+  "score": 0.67
+ },
+ {
+  "ticker": "JEF",
+  "wiki": "Jefferies Financial Group",
+  "name_cik": "0000096223",
+  "baseline_cik": "0000096223",
+  "sec_name": "Jefferies Financial Group Inc.",
+  "former": [
+   "Jefferies Financial Group Inc.",
+   "LEUCADIA NATIONAL CORP"
+  ],
+  "last_10k": "2026-01-28",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "JEF"
+  ],
+  "sic": "Security Brokers, Dealers & Flotation Companies",
+  "best_match_name": "Jefferies Financial Group Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "JNPR",
+  "wiki": "Juniper Networks",
+  "name_cik": "0001043604",
+  "baseline_cik": null,
+  "sec_name": "JUNIPER NETWORKS INC",
+  "former": [
+   "JUNIPER NETWORKS INC"
+  ],
+  "last_10k": "2025-02-21",
+  "last_any": "2025-07-14",
+  "tickers": [],
+  "sic": "Computer Communications Equipment",
+  "best_match_name": "JUNIPER NETWORKS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "JNS",
+  "wiki": "Janus Capital Group",
+  "name_cik": "0001065865",
+  "baseline_cik": null,
+  "sec_name": "JANUS CAPITAL GROUP INC",
+  "former": [
+   "STILWELL FINANCIAL INC"
+  ],
+  "last_10k": "2017-02-16",
+  "last_any": "2018-02-09",
+  "tickers": [],
+  "sic": "Investment Advice",
+  "best_match_name": "JANUS CAPITAL GROUP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "JOY",
+  "wiki": "Joy Global",
+  "name_cik": "0000801898",
+  "baseline_cik": null,
+  "sec_name": "JOY GLOBAL INC",
+  "former": [
+   "HARNISCHFEGER INDUSTRIES INC"
+  ],
+  "last_10k": "2016-12-16",
+  "last_any": "2017-04-17",
+  "tickers": [],
+  "sic": "Mining Machinery & Equip (No Oil & Gas Field Mach & Equip)",
+  "best_match_name": "JOY GLOBAL INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "JWN",
+  "wiki": "Nordstrom",
+  "name_cik": "0000072333",
+  "baseline_cik": null,
+  "sec_name": "NORDSTROM INC",
+  "former": [],
+  "last_10k": "2025-03-21",
+  "last_any": "2025-06-02",
+  "tickers": [],
+  "sic": "Retail-Family Clothing Stores",
+  "best_match_name": "NORDSTROM INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "K",
+  "wiki": "Kellanova",
+  "name_cik": "0000055067",
+  "baseline_cik": null,
+  "sec_name": "KELLANOVA",
+  "former": [
+   "KELLOGG CO"
+  ],
+  "last_10k": "2025-02-21",
+  "last_any": "2026-02-17",
+  "tickers": [],
+  "sic": "Grain Mill Products",
+  "best_match_name": "KELLANOVA",
+  "score": 1.0
+ },
+ {
+  "ticker": "KFT",
+  "wiki": "Kraft Foods",
+  "name_cik": "0001103982",
+  "baseline_cik": null,
+  "sec_name": "Mondelez International, Inc.",
+  "former": [
+   "KRAFT FOODS INC"
+  ],
+  "last_10k": "2026-02-04",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "MDLZ"
+  ],
+  "sic": "Food and Kindred Products",
+  "best_match_name": "KRAFT FOODS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "KG",
+  "wiki": "King Pharmaceuticals",
+  "name_cik": "0001047699",
+  "baseline_cik": "0002055116",
+  "sec_name": "KING PHARMACEUTICALS INC",
+  "former": [],
+  "last_10k": "2010-02-26",
+  "last_any": "2011-03-11",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "KING PHARMACEUTICALS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "KMX",
+  "wiki": "CarMax",
+  "name_cik": "0001170010",
+  "baseline_cik": "0001170010",
+  "sec_name": "CARMAX INC",
+  "former": [],
+  "last_10k": "2026-04-15",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "KMX"
+  ],
+  "sic": "Retail-Auto Dealers & Gasoline Stations",
+  "best_match_name": "CARMAX INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "KRFT",
+  "wiki": "Kraft Foods",
+  "name_cik": "0001103982",
+  "baseline_cik": null,
+  "sec_name": "Mondelez International, Inc.",
+  "former": [
+   "KRAFT FOODS INC"
+  ],
+  "last_10k": "2026-02-04",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "MDLZ"
+  ],
+  "sic": "Food and Kindred Products",
+  "best_match_name": "KRAFT FOODS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "KSU",
+  "wiki": "Kansas City Southern",
+  "name_cik": "0000054480",
+  "baseline_cik": null,
+  "sec_name": "KANSAS CITY SOUTHERN",
+  "former": [
+   "KANSAS CITY SOUTHERN INDUSTRIES INC"
+  ],
+  "last_10k": "2023-02-03",
+  "last_any": "2023-04-24",
+  "tickers": [],
+  "sic": "Railroads, Line-Haul Operating",
+  "best_match_name": "KANSAS CITY SOUTHERN",
+  "score": 1.0
+ },
+ {
+  "ticker": "LEG",
+  "wiki": "Leggett & Platt",
+  "name_cik": "0000058492",
+  "baseline_cik": "0000058492",
+  "sec_name": "LEGGETT & PLATT INC",
+  "former": [],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "LEG"
+  ],
+  "sic": "Household Furniture",
+  "best_match_name": "LEGGETT & PLATT INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "LIFE",
+  "wiki": "Life Technologies",
+  "name_cik": "0001073431",
+  "baseline_cik": "0001788451",
+  "sec_name": "Life Technologies Corp",
+  "former": [
+   "INVITROGEN CORP"
+  ],
+  "last_10k": "2013-02-28",
+  "last_any": "2015-02-11",
+  "tickers": [],
+  "sic": "Biological Products, (No Diagnostic Substances)",
+  "best_match_name": "Life Technologies Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "LKQ",
+  "wiki": "LKQ Corporation",
+  "name_cik": "0001065696",
+  "baseline_cik": "0001065696",
+  "sec_name": "LKQ CORP",
+  "former": [
+   "LKQ CORP"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-05-27",
+  "tickers": [
+   "LKQ"
+  ],
+  "sic": "Wholesale-Motor Vehicles & Motor Vehicle Parts & Supplies",
+  "best_match_name": "LKQ CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "LLL",
+  "wiki": "L3 Technologies",
+  "name_cik": "0001039101",
+  "baseline_cik": null,
+  "sec_name": "L3 TECHNOLOGIES, INC.",
+  "former": [
+   "L 3 COMMUNICATIONS CORP"
+  ],
+  "last_10k": "2019-02-21",
+  "last_any": "2019-07-11",
+  "tickers": [],
+  "sic": "Radio & Tv Broadcasting & Communications Equipment",
+  "best_match_name": "L3 TECHNOLOGIES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "LLTC",
+  "wiki": "Linear Technology",
+  "name_cik": "0000791907",
+  "baseline_cik": null,
+  "sec_name": "LINEAR TECHNOLOGY CORP /CA/",
+  "former": [],
+  "last_10k": "2016-08-25",
+  "last_any": "2018-02-08",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "LINEAR TECHNOLOGY CORP /CA/",
+  "score": 0.67
+ },
+ {
+  "ticker": "LM",
+  "wiki": "Legg Mason",
+  "name_cik": "0000704051",
+  "baseline_cik": null,
+  "sec_name": "LEGG MASON, INC.",
+  "former": [
+   "LEGG MASON INC"
+  ],
+  "last_10k": "2020-05-29",
+  "last_any": "2021-08-05",
+  "tickers": [],
+  "sic": "Investment Advice",
+  "best_match_name": "LEGG MASON, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "LNC",
+  "wiki": "Lincoln National Corporation",
+  "name_cik": "0000059558",
+  "baseline_cik": "0000059558",
+  "sec_name": "LINCOLN NATIONAL CORP",
+  "former": [
+   "LINCOLN NATIONAL CORP ET AL"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "LNC",
+   "LNC-PD"
+  ],
+  "sic": "Life Insurance",
+  "best_match_name": "LINCOLN NATIONAL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "LSI",
+  "wiki": "LSI Corporation",
+  "name_cik": "0000703360",
+  "baseline_cik": null,
+  "sec_name": "LSI CORP",
+  "former": [
+   "LSI LOGIC CORP"
+  ],
+  "last_10k": "2014-02-26",
+  "last_any": "2015-02-12",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "LSI CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "LUMN",
+  "wiki": "Lumen Technologies",
+  "name_cik": "0000018926",
+  "baseline_cik": "0000018926",
+  "sec_name": "Lumen Technologies, Inc.",
+  "former": [
+   "CENTURYLINK, INC",
+   "CENTURYTEL INC",
+   "CENTURY TELEPHONE ENTERPRISES INC"
+  ],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "LUMN"
+  ],
+  "sic": "Telephone Communications (No Radiotelephone)",
+  "best_match_name": "Lumen Technologies, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "LVLT",
+  "wiki": "Level 3 Communications",
+  "name_cik": "0000794323",
+  "baseline_cik": null,
+  "sec_name": "Level 3 Parent, LLC",
+  "former": [
+   "LEVEL 3 COMMUNICATIONS INC",
+   "KIEWIT PETER SONS INC"
+  ],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-04-30",
+  "tickers": [],
+  "sic": "Telephone Communications (No Radiotelephone)",
+  "best_match_name": "LEVEL 3 COMMUNICATIONS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "LW",
+  "wiki": "Lamb Weston",
+  "name_cik": "0001679273",
+  "baseline_cik": "0001679273",
+  "sec_name": "Lamb Weston Holdings, Inc.",
+  "former": [],
+  "last_10k": "2025-07-23",
+  "last_any": "2026-06-04",
+  "tickers": [
+   "LW"
+  ],
+  "sic": "Canned, Frozen & Preservd Fruit, Veg & Food Specialties",
+  "best_match_name": "Lamb Weston Holdings, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "LXK",
+  "wiki": "Lexmark",
+  "name_cik": "0001001288",
+  "baseline_cik": null,
+  "sec_name": "LEXMARK INTERNATIONAL INC /KY/",
+  "former": [
+   "LEXMARK INTERNATIONAL GROUP INC"
+  ],
+  "last_10k": "2016-02-29",
+  "last_any": "2017-02-14",
+  "tickers": [],
+  "sic": "Computer & office Equipment",
+  "best_match_name": "LEXMARK INTERNATIONAL GROUP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "M",
+  "wiki": "Macy's",
+  "name_cik": "0000794367",
+  "baseline_cik": "0000794367",
+  "sec_name": "Macy's, Inc.",
+  "former": [
+   "FEDERATED DEPARTMENT STORES INC /DE/"
+  ],
+  "last_10k": "2026-03-27",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "M"
+  ],
+  "sic": "Retail-Department Stores",
+  "best_match_name": "Macy's, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "MAC",
+  "wiki": "Macerich",
+  "name_cik": "0000912242",
+  "baseline_cik": "0000912242",
+  "sec_name": "MACERICH CO",
+  "former": [],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "MAC"
+  ],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "MACERICH CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "MAT",
+  "wiki": "Mattel",
+  "name_cik": "0000063276",
+  "baseline_cik": "0000063276",
+  "sec_name": "MATTEL INC /DE/",
+  "former": [],
+  "last_10k": "2026-02-23",
+  "last_any": "2026-06-02",
+  "tickers": [
+   "MAT"
+  ],
+  "sic": "Dolls & Stuffed Toys",
+  "best_match_name": "MATTEL INC /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "MBC",
+  "wiki": "MasterBrand",
+  "name_cik": "0001941365",
+  "baseline_cik": "0001941365",
+  "sec_name": "MasterBrand, Inc.",
+  "former": [],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "MBC"
+  ],
+  "sic": "Wood Household Furniture, (No Upholstered)",
+  "best_match_name": "MasterBrand, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "MDP",
+  "wiki": "Meredith Corp",
+  "name_cik": "0000065011",
+  "baseline_cik": null,
+  "sec_name": "Hawkeye Acquisition, Inc.",
+  "former": [
+   "MEREDITH CORP"
+  ],
+  "last_10k": "2021-09-10",
+  "last_any": "2022-02-09",
+  "tickers": [],
+  "sic": "Periodicals: Publishing or  Publishing & Printing",
+  "best_match_name": "MEREDITH CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "MEE",
+  "wiki": "Massey Energy",
+  "name_cik": "0000037748",
+  "baseline_cik": null,
+  "sec_name": "Alpha Appalachia Holdings, Inc.",
+  "former": [
+   "MASSEY ENERGY CO",
+   "FLUOR CORP/DE/"
+  ],
+  "last_10k": "2011-03-01",
+  "last_any": "2013-12-13",
+  "tickers": [],
+  "sic": "Bituminous Coal & Lignite Surface Mining",
+  "best_match_name": "MASSEY ENERGY CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "MFE",
+  "wiki": "McAfee",
+  "name_cik": "0001783317",
+  "baseline_cik": null,
+  "sec_name": "McAfee Corp.",
+  "former": [
+   "Greenseer Holdings Corp."
+  ],
+  "last_10k": "2022-02-23",
+  "last_any": "2022-03-11",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "McAfee Corp.",
+  "score": 1.0
+ },
+ {
+  "ticker": "MHK",
+  "wiki": "Mohawk Industries",
+  "name_cik": "0000851968",
+  "baseline_cik": "0000851968",
+  "sec_name": "MOHAWK INDUSTRIES INC",
+  "former": [
+   "MOHAWK INDUSTRIES INC."
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "MHK"
+  ],
+  "sic": "Carpets & Rugs",
+  "best_match_name": "MOHAWK INDUSTRIES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "MHS",
+  "wiki": "Medco Health Solutions",
+  "name_cik": "0001170650",
+  "baseline_cik": null,
+  "sec_name": "MEDCO HEALTH SOLUTIONS INC",
+  "former": [
+   "MERCK MEDCO MANAGED CARE LLC"
+  ],
+  "last_10k": "2012-02-21",
+  "last_any": "2017-11-22",
+  "tickers": [],
+  "sic": "Retail-Drug Stores and Proprietary Stores",
+  "best_match_name": "MEDCO HEALTH SOLUTIONS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "MI",
+  "wiki": "Marshall & Ilsley",
+  "name_cik": "0001399315",
+  "baseline_cik": "0001958713",
+  "sec_name": "MARSHALL & ILSLEY CORP",
+  "former": [
+   "NEW M&I CORP"
+  ],
+  "last_10k": "2011-03-01",
+  "last_any": "2011-08-10",
+  "tickers": [],
+  "sic": "State Commercial Banks",
+  "best_match_name": "MARSHALL & ILSLEY CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "MIL",
+  "wiki": "Millipore",
+  "name_cik": "0000066479",
+  "baseline_cik": null,
+  "sec_name": "MILLIPORE CORP /MA",
+  "former": [
+   "MILLIPORE CORP"
+  ],
+  "last_10k": "2010-02-26",
+  "last_any": "2010-07-26",
+  "tickers": [],
+  "sic": "Laboratory Analytical Instruments",
+  "best_match_name": "MILLIPORE CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "MJN",
+  "wiki": "Mead Johnson Nutrition",
+  "name_cik": "0001452575",
+  "baseline_cik": null,
+  "sec_name": "Mead Johnson Nutrition Co",
+  "former": [],
+  "last_10k": "2017-02-27",
+  "last_any": "2018-02-14",
+  "tickers": [],
+  "sic": "Food and Kindred Products",
+  "best_match_name": "Mead Johnson Nutrition Co",
+  "score": 1.0
+ },
+ {
+  "ticker": "MKTX",
+  "wiki": "MarketAxess",
+  "name_cik": "0001278021",
+  "baseline_cik": "0001278021",
+  "sec_name": "MARKETAXESS HOLDINGS INC",
+  "former": [
+   "MARKETAXESS HOLDINGS INC",
+   "MARKETAXESS HOLDING INC"
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "MKTX"
+  ],
+  "sic": "Security Brokers, Dealers & Flotation Companies",
+  "best_match_name": "MARKETAXESS HOLDINGS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "MMI",
+  "wiki": "Motorola Mobility",
+  "name_cik": "0001495569",
+  "baseline_cik": "0001578732",
+  "sec_name": "Motorola Mobility Holdings, Inc",
+  "former": [
+   "Motorola SpinCo Holdings Corp"
+  ],
+  "last_10k": "2012-02-17",
+  "last_any": "2012-06-01",
+  "tickers": [],
+  "sic": "Radio & Tv Broadcasting & Communications Equipment",
+  "best_match_name": "Motorola Mobility Holdings, Inc",
+  "score": 1.0
+ },
+ {
+  "ticker": "MNK",
+  "wiki": "Mallinckrodt",
+  "name_cik": "0001567892",
+  "baseline_cik": null,
+  "sec_name": "Keenova Therapeutics plc",
+  "former": [
+   "Mallinckrodt plc"
+  ],
+  "last_10k": "2026-04-15",
+  "last_any": "2026-06-15",
+  "tickers": [],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Mallinckrodt plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "MOH",
+  "wiki": "Molina Healthcare",
+  "name_cik": "0001179929",
+  "baseline_cik": "0001179929",
+  "sec_name": "MOLINA HEALTHCARE, INC.",
+  "former": [
+   "MOLINA HEALTHCARE INC"
+  ],
+  "last_10k": "2026-02-10",
+  "last_any": "2026-06-10",
+  "tickers": [
+   "MOH"
+  ],
+  "sic": "Hospital & Medical Service Plans",
+  "best_match_name": "MOLINA HEALTHCARE, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "MOLX",
+  "wiki": "Molex",
+  "name_cik": "0000067472",
+  "baseline_cik": null,
+  "sec_name": "MOLEX INC",
+  "former": [],
+  "last_10k": "2013-08-08",
+  "last_any": "2014-02-14",
+  "tickers": [],
+  "sic": "Electronic Connectors",
+  "best_match_name": "MOLEX INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "MON",
+  "wiki": "Monsanto",
+  "name_cik": "0001110783",
+  "baseline_cik": null,
+  "sec_name": "MONSANTO CO /NEW/",
+  "former": [],
+  "last_10k": "2017-10-27",
+  "last_any": "2018-06-18",
+  "tickers": [],
+  "sic": "Agricultural Chemicals",
+  "best_match_name": "MONSANTO CO /NEW/",
+  "score": 0.5
+ },
+ {
+  "ticker": "MRO",
+  "wiki": "Marathon Oil",
+  "name_cik": "0000101778",
+  "baseline_cik": null,
+  "sec_name": "MARATHON OIL CORP",
+  "former": [
+   "USX CORP"
+  ],
+  "last_10k": "2024-02-22",
+  "last_any": "2025-02-07",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "MARATHON OIL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "MTCH",
+  "wiki": "Match Group",
+  "name_cik": "0000891103",
+  "baseline_cik": "0000891103",
+  "sec_name": "Match Group, Inc.",
+  "former": [
+   "IAC/INTERACTIVECORP",
+   "INTERACTIVECORP",
+   "USA INTERACTIVE",
+   "USA NETWORKS INC",
+   "HSN INC",
+   "SILVER KING COMMUNICATIONS INC"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "MTCH"
+  ],
+  "sic": "Services-Computer Programming, Data Processing, Etc.",
+  "best_match_name": "Match Group, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "MUR",
+  "wiki": "Murphy Oil",
+  "name_cik": "0000717423",
+  "baseline_cik": "0000717423",
+  "sec_name": "MURPHY OIL CORP",
+  "former": [
+   "MURPHY OIL CORP /DE"
+  ],
+  "last_10k": "2026-02-25",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "MUR"
+  ],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "MURPHY OIL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "MWW",
+  "wiki": "Monster Worldwide",
+  "name_cik": "0001020416",
+  "baseline_cik": null,
+  "sec_name": "MONSTER WORLDWIDE, INC.",
+  "former": [
+   "MONSTER WORLDWIDE INC",
+   "TMP WORLDWIDE INC",
+   "TMP WORLDWIDE INC /FA/"
+  ],
+  "last_10k": "2016-02-11",
+  "last_any": "2017-02-14",
+  "tickers": [],
+  "sic": "Services-Help Supply Services",
+  "best_match_name": "MONSTER WORLDWIDE, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "NAVI",
+  "wiki": "Navient",
+  "name_cik": "0001593538",
+  "baseline_cik": "0001593538",
+  "sec_name": "NAVIENT CORP",
+  "former": [
+   "New Corp"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "NAVI",
+   "JSM"
+  ],
+  "sic": "Security Brokers, Dealers & Flotation Companies",
+  "best_match_name": "NAVIENT CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "NBL",
+  "wiki": "Noble Energy",
+  "name_cik": "0000072207",
+  "baseline_cik": null,
+  "sec_name": "NOBLE ENERGY INC",
+  "former": [
+   "NOBLE AFFILIATES INC"
+  ],
+  "last_10k": "2020-02-12",
+  "last_any": "2021-05-11",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "NOBLE ENERGY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "NBR",
+  "wiki": "Nabors Industries",
+  "name_cik": "0001163739",
+  "baseline_cik": "0001163739",
+  "sec_name": "NABORS INDUSTRIES LTD",
+  "former": [],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "NBR",
+   "NBRWF"
+  ],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "NABORS INDUSTRIES LTD",
+  "score": 1.0
+ },
+ {
+  "ticker": "NE",
+  "wiki": "Noble Corporation",
+  "name_cik": "0001895262",
+  "baseline_cik": "0001895262",
+  "sec_name": "Noble Corp plc",
+  "former": [
+   "Noble Finco Ltd"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "NE",
+   "NE-WT",
+   "NE-WTA"
+  ],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "Noble Corp plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "NFX",
+  "wiki": "Newfield Exploration",
+  "name_cik": "0000912750",
+  "baseline_cik": null,
+  "sec_name": "NEWFIELD EXPLORATION CO /DE/",
+  "former": [],
+  "last_10k": "2018-02-20",
+  "last_any": "2019-02-25",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "NEWFIELD EXPLORATION CO /DE/",
+  "score": 0.67
+ },
+ {
+  "ticker": "NKTR",
+  "wiki": "Nektar Therapeutics",
+  "name_cik": "0000906709",
+  "baseline_cik": "0000906709",
+  "sec_name": "NEKTAR THERAPEUTICS",
+  "former": [
+   "INHALE THERAPEUTIC SYSTEMS INC",
+   "INHALE THERAPEUTIC SYSTEMS"
+  ],
+  "last_10k": "2026-03-13",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "NKTR"
+  ],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "NEKTAR THERAPEUTICS",
+  "score": 1.0
+ },
+ {
+  "ticker": "NLSN",
+  "wiki": "Nielsen Holdings",
+  "name_cik": "0001492633",
+  "baseline_cik": null,
+  "sec_name": "Nielsen Holdings plc",
+  "former": [
+   "Nielsen N.V.",
+   "Nielsen Holdings N.V.",
+   "Nielsen Holdings B.V."
+  ],
+  "last_10k": "2022-02-28",
+  "last_any": "2022-10-27",
+  "tickers": [],
+  "sic": "Services-Business Services, NEC",
+  "best_match_name": "Nielsen Holdings plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "NOV",
+  "wiki": "Nov",
+  "name_cik": "0001021860",
+  "baseline_cik": "0001021860",
+  "sec_name": "NOV Inc.",
+  "former": [
+   "NATIONAL OILWELL VARCO INC",
+   "NATIONAL OILWELL INC"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "NOV"
+  ],
+  "sic": "Oil & Gas Field Machinery & Equipment",
+  "best_match_name": "NOV Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "NOVL",
+  "wiki": "Novell",
+  "name_cik": "0000758004",
+  "baseline_cik": null,
+  "sec_name": "NOVELL INC",
+  "former": [],
+  "last_10k": "2010-12-13",
+  "last_any": "2012-02-08",
+  "tickers": [],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "NOVELL INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "NSM",
+  "wiki": "National Semiconductor",
+  "name_cik": "0000070530",
+  "baseline_cik": null,
+  "sec_name": "NATIONAL SEMICONDUCTOR CORP",
+  "former": [],
+  "last_10k": "2011-07-27",
+  "last_any": "2012-02-13",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "NATIONAL SEMICONDUCTOR CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "NVLS",
+  "wiki": "Novellus Systems",
+  "name_cik": "0000836106",
+  "baseline_cik": null,
+  "sec_name": "NOVELLUS SYSTEMS INC",
+  "former": [],
+  "last_10k": "2012-02-24",
+  "last_any": "2013-02-14",
+  "tickers": [],
+  "sic": "Special Industry Machinery, NEC",
+  "best_match_name": "NOVELLUS SYSTEMS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "NWL",
+  "wiki": "Newell Brands",
+  "name_cik": "0000814453",
+  "baseline_cik": "0000814453",
+  "sec_name": "NEWELL BRANDS INC.",
+  "former": [
+   "NEWELL BRANDS, INC.",
+   "NEWELL BRANDS INC",
+   "NEWELL RUBBERMAID INC",
+   "NEWELL CO"
+  ],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "NWL"
+  ],
+  "sic": "Plastics Products, NEC",
+  "best_match_name": "NEWELL BRANDS INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "NYT",
+  "wiki": "The New York Times Company",
+  "name_cik": "0000071691",
+  "baseline_cik": "0000071691",
+  "sec_name": "NEW YORK TIMES CO",
+  "former": [],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-05",
+  "tickers": [
+   "NYT"
+  ],
+  "sic": "Newspapers: Publishing or  Publishing & Printing",
+  "best_match_name": "NEW YORK TIMES CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "NYX",
+  "wiki": "NYSE Euronext",
+  "name_cik": "0001368007",
+  "baseline_cik": null,
+  "sec_name": "NYSE Euronext",
+  "former": [
+   "NYSE Euronext, Inc."
+  ],
+  "last_10k": "2013-02-26",
+  "last_any": "2014-06-23",
+  "tickers": [],
+  "sic": "Security & Commodity Brokers, Dealers, Exchanges & Services",
+  "best_match_name": "NYSE Euronext",
+  "score": 1.0
+ },
+ {
+  "ticker": "ODP",
+  "wiki": "Office Depot",
+  "name_cik": "0000800240",
+  "baseline_cik": null,
+  "sec_name": "ODP Corp",
+  "former": [
+   "OFFICE DEPOT INC"
+  ],
+  "last_10k": "2025-02-26",
+  "last_any": "2026-01-21",
+  "tickers": [],
+  "sic": "Retail-Miscellaneous Shopping Goods Stores",
+  "best_match_name": "OFFICE DEPOT INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "OGN",
+  "wiki": "Organon & Co.",
+  "name_cik": "0001821825",
+  "baseline_cik": "0001821825",
+  "sec_name": "Organon & Co.",
+  "former": [],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "OGN"
+  ],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "Organon & Co.",
+  "score": 1.0
+ },
+ {
+  "ticker": "OI",
+  "wiki": "Owens-Illinois",
+  "name_cik": "0000812074",
+  "baseline_cik": "0000812074",
+  "sec_name": "O-I Glass, Inc. /DE/",
+  "former": [
+   "OWENS ILLINOIS INC /DE/"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "OI"
+  ],
+  "sic": "Glass Containers",
+  "best_match_name": "OWENS ILLINOIS INC /DE/",
+  "score": 0.67
+ },
+ {
+  "ticker": "PAYC",
+  "wiki": "Paycom",
+  "name_cik": "0001590955",
+  "baseline_cik": "0001590955",
+  "sec_name": "Paycom Software, Inc.",
+  "former": [],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "PAYC"
+  ],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "Paycom Software, Inc.",
+  "score": 0.5
+ },
+ {
+  "ticker": "PBCT",
+  "wiki": "People's United Financial",
+  "name_cik": "0001378946",
+  "baseline_cik": null,
+  "sec_name": "People's United Financial, Inc.",
+  "former": [],
+  "last_10k": "2022-03-01",
+  "last_any": "2023-02-13",
+  "tickers": [],
+  "sic": "Savings Institution, Federally Chartered",
+  "best_match_name": "People's United Financial, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "PBI",
+  "wiki": "Pitney Bowes",
+  "name_cik": "0000078814",
+  "baseline_cik": "0000078814",
+  "sec_name": "PITNEY BOWES INC /DE/",
+  "former": [],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-22",
+  "tickers": [
+   "PBI",
+   "PBI-PB"
+  ],
+  "sic": "Office Machines, NEC",
+  "best_match_name": "PITNEY BOWES INC /DE/",
+  "score": 0.67
+ },
+ {
+  "ticker": "PCL",
+  "wiki": "Plum Creek Timber",
+  "name_cik": "0000849213",
+  "baseline_cik": null,
+  "sec_name": "PLUM CREEK TIMBER CO INC",
+  "former": [
+   "PLUM CREEK TIMBER CO L P"
+  ],
+  "last_10k": "2016-02-18",
+  "last_any": "2016-03-04",
+  "tickers": [],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "PLUM CREEK TIMBER CO INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PCP",
+  "wiki": "Precision Castparts Corporation",
+  "name_cik": "0000079958",
+  "baseline_cik": null,
+  "sec_name": "PRECISION CASTPARTS CORP",
+  "former": [],
+  "last_10k": "2015-05-28",
+  "last_any": "2026-01-07",
+  "tickers": [],
+  "sic": "Iron & Steel Foundries",
+  "best_match_name": "PRECISION CASTPARTS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "PCS",
+  "wiki": "MetroPCS",
+  "name_cik": "0001121026",
+  "baseline_cik": null,
+  "sec_name": "METROPCS INC",
+  "former": [],
+  "last_10k": "2006-05-12",
+  "last_any": "2010-11-08",
+  "tickers": [],
+  "sic": "Radiotelephone Communications",
+  "best_match_name": "METROPCS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PDCO",
+  "wiki": "Patterson Companies",
+  "name_cik": "0000891024",
+  "baseline_cik": null,
+  "sec_name": "PATTERSON COMPANIES, INC.",
+  "former": [
+   "PATTERSON DENTAL CO"
+  ],
+  "last_10k": "2024-06-18",
+  "last_any": "2025-04-28",
+  "tickers": [],
+  "sic": "Wholesale-Medical, Dental & Hospital Equipment & Supplies",
+  "best_match_name": "PATTERSON COMPANIES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "PENN",
+  "wiki": "Penn National Gaming",
+  "name_cik": "0000921738",
+  "baseline_cik": "0000921738",
+  "sec_name": "PENN Entertainment, Inc.",
+  "former": [
+   "PENN NATIONAL GAMING INC"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "PENN"
+  ],
+  "sic": "Hotels & Motels",
+  "best_match_name": "PENN NATIONAL GAMING INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PETM",
+  "wiki": "PetSmart",
+  "name_cik": "0000863157",
+  "baseline_cik": null,
+  "sec_name": "PETSMART INC",
+  "former": [],
+  "last_10k": "2014-03-27",
+  "last_any": "2020-05-12",
+  "tickers": [],
+  "sic": "Retail-Retail Stores, NEC",
+  "best_match_name": "PETSMART INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PGN",
+  "wiki": "Progress Energy",
+  "name_cik": "0001094093",
+  "baseline_cik": null,
+  "sec_name": "PROGRESS ENERGY INC",
+  "former": [
+   "CP&L ENERGY INC",
+   "CP&L HOLDINGS INC"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-05-05",
+  "tickers": [],
+  "sic": "Electric Services",
+  "best_match_name": "PROGRESS ENERGY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PLL",
+  "wiki": "Pall Corporation",
+  "name_cik": "0000075829",
+  "baseline_cik": null,
+  "sec_name": "PALL CORP",
+  "former": [],
+  "last_10k": "2014-09-08",
+  "last_any": "2015-09-18",
+  "tickers": [],
+  "sic": "General Industrial Machinery & Equipment, NEC",
+  "best_match_name": "PALL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "POM",
+  "wiki": "Pepco Holdings",
+  "name_cik": "0001135971",
+  "baseline_cik": "0001877971",
+  "sec_name": "PEPCO HOLDINGS LLC",
+  "former": [
+   "PEPCO HOLDINGS INC",
+   "NEW RC INC"
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-05-06",
+  "tickers": [],
+  "sic": "Electric & Other Services Combined",
+  "best_match_name": "PEPCO HOLDINGS LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "POOL",
+  "wiki": "Pool Corporation",
+  "name_cik": "0000945841",
+  "baseline_cik": "0000945841",
+  "sec_name": "POOL CORP",
+  "former": [
+   "SCP POOL CORP"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-01",
+  "tickers": [
+   "POOL"
+  ],
+  "sic": "Wholesale-Misc Durable Goods",
+  "best_match_name": "POOL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "PRGO",
+  "wiki": "Perrigo",
+  "name_cik": "0001585364",
+  "baseline_cik": "0001585364",
+  "sec_name": "PERRIGO Co plc",
+  "former": [
+   "PERRIGO Co Ltd"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "PRGO"
+  ],
+  "sic": "Pharmaceutical Preparations",
+  "best_match_name": "PERRIGO Co plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "PTV",
+  "wiki": "Pactiv",
+  "name_cik": "0001089976",
+  "baseline_cik": null,
+  "sec_name": "PACTIV LLC",
+  "former": [
+   "PACTIV CORP",
+   "TENNECO PACKAGING INC"
+  ],
+  "last_10k": "2010-02-26",
+  "last_any": "2025-04-04",
+  "tickers": [],
+  "sic": "Plastics, Foil & Coated Paper Bags",
+  "best_match_name": "PACTIV LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "PVH",
+  "wiki": "PVH",
+  "name_cik": "0000078239",
+  "baseline_cik": "0000078239",
+  "sec_name": "PVH CORP. /DE/",
+  "former": [
+   "PHILLIPS VAN HEUSEN CORP /DE/"
+  ],
+  "last_10k": "2026-03-31",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "PVH"
+  ],
+  "sic": "Men's & Boys' Furnishgs, Work Clothg, & Allied Garments",
+  "best_match_name": "PVH CORP. /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "PXD",
+  "wiki": "Pioneer Natural Resources",
+  "name_cik": "0001038357",
+  "baseline_cik": null,
+  "sec_name": "PIONEER NATURAL RESOURCES CO",
+  "former": [],
+  "last_10k": "2024-02-22",
+  "last_any": "2024-06-20",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "PIONEER NATURAL RESOURCES CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "QEP",
+  "wiki": "QEP Resources",
+  "name_cik": "0001108827",
+  "baseline_cik": null,
+  "sec_name": "QEP RESOURCES, INC.",
+  "former": [
+   "QUESTAR MARKET RESOURCES INC"
+  ],
+  "last_10k": "2021-02-24",
+  "last_any": "2022-02-11",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "QEP RESOURCES, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "QRVO",
+  "wiki": "Qorvo",
+  "name_cik": "0001604778",
+  "baseline_cik": "0001604778",
+  "sec_name": "Qorvo, Inc.",
+  "former": [
+   "Rocky Holding, Inc."
+  ],
+  "last_10k": "2026-05-08",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "QRVO"
+  ],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "Qorvo, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "R",
+  "wiki": "Ryder System",
+  "name_cik": "0000085961",
+  "baseline_cik": "0000085961",
+  "sec_name": "RYDER SYSTEM INC",
+  "former": [],
+  "last_10k": "2026-02-11",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "R"
+  ],
+  "sic": "Services-Auto Rental & Leasing (No Drivers)",
+  "best_match_name": "RYDER SYSTEM INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "RAI",
+  "wiki": "Reynolds American",
+  "name_cik": "0001275283",
+  "baseline_cik": null,
+  "sec_name": "REYNOLDS AMERICAN INC",
+  "former": [],
+  "last_10k": "2017-02-09",
+  "last_any": "2026-03-25",
+  "tickers": [],
+  "sic": "Cigarettes",
+  "best_match_name": "REYNOLDS AMERICAN INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "RDC",
+  "wiki": "Rowan Companies",
+  "name_cik": "0000085408",
+  "baseline_cik": null,
+  "sec_name": "ROWAN COMPANIES PLC",
+  "former": [
+   "ROWAN COMPANIES INC"
+  ],
+  "last_10k": "2019-02-27",
+  "last_any": "2019-04-22",
+  "tickers": [],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "ROWAN COMPANIES PLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "RHI",
+  "wiki": "Robert Half",
+  "name_cik": "0000315213",
+  "baseline_cik": "0000315213",
+  "sec_name": "ROBERT HALF INC.",
+  "former": [
+   "ROBERT HALF INTERNATIONAL INC.",
+   "HALF ROBERT INTERNATIONAL INC /DE/"
+  ],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-12",
+  "tickers": [
+   "RHI"
+  ],
+  "sic": "Services-Help Supply Services",
+  "best_match_name": "ROBERT HALF INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "RHT",
+  "wiki": "Red Hat",
+  "name_cik": "0001087423",
+  "baseline_cik": null,
+  "sec_name": "RED HAT INC",
+  "former": [],
+  "last_10k": "2019-04-24",
+  "last_any": "2019-07-19",
+  "tickers": [],
+  "sic": "Services-Computer Programming, Data Processing, Etc.",
+  "best_match_name": "RED HAT INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "RIG",
+  "wiki": "Transocean",
+  "name_cik": "0001451505",
+  "baseline_cik": "0001451505",
+  "sec_name": "Transocean Ltd.",
+  "former": [],
+  "last_10k": "2026-02-23",
+  "last_any": "2026-06-16",
+  "tickers": [
+   "RIG"
+  ],
+  "sic": "Drilling Oil & Gas Wells",
+  "best_match_name": "Transocean Ltd.",
+  "score": 1.0
+ },
+ {
+  "ticker": "RRC",
+  "wiki": "Range Resources",
+  "name_cik": "0000315852",
+  "baseline_cik": "0000315852",
+  "sec_name": "RANGE RESOURCES CORP",
+  "former": [
+   "LOMAK PETROLEUM INC"
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-11",
+  "tickers": [
+   "RRC"
+  ],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "RANGE RESOURCES CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "RSH",
+  "wiki": "RadioShack",
+  "name_cik": "0000096289",
+  "baseline_cik": null,
+  "sec_name": "RS Legacy Corp",
+  "former": [
+   "RADIOSHACK CORP",
+   "TANDY CORP /DE/"
+  ],
+  "last_10k": "2014-03-04",
+  "last_any": "2016-02-12",
+  "tickers": [],
+  "sic": "Retail-Radio, Tv & Consumer Electronics Stores",
+  "best_match_name": "RADIOSHACK CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "RTN",
+  "wiki": "Raytheon Company",
+  "name_cik": "0001047122",
+  "baseline_cik": null,
+  "sec_name": "RAYTHEON CO/",
+  "former": [
+   "HE HOLDINGS INC"
+  ],
+  "last_10k": "2020-02-12",
+  "last_any": "2020-04-13",
+  "tickers": [],
+  "sic": "Search, Detection, Navigation, Guidance, Aeronautical Sys",
+  "best_match_name": "RAYTHEON CO/",
+  "score": 1.0
+ },
+ {
+  "ticker": "RX",
+  "wiki": "IMS Health",
+  "name_cik": "0001595262",
+  "baseline_cik": null,
+  "sec_name": "IMS Health Holdings, Inc.",
+  "former": [],
+  "last_10k": "2016-02-19",
+  "last_any": "2017-07-07",
+  "tickers": [],
+  "sic": "Services-Computer Processing & Data Preparation",
+  "best_match_name": "IMS Health Holdings, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "S",
+  "wiki": "Sprint Nextel",
+  "name_cik": "0000101830",
+  "baseline_cik": "0001583708",
+  "sec_name": "SPRINT LLC",
+  "former": [
+   "SPRINT CORP",
+   "SPRINT Corp",
+   "SPRINT NEXTEL CORP"
+  ],
+  "last_10k": "2019-05-29",
+  "last_any": "2026-04-30",
+  "tickers": [],
+  "sic": "Telephone Communications (No Radiotelephone)",
+  "best_match_name": "SPRINT NEXTEL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SAI",
+  "wiki": "SAIC",
+  "name_cik": "0001336920",
+  "baseline_cik": null,
+  "sec_name": "Leidos Holdings, Inc.",
+  "former": [
+   "SAIC, Inc."
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "LDOS"
+  ],
+  "sic": "Services-Computer Integrated Systems Design",
+  "best_match_name": "SAIC, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "SCG",
+  "wiki": "SCANA",
+  "name_cik": "0000754737",
+  "baseline_cik": null,
+  "sec_name": "SCANA CORP",
+  "former": [],
+  "last_10k": "2019-02-28",
+  "last_any": "2019-03-01",
+  "tickers": [],
+  "sic": "Electric & Other Services Combined",
+  "best_match_name": "SCANA CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SE",
+  "wiki": "Spectra Energy",
+  "name_cik": "0001373835",
+  "baseline_cik": "0001703399",
+  "sec_name": "Spectra Energy Corp.",
+  "former": [
+   "Gas SpinCo, Inc."
+  ],
+  "last_10k": "2017-02-24",
+  "last_any": "2018-02-14",
+  "tickers": [],
+  "sic": "Natural Gas Transmisison & Distribution",
+  "best_match_name": "Spectra Energy Corp.",
+  "score": 1.0
+ },
+ {
+  "ticker": "SEE",
+  "wiki": "Sealed Air",
+  "name_cik": "0001012100",
+  "baseline_cik": null,
+  "sec_name": "SEALED AIR CORP/DE",
+  "former": [
+   "WR GRACE & CO/DE",
+   "GRACE HOLDING INC",
+   "GRACE HOLDINGING INC"
+  ],
+  "last_10k": "2026-03-02",
+  "last_any": "2026-04-30",
+  "tickers": [],
+  "sic": "Plastic Material, Synth Resin/Rubber, Cellulos (No Glass)",
+  "best_match_name": "SEALED AIR CORP/DE",
+  "score": 0.67
+ },
+ {
+  "ticker": "SHLD",
+  "wiki": "Sears Holdings",
+  "name_cik": "0001310067",
+  "baseline_cik": null,
+  "sec_name": "SEARS HOLDINGS CORP",
+  "former": [],
+  "last_10k": "2018-03-23",
+  "last_any": "2022-06-29",
+  "tickers": [],
+  "sic": "Retail-Department Stores",
+  "best_match_name": "SEARS HOLDINGS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SIAL",
+  "wiki": "Sigma-Aldrich",
+  "name_cik": "0000090185",
+  "baseline_cik": null,
+  "sec_name": "SIGMA ALDRICH CORP",
+  "former": [],
+  "last_10k": "2015-02-12",
+  "last_any": "2016-02-02",
+  "tickers": [],
+  "sic": "Wholesale-Chemicals & Allied Products",
+  "best_match_name": "SIGMA ALDRICH CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SIG",
+  "wiki": "Signet Jewelers",
+  "name_cik": "0000832988",
+  "baseline_cik": "0000832988",
+  "sec_name": "SIGNET JEWELERS LTD",
+  "former": [
+   "SIGNET GROUP PLC"
+  ],
+  "last_10k": "2026-03-19",
+  "last_any": "2026-06-08",
+  "tickers": [
+   "SIG"
+  ],
+  "sic": "Retail-Jewelry Stores",
+  "best_match_name": "SIGNET JEWELERS LTD",
+  "score": 1.0
+ },
+ {
+  "ticker": "SII",
+  "wiki": "Smith International",
+  "name_cik": "0000721083",
+  "baseline_cik": "0001512920",
+  "sec_name": "SMITH INTERNATIONAL INC",
+  "former": [],
+  "last_10k": "2010-03-01",
+  "last_any": "2011-02-14",
+  "tickers": [],
+  "sic": "Oil & Gas Field Machinery & Equipment",
+  "best_match_name": "SMITH INTERNATIONAL INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "SIVB",
+  "wiki": "SVB Financial Group",
+  "name_cik": "0000719739",
+  "baseline_cik": null,
+  "sec_name": "SVB FINANCIAL GROUP",
+  "former": [
+   "SILICON VALLEY BANCSHARES"
+  ],
+  "last_10k": "2023-02-24",
+  "last_any": "2025-11-10",
+  "tickers": [],
+  "sic": "State Commercial Banks",
+  "best_match_name": "SVB FINANCIAL GROUP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SLE",
+  "wiki": "Sara Lee Corporation",
+  "name_cik": "0000023666",
+  "baseline_cik": "0001621672",
+  "sec_name": "Hillshire Brands Co",
+  "former": [
+   "Sara Lee Corp",
+   "LEE SARA CORP"
+  ],
+  "last_10k": "2014-08-22",
+  "last_any": "2014-09-08",
+  "tickers": [],
+  "sic": "Food and Kindred Products",
+  "best_match_name": "Sara Lee Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "SLG",
+  "wiki": "SL Green Realty",
+  "name_cik": "0001040971",
+  "baseline_cik": "0001040971",
+  "sec_name": "SL GREEN REALTY CORP",
+  "former": [],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-06-02",
+  "tickers": [
+   "SLG",
+   "SLG-PI"
+  ],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "SL GREEN REALTY CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SLM",
+  "wiki": "SLM Corporation",
+  "name_cik": "0001032033",
+  "baseline_cik": "0001032033",
+  "sec_name": "SLM Corp",
+  "former": [
+   "USA EDUCATION INC",
+   "SLM HOLDING CORP"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "SLM",
+   "SLMBP"
+  ],
+  "sic": "Personal Credit Institutions",
+  "best_match_name": "SLM Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "SNI",
+  "wiki": "Scripps Networks Interactive",
+  "name_cik": "0001430602",
+  "baseline_cik": null,
+  "sec_name": "Scripps Networks Interactive, Inc.",
+  "former": [],
+  "last_10k": "2018-02-27",
+  "last_any": "2025-02-27",
+  "tickers": [],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "Scripps Networks Interactive, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "SOLS",
+  "wiki": "Solstice Advanced Materials",
+  "name_cik": "0002064953",
+  "baseline_cik": "0002064953",
+  "sec_name": "Solstice Advanced Materials Inc.",
+  "former": [
+   "Solstice Advanced Materials, LLC"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "SOLS"
+  ],
+  "sic": "Chemicals & Allied Products",
+  "best_match_name": "Solstice Advanced Materials Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "SPLS",
+  "wiki": "Staples",
+  "name_cik": "0000791519",
+  "baseline_cik": null,
+  "sec_name": "STAPLES INC",
+  "former": [],
+  "last_10k": "2017-03-09",
+  "last_any": "2021-11-08",
+  "tickers": [],
+  "sic": "Retail-Miscellaneous Shopping Goods Stores",
+  "best_match_name": "STAPLES INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "SRCL",
+  "wiki": "Stericycle",
+  "name_cik": "0000861878",
+  "baseline_cik": null,
+  "sec_name": "STERICYCLE INC",
+  "former": [],
+  "last_10k": "2024-02-28",
+  "last_any": "2025-05-14",
+  "tickers": [],
+  "sic": "Hazardous Waste Management",
+  "best_match_name": "STERICYCLE INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "STI",
+  "wiki": "SunTrust Banks",
+  "name_cik": "0000750556",
+  "baseline_cik": "0001881551",
+  "sec_name": "SUNTRUST BANKS INC",
+  "former": [],
+  "last_10k": "2019-02-22",
+  "last_any": "2019-12-19",
+  "tickers": [],
+  "sic": "National Commercial Banks",
+  "best_match_name": "SUNTRUST BANKS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "STJ",
+  "wiki": "St Jude Medical",
+  "name_cik": "0000203077",
+  "baseline_cik": null,
+  "sec_name": "ST JUDE MEDICAL, LLC",
+  "former": [
+   "ST JUDE MEDICAL INC"
+  ],
+  "last_10k": "2016-02-23",
+  "last_any": "2017-03-07",
+  "tickers": [],
+  "sic": "Electromedical & Electrotherapeutic Apparatus",
+  "best_match_name": "ST JUDE MEDICAL, LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "STR",
+  "wiki": "Questar",
+  "name_cik": "0000751652",
+  "baseline_cik": null,
+  "sec_name": "DOMINION QUESTAR CORP",
+  "former": [
+   "QUESTAR CORP"
+  ],
+  "last_10k": "2016-02-18",
+  "last_any": "2017-02-14",
+  "tickers": [],
+  "sic": "Natural Gas Transmisison & Distribution",
+  "best_match_name": "QUESTAR CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SUN",
+  "wiki": "Sunoco",
+  "name_cik": "0001552275",
+  "baseline_cik": "0001552275",
+  "sec_name": "Sunoco LP",
+  "former": [
+   "Susser Petroleum Partners LP"
+  ],
+  "last_10k": "2026-02-19",
+  "last_any": "2026-05-07",
+  "tickers": [
+   "SUN"
+  ],
+  "sic": "Petroleum Refining",
+  "best_match_name": "Sunoco LP",
+  "score": 1.0
+ },
+ {
+  "ticker": "SVU",
+  "wiki": "Supervalu",
+  "name_cik": "0000095521",
+  "baseline_cik": null,
+  "sec_name": "SUPERVALU INC",
+  "former": [],
+  "last_10k": "2018-04-24",
+  "last_any": "2018-11-06",
+  "tickers": [],
+  "sic": "Wholesale-Groceries, General Line",
+  "best_match_name": "SUPERVALU INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "SWN",
+  "wiki": "Southwestern Energy",
+  "name_cik": "0000007332",
+  "baseline_cik": null,
+  "sec_name": "SOUTHWESTERN ENERGY CO",
+  "former": [],
+  "last_10k": "2024-02-22",
+  "last_any": "2024-10-11",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "SOUTHWESTERN ENERGY CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "SWY",
+  "wiki": "Safeway",
+  "name_cik": "0000086144",
+  "baseline_cik": null,
+  "sec_name": "SAFEWAY INC",
+  "former": [],
+  "last_10k": "2015-03-04",
+  "last_any": "2017-06-29",
+  "tickers": [],
+  "sic": "Retail-Grocery Stores",
+  "best_match_name": "SAFEWAY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "TDC",
+  "wiki": "Teradata",
+  "name_cik": "0000816761",
+  "baseline_cik": "0000816761",
+  "sec_name": "TERADATA CORP /DE/",
+  "former": [
+   "TERADATA CORP /DE/"
+  ],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "TDC"
+  ],
+  "sic": "Services-Prepackaged Software",
+  "best_match_name": "TERADATA CORP /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "TE",
+  "wiki": "TECO Energy",
+  "name_cik": "0000350563",
+  "baseline_cik": "0001992243",
+  "sec_name": "TECO ENERGY INC",
+  "former": [],
+  "last_10k": "2016-02-26",
+  "last_any": "2016-12-16",
+  "tickers": [],
+  "sic": "Electric Services",
+  "best_match_name": "TECO ENERGY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "TEG",
+  "wiki": "Integrys Energy Group",
+  "name_cik": "0000916863",
+  "baseline_cik": null,
+  "sec_name": "INTEGRYS HOLDING, INC.",
+  "former": [
+   "INTEGRYS ENERGY GROUP, INC.",
+   "WPS RESOURCES CORP"
+  ],
+  "last_10k": "2015-03-02",
+  "last_any": "2016-06-06",
+  "tickers": [],
+  "sic": "Electric & Other Services Combined",
+  "best_match_name": "INTEGRYS HOLDING, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "TFX",
+  "wiki": "Teleflex",
+  "name_cik": "0000096943",
+  "baseline_cik": "0000096943",
+  "sec_name": "TELEFLEX INC",
+  "former": [],
+  "last_10k": "2026-02-27",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "TFX"
+  ],
+  "sic": "Surgical & Medical Instruments & Apparatus",
+  "best_match_name": "TELEFLEX INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "TGNA",
+  "wiki": "Tegna",
+  "name_cik": "0000039899",
+  "baseline_cik": null,
+  "sec_name": "TEGNA INC",
+  "former": [
+   "GANNETT CO INC /DE/"
+  ],
+  "last_10k": "2026-03-02",
+  "last_any": "2026-04-09",
+  "tickers": [],
+  "sic": "Television Broadcasting Stations",
+  "best_match_name": "TEGNA INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "THC",
+  "wiki": "Tenet Healthcare",
+  "name_cik": "0000070318",
+  "baseline_cik": "0000070318",
+  "sec_name": "TENET HEALTHCARE CORP",
+  "former": [
+   "NATIONAL MEDICAL ENTERPRISES INC /NV/"
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-05-29",
+  "tickers": [
+   "THC"
+  ],
+  "sic": "Services-General Medical & Surgical Hospitals, NEC",
+  "best_match_name": "TENET HEALTHCARE CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "TIE",
+  "wiki": "Titanium Metals",
+  "name_cik": "0001011657",
+  "baseline_cik": null,
+  "sec_name": "TITANIUM METALS CORP",
+  "former": [],
+  "last_10k": "2012-02-29",
+  "last_any": "2013-01-18",
+  "tickers": [],
+  "sic": "Secondary Smelting & Refining of  Nonferrous Metals",
+  "best_match_name": "TITANIUM METALS CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "TIF",
+  "wiki": "Tiffany & Co",
+  "name_cik": "0000098246",
+  "baseline_cik": null,
+  "sec_name": "TIFFANY & CO",
+  "former": [],
+  "last_10k": "2020-03-20",
+  "last_any": "2021-02-10",
+  "tickers": [],
+  "sic": "Retail-Jewelry Stores",
+  "best_match_name": "TIFFANY & CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "TLAB",
+  "wiki": "Tellabs",
+  "name_cik": "0000317771",
+  "baseline_cik": null,
+  "sec_name": "TELLABS INC",
+  "former": [],
+  "last_10k": "2013-02-22",
+  "last_any": "2013-12-13",
+  "tickers": [],
+  "sic": "Telephone & Telegraph Apparatus",
+  "best_match_name": "TELLABS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "TRIP",
+  "wiki": "TripAdvisor",
+  "name_cik": "0001526520",
+  "baseline_cik": "0001526520",
+  "sec_name": "TripAdvisor, Inc.",
+  "former": [],
+  "last_10k": "2026-02-13",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "TRIP"
+  ],
+  "sic": "Services-Computer Programming, Data Processing, Etc.",
+  "best_match_name": "TripAdvisor, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "TWC",
+  "wiki": "Time Warner Cable",
+  "name_cik": "0001377013",
+  "baseline_cik": null,
+  "sec_name": "SPECTRUM MANAGEMENT HOLDING COMPANY, LLC",
+  "former": [
+   "TIME WARNER CABLE INC."
+  ],
+  "last_10k": "2016-02-12",
+  "last_any": "2026-06-18",
+  "tickers": [],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "TIME WARNER CABLE INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "TWTR",
+  "wiki": "Twitter",
+  "name_cik": "0001418091",
+  "baseline_cik": null,
+  "sec_name": "TWITTER, INC.",
+  "former": [
+   "Twitter Inc"
+  ],
+  "last_10k": "2022-02-16",
+  "last_any": "2022-12-02",
+  "tickers": [],
+  "sic": "Services-Computer Programming, Data Processing, Etc.",
+  "best_match_name": "TWITTER, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "TWX",
+  "wiki": "Time Warner",
+  "name_cik": "0001105705",
+  "baseline_cik": null,
+  "sec_name": "WARNER MEDIA, LLC",
+  "former": [
+   "TIME WARNER LLC",
+   "TIME WARNER INC.",
+   "TIME WARNER INC",
+   "AOL TIME WARNER INC"
+  ],
+  "last_10k": "2018-02-22",
+  "last_any": "2020-10-23",
+  "tickers": [],
+  "sic": "Cable & Other Pay Television Services",
+  "best_match_name": "TIME WARNER LLC",
+  "score": 1.0
+ },
+ {
+  "ticker": "TYC",
+  "wiki": "Tyco International",
+  "name_cik": "0000833444",
+  "baseline_cik": null,
+  "sec_name": "Johnson Controls International plc",
+  "former": [
+   "TYCO INTERNATIONAL plc",
+   "TYCO INTERNATIONAL LTD",
+   "TYCO INTERNATIONAL LTD /BER/",
+   "ADT LIMITED"
+  ],
+  "last_10k": "2025-11-14",
+  "last_any": "2026-06-17",
+  "tickers": [
+   "JCI"
+  ],
+  "sic": "Air-Cond & Warm Air Heatg Equip & Comm & Indl Refrig Equip",
+  "best_match_name": "TYCO INTERNATIONAL plc",
+  "score": 1.0
+ },
+ {
+  "ticker": "UA",
+  "wiki": "Under Armour (Class C)",
+  "name_cik": "0001336917",
+  "baseline_cik": "0001336917",
+  "sec_name": "Under Armour, Inc.",
+  "former": [],
+  "last_10k": "2026-05-19",
+  "last_any": "2026-06-08",
+  "tickers": [
+   "UAA",
+   "UA"
+  ],
+  "sic": "Apparel & Other Finishd Prods of  Fabrics & Similar Matl",
+  "best_match_name": "Under Armour, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "UAA",
+  "wiki": "Under Armour (Class A)",
+  "name_cik": "0001336917",
+  "baseline_cik": "0001336917",
+  "sec_name": "Under Armour, Inc.",
+  "former": [],
+  "last_10k": "2026-05-19",
+  "last_any": "2026-06-08",
+  "tickers": [
+   "UAA",
+   "UA"
+  ],
+  "sic": "Apparel & Other Finishd Prods of  Fabrics & Similar Matl",
+  "best_match_name": "Under Armour, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "UNM",
+  "wiki": "Unum",
+  "name_cik": "0000005513",
+  "baseline_cik": "0000005513",
+  "sec_name": "Unum Group",
+  "former": [
+   "UNUMPROVIDENT CORP",
+   "PROVIDENT COMPANIES INC /DE/",
+   "PROVIDENT COMPANIES INC /TN/",
+   "PROVIDENT LIFE & ACCIDENT INSURANCE CO OF AMERICA"
+  ],
+  "last_10k": "2026-02-17",
+  "last_any": "2026-05-28",
+  "tickers": [
+   "UNM",
+   "UNMA"
+  ],
+  "sic": "Accident & Health Insurance",
+  "best_match_name": "Unum Group",
+  "score": 1.0
+ },
+ {
+  "ticker": "URBN",
+  "wiki": "Urban Outfitters",
+  "name_cik": "0000912615",
+  "baseline_cik": "0000912615",
+  "sec_name": "URBAN OUTFITTERS INC",
+  "former": [],
+  "last_10k": "2026-04-01",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "URBN"
+  ],
+  "sic": "Retail-Family Clothing Stores",
+  "best_match_name": "URBAN OUTFITTERS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "VAR",
+  "wiki": "Varian Medical Systems",
+  "name_cik": "0000203527",
+  "baseline_cik": null,
+  "sec_name": "VARIAN MEDICAL SYSTEMS INC",
+  "former": [
+   "VARIAN ASSOCIATES INC /DE/"
+  ],
+  "last_10k": "2020-11-25",
+  "last_any": "2021-04-26",
+  "tickers": [],
+  "sic": "Electromedical & Electrotherapeutic Apparatus",
+  "best_match_name": "VARIAN MEDICAL SYSTEMS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "VIAB",
+  "wiki": "Viacom",
+  "name_cik": "0000813828",
+  "baseline_cik": null,
+  "sec_name": "Paramount Global",
+  "former": [
+   "ViacomCBS Inc.",
+   "CBS CORP",
+   "VIACOM INC"
+  ],
+  "last_10k": "2025-02-26",
+  "last_any": "2025-08-18",
+  "tickers": [],
+  "sic": "Television Broadcasting Stations",
+  "best_match_name": "VIACOM INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "VNO",
+  "wiki": "Vornado Realty Trust",
+  "name_cik": "0000899689",
+  "baseline_cik": "0000899689",
+  "sec_name": "VORNADO REALTY TRUST",
+  "former": [],
+  "last_10k": "2026-02-09",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "VNO",
+   "VNORP",
+   "VNO-PL",
+   "VNO-PM",
+   "VNO-PN",
+   "VNO-PO"
+  ],
+  "sic": "Real Estate Investment Trusts",
+  "best_match_name": "VORNADO REALTY TRUST",
+  "score": 1.0
+ },
+ {
+  "ticker": "VNT",
+  "wiki": "Vontier",
+  "name_cik": "0001786842",
+  "baseline_cik": "0001786842",
+  "sec_name": "Vontier Corp",
+  "former": [
+   "TTF Holdings Corp."
+  ],
+  "last_10k": "2026-02-12",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "VNT"
+  ],
+  "sic": "Totalizing Fluid Meters & Counting Devices",
+  "best_match_name": "Vontier Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "WBA",
+  "wiki": "Walgreens Boots Alliance",
+  "name_cik": "0001618921",
+  "baseline_cik": null,
+  "sec_name": "Walgreens Boots Alliance, Inc.",
+  "former": [],
+  "last_10k": "2024-10-15",
+  "last_any": "2025-09-08",
+  "tickers": [],
+  "sic": "Retail-Drug Stores and Proprietary Stores",
+  "best_match_name": "Walgreens Boots Alliance, Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "WCG",
+  "wiki": "WellCare",
+  "name_cik": "0001279363",
+  "baseline_cik": null,
+  "sec_name": "WELLCARE HEALTH PLANS, INC.",
+  "former": [
+   "WELLCARE GROUP INC"
+  ],
+  "last_10k": "2019-02-12",
+  "last_any": "2020-02-14",
+  "tickers": [],
+  "sic": "Hospital & Medical Service Plans",
+  "best_match_name": "WELLCARE GROUP INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "WFM",
+  "wiki": "Whole Foods Market",
+  "name_cik": "0000865436",
+  "baseline_cik": null,
+  "sec_name": "WHOLE FOODS MARKET INC",
+  "former": [],
+  "last_10k": "2017-11-17",
+  "last_any": "2017-11-17",
+  "tickers": [],
+  "sic": "Retail-Grocery Stores",
+  "best_match_name": "WHOLE FOODS MARKET INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "WFR",
+  "wiki": "MEMC Electronic Materials",
+  "name_cik": "0000945436",
+  "baseline_cik": null,
+  "sec_name": "SUNEDISON, INC.",
+  "former": [
+   "MEMC ELECTRONIC MATERIALS INC"
+  ],
+  "last_10k": "2015-03-02",
+  "last_any": "2018-01-08",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "MEMC ELECTRONIC MATERIALS INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "WHR",
+  "wiki": "Whirlpool Corporation",
+  "name_cik": "0000106640",
+  "baseline_cik": "0000106640",
+  "sec_name": "WHIRLPOOL CORP /DE/",
+  "former": [],
+  "last_10k": "2026-02-11",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "WHR",
+   "WHR-PA"
+  ],
+  "sic": "Household Appliances",
+  "best_match_name": "WHIRLPOOL CORP /DE/",
+  "score": 0.5
+ },
+ {
+  "ticker": "WPX",
+  "wiki": "WPX Energy",
+  "name_cik": "0001518832",
+  "baseline_cik": null,
+  "sec_name": "WPX ENERGY, INC.",
+  "former": [],
+  "last_10k": "2020-02-28",
+  "last_any": "2026-06-24",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "WPX ENERGY, INC.",
+  "score": 1.0
+ },
+ {
+  "ticker": "WU",
+  "wiki": "Western Union",
+  "name_cik": "0001365135",
+  "baseline_cik": "0001365135",
+  "sec_name": "Western Union CO",
+  "former": [],
+  "last_10k": "2026-02-20",
+  "last_any": "2026-06-24",
+  "tickers": [
+   "WU"
+  ],
+  "sic": "Services-Business Services, NEC",
+  "best_match_name": "Western Union CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "WYN",
+  "wiki": "Wyndham Worldwide",
+  "name_cik": "0001361658",
+  "baseline_cik": null,
+  "sec_name": "Travel & Leisure Co.",
+  "former": [
+   "Travel & Leisure Co.",
+   "Wyndham Destinations, Inc.",
+   "WYNDHAM WORLDWIDE CORP"
+  ],
+  "last_10k": "2026-02-18",
+  "last_any": "2026-06-23",
+  "tickers": [
+   "TNL"
+  ],
+  "sic": "Hotels & Motels",
+  "best_match_name": "WYNDHAM WORLDWIDE CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "X",
+  "wiki": "United States Steel",
+  "name_cik": "0001163302",
+  "baseline_cik": null,
+  "sec_name": "UNITED STATES STEEL CORP",
+  "former": [
+   "UNITED STATES STEEL LLC"
+  ],
+  "last_10k": "2025-01-31",
+  "last_any": "2025-08-14",
+  "tickers": [],
+  "sic": "Steel Works, Blast Furnaces & Rolling Mills (Coke Ovens)",
+  "best_match_name": "UNITED STATES STEEL CORP",
+  "score": 1.0
+ },
+ {
+  "ticker": "XEC",
+  "wiki": "Cimarex Energy",
+  "name_cik": "0001168054",
+  "baseline_cik": null,
+  "sec_name": "CIMAREX ENERGY CO",
+  "former": [
+   "HELMERICH & PAYNE EXPLORATION & PRODUCTION CO"
+  ],
+  "last_10k": "2021-02-23",
+  "last_any": "2021-10-12",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "CIMAREX ENERGY CO",
+  "score": 1.0
+ },
+ {
+  "ticker": "XL",
+  "wiki": "XL Group",
+  "name_cik": "0000875159",
+  "baseline_cik": null,
+  "sec_name": "XL GROUP LTD",
+  "former": [
+   "XL GROUP PLC",
+   "XL CAPITAL LTD",
+   "EXEL LTD"
+  ],
+  "last_10k": "2018-02-23",
+  "last_any": "2019-02-13",
+  "tickers": [],
+  "sic": "Fire, Marine & Casualty Insurance",
+  "best_match_name": "XL GROUP LTD",
+  "score": 1.0
+ },
+ {
+  "ticker": "XLNX",
+  "wiki": "Xilinx",
+  "name_cik": "0000743988",
+  "baseline_cik": null,
+  "sec_name": "XILINX INC",
+  "former": [
+   "XILINX, INCORPORATED"
+  ],
+  "last_10k": "2021-05-14",
+  "last_any": "2022-03-11",
+  "tickers": [],
+  "sic": "Semiconductors & Related Devices",
+  "best_match_name": "XILINX INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "XRAY",
+  "wiki": "Dentsply Sirona",
+  "name_cik": "0000818479",
+  "baseline_cik": "0000818479",
+  "sec_name": "DENTSPLY SIRONA Inc.",
+  "former": [
+   "DENTSPLY INTERNATIONAL INC /DE/"
+  ],
+  "last_10k": "2026-02-26",
+  "last_any": "2026-06-18",
+  "tickers": [
+   "XRAY"
+  ],
+  "sic": "Dental Equipment & Supplies",
+  "best_match_name": "DENTSPLY SIRONA Inc.",
+  "score": 1.0
+ },
+ {
+  "ticker": "XRX",
+  "wiki": "Xerox",
+  "name_cik": "0001770450",
+  "baseline_cik": "0001770450",
+  "sec_name": "Xerox Holdings Corp",
+  "former": [],
+  "last_10k": "2026-03-17",
+  "last_any": "2026-06-15",
+  "tickers": [
+   "XRX",
+   "XRXDW"
+  ],
+  "sic": "Computer Peripheral Equipment, NEC",
+  "best_match_name": "Xerox Holdings Corp",
+  "score": 1.0
+ },
+ {
+  "ticker": "XTO",
+  "wiki": "XTO Energy",
+  "name_cik": "0000868809",
+  "baseline_cik": null,
+  "sec_name": "XTO ENERGY INC",
+  "former": [
+   "CROSS TIMBERS OIL CO"
+  ],
+  "last_10k": "2010-02-25",
+  "last_any": "2020-05-28",
+  "tickers": [],
+  "sic": "Crude Petroleum & Natural Gas",
+  "best_match_name": "XTO ENERGY INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "YHOO",
+  "wiki": "Yahoo!",
+  "name_cik": "0001011006",
+  "baseline_cik": null,
+  "sec_name": "ALTABA INC.",
+  "former": [
+   "YAHOO INC"
+  ],
+  "last_10k": "2017-03-01",
+  "last_any": "2026-05-07",
+  "tickers": [],
+  "sic": "",
+  "best_match_name": "YAHOO INC",
+  "score": 1.0
+ },
+ {
+  "ticker": "ZION",
+  "wiki": "Zions Bancorporation",
+  "name_cik": "0000109380",
+  "baseline_cik": "0000109380",
+  "sec_name": "ZIONS BANCORPORATION, NATIONAL ASSOCIATION /UT/",
+  "former": [
+   "ZIONS BANCORPORATION /UT/"
+  ],
+  "last_10k": "2026-02-24",
+  "last_any": "2026-06-04",
+  "tickers": [
+   "ZION",
+   "ZIONP"
+  ],
+  "sic": "National Commercial Banks",
+  "best_match_name": "ZIONS BANCORPORATION /UT/",
+  "score": 0.67
+ }
+]
