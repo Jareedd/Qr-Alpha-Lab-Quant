@@ -41,6 +41,54 @@ def test_parse_company_concept_can_filter_annual_forms_only():
     assert annual.iloc[0] == 120
 
 
+def test_parse_company_concept_reads_shares_unit():
+    """Shares outstanding is reported under XBRL unit ``shares``, not ``USD``.
+    The ``unit`` param must read that bucket (the H1 market-cap-coverage bug was
+    the reader hardcoding ``USD`` -> EMPTY for every share concept)."""
+    payload = {"units": {"shares": [
+        {"end": "2022-12-31", "val": 1_500_000, "form": "10-K", "filed": "2023-02-15"},
+        {"end": "2023-03-31", "val": 1_510_000, "form": "10-Q", "filed": "2023-05-01"},
+    ]}}
+    # Default unit ("USD") sees nothing in a shares-only payload.
+    assert fdat.parse_company_concept(payload).empty
+    # Requesting the shares bucket parses it, filing-date-indexed.
+    s = fdat.parse_company_concept(payload, unit="shares")
+    assert list(s.index) == [pd.Timestamp("2023-02-15"), pd.Timestamp("2023-05-01")]
+    assert s.loc["2023-02-15"] == 1_500_000
+    assert s.loc["2023-05-01"] == 1_510_000
+
+
+def test_parse_company_concept_unit_selects_requested_bucket():
+    """A payload carrying BOTH USD and shares units must read exactly the
+    requested one — no cross-contamination between buckets."""
+    payload = {"units": {
+        "USD": [
+            {"end": "2022-12-31", "val": 9_000.0, "form": "10-K", "filed": "2023-02-15"},
+        ],
+        "shares": [
+            {"end": "2022-12-31", "val": 42.0, "form": "10-K", "filed": "2023-02-15"},
+        ],
+    }}
+    assert fdat.parse_company_concept(payload, unit="USD").loc["2023-02-15"] == 9_000.0
+    assert fdat.parse_company_concept(payload, unit="shares").loc["2023-02-15"] == 42.0
+    # default is USD (back-compat with every existing monetary caller)
+    assert fdat.parse_company_concept(payload).loc["2023-02-15"] == 9_000.0
+
+
+def test_shares_field_resolves_dei_primary_with_usgaap_fallbacks():
+    """The ``shares`` logical field resolves dei/EntityCommonStockSharesOutstanding
+    FIRST (unit=shares; survives dead names), then us-gaap shares-unit fallbacks.
+    Default fields stay (us-gaap, tag, USD)."""
+    assert fdat.FIELD_CONCEPTS["shares"][0] == (
+        "dei", "EntityCommonStockSharesOutstanding", "shares")
+    assert all(ns == "us-gaap" and unit == "shares"
+               for ns, _tag, unit in fdat.FIELD_CONCEPTS["shares"][1:])
+    # monetary fields untouched: us-gaap / USD for every candidate.
+    assert fdat.FIELD_CONCEPTS["assets"] == [("us-gaap", "Assets", "USD")]
+    assert all(ns == "us-gaap" and unit == "USD"
+               for ns, _t, unit in fdat.FIELD_CONCEPTS["net_income"])
+
+
 def test_parse_ticker_cik_map_zero_pads():
     payload = {"0": {"cik_str": 320193, "ticker": "aapl", "title": "Apple"},
                "1": {"cik_str": 789019, "ticker": "MSFT", "title": "Microsoft"}}
