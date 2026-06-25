@@ -191,18 +191,45 @@ class SurvivorshipSafeSECSource(FundamentalsSource):
         includes names later removed)."""
         return list(self._members)
 
-    def prices(self, universe: list[str], asof: pd.DatetimeIndex) -> pd.DataFrame:
-        """Wide (asof x ticker) adjusted-price frame: delisting-inclusive Tiingo
-        EOD over [start, end], reindexed forward-filled to the rebalance grid
-        ``asof``, restricted to tickers Tiingo actually carries."""
+    def _daily_prices(self, universe: list[str]) -> pd.DataFrame:
+        """Raw wide (date x ticker) DAILY adjusted-price frame from Tiingo over
+        [start, end], delisting-inclusive, restricted to tickers Tiingo carries.
+        The shared pull behind ``prices`` (quarterly grid) and ``prices_monthly``
+        (month-end grid) so neither re-fetches and they agree on the universe."""
         wide = self.tiingo.prices(
             list(universe), str(self._start.date()), str(self._end.date())
         )
         if wide.empty:
-            return pd.DataFrame(index=asof)
+            return pd.DataFrame()
         cols = [c for c in wide.columns if c in set(universe) or c.upper() in {u.upper() for u in universe}]
-        wide = wide[cols] if cols else wide
+        return wide[cols] if cols else wide
+
+    def prices(self, universe: list[str], asof: pd.DatetimeIndex) -> pd.DataFrame:
+        """Wide (asof x ticker) adjusted-price frame: delisting-inclusive Tiingo
+        EOD over [start, end], reindexed forward-filled to the rebalance grid
+        ``asof``, restricted to tickers Tiingo actually carries."""
+        wide = self._daily_prices(universe)
+        if wide.empty:
+            return pd.DataFrame(index=asof)
         return wide.reindex(asof, method="ffill")
+
+    def prices_monthly(self, universe: list[str]) -> pd.DataFrame:
+        """Wide (month-end x ticker) DAILY->monthly price grid — the LAST daily
+        adjusted close in each calendar month, NOT reindexed onto the quarterly
+        ``asof`` grid.
+
+        Why this exists (B3): the HML value-loading is a trailing rolling beta of
+        MONTHLY returns. ``prices`` is already reindexed to the QUARTERLY rebalance
+        grid, so resampling THAT to month-end yields a sparse, mostly-NaN series ->
+        all-NaN HML betas -> the NEUTRAL arm silently degenerates to a plain demean
+        (NEUTRAL == RAW, a false 'not value-collinear' read). The HML regression
+        must see the genuine monthly return series, built from the daily grid
+        BEFORE any quarterly reindex. Point-in-time: month-end m carries the close
+        known at m; nothing peeks forward."""
+        wide = self._daily_prices(universe)
+        if wide.empty:
+            return pd.DataFrame()
+        return wide.resample("ME").last()
 
     # ------------------------------------------------------------------ #
     # Window properties (consumed by the runner).

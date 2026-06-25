@@ -47,6 +47,14 @@ FIELD_TAGS = {
                 "Revenues", "SalesRevenueNet"],
     "cogs": ["CostOfGoodsAndServicesSold", "CostOfGoodsSold", "CostOfRevenue"],
     "gross_profit": ["GrossProfit"],
+    # Shares outstanding for value-weighting (market_cap = price * shares). These
+    # are us-gaap tags (the dimension _concept_frame requests), so the same reader
+    # path serves them. Ordered: outstanding first (the economically correct count
+    # for market cap), weighted-average basic next (always present in income-tag
+    # filings), issued last (gross of treasury — a coarse fallback only).
+    "shares": ["CommonStockSharesOutstanding",
+               "WeightedAverageNumberOfSharesOutstandingBasic",
+               "CommonStockSharesIssued"],
 }
 PERIODIC_FORMS = ("10-K", "10-Q", "10-K/A", "10-Q/A")
 ANNUAL_FORMS = ("10-K", "10-K/A")

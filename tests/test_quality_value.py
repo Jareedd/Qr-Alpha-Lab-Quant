@@ -210,6 +210,34 @@ def test_quality_mode_membership():
         make_quality_panel(mode=m, seed=7)  # must not raise
 
 
+def test_neutralization_gate_passes_and_is_well_formed():
+    """Registration amendment 2026-06-24 clause C — the consolidated in-env
+    NEUTRALIZATION gate the H1 runner MUST pass before grading the NEUTRAL arm.
+    Pins all four clauses: value-disguised collapses (<0.3), orthogonal survives
+    (>1.0), the worlds are SR-matched on the raw arm, and the collapse requires the
+    TRUE value factor (placebo control)."""
+    g = fnd.neutralization_gate(seeds=SEEDS)
+    assert g["passed"] is True
+    assert g["collapse_ok"] and g["survive_ok"]
+    assert g["sr_matched"] and g["placebo_ok"]
+    # the per-clause numbers agree with the standalone two-world tests above.
+    assert max(g["isvalue_neutral_sr"]) < 0.3
+    assert min(g["orthogonal_neutral_sr"]) > 1.0
+
+
+def test_neutralization_gate_fails_if_neutralization_is_a_noop(monkeypatch):
+    """A guard that BITES: if value_neutralized_signal is sabotaged into a no-op
+    (returns the raw signal, neutralizing nothing), the gate must FAIL — proving it
+    actually tests the neutralization, not a tautology that always passes."""
+    monkeypatch.setattr(
+        fnd, "value_neutralized_signal",
+        lambda sig, loading, accruals_a=None: fnd.quality_signal(sig, accruals_a),
+    )
+    g = fnd.neutralization_gate(seeds=SEEDS)
+    assert g["passed"] is False          # no-op neutralization cannot collapse
+    assert g["collapse_ok"] is False
+
+
 def test_cscv_adjudicates_the_four_arms():
     from quantlab import pbo
 
