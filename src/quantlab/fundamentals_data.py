@@ -38,6 +38,9 @@ _MIN_INTERVAL = 0.12
 _last = [0.0]
 
 # Logical field -> ordered us-gaap tag candidates (first that has data wins).
+# Retained for back-compat (callers/tests that key off the bare us-gaap tag list).
+# The resolution machinery now reads FIELD_CONCEPTS below, which carries the
+# (namespace, tag, unit) each tag actually lives under on SEC's API.
 FIELD_TAGS = {
     "assets": ["Assets"],
     "net_income": ["NetIncomeLoss", "ProfitLoss"],
@@ -47,15 +50,41 @@ FIELD_TAGS = {
                 "Revenues", "SalesRevenueNet"],
     "cogs": ["CostOfGoodsAndServicesSold", "CostOfGoodsSold", "CostOfRevenue"],
     "gross_profit": ["GrossProfit"],
-    # Shares outstanding for value-weighting (market_cap = price * shares). These
-    # are us-gaap tags (the dimension _concept_frame requests), so the same reader
-    # path serves them. Ordered: outstanding first (the economically correct count
-    # for market cap), weighted-average basic next (always present in income-tag
-    # filings), issued last (gross of treasury — a coarse fallback only).
+    # Shares outstanding for value-weighting (market_cap = price * shares). The
+    # us-gaap share tags; see FIELD_CONCEPTS for the namespace+unit they require
+    # and for the dei primary that actually survives for dead names.
     "shares": ["CommonStockSharesOutstanding",
                "WeightedAverageNumberOfSharesOutstandingBasic",
                "CommonStockSharesIssued"],
 }
+
+# Logical field -> ordered (namespace, tag, unit) candidates (first with data
+# wins). This is the source of truth the readers iterate. WHY a richer config:
+#
+#   * Most fundamentals are us-gaap monetary concepts reported under XBRL unit
+#     "USD" — so the default mapping is just (us-gaap, tag, USD), byte-identical
+#     to the historic behavior.
+#   * SHARES OUTSTANDING is the exception twice over. (1) It is reported under the
+#     XBRL unit ``shares``, not ``USD`` — reading units["USD"] returns EMPTY for
+#     every share tag (root cause of the H1 "0 names" market-cap coverage bug).
+#     (2) The reliable, dead-name-surviving concept is dei/
+#     EntityCommonStockSharesOutstanding (returns data for live AAPL/MSFT AND for
+#     delisted names like CELG); the us-gaap CommonStockShares* tags exist for
+#     live names but 404 for many dead ones. So shares resolves dei FIRST, with
+#     us-gaap shares-unit fallbacks.
+#
+# Default fields are derived from FIELD_TAGS to keep the two in lockstep; only
+# ``shares`` is overridden with its namespace/unit-aware candidate list.
+FIELD_CONCEPTS: dict[str, list[tuple[str, str, str]]] = {
+    field: [("us-gaap", tag, "USD") for tag in tags]
+    for field, tags in FIELD_TAGS.items()
+}
+FIELD_CONCEPTS["shares"] = [
+    ("dei", "EntityCommonStockSharesOutstanding", "shares"),  # primary; survives dead names
+    ("us-gaap", "CommonStockSharesOutstanding", "shares"),    # live-name fallback
+    ("us-gaap", "CommonStockSharesIssued", "shares"),         # coarse (gross of treasury)
+]
+
 PERIODIC_FORMS = ("10-K", "10-Q", "10-K/A", "10-Q/A")
 ANNUAL_FORMS = ("10-K", "10-K/A")
 
@@ -95,7 +124,7 @@ def _get(url: str, timeout: int = 60, retries: int = 4) -> bytes:
 # --------------------------------------------------------------------------- #
 
 def parse_company_concept_frame(
-    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS,
+    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS, unit: str = "USD",
 ) -> pd.DataFrame:
     """SEC ``companyconcept`` JSON → filing-date-indexed rows with ``value``,
     ``form``, and ``end`` columns.
@@ -104,9 +133,13 @@ def parse_company_concept_frame(
     numerators (10-K/10-KA) while leaving assets as every known stock value.
     When a filing date carries several period values, keep the row with the
     latest period ``end`` — the freshest figure disclosed in that filing.
+
+    ``unit`` selects which XBRL unit bucket to read. Monetary concepts live under
+    ``"USD"`` (the default, preserving historic behavior); SHARE counts live under
+    ``"shares"`` — reading the wrong bucket returns EMPTY, the H1 market-cap bug.
     """
     units = (payload or {}).get("units", {}) or {}
-    rows = units.get("USD") or []
+    rows = units.get(unit) or []
     recs = []
     for r in rows:
         if r.get("form") in forms and r.get("filed") and r.get("val") is not None:
@@ -125,13 +158,13 @@ def parse_company_concept_frame(
 
 
 def parse_company_concept(
-    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS,
+    payload: dict, forms: tuple[str, ...] = PERIODIC_FORMS, unit: str = "USD",
 ) -> pd.Series:
-    """SEC ``companyconcept`` JSON → filing-date-indexed USD values.
+    """SEC ``companyconcept`` JSON → filing-date-indexed values for ``unit``.
 
     Kept as a Series wrapper for callers/tests that only need the values.
     """
-    frame = parse_company_concept_frame(payload, forms=forms)
+    frame = parse_company_concept_frame(payload, forms=forms, unit=unit)
     if frame.empty:
         return pd.Series(dtype=float, name="value")
     out = frame["value"].copy()
@@ -148,6 +181,23 @@ def parse_ticker_cik_map(payload: dict) -> dict[str, str]:
         if t and cik is not None:
             out[t.upper()] = str(int(cik)).zfill(10)
     return out
+
+
+def _read_concept_frame(
+    freesec: "FreeSECSource", cik: str, tag: str, namespace: str, unit: str,
+) -> pd.DataFrame:
+    """Call ``freesec._concept_frame`` for one (namespace, tag, unit) candidate.
+
+    The legacy us-gaap/USD path is called POSITIONALLY (``_concept_frame(cik, tag)``)
+    so it stays byte-identical to the historic single-namespace reader — and so
+    test doubles that stub ``_concept_frame`` with the old ``(self, cik, tag)``
+    signature keep working. Non-default namespaces (e.g. ``dei`` for shares) pass
+    the namespace/unit through as keywords. This is the single shared concept
+    reader behind both FreeSECSource and SurvivorshipSafeSECSource.
+    """
+    if namespace == "us-gaap" and unit == "USD":
+        return freesec._concept_frame(cik, tag)
+    return freesec._concept_frame(cik, tag, namespace=namespace, unit=unit)
 
 
 # --------------------------------------------------------------------------- #
@@ -188,16 +238,29 @@ class FreeSECSource(FundamentalsSource):
             self._map = parse_ticker_cik_map(payload)
         return self._map.get(ticker.upper())
 
-    def _concept_frame(self, cik: str, tag: str) -> pd.DataFrame:
-        path = os.path.join(self.cache_dir, f"cc_{cik}_{tag}.parquet")
+    def _concept_frame(
+        self, cik: str, tag: str, namespace: str = "us-gaap", unit: str = "USD",
+    ) -> pd.DataFrame:
+        """Read one SEC ``companyconcept`` (namespace/tag), parsed from XBRL unit
+        ``unit``, as a filing-date-indexed value/form/end frame. Cached to parquet.
+
+        ``namespace`` selects the API taxonomy (``us-gaap`` default; ``dei`` for
+        shares-outstanding, which only the dei concept carries for dead names).
+        The us-gaap/USD path keeps its historic cache filename byte-for-byte;
+        other namespaces get a namespace-prefixed filename so dei and us-gaap
+        concepts of the same tag never collide in the cache.
+        """
+        # us-gaap keeps the legacy filename (cache continuity); others namespaced.
+        stem = f"cc_{cik}_{tag}" if namespace == "us-gaap" else f"cc_{namespace}_{cik}_{tag}"
+        path = os.path.join(self.cache_dir, f"{stem}.parquet")
         if os.path.exists(path):
             cached = pd.read_parquet(path)
             if {"value", "form", "end"}.issubset(cached.columns):
                 cached.index.name = "filed"
                 return cached[["value", "form", "end"]].sort_index()
-        url = f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/{tag}.json"
+        url = f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/{namespace}/{tag}.json"
         try:
-            frame = parse_company_concept_frame(json.loads(_get(url)))
+            frame = parse_company_concept_frame(json.loads(_get(url)), unit=unit)
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 frame = pd.DataFrame(columns=["value", "form", "end"])
@@ -213,8 +276,8 @@ class FreeSECSource(FundamentalsSource):
         if cik is None:
             return pd.Series(dtype=float, name="value")     # unmapped (the hole)
         forms = ANNUAL_FORMS if annual_only else PERIODIC_FORMS
-        for tag in FIELD_TAGS[field]:
-            frame = self._concept_frame(cik, tag)
+        for namespace, tag, unit in FIELD_CONCEPTS[field]:
+            frame = _read_concept_frame(self, cik, tag, namespace, unit)
             if frame.empty:
                 s = pd.Series(dtype=float, name="value")
             else:

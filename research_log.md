@@ -1,6 +1,6 @@
 # Research Log — qr-alpha-lab
 
-**Global trial count (feeds `--n-trials` for the DSR): N = 11**
+**Global trial count (feeds `--n-trials` for the DSR): N = 12**
 
 Rules (from CLAUDE.md law #3): every strategy variant, hyperparameter tweak,
 feature set, or horizon evaluated on **real data** gets one row and increments N.
@@ -103,16 +103,21 @@ are future work with their own pre-registered trials.
 
 | — | 2026-06-24 | infra | H1 graded construction PRE-COMMIT REVIEW fixes — applied the review's NO-GO findings on the registered two-arm run (MACHINERY ONLY, ZERO trials, N stays 11). The headline (B3): the NEUTRAL arm is what H1 graduates on, and the runner graded it WITHOUT first proving in-env that neutralization can actually discriminate — the registration's amendment-2026-06-24 clause-C two-world gate was referenced in comments but NEVER RUN. | ADDED `fundamentals.neutralization_gate()` (+ `_static_loading_panel` helper): the four-clause in-env gate — value-DISGUISED world (`quality_is_value`) NEUTRAL must COLLAPSE (static-loading SR < 0.3), value-ORTHOGONAL world (`quality_orthogonal`) NEUTRAL must SURVIVE (> 1.0), the two worlds SR-MATCHED on the raw arm (mean raw-SR gap ≤ 1.0, so raw SR alone can't classify), and a PLACEBO control (collapse needs the TRUE value factor: neutral_true < 0.5×neutral_placebo). WIRED it into `run_h1_trial.main()` AFTER the machinery gate and BEFORE the DATA GATE, with sys.exit ABORT on failure (no trial spent). +4 known-answer tests (2 in `test_quality_value.py` pinning the gate per the registration + a no-op-neutralization guard that BITES; 2 in `test_run_h1_trial.py` pinning that main() invokes the gate before the DATA GATE and aborts on failure). | Gate PASSES today on the real machinery (is-value NEUTRAL SR [-0.08, -0.41, +0.25] all < 0.3; orthogonal NEUTRAL SR [2.44, 3.70, 2.93] all > 1.0; mean raw-SR gap 0.60; placebo control holds all seeds) — so the NEUTRAL verdict is now trustworthy. The no-op-neutralization guard confirms the gate is not a tautology (sabotaging `value_neutralized_signal` to a pass-through FAILS the gate). | **B3 re-verified and CLOSED: NEUTRAL can no longer silently collapse to RAW unproven.** The prior round already had the monthly price accessor (`prices_monthly`, daily→month-end NOT the quarterly grid) feeding past-only HML betas, the as-of alignment is leak-free (poison-the-future pins green), and the all-NaN-loading ABORT guard exists — this fix adds the missing *discrimination* proof the registration mandates as an ABORT condition. N stays 11; live config untouched; a graded trial #12 still requires owner sign-off + the Tiingo price-leg resume. |
 
+| 12 | 2026-06-24 | **trial** | H1: does fundamental QUALITY (CBOP) carry cross-sectional alpha DISTINCT from value, net of costs, on the FREE survivorship-safe universe — graded on the HML-NEUTRAL arm per the 2026-06-16/24 amendments? The FIRST graded fundamentals trial; the survivorship wall that blocked H1 since trial #1 is now solved (SEC name-crosswalk 94% dead-name fundamentals + Tiingo delisting-inclusive prices, no WRDS). | `SurvivorshipSafeSECSource` (SEC name-crosswalk fundamentals + Tiingo prices, paid tier); 705 PIT non-financial names (excl. Financials+REITs), market-cap coverage **449**; CBOP/A=(GP−(NI−CFO))/Assets; **value-weighted** quintile L/S; quarterly rebalance; 10 bps/side; RAW + **HML-NEUTRAL** (monthly FF, trailing-36m past-only betas) arms; 4-config PBO (raw/neutral × current/lagged assets); n_obs **64 quarters** (2010→2026); `--n-trials 12`. Machinery gate + clause-C two-world neutralization gate PASSED first. | RAW net SR **+0.577** (t_NW +2.30, DSR 0.723, turnover 5.7×/yr); **NEUTRAL net SR −0.178** (t_NW −0.77, DSR 0.009, turnover 9.6×/yr); EW baseline +0.993, 12-1 mom −0.08; **PBO 0.10**; **raw−neutral gap +0.755**; MDE@N=12,n_obs=64 ~0.42 (registered hurdle ~0.90 daily/15-yr). | **H1 does NOT graduate — and the REASON is the finding: the "quality premium" was VALUE IN DISGUISE.** The raw CBOP book looked edged (t_NW 2.30) but sits BELOW the equal-weight baseline (0.99) AND below the DSR bar (0.72 < 0.95); the HML-NEUTRAL arm — the one graduation is judged on — is **negative** (−0.18, t −0.77, DSR 0.009). The large **raw−neutral gap +0.755** is the PRE-REGISTERED signature that the edge is repackaged HML exposure, not standalone quality alpha — exactly the H1 dossier's prediction (Novy-Marx large-cap GP is an FF/HML-loaded *alpha*, not a tradable raw return). The two-arm raw-vs-neutral design did its job: it caught a value-in-disguise null the raw arm alone would have mistaken for an edge. PBO 0.10 PASSing is NOT a green light — rank-persistence in a ~null family (the trial-#7 lesson); graduation needs the NEUTRAL conjunction, which fails 3/4. Honest limitations: market-cap coverage 449/705 (64%; dei-shares / CBOP tag gaps), n_obs 64 quarters — but value-collinearity is STRUCTURAL (neutralizing HML flips the sign), robust to the coverage gap. First survivorship-safe FREE-data fundamental trial in the project. Falsification gate byte-identical (planted SR 0.8646 / DSR 0.9919, noise 0.0004). **N=12.** |
+
 ## Notes
 
-- 2026-06-24: **Trial #12 ATTEMPTED, not yet a result — N STAYS 11.** Owner
-  authorized the graded H1 run on `--source free_xwalk`. The SEC fundamentals leg
-  for all ~812 PIT survivorship-safe names PULLED + CACHED successfully (the novel
-  unlock works end-to-end, pre-flight verified: CELG/MON/XLNX/RHT resolve to the
-  right CIK with filing-date-PIT fundamentals ending exactly at acquisition). The
-  PRICE leg is blocked: Tiingo's daily quota was exhausted (a guaranteed-covered
-  name, AAPL, returns 0 rows = rate-limited, not absent), so the run produced no
-  backtest. No valid result → N unchanged (a trial increments N only on a logged
+- 2026-06-24: **Trial #12 RAN (see ledger row #12) — H1 does NOT graduate; N=12.**
+  Earlier same-day the run was blocked by Tiingo's daily quota; after a paid-tier
+  upgrade the price leg completed (864 names cached) and the graded run executed.
+  A first attempt produced a DEGENERATE non-result (market-cap coverage 0 — shares
+  outstanding live under SEC's `dei` namespace + `units["shares"]`, not us-gaap/USD;
+  the reader was hardcoded to USD) — that was NOT logged (fixed the fetcher, re-ran).
+  The valid re-run: RAW net SR +0.577 (t_NW 2.30) but the HML-NEUTRAL arm is −0.18
+  — the quality premium was value-collinear, so H1 does not graduate. (Prior wording
+  of this note — "ATTEMPTED, N STAYS 11" — is superseded.) Original blocked-run
+  detail retained below for the record:
+  - Tiingo's daily quota was exhausted (a guaranteed-covered
   result). `tiingo_data` hardened to be rate-limit-RESILIENT + RESUMABLE (slower
   pacing, harder 429 backoff, skip-without-caching so a re-run fills gaps). RESUME
   after the Tiingo quota resets, via the REGISTERED entry point: `python

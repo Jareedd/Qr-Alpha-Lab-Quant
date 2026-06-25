@@ -40,10 +40,11 @@ from quantlab.cik_crosswalk import NameCikResolver, fetch_sp500_security_names
 from quantlab.fundamentals_data import (
     ANNUAL_FORMS,
     CACHE,
-    FIELD_TAGS,
+    FIELD_CONCEPTS,
     PERIODIC_FORMS,
     FreeSECSource,
     FundamentalsSource,
+    _read_concept_frame,
 )
 from quantlab.tiingo_data import TiingoSource
 
@@ -165,17 +166,18 @@ class SurvivorshipSafeSECSource(FundamentalsSource):
         """Filing-date-indexed values for a logical field — same semantics as
         ``FreeSECSource.field_series``, but on the survivorship-recovered CIK.
 
-        Iterate ``FIELD_TAGS[field]`` tag candidates, read each via
-        ``FreeSECSource._concept_frame(cik, tag)``, filter to ``ANNUAL_FORMS`` if
+        Iterate ``FIELD_CONCEPTS[field]`` (namespace, tag, unit) candidates, read
+        each via ``FreeSECSource._concept_frame`` (us-gaap/USD positionally, other
+        namespaces — e.g. dei shares — by keyword), filter to ``ANNUAL_FORMS`` if
         ``annual_only`` else ``PERIODIC_FORMS``, and return the first non-empty
         ``filed``-indexed ``value`` series. Empty Series if the CIK does not
-        resolve or no tag carries data."""
+        resolve or no concept carries data."""
         cik = self._cik_for(ticker)
         if cik is None:
             return pd.Series(dtype=float, name="value")     # truly unrecoverable
         forms = ANNUAL_FORMS if annual_only else PERIODIC_FORMS
-        for tag in FIELD_TAGS[field]:
-            frame = self.freesec._concept_frame(cik, tag)
+        for namespace, tag, unit in FIELD_CONCEPTS[field]:
+            frame = _read_concept_frame(self.freesec, cik, tag, namespace, unit)
             if frame.empty:
                 s = pd.Series(dtype=float, name="value")
             else:

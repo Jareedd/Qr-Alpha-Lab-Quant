@@ -30,3 +30,7 @@ scratch/
 
 # Editor/workspace cruft (Obsidian vault config, etc.)
 .obsidian/
+
+# never commit cache archives / vendor data dumps
+data_cache.zip
+*.zip
