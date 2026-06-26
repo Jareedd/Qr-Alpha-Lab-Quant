@@ -796,6 +796,68 @@ uses **N = 13**.
   data, carries no tradable cross-sectional edge net of costs" — citable beside the
   carry and CEF trials.
 
+### H13: Post-earnings-announcement drift (PEAD) survives on large-cap US, net of costs — the first INSTITUTIONAL-DATA hypothesis (needs PIT analyst estimates)
+- Status: **PROPOSED — harness built + offline-tested; DATA-GATED on a bounded
+  Bloomberg estimate pull (ASU FAR Lab / Noble terminal).** One CSV from a graded
+  trial #14. See `writeup/bloomberg_pead_pull.md` for the (license-respecting,
+  bounded) pull spec. This is the first hypothesis that deliberately steps past
+  free data: the §10 research-note frontier ("post-earnings drift with real
+  estimates") made concrete.
+- Economic prior (moderate, declared): markets UNDER-REACT to earnings surprises;
+  prices drift in the surprise direction for weeks after the announcement
+  (Bernard–Thomas 1989). The load-bearing input is the surprise relative to the
+  **pre-announcement consensus** — which free data lacks (free sources carry the
+  actual, not the at-the-time consensus); Bloomberg/IBES PIT estimates are the
+  unlock. Counterparty: investors slow to fully price the news. **Counter-prior
+  (why it may fail our bar):** PEAD is among the most-published anomalies →
+  McLean–Pontiff decay; it concentrates in SMALL/illiquid/high-cost names, so on
+  large-cap S&P 500 net of costs the honest prior is a DECAYED, possibly-marginal
+  effect — exactly the project's recurring story, now on the canonical estimates
+  anomaly.
+- Point-in-time safety: (1) the surprise uses Bloomberg's **at-the-announcement**
+  consensus (PIT by construction — Bloomberg computes surprise against the estimate
+  standing before the print). (2) The signal enters only AFTER the announcement —
+  **entry at T+2** (skip the announcement-day jump so we measure DRIFT, not the
+  immediate reaction, and avoid same-bar leakage). (3) Forward returns are strictly
+  post-T+2. (4) Universe caveat, declared: a CURRENT-S&P-500 first cut carries mild
+  universe survivorship — far less corrosive for an EVENT study than for a
+  buy-the-dip (each event is dated and local), but a PIT-member pull is the clean
+  upgrade and is noted as the residual.
+- Exact config (to be FROZEN at the data step; sketch): universe = S&P 500 (current
+  members first cut; PIT if pulled), ~2015→2026; signal = **SUE** =
+  (actual − consensus)/std(estimates) per announcement, or Bloomberg `surprise_pct`
+  if dispersion is unavailable; **event study** (reuse `events.py`): enter T+2,
+  hold ~60 trading days, LONG top-quintile SUE / SHORT bottom-quintile, plus a
+  cross-sectional monthly variant (rank on the most-recent surprise within a
+  trailing window); prices = Tiingo (delisting-inclusive, already cached); 10
+  bps/side; size/liquidity reported by tercile (PEAD's small-cap concentration is
+  the headline risk).
+- Machinery gate (MUST pass in-env first): a synthetic `planted_pead` world
+  (forward drift injected ONLY after high-|SUE| events) recovered, and a null world
+  (same surprise events, no drift) rejected, paired per seed.
+- Registered paired controls: (1) **drift-vs-reaction (the PEAD-specific kill):**
+  re-enter at T+5 and T+10 — true drift persists for weeks, so the Sharpe must
+  retain ≥ 50% from T+2 to T+5; a collapse means we captured the announcement-day
+  REACTION (untradable, the trial-#11 entry-lag lesson applied to events), not
+  drift. (2) **surprise-shuffle placebo** → ~0. (3) **size-tercile split** — if the
+  effect lives ONLY in the smallest/least-liquid tercile, it is not tradable on the
+  large-cap universe (logged, not hidden).
+- Success criteria (frozen at the data step): right-signed SUE→forward-return IC
+  with t_NW ≥ +2 AND net SR > 0 beating equal-weight AND 12-1 momentum AND DSR ≥
+  0.95 at then-current N (=14) AND the drift-vs-reaction gate passes (T+5 retains
+  ≥50%) AND the effect is not confined to the illiquid tercile.
+- Minimum detectable effect (MDE): stated at the data step from `graduation_hurdle`
+  for the realized n_obs (event-time obs ≈ # usable announcements; cross-sectional ≈
+  months). Large-cap PEAD post-cost is expected near the MDE — checked before the run.
+- Kill criteria: machinery gate fails → ABORT; drift collapses by T+5 → it was the
+  announcement reaction, logged; effect only in the illiquid tercile → not tradable
+  on S&P 500, logged; DSR fail → decayed-PEAD null. NO post-hoc SUE-definition /
+  horizon / entry-lag scans (each is +1 trial).
+- Failure interpretation: a null is "PEAD, tested with real point-in-time consensus
+  estimates on large-cap US net of costs, has decayed below tradability" — extends
+  the project's decay story from free-data price/fundamental/alt-data signals to the
+  canonical estimates-dependent anomaly, and demonstrates institutional-data fluency.
+
 ---
 
 Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
