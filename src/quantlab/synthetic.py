@@ -521,6 +521,146 @@ def make_insider_panel(
     return price
 
 
+_PEAD_MODES = {"planted_pead", "null_pead"}
+_PEAD_SEED_OFFSET = 7171      # separate-rng offset for ALL PEAD-world draws;
+                             # distinct from make_panel's +777, the value world's
+                             # +5150 and the insider world's +9090. A dedicated rng
+                             # means this function NEVER perturbs any existing make_*
+                             # draw stream (pinned byte-identical by the
+                             # falsification gate).
+
+
+def make_pead_panel(
+    mode: str = "planted_pead",
+    seed: int = 7,
+    n_firms: int = 80,
+    n_quarters: int = 24,
+    drift: float = 0.08,
+    hold: int = 60,
+    enter_lag: int = 2,
+    sue_threshold: float = 1.0,
+) -> pd.DataFrame:
+    """Synthetic post-earnings-announcement-drift world for the H13 gate.
+
+    Returns a (day x firm) total-return PRICE panel; the synthetic earnings-
+    surprise EVENT table rides in ``attrs["events"]`` (long-form, columns
+    ``ticker, ann_date, period, actual_eps, est_eps, std_est, sue`` — the exact
+    shape ``pead.parse_pead_csv`` / ``pead.compute_sue`` consume after a CSV
+    round-trip). ``attrs["mode"]`` / ``attrs["drift"]`` carry the ground truth.
+
+    The PEAD-specific subtlety this world encodes: the NULL is not "no earnings
+    surprises" — surprises plainly exist — it is "surprises do not PREDICT post-
+    announcement drift". And the planted drift must live ONLY in high-|SUE|
+    events and ONLY AFTER the announcement (entry T+``enter_lag``), so the
+    harness's T+2 PIT entry and drift-vs-reaction control are exercised. Two
+    paired modes (identical draws — same firms, same announcements, same SUEs —
+    except the return link):
+
+    - ``planted_pead``: for each event with |SUE| >= ``sue_threshold``, a
+      cumulative ``drift`` (signed by the surprise) is injected over the ``hold``
+      trading days that begin at announcement + ``enter_lag`` (so the drift is
+      strictly POST-T+2 — a harness that enters on/before the announcement bar
+      captures none of it, and one that enters at T+2 captures it all). The H13
+      machinery must RECOVER this. The drift PERSISTS (geometric ramp then level
+      shift), so re-entering at T+5/T+10 still captures >=50% (the drift-vs-
+      reaction control's PASS side).
+    - ``null_pead``: the SAME events and SUEs, but NO post-event drift — returns
+      are pure market + idiosyncratic. The machinery must find NOTHING here
+      (finding PEAD in this world = the harness is broken / leaking — the exact
+      failure this world guards against).
+
+    PIT-safety of the construction: the drift is placed ONLY on bars strictly
+    after announcement + ``enter_lag``; the announcement bar and the ``enter_lag``
+    skip bars carry ZERO planted drift, so the synthetic world itself contains no
+    same-bar leakage for the harness to accidentally exploit.
+
+    SYNTHETIC, harness-validation only, labeled as such (law #7). Drawn entirely
+    from a DEDICATED rng (seed + ``_PEAD_SEED_OFFSET``) so no existing make_*
+    draw sequence is touched.
+    """
+    if mode not in _PEAD_MODES:
+        raise ValueError(
+            f"mode must be 'planted_pead' or 'null_pead', got {mode!r}"
+        )
+    rng = np.random.default_rng(seed + _PEAD_SEED_OFFSET)
+    is_planted = mode == "planted_pead"
+
+    # Daily price panel long enough to span every event's hold window. ~63
+    # trading days per quarter; pad a year of warm-up + a hold tail.
+    q_days = 63
+    n_days = 252 + n_quarters * q_days + hold + enter_lag + 5
+    firms = [f"PEAD{i:03d}" for i in range(n_firms)]
+    dates = pd.bdate_range("2014-01-02", periods=n_days)
+
+    betas = rng.uniform(0.6, 1.4, n_firms)
+    idio_vol = rng.uniform(0.010, 0.020, n_firms)
+    mkt = rng.standard_normal(n_days) * 0.009 + 0.0002
+    rets = (betas[None, :] * mkt[:, None]
+            + rng.standard_normal((n_days, n_firms)) * idio_vol[None, :])
+
+    # Announcement calendar: one announcement per firm per quarter, on a per-firm
+    # jittered day near each quarter end (real earnings cluster but are staggered).
+    first_ann = 252  # after the warm-up year
+    event_rows: list[dict] = []
+    for fi, firm in enumerate(firms):
+        jitter = int(rng.integers(0, 15))
+        for q in range(n_quarters):
+            pos = first_ann + q * q_days + jitter
+            if pos + enter_lag + hold >= n_days:
+                continue
+            ann_date = dates[pos]
+            # A surprise: standardized SUE drawn ~N(0,1.2) so a healthy tail
+            # exceeds the |SUE|>=1 planted threshold; build est/actual/std to be
+            # CONSISTENT with that SUE so the CSV round-trip recovers it.
+            sue = float(rng.standard_normal() * 1.2)
+            est_eps = float(rng.uniform(0.5, 3.0))
+            std_est = float(rng.uniform(0.05, 0.20))
+            actual_eps = est_eps + sue * std_est        # => (actual-est)/std = sue
+            year = ann_date.year
+            quarter = (ann_date.month - 1) // 3 + 1
+            event_rows.append({
+                "ticker": firm, "ann_date": ann_date,
+                "period": f"{year}Q{quarter}",
+                "actual_eps": round(actual_eps, 4), "est_eps": round(est_eps, 4),
+                "std_est": round(std_est, 4), "sue": sue,
+                "_pos": pos, "_fi": fi,
+            })
+
+    # Plant the drift (planted mode only) on bars STRICTLY after T+enter_lag.
+    if is_planted:
+        bump_base = (1.0 + drift)
+        for ev in event_rows:
+            if abs(ev["sue"]) < sue_threshold:
+                continue
+            sign = 1.0 if ev["sue"] > 0 else -1.0
+            entry = ev["_pos"] + enter_lag           # first BAR we may hold from
+            end = min(entry + hold, n_days)
+            steps = end - entry
+            if steps <= 0:
+                continue
+            # signed cumulative drift over the hold window: geometric per-bar
+            # increment so the position gains ~sign*drift across the window and
+            # then holds the level shift (persistence -> T+5/T+10 still captures).
+            per_bar = bump_base ** (sign / hold) - 1.0
+            rets[entry + 1: end + 1, ev["_fi"]] += per_bar
+
+    prices = pd.DataFrame(
+        100.0 * np.exp(np.cumsum(rets, axis=0)), index=dates, columns=firms)
+
+    events = (pd.DataFrame(event_rows)
+              .drop(columns=["_pos", "_fi"])
+              .reset_index(drop=True))
+    events["ann_date"] = pd.to_datetime(events["ann_date"])
+    prices.attrs["events"] = events
+    prices.attrs["mode"] = mode
+    prices.attrs["drift"] = float(drift) if is_planted else 0.0
+    prices.attrs["hold"] = int(hold)
+    prices.attrs["enter_lag"] = int(enter_lag)
+    prices.attrs["sue_threshold"] = float(sue_threshold)
+    prices.attrs["betas"] = pd.Series(betas, index=firms)
+    return prices
+
+
 def inject_delisting_returns(
     prices: pd.DataFrame,
     delist_return: float,
