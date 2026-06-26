@@ -1,0 +1,25 @@
+{
+  "probe": "h10_power_full_universe_bulk",
+  "trial_spent": false,
+  "n_members": 812,
+  "n_members_with_cik": 728,
+  "n_ciks": 724,
+  "n_buys": 27337,
+  "n_buys_dropped_no_ticker": 0,
+  "n_firms_with_buys": 752,
+  "n_months": 197,
+  "median_eligible_per_month": 24.0,
+  "p90_eligible": 39.0,
+  "max_eligible": 97.0,
+  "median_basket": 2.0,
+  "n_obs_nonempty_basket": 197,
+  "mde_ann": 0.42039467843392697,
+  "floors": {
+    "min_basket": 5,
+    "min_n_obs": 60
+  },
+  "basket_ok": false,
+  "nobs_ok": true,
+  "would_pass": false,
+  "verdict": "underpowered_free_data"
+}

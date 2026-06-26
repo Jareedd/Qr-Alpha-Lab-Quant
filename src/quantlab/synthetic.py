@@ -368,6 +368,159 @@ def make_quality_panel(
     return price
 
 
+_INSIDER_MODES = {"planted_opportunistic", "null_opportunistic"}
+_INSIDER_SEED_OFFSET = 9090   # separate-rng offset for ALL insider-world draws;
+                              # distinct from make_panel's seed+777 and the value
+                              # world's +5150. A dedicated rng means this function
+                              # NEVER perturbs any existing make_* draw stream.
+
+
+def make_insider_panel(
+    mode: str = "planted_opportunistic",
+    seed: int = 7,
+    n_firms: int = 120,
+    n_periods: int = 120,
+    window_days: int = 90,
+    n_routine: int = 40,
+    n_opportunistic: int = 60,
+    cluster_premium: float = 0.06,
+) -> pd.DataFrame:
+    """Synthetic insider-cluster-buy world for the H10 falsification gate.
+
+    Returns a (period x firm) price panel; the synthetic Form-4 PURCHASE event
+    table rides in ``attrs["purchases"]`` (long-form, indexed by ``filed_date``,
+    columns ``owner_name, role, shares, value, transaction_date, ticker``) — the
+    exact shape ``insider.cluster_buy_signal`` consumes. ``attrs["window_days"]``
+    carries the signal window the gate should use.
+
+    The H10-specific subtlety this world encodes: the NULL is not "no insider
+    buying" — insiders plainly buy — it is "buying does not PREDICT returns". And
+    the planted signal must live ONLY in OPPORTUNISTIC clusters, never routine
+    ones, so the harness's routine/opportunistic split is exercised. Two paired
+    modes (identical draws except the return link):
+
+    - ``planted_opportunistic``: on scattered event months a CLUSTER of distinct
+      OPPORTUNISTIC insiders buys a firm, and that firm earns a positive forward
+      idiosyncratic return ``cluster_premium`` the NEXT period. ROUTINE insiders
+      also buy (same calendar month every year) but their buys are return-neutral
+      by construction — a correct harness must classify them out and still recover
+      the opportunistic premium. The H10 machinery must RECOVER this.
+    - ``null_opportunistic``: the SAME opportunistic + routine buy events occur,
+      but they are INDEPENDENT of forward returns (no premium). The machinery must
+      find NOTHING here (finding cluster-buy alpha in this world = the harness is
+      broken or is leaking — the exact failure this world guards against).
+
+    Routine insiders are planted by giving each one a fixed "home" firm and a fixed
+    calendar month, and buying there every year for the whole sample (the >=3-
+    consecutive-year same-month pattern ``classify_routine_opportunistic`` brands
+    routine). Opportunistic insiders buy in sporadic, non-repeating months so they
+    never establish that pattern.
+
+    SYNTHETIC, harness-validation only, labeled as such (law #7). Drawn entirely
+    from a DEDICATED rng (seed + ``_INSIDER_SEED_OFFSET``) so no existing make_*
+    draw sequence is touched.
+    """
+    if mode not in _INSIDER_MODES:
+        raise ValueError(
+            "mode must be 'planted_opportunistic' or 'null_opportunistic', "
+            f"got {mode!r}"
+        )
+    rng = np.random.default_rng(seed + _INSIDER_SEED_OFFSET)
+
+    firms = [f"INS{i:03d}" for i in range(n_firms)]
+    periods = pd.bdate_range("2008-01-31", periods=n_periods, freq="BME")
+    is_planted = mode == "planted_opportunistic"
+
+    # Base return components (market + idiosyncratic). The planted premium is
+    # injected on top for firms that received an OPPORTUNISTIC cluster the prior
+    # period; routine buys never move returns.
+    betas = rng.uniform(0.6, 1.2, n_firms)
+    mkt = rng.standard_normal(n_periods) * 0.04
+    idio = rng.standard_normal((n_periods, n_firms)) * 0.06
+    rets = betas[None, :] * mkt[:, None] + idio
+
+    purchase_rows: list[dict] = []
+
+    # --- ROUTINE insiders: a fixed home firm + fixed calendar month, every year.
+    # These establish the >=3-consecutive-year same-month pattern and must be
+    # classified OUT; their buys never carry a premium in EITHER mode.
+    years = sorted({d.year for d in periods})
+    for k in range(n_routine):
+        home = firms[int(rng.integers(0, n_firms))]
+        month = int(rng.integers(1, 13))
+        owner = f"ROUTINE_{k:03d}"
+        for y in years:
+            # place the routine buy on a period in (y, month) if the sample covers
+            # it; the transaction_date is the calendar date, filed ~ same day.
+            day = pd.Timestamp(year=y, month=month, day=15)
+            if periods[0] <= day <= periods[-1]:
+                purchase_rows.append({
+                    "filed_date": day,
+                    "owner_name": owner,
+                    "role": "officer",
+                    "shares": float(rng.integers(500, 5000)),
+                    "value": np.nan,
+                    "transaction_date": day,
+                    "ticker": home,
+                })
+
+    # --- OPPORTUNISTIC clusters: on scattered event periods, several DISTINCT
+    # opportunistic insiders buy the SAME firm. In the planted world that firm
+    # earns the premium the NEXT period; in the null world it does not.
+    opp_pool = [f"OPP_{j:04d}" for j in range(n_opportunistic * 8)]
+    # SEVERAL cluster events per period on distinct firms (keeps every rebalance's
+    # long quintile populated by genuinely-clustered names, so per-seed variance is
+    # low and the gate's known answer is clean). Skip the last period so a forward
+    # premium always has a landing period.
+    n_clusters_per_period = max(2, n_firms // 20)
+    for t in range(n_periods - 1):
+        chosen = rng.choice(n_firms, size=n_clusters_per_period, replace=False)
+        for firm_idx in chosen:
+            firm_idx = int(firm_idx)
+            firm = firms[firm_idx]
+            n_buyers = int(rng.integers(3, 7))  # a CLUSTER: several distinct insiders
+            buyers = rng.choice(opp_pool, size=n_buyers, replace=False)
+            d = periods[t]
+            for b in buyers:
+                # jitter the filed date a few days around the period end (still
+                # <= t at the next rebalance) so distinct-owner counting is
+                # exercised.
+                jitter = int(rng.integers(0, 20))
+                fd = d - pd.Timedelta(days=jitter)
+                purchase_rows.append({
+                    "filed_date": fd,
+                    "owner_name": str(b),
+                    "role": "director",
+                    "shares": float(rng.integers(1000, 10000)),
+                    "value": np.nan,
+                    "transaction_date": fd,
+                    "ticker": firm,
+                })
+            if is_planted:
+                # planted: the cluster precedes positive forward idiosyncratic
+                # returns on THAT firm while the buys stay inside the signal's
+                # trailing window. The signal flags the firm for ~window_days after
+                # the cluster, so the book holds it across those rebalances; plant
+                # the premium on exactly those forward returns (t+1 .. t+hold) so
+                # the HELD position earns it — alignment, not extra magnitude.
+                # ``hold`` ≈ window in periods.
+                hold = max(1, round(window_days / 30))
+                for h in range(1, hold + 1):
+                    if t + h < n_periods:
+                        rets[t + h, firm_idx] += cluster_premium
+
+    price = pd.DataFrame(
+        100.0 * np.exp(np.cumsum(rets, axis=0)), index=periods, columns=firms)
+    purchases = (pd.DataFrame(purchase_rows)
+                 .set_index("filed_date").sort_index())
+    purchases.index.name = "filed_date"
+    price.attrs["purchases"] = purchases
+    price.attrs["window_days"] = int(window_days)
+    price.attrs["mode"] = mode
+    price.attrs["betas"] = pd.Series(betas, index=firms)
+    return price
+
+
 def inject_delisting_returns(
     prices: pd.DataFrame,
     delist_return: float,

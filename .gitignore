@@ -24,6 +24,10 @@ results/results/
 
 # Ad-hoc exploration dumps (raw API responses, source samples) — never committed
 scratch/
+# Adversarial-review / refutation probes (the H1 FF factor CSV the harness reads
+# lives in the PARENT folder's scratch_refute via ../../, NOT here, so ignoring the
+# repo-local one is safe and keeps review probes out of commits)
+scratch_refute/
 
 # Machine-local Claude Code settings
 .claude/settings.local.json

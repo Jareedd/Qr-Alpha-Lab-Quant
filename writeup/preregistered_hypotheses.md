@@ -507,9 +507,21 @@ Template:
   Both are write-up sections; neither is hidden.
 
 ### H10: Opportunistic insider cluster-buying (Form 4) earns positive forward returns — the first EDGAR alternative-data candidate
-- Status: **PROPOSED (draft 2026-06-16) — DRAFT ONLY, not run.** Running spends a
-  trial and needs explicit owner sign-off, a Stage-1 data audit (Form 4 coverage
-  + the price-side survivorship bound below), and the machinery gate. Originated
+- Status: **PROPOSED — config FROZEN 2026-06-25 (Stage-2 freeze block below).
+  POWER-BLOCKED 2026-06-25: the pre-spend POWER GATE ABORTS on free data, so trial
+  #13 was NOT run (N stays 12; see research_log 2026-06-25 row).** Full-universe
+  power (computed via `BulkInsiderSource`): median 24 cluster-eligible firms/month →
+  top-DECILE long basket ≈2 names, below the ≥5 floor; n_obs 197 passes. The
+  registered top-decile book is underpowered on the large-cap survivorship-safe
+  universe; clearing the floor by widening the (frozen) quantile would be forbidden
+  salvage. A broader-basket design (long ALL cluster names vs EW) would be a NEW
+  pre-registration, not a rescue of this one. First word stays PROPOSED for registry
+  bookkeeping, but the in-harness POWER GATE is the hard backstop — a naive re-run
+  self-aborts without spending N. (Originally: first word PROPOSED so the registry
+  gate authorizes exactly one run; it flips to RUN the moment trial #13 is logged.) Running spends a trial and needs explicit owner sign-off, a Stage-1 data
+  audit (Form 4 coverage + the price-side survivorship bound below) — now enforced
+  in-harness by the POWER GATE, which aborts WITHOUT spending N if the realized
+  cross-section is too thin — and the machinery gate. Originated
   from the post-#11 EDGAR alternative-data ideation — the first candidate to clear
   all five free-data screens since the price/crypto funnel went dry
   (`writeup/edge_candidates_2026-06-15.md` screened only price/crypto and missed
@@ -587,6 +599,102 @@ Template:
   alternative-data anomaly, tested with the same discipline, does not clear the bar
   on free data" — citable next to the carry and CEF trials.
 
+#### H10 — STAGE-2 FROZEN CONFIG (2026-06-25, before any run; edits after this line are a NEW registration)
+
+Every knob below is frozen to a SINGLE value (no ranges, no post-hoc scans — each
+scan would be +1 trial). The harness `scripts/run_h10_trial.py` executes exactly
+this; `tests/test_run_h10_trial.py` pins it. The run is **trial #13** → the DSR
+uses **N = 13**.
+
+- **Universe:** PIT S&P 500 membership at each rebalance date (the survivorship-safe
+  `SurvivorshipSafeSECSource.universe()` — same source that ran trial #12). NO
+  sector exclusion (insider buying has no CoGS pathology); sector-neutrality is
+  handled in the SIGNAL, below. Rationale + honest caveat: the documented edge
+  concentrates in SMALL-caps; testing on the large-cap survivorship-safe universe is
+  the conservative-on-price-survivorship choice but is the POWER risk — the power
+  gate adjudicates whether it is even testable here (it may legitimately ABORT, no N
+  spent, logged as a free-data-limitation finding).
+- **Rebalance grid:** MONTHLY, month-end as-of dates over the source's
+  `start`..`end`. Monthly (not quarterly) maximizes n_obs → power; the 90d signal
+  window overlaps across months but the LABEL is non-overlapping 1-month forward
+  returns, so NW lags=1 is the correct overlap correction.
+- **Signal (per date t × name):** trailing **W = 90 calendar days** count of
+  **DISTINCT OPPORTUNISTIC open-market BUYERS** (Form 4 code P / acquired A,
+  `filed_date ≤ t` and `> t−90d`), **NET of distinct opportunistic open-market
+  SELLERS** (code S / disposed D, same window/PIT): `net = n_opp_buyers −
+  n_opp_sellers`. Opportunistic/routine is per-owner-per-ticker, PAST-ONLY (Cohen–
+  Malloy–Pomorski: routine = same calendar month ≥3 prior consecutive years; buys
+  classified on prior buy history, sells on prior sell history). The signal is then
+  **sector-demeaned** (GICS sector via `universe.sector_map`, current map — sectors
+  are near-static, same convention H1 uses) and **cross-sectionally z-scored**
+  (`_zscore_rows`). The **cluster gate k = 2**: a name is long-eligible only if
+  `n_opp_buyers ≥ 2` at t (a single buyer is not a cluster).
+- **Label / horizon:** forward **1-month** total return (t → t+1 month, the 21d end
+  of the registered 21–63d range — non-overlapping at monthly cadence). Costs **10
+  bps/side** on realized turnover. PERIODS_PER_YEAR = 12 (monthly book → sqrt(12)).
+- **Book (PRIMARY, "long-vs-EW"):** LONG = equal-weight of names in the **top
+  DECILE (quantile = 0.10)** of the sector-neutral signal that also pass the k≥2
+  cluster gate; SHORT = equal-weight of the full priceable universe (the benchmark).
+  Dollar-neutral by construction (long $1 vs short $1 of EW); beta ≈ 0 (both legs ≈
+  market beta) — this is how "beta-neutral" is satisfied without a fitted beta. The
+  active return is `mean(long-basket fwd) − mean(EW-universe fwd)`. (The registered
+  "short leg only if borrow-feasible" branch is NOT taken — no borrow feed is wired,
+  so the registered default long-vs-EW is used.)
+- **Machinery gate (law #4, in-env, FIRST after registration):** the existing
+  `insider.machinery_gate` — planted-opportunistic world recovered, null rejected,
+  paired per seed; min paired differential > 0.5. ABORT if it fails.
+- **POWER GATE (mandatory, runs on REAL data BEFORE the verdict, aborts WITHOUT
+  spending N):** the H10-specific risk is an underpowered/thin event study. Frozen
+  floors — ALL must hold or the run ABORTS (no trial, logged as
+  "underpowered/insufficient coverage on free data"): (a) **n_obs ≥ 60** monthly
+  periods with a non-empty long basket; (b) **median per-date long-basket size ≥ 5**
+  names; (c) the realized **MDE** (net annual Sharpe clearing DSR ≥ 0.95 at N=13 for
+  the realized n_obs, from `graduation_hurdle`/`expected_max_sharpe`) is **printed**
+  beside the result. A power-gate ABORT is NOT a trial — it is "we cannot test this
+  on free data," exactly the trial-#10 fee-first precedent.
+- **Registered paired controls (all computed, all reported):**
+  1. **Routine-vs-opportunistic differential** (CMP central result): the IDENTICAL
+     book built on ROUTINE cluster buys must be MARKEDLY less informative. Frozen
+     pass rule: opportunistic net SR > routine net SR **AND** routine |t_NW| < 2
+     (routine carries no significant signal). If routine predicts as well →
+     generic-buying artifact, FAIL, logged.
+  2. **Label-shuffle placebo:** forward returns shuffled cross-sectionally within
+     each date → |SR| < 0.3 (else leakage; STOP and hunt it).
+  3. **Price-side survivorship bound (paired ±scenario, the load-bearing honest
+     caveat):** long-basket names that go UNPRICEABLE mid-hold are assigned the
+     trial-#2 delisting terminal return (**−30%** down-scenario) and the book SR
+     recomputed. Report base vs down-bounded SR. **Kill rule:** if the −30% bound
+     FLIPS the verdict (base passes, bounded fails on SR > 0 / beats-baselines), the
+     long leg was a survivorship mirage → does NOT graduate, logged.
+- **Entry-lag gate (CRITERION, not a diagnostic — the trial-#11 lesson promoted):**
+  re-enter the book ONE month later (signal lagged +1 period). Frozen pass rule:
+  lag-1 net SR ≥ **0.5 × lag-0 net SR AND lag-1 net SR > 0**. A collapse (à la H6
+  1.11→0.10) means microstructure/under-reaction that vanishes on implementable
+  entry → does NOT graduate, logged like #11.
+- **PBO (CSCV):** over the honestly-available 4-config family
+  {opportunistic, routine} × {lag-0, lag-1} net-return matrix (reuses the controls
+  above — NO new knobs). `pbo.cscv_pbo`; require **PBO ≤ 0.5**. If the family cannot
+  be assembled (any leg empty) the verdict is BLOCKED (never grade on a degenerate
+  matrix — the B5 rule from H1).
+- **Success criteria (graduate iff ALL hold on the OPPORTUNISTIC long-vs-EW arm):**
+  (1) forward-return IC right-signed with **t_NW ≥ +2**; (2) **net SR > 0** and
+  **> both** baselines (EW long-only, 12-1 momentum VW); (3) **DSR ≥ 0.95** at
+  N=13; (4) **PBO ≤ 0.5** on the 4-config family; (5) **entry-lag gate** passes;
+  (6) **routine-vs-opportunistic differential** right-signed and material;
+  (7) **price-survivorship −30% bound does not flip** the sign. Any one failing →
+  does NOT graduate; the row is logged whatever it says, N becomes 13.
+- **MDE (stated before the run):** computed in-harness from the realized n_obs
+  (`expected_max_sharpe` at N=13) and printed beside the result; given a sparse
+  large-cap cluster-buy cross-section the hurdle is expected to be HIGH — the power
+  gate (n_obs ≥ 60, basket ≥ 5) is the front-line check that the realized design can
+  even clear it.
+- **Adjudication order (no trial spent until the DATA GATE passes):** registration
+  gate (PROPOSED) → machinery gate → DATA GATE (survivorship-safe source required)
+  → assemble real panels → POWER GATE (abort-without-N if thin) → opportunistic arm
+  + routine arm + lag-1 arms → controls (shuffle, survivorship bound) → PBO/MDE →
+  7-gate verdict. Does NOT auto-bump N, does NOT auto-log (the row is added by hand
+  after sign-off, same as trial #12).
+
 ### H11: 13F institutional-ownership change (crowding) is cross-sectionally informative — secondary EDGAR candidate, WEAK prior
 - Status: **PROPOSED (draft 2026-06-16) — DRAFT ONLY, not run.** The weaker sibling
   of H10; registered for completeness of the EDGAR alt-data sweep.
@@ -610,6 +718,83 @@ Template:
 - Success / kill / failure: SAME bar as H10, no relaxation. Given the weak prior,
   the expected and most-citable outcome is a clean null — "free 13F crowding,
   lagged honestly, carries no tradable cross-sectional edge."
+
+### H12: Broader-basket opportunistic insider cluster-buying — long ALL cluster names vs EW (the POWERED redesign of H10 after its top-decile book power-aborted)
+- Status: **RUN (trial #13, 2026-06-25) — does NOT graduate (clean NULL).** Opportunistic
+  long-all-cluster arm net SR −0.131 (t_NW −0.58, DSR 0.013); ALL 7 gates fail; the
+  opportunistic arm is WORSE than routine (no CMP premium). Machinery gate AND power
+  gate both PASSED (n_obs 197, median basket 23, MDE 0.42) → genuine economic absence,
+  not underpowering. N=13. See research_log 2026-06-25 trial-#13 row. (Was: PROPOSED —
+  config FROZEN 2026-06-25, awaiting owner sign-off; first word PROPOSED so the
+  registry authorized exactly one run; it flips to RUN now that the trial is logged.)
+- **WHY THIS IS NOT SALVAGE (load-bearing integrity statement, read first).** H10's
+  frozen TOP-DECILE book POWER-ABORTED pre-spend — it produced NO result and spent
+  NO trial (research_log 2026-06-25; `results/h10_power_bulk.json`). The full-universe
+  power probe computed ONLY Form 4 buy-COUNTS; **NO forward returns were ever touched.**
+  The single design change here (long ALL ~24 cluster names instead of the top decile
+  of ~2) is dictated by buy-DENSITY — a POWER requirement — not by any realized P&L.
+  This is the trial-#4 discipline applied honestly: a redesign motivated by power is a
+  FRESH pre-registration, run once, logged whatever it says — not a relaxation of a
+  failed result's criteria (H10 had no result to relax). Criteria below are frozen
+  anew at the SAME bar as H10, zero relaxation.
+- Economic prior: identical to H10 (Cohen–Malloy–Pomorski 2012 opportunistic
+  insiders; off-routine cluster BUYS carry private information), expressed as a broad
+  equal-weight tilt toward EVERY firm with an active opportunistic buy-cluster rather
+  than the (too-thin, ~2-name) extreme decile. Same weak-to-moderate, published →
+  decay counter-prior as H10.
+- Data: **SEC BULK insider data set via `BulkInsiderSource`** (cross-checked
+  byte-identical to the raw-XML crawl on the recent window, and COMPLETE where the
+  crawl is not — `InsiderSource` is recent-only/incomplete for prolific filers,
+  verified 2026-06-25, so the crawl must NOT be used). Prices =
+  `SurvivorshipSafeSECSource` (Tiingo, delisting-inclusive). Universe = PIT S&P 500.
+- Point-in-time safety: identical to H10 — signal keyed on Form 4 FILING date
+  (filed_date ≤ t), opportunistic/routine label past-only (same calendar month ≥3
+  prior consecutive years = routine), forward label strictly t→t+1.
+- **Exact config (FROZEN, single values — no scans):**
+  - Universe: PIT S&P 500; monthly month-end rebalance over the source start..end.
+  - Cluster gate: a name is LONG-eligible at t iff it has **≥ 2 distinct OPPORTUNISTIC
+    open-market buyers** (Form 4 code P / acquired A) with `filed_date ∈ (t−90d, t]`,
+    past-only CMP classification. (NO top-decile selection — ALL eligible are longed.)
+  - Book (PRIMARY, long-vs-EW): **LONG equal-weight ALL eligible names; SHORT
+    equal-weight the full priceable universe.** Dollar-neutral, β≈0. Forward
+    **1-month** total return, **10 bps/side**, PERIODS_PER_YEAR=12. (Implementation:
+    `insider.long_vs_ew_weights` with quantile = **1.0** — the full eligible set.)
+- Machinery gate (law #4, in-env, FIRST): the existing `insider.machinery_gate`
+  (planted-opportunistic recovered / null rejected, paired); ABORT if it fails.
+- POWER GATE (same frozen floors as H10: n_obs ≥ 60 months, median long basket ≥ 5):
+  EXPECTED TO PASS — the probe measured median ~24 cluster-eligible firms/month over
+  197 months. Still enforced in-harness (abort-without-N if somehow thin).
+- Registered paired controls (all computed, all reported) — SAME as H10:
+  1. **Routine-vs-opportunistic differential:** the IDENTICAL long-all-cluster book
+     built on ROUTINE clusters must be materially weaker — opp net SR > routine net SR
+     AND routine |t_NW| < 2. Else generic-buying artifact → FAIL, logged.
+  2. **Label-shuffle placebo:** forward returns shuffled cross-sectionally per date →
+     |SR| < 0.3 (else leakage; STOP and hunt it).
+  3. **Price-survivorship −30% bound:** long-basket names that go unpriceable mid-hold
+     get the trial-#2 −30% terminal return; if the bound FLIPS the verdict, the long
+     leg was a survivorship mirage → does NOT graduate, logged.
+- Entry-lag gate (CRITERION): re-enter one month later; lag-1 net SR ≥ 0.5 × lag-0
+  net SR AND lag-1 net SR > 0. Collapse → microstructure, does NOT graduate (#11).
+- PBO (CSCV): 4-config {opportunistic, routine} × {lag-0, lag-1}; require ≤ 0.5;
+  BLOCKED (no grade) if the family can't be assembled (B5).
+- **Success criteria (graduate iff ALL hold on the OPPORTUNISTIC long-all-cluster
+  arm), SAME bar as H10:** (1) IC right-signed, t_NW ≥ +2; (2) net SR > 0 AND > both
+  baselines (EW long-only, 12-1 momentum); (3) DSR ≥ 0.95 at **N=13**; (4) PBO ≤ 0.5;
+  (5) entry-lag gate passes; (6) routine differential right-signed and material;
+  (7) −30% survivorship bound does not flip. Any one failing → does NOT graduate; the
+  row is logged whatever it says, N becomes 13.
+- **MDE (stated before the run):** from the power probe, n_obs ≈ 197 monthly periods →
+  MDE @ N=13 ≈ **0.42** net annual SR. This LOW hurdle (a long 15-yr monthly sample)
+  is the redesign's whole advantage over H10's thin decile book — H12 is genuinely
+  powered to clear DSR if a real edge exists.
+- Kill criteria: machinery gate fails → ABORT; power gate fails → ABORT (no N);
+  routine predicts as well → generic-buying artifact, logged; entry-lag collapse →
+  microstructure, logged; survivorship bound flips → mirage, logged. **NO post-hoc
+  W/k/horizon/basket-width scans — each is a NEW +1 trial.**
+- Failure interpretation: a null is "the most-cited free insider-cluster anomaly,
+  tested BROADLY (not just the extreme tail) and honestly on free survivorship-safe
+  data, carries no tradable cross-sectional edge net of costs" — citable beside the
+  carry and CEF trials.
 
 ---
 

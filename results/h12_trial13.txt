@@ -1,0 +1,40 @@
+# H12 trial #13 — graded run output (2026-06-25)
+# Command: python scripts/run_h12_trial.py --hypothesis H12 --n-trials 13
+# Signal: SEC bulk Form 4 (BulkInsiderSource); Prices: Tiingo (SurvivorshipSafeSECSource).
+# Result: clean NULL — H12 does NOT graduate. N=13. (See research_log 2026-06-25 trial-#13 row.)
+# Reproducible from the registered command + the committed harness; numbers are
+# deterministic given the cached bulk ZIPs + Tiingo EOD cache (data_cache/, gitignored).
+
+[registration] H12 verified PROPOSED.
+[gate] synthetic insider world: planted-opportunistic must beat null (paired)...
+  seed 7: planted SR +8.01 | null SR +0.12
+  seed 11: planted SR +7.85 | null SR -0.74
+  seed 23: planted SR +8.33 | null SR -0.36
+[gate] PASS (min paired differential 7.88)
+[universe] 812 PIT S&P 500 members (NO sector exclusion; sector-neutrality is in the signal).
+[panels] CIK collision: 0001754301 maps to both FOX and FOXA; keeping FOX.
+[panels] CIK collision: 0001652044 maps to both GOOG and GOOGL; keeping GOOG.
+[panels] CIK collision: 0001564708 maps to both NWS and NWSA; keeping NWS.
+[panels] CIK collision: 0001336917 maps to both UA and UAA; keeping UA.
+[panels] 728/812 members resolved to a CIK; 724 distinct CIKs; 27337 buy rows, 392977 sell rows (ticker re-keyed to PIT member symbol via issuer_cik).
+[power] n_obs with non-empty long basket = 197 (floor 60); median per-date long-basket size = 23.0 (floor 5).
+[power] realized MDE @ N=13, n_obs=196: net annual SR hurdle ~0.421 (DSR>=0.95 deflation, monthly sqrt(12)).
+
+=== H12 long-ALL-cluster-vs-EW result (opportunistic insider clusters) ===
+         OPPORTUNISTIC: net SR -0.131  t_NW -0.58  DSR 0.013  turnover 4.36/yr  n_obs 196  median basket 23.0
+               ROUTINE: net SR -0.062  t_NW -0.25  DSR 0.026  turnover 1.61/yr  n_obs 196  median basket 2.0
+    OPPORTUNISTIC-lag1: net SR -0.146  t_NW -0.63  DSR 0.011  turnover 4.37/yr  n_obs 196  median basket 23.0
+          ROUTINE-lag1: net SR -0.172  t_NW -0.69  DSR 0.008  turnover 1.61/yr  n_obs 196  median basket 2.0
+  baselines: EW SR +1.073 | 12-1 mom SR -0.078
+  controls: label-shuffle placebo SR -0.330 (|SR|<0.3) | survivorship -30% bounded SR -0.262 (base -0.131)
+  PBO 1.000  (n_configs 4, n_obs 196, splits 6)
+
+=== PRE-REGISTERED VERDICT (OPPORTUNISTIC arm; 7-gate conjunction) ===
+  1. t_NW >= +2 .......... -0.58  -> FAIL
+  2. net SR>0 & > baselin. -0.131 vs EW +1.073, mom -0.078  -> FAIL
+  3. DSR >= 0.95 ......... 0.013  -> FAIL
+  4. PBO <= 0.5 (4-cfg) .. 1.000  -> FAIL
+  5. entry-lag gate ...... lag1 SR -0.146 (>= 0.5*-0.131 & >0)  -> FAIL
+  6. routine differential. opp SR -0.131 > routine SR -0.062 & routine |t_NW| -0.25 < 2  -> FAIL
+  7. -30% bound no flip .. bounded SR -0.262 still beats baselines  -> FAIL
+  >>> H12 does NOT graduate (log the row by hand; N becomes 13).

@@ -1,0 +1,2558 @@
+{
+  "meta": {
+    "audit": "Stage-1 cash-and-carry feasibility (NOT a graded trial)",
+    "data_source": "Binance public dumps: spot + futures/um, daily 1d",
+    "start": "2019-09-01",
+    "end": "2026-06-01",
+    "is_synthetic": false,
+    "n_candidates": 96,
+    "n_usable": 93,
+    "n_skipped_no_spot_or_perp": 3,
+    "skip_reasons": {
+      "no_spot_pair": 3
+    },
+    "n_errored": 0,
+    "errored": {},
+    "universe_size": 60,
+    "hurdle_mult": 3.0,
+    "rolling_window_days": 3,
+    "convergence_horizon_days": 1,
+    "priced_disqualify_threshold": 0.8,
+    "cost_params_bps": {
+      "major": {
+        "roundtrip_bps": 5.0,
+        "rebalance_bps": 1.25
+      },
+      "mid": {
+        "roundtrip_bps": 20.0,
+        "rebalance_bps": 5.0
+      },
+      "tail": {
+        "roundtrip_bps": 45.0,
+        "rebalance_bps": 11.25
+      }
+    }
+  },
+  "limitations": [
+    "DAILY resolution: intraday basis convergence and the exact 8h funding timing are not modeled; gross carry uses daily close-to-close.",
+    "SINGLE VENUE (Binance only): no cross-venue basis ('condition B') and no borrow/locate constraints on the spot leg.",
+    "SLIPPAGE / COSTS ASSUMED, NOT MEASURED: we have no order books; round-trip and rebalance bps are labeled per-bucket assumptions.",
+    "PERP->SPOT mapping strips 1000x scale on meme perps; price SCALE cancels in returns but a wrong pair mapping would corrupt a symbol -- mappings are logged per symbol (spot_symbol).",
+    "FUNDING-GATED variant holds on day t when its trailing-3d funding clears the hurdle; no intraday entry timing is claimed."
+  ],
+  "buckets": {
+    "major": {
+      "bucket": "major",
+      "n_symbols": 5,
+      "symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "XRPUSDT",
+        "DOGEUSDT"
+      ],
+      "always_on_ann_return": {
+        "mean": 0.10135726309261466,
+        "median": 0.12856579830165885,
+        "n": 5
+      },
+      "always_on_sharpe": {
+        "mean": 4.754064512083371,
+        "median": 4.637530188318432,
+        "n": 5
+      },
+      "gated_ann_return": {
+        "mean": 0.09036702884362618,
+        "median": 0.09352037935499545,
+        "n": 5
+      },
+      "gated_sharpe": {
+        "mean": 4.768408540823267,
+        "median": 4.276254552360705,
+        "n": 5
+      },
+      "hurdle_availability": {
+        "mean": 0.160464510777922,
+        "median": 0.15302325581395348,
+        "n": 5
+      },
+      "convergence_frac_neutralized": {
+        "mean": -0.056727165675485566,
+        "median": -0.033643400047652615,
+        "n": 5
+      },
+      "kill_criteria": {
+        "k1_hurdle_availability_pass": true,
+        "k2_not_priced_pass": true,
+        "k2_priced": false,
+        "k3_recent_regime_pass": true
+      },
+      "always_on_by_year": {
+        "2020": {
+          "mean": 0.13074556043952548,
+          "median": 0.16428001562903563,
+          "n": 5
+        },
+        "2021": {
+          "mean": 0.3644808651140309,
+          "median": 0.372865068176532,
+          "n": 5
+        },
+        "2022": {
+          "mean": -0.09048409483753907,
+          "median": 0.0070150449089059165,
+          "n": 5
+        },
+        "2023": {
+          "mean": 0.06912496490729893,
+          "median": 0.07988070029012935,
+          "n": 5
+        },
+        "2024": {
+          "mean": 0.13319937629975273,
+          "median": 0.1361749700013123,
+          "n": 5
+        },
+        "2025": {
+          "mean": 0.03570890282903797,
+          "median": 0.042150547935349156,
+          "n": 5
+        },
+        "2026": {
+          "mean": -0.0025514627429815044,
+          "median": 0.001342430765238848,
+          "n": 5
+        }
+      },
+      "gated_by_year": {
+        "2020": {
+          "mean": 0.12543751322733737,
+          "median": 0.1369708506016162,
+          "n": 5
+        },
+        "2021": {
+          "mean": 0.34845790643570984,
+          "median": 0.3280015654688964,
+          "n": 5
+        },
+        "2022": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 5
+        },
+        "2023": {
+          "mean": 0.0190097195060463,
+          "median": 0.020424528335402613,
+          "n": 5
+        },
+        "2024": {
+          "mean": 0.06592701417369846,
+          "median": 0.07073738284125394,
+          "n": 5
+        },
+        "2025": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 5
+        },
+        "2026": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 5
+        }
+      },
+      "verdict": "GO"
+    },
+    "mid": {
+      "bucket": "mid",
+      "n_symbols": 25,
+      "symbols": [
+        "BNBUSDT",
+        "PEPEUSDT",
+        "SUIUSDT",
+        "NEARUSDT",
+        "ADAUSDT",
+        "EOSUSDT",
+        "RNDRUSDT",
+        "MATICUSDT",
+        "AVAXUSDT",
+        "LINKUSDT",
+        "WLDUSDT",
+        "FILUSDT",
+        "BCHUSDT",
+        "XLMUSDT",
+        "DOTUSDT",
+        "AAVEUSDT",
+        "ORDIUSDT",
+        "LTCUSDT",
+        "ENJUSDT",
+        "UNIUSDT",
+        "TRXUSDT",
+        "FETUSDT",
+        "INJUSDT",
+        "WIFUSDT",
+        "SHIBUSDT"
+      ],
+      "always_on_ann_return": {
+        "mean": 0.083096130268492,
+        "median": 0.07796553587705903,
+        "n": 25
+      },
+      "always_on_sharpe": {
+        "mean": 3.2041291277693777,
+        "median": 2.3562596352126017,
+        "n": 25
+      },
+      "gated_ann_return": {
+        "mean": 0.03708794970368378,
+        "median": 0.040676092273614406,
+        "n": 25
+      },
+      "gated_sharpe": {
+        "mean": 2.569921484049017,
+        "median": 2.689328588763424,
+        "n": 25
+      },
+      "hurdle_availability": {
+        "mean": 0.032175609923218246,
+        "median": 0.033625730994152045,
+        "n": 25
+      },
+      "convergence_frac_neutralized": {
+        "mean": -7.622167776499501,
+        "median": -0.06295833966394665,
+        "n": 25
+      },
+      "kill_criteria": {
+        "k1_hurdle_availability_pass": true,
+        "k2_not_priced_pass": true,
+        "k2_priced": false,
+        "k3_recent_regime_pass": true
+      },
+      "always_on_by_year": {
+        "2020": {
+          "mean": 0.06699470573243199,
+          "median": 0.08176984723160069,
+          "n": 16
+        },
+        "2021": {
+          "mean": 0.36670317135376235,
+          "median": 0.3959528338415996,
+          "n": 17
+        },
+        "2022": {
+          "mean": -0.022123310969423764,
+          "median": -0.005868524375580283,
+          "n": 18
+        },
+        "2023": {
+          "mean": 0.039362408791421,
+          "median": 0.06465889277910081,
+          "n": 24
+        },
+        "2024": {
+          "mean": 0.12085535719965051,
+          "median": 0.1309147193068648,
+          "n": 25
+        },
+        "2025": {
+          "mean": 0.017274675628277492,
+          "median": 0.018387213452638704,
+          "n": 23
+        },
+        "2026": {
+          "mean": -0.05270856016203959,
+          "median": -0.0074754354011093765,
+          "n": 22
+        }
+      },
+      "gated_by_year": {
+        "2020": {
+          "mean": 0.04245496380059522,
+          "median": 0.03724263690660628,
+          "n": 16
+        },
+        "2021": {
+          "mean": 0.2325859829639162,
+          "median": 0.2233097817417574,
+          "n": 17
+        },
+        "2022": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 18
+        },
+        "2023": {
+          "mean": 0.0005932319065910903,
+          "median": 0.0,
+          "n": 24
+        },
+        "2024": {
+          "mean": 0.013487537830013668,
+          "median": 0.008276026520989037,
+          "n": 25
+        },
+        "2025": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 23
+        },
+        "2026": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 22
+        }
+      },
+      "verdict": "GO"
+    },
+    "tail": {
+      "bucket": "tail",
+      "n_symbols": 30,
+      "symbols": [
+        "ARBUSDT",
+        "APEUSDT",
+        "APTUSDT",
+        "ICPUSDT",
+        "CRVUSDT",
+        "BONKUSDT",
+        "DOGSUSDT",
+        "AXSUSDT",
+        "OPUSDT",
+        "SAGAUSDT",
+        "GALAUSDT",
+        "LUNCUSDT",
+        "TIAUSDT",
+        "CHZUSDT",
+        "ETCUSDT",
+        "ALGOUSDT",
+        "JTOUSDT",
+        "SEIUSDT",
+        "LDOUSDT",
+        "ZROUSDT",
+        "ATOMUSDT",
+        "NEIROUSDT",
+        "TURBOUSDT",
+        "ETHFIUSDT",
+        "FLOWUSDT",
+        "JUPUSDT",
+        "DYDXUSDT",
+        "PNUTUSDT",
+        "PORTALUSDT",
+        "BOMEUSDT"
+      ],
+      "always_on_ann_return": {
+        "mean": 0.021487092783907643,
+        "median": 0.04886828317243801,
+        "n": 30
+      },
+      "always_on_sharpe": {
+        "mean": 1.3905541355283935,
+        "median": 1.7970337154401947,
+        "n": 30
+      },
+      "gated_ann_return": {
+        "mean": 0.003687812166126179,
+        "median": 0.0,
+        "n": 30
+      },
+      "gated_sharpe": {
+        "mean": 1.376729866054621,
+        "median": 1.3986461683575104,
+        "n": 7
+      },
+      "hurdle_availability": {
+        "mean": 0.0021806524644299944,
+        "median": 0.0,
+        "n": 30
+      },
+      "convergence_frac_neutralized": {
+        "mean": -11.846186022553972,
+        "median": -0.03922933980659155,
+        "n": 30
+      },
+      "kill_criteria": {
+        "k1_hurdle_availability_pass": false,
+        "k2_not_priced_pass": true,
+        "k2_priced": false,
+        "k3_recent_regime_pass": false
+      },
+      "always_on_by_year": {
+        "2020": {
+          "mean": 0.11039752138764827,
+          "median": 0.1584636813732539,
+          "n": 5
+        },
+        "2021": {
+          "mean": 0.24992452518724273,
+          "median": 0.23759805646717586,
+          "n": 8
+        },
+        "2022": {
+          "mean": -0.07306165017628317,
+          "median": -0.05683245718660761,
+          "n": 15
+        },
+        "2023": {
+          "mean": 0.04320823182980087,
+          "median": 0.06873244701393116,
+          "n": 20
+        },
+        "2024": {
+          "mean": 0.09653542480425112,
+          "median": 0.1201319354096189,
+          "n": 30
+        },
+        "2025": {
+          "mean": -0.016903951238769414,
+          "median": 0.020830669018768545,
+          "n": 30
+        },
+        "2026": {
+          "mean": -0.06055846526719149,
+          "median": -0.010549625286682877,
+          "n": 30
+        }
+      },
+      "gated_by_year": {
+        "2020": {
+          "mean": 0.007903788717212996,
+          "median": 0.004592725264333502,
+          "n": 5
+        },
+        "2021": {
+          "mean": 0.07386683409175199,
+          "median": 0.07267313698130948,
+          "n": 8
+        },
+        "2022": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 15
+        },
+        "2023": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 20
+        },
+        "2024": {
+          "mean": 6.530801086204465e-05,
+          "median": 0.0,
+          "n": 30
+        },
+        "2025": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 30
+        },
+        "2026": {
+          "mean": 0.0,
+          "median": 0.0,
+          "n": 30
+        }
+      },
+      "verdict": "NO_GO"
+    }
+  },
+  "per_symbol": [
+    {
+      "spot_symbol": "BTCUSDT",
+      "perp_dollar_adv": 11361082013.28059,
+      "n_days_overlap": 2342,
+      "always_on": {
+        "n_days": 2342,
+        "mean_daily": 0.0003260101956626622,
+        "total": 0.7635158782419549,
+        "ann_return": 0.1189937214168717,
+        "ann_vol": 0.013793036584652706,
+        "sharpe": 8.627086623497695
+      },
+      "gated": {
+        "n_days": 2342,
+        "mean_daily": 0.00019482017167564552,
+        "total": 0.4562688420643618,
+        "ann_return": 0.07110936266161062,
+        "ann_vol": 0.012143727838287979,
+        "sharpe": 5.8556452852483885
+      },
+      "gated_n_episodes": 38,
+      "gated_frac_days_held": 0.14859094790777114,
+      "hurdle_availability": 0.1486544211875267,
+      "convergence": {
+        "median_frac_neutralized": -0.029216158988342286,
+        "ols_slope": -0.10067129159766745,
+        "ols_r2": 0.02253229337559448,
+        "n": 2341
+      },
+      "median_basis": -0.00037775949964655246,
+      "median_daily_funding": 0.00023258,
+      "perp_symbol": "BTCUSDT",
+      "rank": 0,
+      "bucket": "major"
+    },
+    {
+      "spot_symbol": "ETHUSDT",
+      "perp_dollar_adv": 9146378957.414145,
+      "n_days_overlap": 2342,
+      "always_on": {
+        "n_days": 2342,
+        "mean_daily": 0.0003855016464272736,
+        "total": 0.9028448559326747,
+        "ann_return": 0.14070810094595487,
+        "ann_vol": 0.018363598549895617,
+        "sharpe": 7.662338106751668
+      },
+      "gated": {
+        "n_days": 2342,
+        "mean_daily": 0.00026434925693744895,
+        "total": 0.6191059597475055,
+        "ann_return": 0.09648747878216887,
+        "ann_vol": 0.01623299202113579,
+        "sharpe": 5.9439121670570385
+      },
+      "gated_n_episodes": 30,
+      "gated_frac_days_held": 0.17719897523484202,
+      "hurdle_availability": 0.17727466894489535,
+      "convergence": {
+        "median_frac_neutralized": -0.01612445631345147,
+        "ols_slope": -0.09627423641199034,
+        "ols_r2": 0.019320542725003942,
+        "n": 2341
+      },
+      "median_basis": -0.000359326238691077,
+      "median_daily_funding": 0.00024979,
+      "perp_symbol": "ETHUSDT",
+      "rank": 1,
+      "bucket": "major"
+    },
+    {
+      "spot_symbol": "SOLUSDT",
+      "perp_dollar_adv": 1824377382.7082922,
+      "n_days_overlap": 2080,
+      "always_on": {
+        "n_days": 2080,
+        "mean_daily": -7.889441210849054e-05,
+        "total": -0.16410037718566034,
+        "ann_return": -0.02879646041959905,
+        "ann_vol": 0.18281189255235972,
+        "sharpe": -0.1575196231358491
+      },
+      "gated": {
+        "n_days": 2080,
+        "mean_daily": 0.00020177925872221604,
+        "total": 0.41970085814220937,
+        "ann_return": 0.07364942943360886,
+        "ann_vol": 0.017222882438780614,
+        "sharpe": 4.276254552360705
+      },
+      "gated_n_episodes": 34,
+      "gated_frac_days_held": 0.14134615384615384,
+      "hurdle_availability": 0.1410071942446043,
+      "convergence": {
+        "median_frac_neutralized": -0.12916791854735243,
+        "ols_slope": -0.8088239136365757,
+        "ols_r2": 0.3956999591468565,
+        "n": 2079
+      },
+      "median_basis": -0.0004064568575077992,
+      "median_daily_funding": 0.00020352,
+      "perp_symbol": "SOLUSDT",
+      "rank": 2,
+      "bucket": "major"
+    },
+    {
+      "spot_symbol": "XRPUSDT",
+      "perp_dollar_adv": 655108531.9367194,
+      "n_days_overlap": 2332,
+      "always_on": {
+        "n_days": 2332,
+        "mean_daily": 0.000403603164981334,
+        "total": 0.9412025807364708,
+        "ann_return": 0.1473151552181869,
+        "ann_vol": 0.04909053296906432,
+        "sharpe": 3.000887264984908
+      },
+      "gated": {
+        "n_days": 2332,
+        "mean_daily": 0.000320735599960951,
+        "total": 0.7479554191089377,
+        "ann_return": 0.1170684939857471,
+        "ann_vol": 0.03236223537081926,
+        "sharpe": 3.6174415223278027
+      },
+      "gated_n_episodes": 34,
+      "gated_frac_days_held": 0.18267581475128644,
+      "hurdle_availability": 0.18236301369863014,
+      "convergence": {
+        "median_frac_neutralized": -0.033643400047652615,
+        "ols_slope": -0.28595220485290124,
+        "ols_r2": 0.012860541077787113,
+        "n": 2331
+      },
+      "median_basis": -0.00038610038610034354,
+      "median_daily_funding": 0.00026408,
+      "perp_symbol": "XRPUSDT",
+      "rank": 3,
+      "bucket": "major"
+    },
+    {
+      "spot_symbol": "DOGEUSDT",
+      "perp_dollar_adv": 579239521.2915912,
+      "n_days_overlap": 2151,
+      "always_on": {
+        "n_days": 2151,
+        "mean_daily": 0.00035223506384016124,
+        "total": 0.7576576223201869,
+        "ann_return": 0.12856579830165885,
+        "ann_vol": 0.02772290272643525,
+        "sharpe": 4.637530188318432
+      },
+      "gated": {
+        "n_days": 2151,
+        "mean_daily": 0.00025622021741094643,
+        "total": 0.5511296876509457,
+        "ann_return": 0.09352037935499545,
+        "ann_vol": 0.02254160801196969,
+        "sharpe": 4.1487891771224
+      },
+      "gated_n_episodes": 37,
+      "gated_frac_days_held": 0.15295211529521152,
+      "hurdle_availability": 0.15302325581395348,
+      "convergence": {
+        "median_frac_neutralized": -0.07548389448062902,
+        "ols_slope": -0.12307031785054579,
+        "ols_r2": 0.01754633110084569,
+        "n": 2150
+      },
+      "median_basis": -0.00040221798483739324,
+      "median_daily_funding": 0.00025431,
+      "perp_symbol": "DOGEUSDT",
+      "rank": 4,
+      "bucket": "major"
+    },
+    {
+      "spot_symbol": "BNBUSDT",
+      "perp_dollar_adv": 343889490.1563667,
+      "n_days_overlap": 2302,
+      "always_on": {
+        "n_days": 2302,
+        "mean_daily": -1.2204235349841883e-05,
+        "total": -0.028094149775336016,
+        "ann_return": -0.004454545902692287,
+        "ann_vol": 0.027704146265018714,
+        "sharpe": -0.16078986372942028
+      },
+      "gated": {
+        "n_days": 2302,
+        "mean_daily": 8.98822339396042e-05,
+        "total": 0.20690890252896885,
+        "ann_return": 0.03280701538795553,
+        "ann_vol": 0.014045604145551732,
+        "sharpe": 2.3357496799698407
+      },
+      "gated_n_episodes": 14,
+      "gated_frac_days_held": 0.02997393570807993,
+      "hurdle_availability": 0.02998696219035202,
+      "convergence": {
+        "median_frac_neutralized": -0.169959472821778,
+        "ols_slope": -0.10837388877959603,
+        "ols_r2": 0.01896844596974101,
+        "n": 2301
+      },
+      "median_basis": -8.302987889505025e-05,
+      "median_daily_funding": 0.0,
+      "perp_symbol": "BNBUSDT",
+      "rank": 5,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "PEPEUSDT",
+      "perp_dollar_adv": 286675765.38134605,
+      "n_days_overlap": 1122,
+      "always_on": {
+        "n_days": 1122,
+        "mean_daily": 0.0002511720310401136,
+        "total": 0.28181501882700744,
+        "ann_return": 0.09167779132964146,
+        "ann_vol": 0.07151603127545794,
+        "sharpe": 1.2819194479140847
+      },
+      "gated": {
+        "n_days": 1122,
+        "mean_daily": 5.475195956321949e-05,
+        "total": 0.061431698629932266,
+        "ann_return": 0.019984465240575115,
+        "ann_vol": 0.009686916365793259,
+        "sharpe": 2.063036830909873
+      },
+      "gated_n_episodes": 3,
+      "gated_frac_days_held": 0.020499108734402853,
+      "hurdle_availability": 0.020517395182872437,
+      "convergence": {
+        "median_frac_neutralized": -100.38538253628973,
+        "ols_slope": -113.32436269673052,
+        "ols_r2": 0.00043717824144406947,
+        "n": 1121
+      },
+      "median_basis": 998.7668393782382,
+      "median_daily_funding": 0.00022533,
+      "perp_symbol": "1000PEPEUSDT",
+      "rank": 6,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "SUIUSDT",
+      "perp_dollar_adv": 212901527.68696856,
+      "n_days_overlap": 1124,
+      "always_on": {
+        "n_days": 1124,
+        "mean_daily": 0.00014101988275911934,
+        "total": 0.15850634822125015,
+        "ann_return": 0.05147225720707856,
+        "ann_vol": 0.013578758602416521,
+        "sharpe": 3.7906452801891906
+      },
+      "gated": {
+        "n_days": 1124,
+        "mean_daily": 2.1155239165212936e-05,
+        "total": 0.02377848882169934,
+        "ann_return": 0.007721662295302722,
+        "ann_vol": 0.004943752577180359,
+        "sharpe": 1.561903063463327
+      },
+      "gated_n_episodes": 2,
+      "gated_frac_days_held": 0.010676156583629894,
+      "hurdle_availability": 0.01068566340160285,
+      "convergence": {
+        "median_frac_neutralized": -0.13303629170766945,
+        "ols_slope": -0.1737501226694325,
+        "ols_r2": 0.036263861228666316,
+        "n": 1123
+      },
+      "median_basis": -0.0004627766599597523,
+      "median_daily_funding": 0.00015632,
+      "perp_symbol": "SUIUSDT",
+      "rank": 7,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "NEARUSDT",
+      "perp_dollar_adv": 174950258.03513333,
+      "n_days_overlap": 2049,
+      "always_on": {
+        "n_days": 2049,
+        "mean_daily": 0.00028275243413588246,
+        "total": 0.5793597375444232,
+        "ann_return": 0.1032046384595971,
+        "ann_vol": 0.024216836353508242,
+        "sharpe": 4.261689551560521
+      },
+      "gated": {
+        "n_days": 2049,
+        "mean_daily": 0.00011144134869483399,
+        "total": 0.22834332347571484,
+        "ann_return": 0.040676092273614406,
+        "ann_vol": 0.014768754800798848,
+        "sharpe": 2.7541991740166347
+      },
+      "gated_n_episodes": 10,
+      "gated_frac_days_held": 0.03269887750122011,
+      "hurdle_availability": 0.03261927945472249,
+      "convergence": {
+        "median_frac_neutralized": -0.018125324327342384,
+        "ols_slope": -0.11852682068269585,
+        "ols_r2": 0.014150297939202083,
+        "n": 2048
+      },
+      "median_basis": -0.00045203511270710677,
+      "median_daily_funding": 0.00027149,
+      "perp_symbol": "NEARUSDT",
+      "rank": 8,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "ADAUSDT",
+      "perp_dollar_adv": 174525365.74209335,
+      "n_days_overlap": 2312,
+      "always_on": {
+        "n_days": 2312,
+        "mean_daily": 0.0003775634759454335,
+        "total": 0.8729267563858423,
+        "ann_return": 0.1378106687200832,
+        "ann_vol": 0.022254427512139165,
+        "sharpe": 6.192505677574108
+      },
+      "gated": {
+        "n_days": 2312,
+        "mean_daily": 0.0001387272281805991,
+        "total": 0.3207373515535451,
+        "ann_return": 0.05063543828591867,
+        "ann_vol": 0.015893222086993588,
+        "sharpe": 3.1859768905737993
+      },
+      "gated_n_episodes": 16,
+      "gated_frac_days_held": 0.042820069204152246,
+      "hurdle_availability": 0.04261730520878175,
+      "convergence": {
+        "median_frac_neutralized": -0.04832000897836228,
+        "ols_slope": -0.08495697102401359,
+        "ols_r2": 0.011656307017739342,
+        "n": 2311
+      },
+      "median_basis": -0.00032499187520308416,
+      "median_daily_funding": 0.00029088,
+      "perp_symbol": "ADAUSDT",
+      "rank": 9,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "EOSUSDT",
+      "perp_dollar_adv": 164501193.0352711,
+      "n_days_overlap": 1960,
+      "always_on": {
+        "n_days": 1960,
+        "mean_daily": 0.00045701050968855546,
+        "total": 0.8957405989895687,
+        "ann_return": 0.16680883603632274,
+        "ann_vol": 0.027007069344901113,
+        "sharpe": 6.176487863456978
+      },
+      "gated": {
+        "n_days": 1960,
+        "mean_daily": 0.00014727051650767926,
+        "total": 0.28865021235505134,
+        "ann_return": 0.05375373852530293,
+        "ann_vol": 0.014374058675129666,
+        "sharpe": 3.7396353904070887
+      },
+      "gated_n_episodes": 14,
+      "gated_frac_days_held": 0.049489795918367344,
+      "hurdle_availability": 0.04155955441302485,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.06781456644775317,
+        "ols_r2": 0.002370411056615618,
+        "n": 1959
+      },
+      "median_basis": 0.0,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "EOSUSDT",
+      "rank": 10,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "RNDRUSDT",
+      "perp_dollar_adv": 130355153.20379433,
+      "n_days_overlap": 535,
+      "always_on": {
+        "n_days": 535,
+        "mean_daily": 0.000434282199538861,
+        "total": 0.23234097675329063,
+        "ann_return": 0.15851300283168426,
+        "ann_vol": 0.06838207680052258,
+        "sharpe": 2.318048972014738
+      },
+      "gated": {
+        "n_days": 535,
+        "mean_daily": 3.7353728577956375e-05,
+        "total": 0.01998424478920666,
+        "ann_return": 0.013634110930954077,
+        "ann_vol": 0.007908175667867159,
+        "sharpe": 1.7240526138478163
+      },
+      "gated_n_episodes": 2,
+      "gated_frac_days_held": 0.020560747663551402,
+      "hurdle_availability": 0.01971326164874552,
+      "convergence": {
+        "median_frac_neutralized": -0.10556973693805456,
+        "ols_slope": -0.11219528310007952,
+        "ols_r2": 0.0001681433183131631,
+        "n": 534
+      },
+      "median_basis": -0.0002231722815955056,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "RNDRUSDT",
+      "rank": 11,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "MATICUSDT",
+      "perp_dollar_adv": 128135920.58195555,
+      "n_days_overlap": 1419,
+      "always_on": {
+        "n_days": 1419,
+        "mean_daily": 0.0004291759860452255,
+        "total": 0.609000724198175,
+        "ann_return": 0.1566492349065073,
+        "ann_vol": 0.039005371575987956,
+        "sharpe": 4.016093901357471
+      },
+      "gated": {
+        "n_days": 1419,
+        "mean_daily": 0.00019763600764025716,
+        "total": 0.2804454948415249,
+        "ann_return": 0.07213714278869386,
+        "ann_vol": 0.029647365114364155,
+        "sharpe": 2.433172138921155
+      },
+      "gated_n_episodes": 14,
+      "gated_frac_days_held": 0.06201550387596899,
+      "hurdle_availability": 0.043010752688172046,
+      "convergence": {
+        "median_frac_neutralized": -0.03021886297024442,
+        "ols_slope": 0.05410034464624701,
+        "ols_r2": 0.0008709281995898932,
+        "n": 1418
+      },
+      "median_basis": -0.00027584362381021443,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "MATICUSDT",
+      "rank": 12,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "AVAXUSDT",
+      "perp_dollar_adv": 126539001.4698778,
+      "n_days_overlap": 2076,
+      "always_on": {
+        "n_days": 2076,
+        "mean_daily": 0.00018446128727123915,
+        "total": 0.3829416323750925,
+        "ann_return": 0.06732836985400228,
+        "ann_vol": 0.029719437360388394,
+        "sharpe": 2.2654658309157973
+      },
+      "gated": {
+        "n_days": 2076,
+        "mean_daily": 0.00011989307296941747,
+        "total": 0.24889801948451065,
+        "ann_return": 0.043760971633837374,
+        "ann_vol": 0.01907396017339941,
+        "sharpe": 2.294278232522815
+      },
+      "gated_n_episodes": 11,
+      "gated_frac_days_held": 0.033236994219653176,
+      "hurdle_availability": 0.033236994219653176,
+      "convergence": {
+        "median_frac_neutralized": -0.14451970800679736,
+        "ols_slope": -0.11861292990668304,
+        "ols_r2": 0.01669256862025703,
+        "n": 2075
+      },
+      "median_basis": -0.00035765379113024187,
+      "median_daily_funding": 0.000207505,
+      "perp_symbol": "AVAXUSDT",
+      "rank": 13,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "LINKUSDT",
+      "perp_dollar_adv": 115631071.75063579,
+      "n_days_overlap": 2326,
+      "always_on": {
+        "n_days": 2326,
+        "mean_daily": 0.0003806605249972104,
+        "total": 0.8854163811435114,
+        "ann_return": 0.1389410916239818,
+        "ann_vol": 0.022999582791310622,
+        "sharpe": 6.0410266083815465
+      },
+      "gated": {
+        "n_days": 2326,
+        "mean_daily": 0.00013510545461508397,
+        "total": 0.3142552874346853,
+        "ann_return": 0.04931349093450565,
+        "ann_vol": 0.015651839256944012,
+        "sharpe": 3.1506515065076126
+      },
+      "gated_n_episodes": 16,
+      "gated_frac_days_held": 0.04213241616509028,
+      "hurdle_availability": 0.042150537634408604,
+      "convergence": {
+        "median_frac_neutralized": -0.030805418304297377,
+        "ols_slope": -0.08097950611457691,
+        "ols_r2": 0.00975604915739714,
+        "n": 2325
+      },
+      "median_basis": -0.00027422303473492813,
+      "median_daily_funding": 0.00028564,
+      "perp_symbol": "LINKUSDT",
+      "rank": 14,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "WLDUSDT",
+      "perp_dollar_adv": 111497731.88715002,
+      "n_days_overlap": 1042,
+      "always_on": {
+        "n_days": 1042,
+        "mean_daily": 0.00011688903553439034,
+        "total": 0.12179837502683474,
+        "ann_return": 0.04266449797005248,
+        "ann_vol": 0.018106874697704063,
+        "sharpe": 2.3562596352126017
+      },
+      "gated": {
+        "n_days": 1042,
+        "mean_daily": 2.953236989637222e-05,
+        "total": 0.030772729432019853,
+        "ann_return": 0.01077931501217586,
+        "ann_vol": 0.005560347469935637,
+        "sharpe": 1.9386045693113194
+      },
+      "gated_n_episodes": 2,
+      "gated_frac_days_held": 0.012476007677543186,
+      "hurdle_availability": 0.012487992315081652,
+      "convergence": {
+        "median_frac_neutralized": -0.11435509237225988,
+        "ols_slope": -0.12535053947832508,
+        "ols_r2": 0.01349135649420119,
+        "n": 1041
+      },
+      "median_basis": -0.00024213075060530023,
+      "median_daily_funding": 0.00021128,
+      "perp_symbol": "WLDUSDT",
+      "rank": 15,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "FILUSDT",
+      "perp_dollar_adv": 111227541.42694111,
+      "n_days_overlap": 2048,
+      "always_on": {
+        "n_days": 2048,
+        "mean_daily": 1.585072304700266e-05,
+        "total": 0.03246228080026145,
+        "ann_return": 0.005785513912155971,
+        "ann_vol": 0.16766817712717957,
+        "sharpe": 0.034505736337597
+      },
+      "gated": {
+        "n_days": 2048,
+        "mean_daily": 0.00011505102111453249,
+        "total": 0.23562449124256254,
+        "ann_return": 0.04199362270680436,
+        "ann_vol": 0.01553432685356754,
+        "sharpe": 2.7032792024174706
+      },
+      "gated_n_episodes": 12,
+      "gated_frac_days_held": 0.03369140625,
+      "hurdle_availability": 0.033625730994152045,
+      "convergence": {
+        "median_frac_neutralized": -0.017048647007467062,
+        "ols_slope": -1.4171807236661458,
+        "ols_r2": 0.09072651233008056,
+        "n": 2047
+      },
+      "median_basis": -0.0003176739435634543,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "FILUSDT",
+      "rank": 16,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "BCHUSDT",
+      "perp_dollar_adv": 90004020.60807855,
+      "n_days_overlap": 2342,
+      "always_on": {
+        "n_days": 2342,
+        "mean_daily": 0.00014195338629363263,
+        "total": 0.3324548306996876,
+        "ann_return": 0.05181298599717591,
+        "ann_vol": 0.03035464626247362,
+        "sharpe": 1.7069210936986101
+      },
+      "gated": {
+        "n_days": 2342,
+        "mean_daily": 0.00010199152642518326,
+        "total": 0.2388641548877792,
+        "ann_return": 0.03722690714519189,
+        "ann_vol": 0.01215753364590108,
+        "sharpe": 3.0620443446391743
+      },
+      "gated_n_episodes": 16,
+      "gated_frac_days_held": 0.036720751494449186,
+      "hurdle_availability": 0.03673643741990602,
+      "convergence": {
+        "median_frac_neutralized": -0.05103267127975644,
+        "ols_slope": -0.23375310758943704,
+        "ols_r2": 0.032126938774392766,
+        "n": 2341
+      },
+      "median_basis": -0.00044921387571751143,
+      "median_daily_funding": 0.00017174,
+      "perp_symbol": "BCHUSDT",
+      "rank": 17,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "XLMUSDT",
+      "perp_dollar_adv": 86849602.39141211,
+      "n_days_overlap": 2318,
+      "always_on": {
+        "n_days": 2318,
+        "mean_daily": 0.0003892529711230584,
+        "total": 0.9022883870632494,
+        "ann_return": 0.14207733445991633,
+        "ann_vol": 0.02686040513456148,
+        "sharpe": 5.289471016842719
+      },
+      "gated": {
+        "n_days": 2318,
+        "mean_daily": 0.00019424241384257353,
+        "total": 0.45025391528708547,
+        "ann_return": 0.07089848105253933,
+        "ann_vol": 0.01967545192991027,
+        "sharpe": 3.6033978434193283
+      },
+      "gated_n_episodes": 18,
+      "gated_frac_days_held": 0.05823986194995686,
+      "hurdle_availability": 0.058114507102884204,
+      "convergence": {
+        "median_frac_neutralized": -0.08422421260785855,
+        "ols_slope": -0.09474076571211068,
+        "ols_r2": 0.012126620394936505,
+        "n": 2317
+      },
+      "median_basis": -0.0003766951280763021,
+      "median_daily_funding": 0.00029072,
+      "perp_symbol": "XLMUSDT",
+      "rank": 18,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "DOTUSDT",
+      "perp_dollar_adv": 86140129.26686667,
+      "n_days_overlap": 2108,
+      "always_on": {
+        "n_days": 2108,
+        "mean_daily": 0.0002136042078823535,
+        "total": 0.4502776702160012,
+        "ann_return": 0.07796553587705903,
+        "ann_vol": 0.023464960991893647,
+        "sharpe": 3.3226365006101433
+      },
+      "gated": {
+        "n_days": 2108,
+        "mean_daily": 0.00014013421471715254,
+        "total": 0.29540292462375756,
+        "ann_return": 0.05114898837176068,
+        "ann_vol": 0.016313195618931648,
+        "sharpe": 3.135436463006775
+      },
+      "gated_n_episodes": 9,
+      "gated_frac_days_held": 0.03984819734345351,
+      "hurdle_availability": 0.04030346135609293,
+      "convergence": {
+        "median_frac_neutralized": -0.027224972888279343,
+        "ols_slope": -0.0874013038340109,
+        "ols_r2": 0.013028404477110067,
+        "n": 2107
+      },
+      "median_basis": -0.00047025628967782264,
+      "median_daily_funding": 0.00018329000000000002,
+      "perp_symbol": "DOTUSDT",
+      "rank": 19,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "AAVEUSDT",
+      "perp_dollar_adv": 83139178.21165556,
+      "n_days_overlap": 2053,
+      "always_on": {
+        "n_days": 2053,
+        "mean_daily": 0.0003988132354596253,
+        "total": 0.8187635723986108,
+        "ann_return": 0.14556683094276324,
+        "ann_vol": 0.026815658967681733,
+        "sharpe": 5.428426395122363
+      },
+      "gated": {
+        "n_days": 2053,
+        "mean_daily": 0.00017096946960448297,
+        "total": 0.35100032109800355,
+        "ann_return": 0.06240385640563628,
+        "ann_vol": 0.02018032329071689,
+        "sharpe": 3.0923120262569106
+      },
+      "gated_n_episodes": 11,
+      "gated_frac_days_held": 0.042377009254749146,
+      "hurdle_availability": 0.04239766081871345,
+      "convergence": {
+        "median_frac_neutralized": -0.07886895542415083,
+        "ols_slope": -0.0933194327774995,
+        "ols_r2": 0.010704013764738729,
+        "n": 2052
+      },
+      "median_basis": -0.00043012080964883895,
+      "median_daily_funding": 0.00028490000000000004,
+      "perp_symbol": "AAVEUSDT",
+      "rank": 20,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "ORDIUSDT",
+      "perp_dollar_adv": 73826424.60853222,
+      "n_days_overlap": 936,
+      "always_on": {
+        "n_days": 936,
+        "mean_daily": 0.00033467651892418423,
+        "total": 0.31325722171303644,
+        "ann_return": 0.12215692940732724,
+        "ann_vol": 0.01845575909852892,
+        "sharpe": 6.618905716918692
+      },
+      "gated": {
+        "n_days": 936,
+        "mean_daily": 6.0645269241323416e-05,
+        "total": 0.05676397200987872,
+        "ann_return": 0.022135523273083046,
+        "ann_vol": 0.008275520220716998,
+        "sharpe": 2.6748195500349103
+      },
+      "gated_n_episodes": 5,
+      "gated_frac_days_held": 0.027777777777777776,
+      "hurdle_availability": 0.027807486631016044,
+      "convergence": {
+        "median_frac_neutralized": -0.06295833966394665,
+        "ols_slope": -0.10235426553590016,
+        "ols_r2": 0.0077735250132699996,
+        "n": 935
+      },
+      "median_basis": -0.00038940809968839604,
+      "median_daily_funding": 0.00024789,
+      "perp_symbol": "ORDIUSDT",
+      "rank": 21,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "LTCUSDT",
+      "perp_dollar_adv": 61799282.64315655,
+      "n_days_overlap": 2329,
+      "always_on": {
+        "n_days": 2329,
+        "mean_daily": 0.0004122080144405206,
+        "total": 0.9600324656319725,
+        "ann_return": 0.15045592527079002,
+        "ann_vol": 0.01960319911715463,
+        "sharpe": 7.6750699909550475
+      },
+      "gated": {
+        "n_days": 2329,
+        "mean_daily": 0.0001301597870460493,
+        "total": 0.3031421440302488,
+        "ann_return": 0.04750832227180799,
+        "ann_vol": 0.014723319861673084,
+        "sharpe": 3.226739805842225
+      },
+      "gated_n_episodes": 14,
+      "gated_frac_days_held": 0.0395019321597252,
+      "hurdle_availability": 0.03943420488641235,
+      "convergence": {
+        "median_frac_neutralized": -0.014014893939231865,
+        "ols_slope": -0.06593040681358071,
+        "ols_r2": 0.00892769777435043,
+        "n": 2328
+      },
+      "median_basis": -0.00036251590770983036,
+      "median_daily_funding": 0.00026098,
+      "perp_symbol": "LTCUSDT",
+      "rank": 22,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "ENJUSDT",
+      "perp_dollar_adv": 60296654.63127634,
+      "n_days_overlap": 2070,
+      "always_on": {
+        "n_days": 2070,
+        "mean_daily": -5.51063395852304e-05,
+        "total": -0.11407012294142693,
+        "ann_return": -0.020113813948609095,
+        "ann_vol": 0.07960580075044606,
+        "sharpe": -0.25266769203997225
+      },
+      "gated": {
+        "n_days": 2070,
+        "mean_daily": 0.00020376829294466766,
+        "total": 0.42180036639546203,
+        "ann_return": 0.0743754269248037,
+        "ann_vol": 0.023419449889651774,
+        "sharpe": 3.175797351143912
+      },
+      "gated_n_episodes": 12,
+      "gated_frac_days_held": 0.04734299516908213,
+      "hurdle_availability": 0.04736587723537941,
+      "convergence": {
+        "median_frac_neutralized": -0.06777093273331289,
+        "ols_slope": -0.11795748618051749,
+        "ols_r2": 0.05103160143078411,
+        "n": 2069
+      },
+      "median_basis": -0.000574345883854542,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "ENJUSDT",
+      "rank": 23,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "UNIUSDT",
+      "perp_dollar_adv": 56528101.311933324,
+      "n_days_overlap": 2081,
+      "always_on": {
+        "n_days": 2081,
+        "mean_daily": 0.0003975100944414008,
+        "total": 0.827218506532555,
+        "ann_return": 0.14509118447111127,
+        "ann_vol": 0.021567474741692166,
+        "sharpe": 6.727314449597336
+      },
+      "gated": {
+        "n_days": 2081,
+        "mean_daily": 0.00011845921678265673,
+        "total": 0.24651363012470864,
+        "ann_return": 0.043237614125669704,
+        "ann_vol": 0.014901394875950495,
+        "sharpe": 2.901581663032855
+      },
+      "gated_n_episodes": 12,
+      "gated_frac_days_held": 0.03459875060067275,
+      "hurdle_availability": 0.03459875060067275,
+      "convergence": {
+        "median_frac_neutralized": -0.04662122293191057,
+        "ols_slope": -0.07510022631495111,
+        "ols_r2": 0.006553036776487442,
+        "n": 2080
+      },
+      "median_basis": -0.00036954920050500994,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "UNIUSDT",
+      "rank": 24,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "TRXUSDT",
+      "perp_dollar_adv": 55359433.97353045,
+      "n_days_overlap": 2323,
+      "always_on": {
+        "n_days": 2323,
+        "mean_daily": 0.00010189478895842398,
+        "total": 0.2367015947504189,
+        "ann_return": 0.037191597969824755,
+        "ann_vol": 0.024666662838978757,
+        "sharpe": 1.5077677192333385
+      },
+      "gated": {
+        "n_days": 2323,
+        "mean_daily": 9.233867472996843e-05,
+        "total": 0.21450274139771666,
+        "ann_return": 0.033703616276438475,
+        "ann_vol": 0.013789930292646711,
+        "sharpe": 2.444074448614904
+      },
+      "gated_n_episodes": 12,
+      "gated_frac_days_held": 0.026259147653895823,
+      "hurdle_availability": 0.02621400945423292,
+      "convergence": {
+        "median_frac_neutralized": -0.1165895902739179,
+        "ols_slope": -0.10213082479892285,
+        "ols_r2": 0.01802710950094888,
+        "n": 2322
+      },
+      "median_basis": -0.00042483927520728333,
+      "median_daily_funding": 0.00017307,
+      "perp_symbol": "TRXUSDT",
+      "rank": 25,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "FETUSDT",
+      "perp_dollar_adv": 51441495.50524001,
+      "n_days_overlap": 1230,
+      "always_on": {
+        "n_days": 1230,
+        "mean_daily": 0.00010022327580965127,
+        "total": 0.12327462924587107,
+        "ann_return": 0.03658149567052271,
+        "ann_vol": 0.022171231391782488,
+        "sharpe": 1.6499532671009522
+      },
+      "gated": {
+        "n_days": 1230,
+        "mean_daily": 3.4690670265012067e-05,
+        "total": 0.04266952442596484,
+        "ann_return": 0.012662094646729405,
+        "ann_vol": 0.006527145182027136,
+        "sharpe": 1.9399131310262867
+      },
+      "gated_n_episodes": 1,
+      "gated_frac_days_held": 0.013821138211382113,
+      "hurdle_availability": 0.013821138211382113,
+      "convergence": {
+        "median_frac_neutralized": -0.04605984447835949,
+        "ols_slope": -0.1567772111266031,
+        "ols_r2": 0.018011308673467674,
+        "n": 1229
+      },
+      "median_basis": -0.00041425020712517293,
+      "median_daily_funding": 0.000277995,
+      "perp_symbol": "FETUSDT",
+      "rank": 26,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "INJUSDT",
+      "perp_dollar_adv": 44172667.50012555,
+      "n_days_overlap": 1383,
+      "always_on": {
+        "n_days": 1383,
+        "mean_daily": -5.392095746897851e-05,
+        "total": -0.07457268417959728,
+        "ann_return": -0.019681149476177155,
+        "ann_vol": 0.024878300135834558,
+        "sharpe": -0.7910970351156967
+      },
+      "gated": {
+        "n_days": 1383,
+        "mean_daily": 1.3695589072709166e-05,
+        "total": 0.018940999687556775,
+        "ann_return": 0.004998890011538845,
+        "ann_vol": 0.003967015936242225,
+        "sharpe": 1.2601134182168339
+      },
+      "gated_n_episodes": 2,
+      "gated_frac_days_held": 0.0072306579898770785,
+      "hurdle_availability": 0.0072306579898770785,
+      "convergence": {
+        "median_frac_neutralized": -0.018702238587794257,
+        "ols_slope": -0.018121480022715936,
+        "ols_r2": 0.0005908312091814638,
+        "n": 1382
+      },
+      "median_basis": -0.0005159198225308185,
+      "median_daily_funding": 0.00013124,
+      "perp_symbol": "INJUSDT",
+      "rank": 27,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "WIFUSDT",
+      "perp_dollar_adv": 44066668.52667822,
+      "n_days_overlap": 817,
+      "always_on": {
+        "n_days": 817,
+        "mean_daily": 0.00014893631353058123,
+        "total": 0.12168096815448487,
+        "ann_return": 0.054361754438662147,
+        "ann_vol": 0.03616820879975596,
+        "sharpe": 1.503025896019184
+      },
+      "gated": {
+        "n_days": 817,
+        "mean_daily": 6.341536999584119e-05,
+        "total": 0.05181035728660225,
+        "ann_return": 0.023146610048482036,
+        "ann_vol": 0.008606835975787189,
+        "sharpe": 2.689328588763424
+      },
+      "gated_n_episodes": 2,
+      "gated_frac_days_held": 0.022031823745410038,
+      "hurdle_availability": 0.056778679026651215,
+      "convergence": {
+        "median_frac_neutralized": -0.11346653384290638,
+        "ols_slope": -0.12034561303377374,
+        "ols_r2": 0.003250398841057267,
+        "n": 816
+      },
+      "median_basis": -0.0002530387702520377,
+      "median_daily_funding": 0.00020521,
+      "perp_symbol": "WIFUSDT",
+      "rank": 28,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "SHIBUSDT",
+      "perp_dollar_adv": 43787526.5447937,
+      "n_days_overlap": 1847,
+      "always_on": {
+        "n_days": 1847,
+        "mean_daily": 0.0001028364073521045,
+        "total": 0.189938844379337,
+        "ann_return": 0.037535288683518145,
+        "ann_vol": 0.03282083116914925,
+        "sharpe": 1.1436422341065011
+      },
+      "gated": {
+        "n_days": 1847,
+        "mean_daily": 1.7959852117184937e-05,
+        "total": 0.03317184686044058,
+        "ann_return": 0.006555346022772502,
+        "ann_vol": 0.005661217936080707,
+        "sharpe": 1.1579391743591494
+      },
+      "gated_n_episodes": 8,
+      "gated_frac_days_held": 0.01136978884677856,
+      "hurdle_availability": 0.011375947995666305,
+      "convergence": {
+        "median_frac_neutralized": -88.62931890411211,
+        "ols_slope": -217.64452214258938,
+        "ols_r2": 0.04205479288011327,
+        "n": 1846
+      },
+      "median_basis": 998.7635933806147,
+      "median_daily_funding": 0.00021177000000000001,
+      "perp_symbol": "1000SHIBUSDT",
+      "rank": 29,
+      "bucket": "mid"
+    },
+    {
+      "spot_symbol": "ARBUSDT",
+      "perp_dollar_adv": 40375417.05211266,
+      "n_days_overlap": 1165,
+      "always_on": {
+        "n_days": 1165,
+        "mean_daily": 0.00025392464349485234,
+        "total": 0.29582220967150297,
+        "ann_return": 0.09268249487562111,
+        "ann_vol": 0.012194743296220677,
+        "sharpe": 7.600200563823652
+      },
+      "gated": {
+        "n_days": 1165,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.09884479075762169,
+        "ols_r2": 0.004631172381262205,
+        "n": 1164
+      },
+      "median_basis": -0.0004324017085415219,
+      "median_daily_funding": 0.000229415,
+      "perp_symbol": "ARBUSDT",
+      "rank": 30,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "APEUSDT",
+      "perp_dollar_adv": 39770780.92393777,
+      "n_days_overlap": 1536,
+      "always_on": {
+        "n_days": 1536,
+        "mean_daily": -0.00017323814986647582,
+        "total": -0.26609379819490686,
+        "ann_return": -0.06323192470126368,
+        "ann_vol": 0.024731331612340333,
+        "sharpe": -2.5567537442954538
+      },
+      "gated": {
+        "n_days": 1536,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.057524623628103067,
+        "ols_r2": 0.005764222904647731,
+        "n": 1535
+      },
+      "median_basis": -0.0006082725060827706,
+      "median_daily_funding": 7.909e-05,
+      "perp_symbol": "APEUSDT",
+      "rank": 31,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "APTUSDT",
+      "perp_dollar_adv": 39171177.36994422,
+      "n_days_overlap": 1320,
+      "always_on": {
+        "n_days": 1320,
+        "mean_daily": -4.529524913031136e-05,
+        "total": -0.05978972885201099,
+        "ann_return": -0.016532765932563646,
+        "ann_vol": 0.024057079009298318,
+        "sharpe": -0.6872308116115656
+      },
+      "gated": {
+        "n_days": 1320,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.11814004858319412,
+        "ols_slope": -0.15742551865055623,
+        "ols_r2": 0.032777646597314525,
+        "n": 1319
+      },
+      "median_basis": -0.0004850729814349002,
+      "median_daily_funding": 0.00013391,
+      "perp_symbol": "APTUSDT",
+      "rank": 32,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ICPUSDT",
+      "perp_dollar_adv": 36848921.8392,
+      "n_days_overlap": 1342,
+      "always_on": {
+        "n_days": 1342,
+        "mean_daily": 0.00013961004630650185,
+        "total": 0.18735668214332546,
+        "ann_return": 0.05095766690187317,
+        "ann_vol": 0.017670584116672897,
+        "sharpe": 2.883756788424022
+      },
+      "gated": {
+        "n_days": 1342,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.04660024339727128,
+        "ols_slope": -0.06981804356139576,
+        "ols_r2": 0.0036579384195599696,
+        "n": 1341
+      },
+      "median_basis": -0.000470809792843709,
+      "median_daily_funding": 0.00025045000000000004,
+      "perp_symbol": "ICPUSDT",
+      "rank": 33,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "CRVUSDT",
+      "perp_dollar_adv": 34237922.864954226,
+      "n_days_overlap": 2098,
+      "always_on": {
+        "n_days": 2098,
+        "mean_daily": 8.265702505024586e-05,
+        "total": 0.1734144385554158,
+        "ann_return": 0.03016981414333974,
+        "ann_vol": 0.05789917755944669,
+        "sharpe": 0.5210750033947122
+      },
+      "gated": {
+        "n_days": 2098,
+        "mean_daily": 4.023026723343494e-05,
+        "total": 0.0844031006557465,
+        "ann_return": 0.014684047540203752,
+        "ann_vol": 0.011012302454864578,
+        "sharpe": 1.3334221068108436
+      },
+      "gated_n_episodes": 5,
+      "gated_frac_days_held": 0.008102955195424213,
+      "hurdle_availability": 0.008106819265617548,
+      "convergence": {
+        "median_frac_neutralized": -0.02304113487727382,
+        "ols_slope": -0.21366974303561012,
+        "ols_r2": 0.013778477398007749,
+        "n": 2097
+      },
+      "median_basis": -0.0005178663904712013,
+      "median_daily_funding": 0.00025089999999999997,
+      "perp_symbol": "CRVUSDT",
+      "rank": 34,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "BONKUSDT",
+      "perp_dollar_adv": 32777147.332232047,
+      "n_days_overlap": 898,
+      "always_on": {
+        "n_days": 898,
+        "mean_daily": 0.0002158695864595323,
+        "total": 0.19385088864066,
+        "ann_return": 0.07879239905772929,
+        "ann_vol": 0.022893213680912513,
+        "sharpe": 3.4417360601243754
+      },
+      "gated": {
+        "n_days": 898,
+        "mean_daily": 2.181782100068307e-06,
+        "total": 0.0019592403258613398,
+        "ann_return": 0.0007963504665249321,
+        "ann_vol": 0.0012490964524543868,
+        "sharpe": 0.6375412122579961
+      },
+      "gated_n_episodes": 1,
+      "gated_frac_days_held": 0.0011135857461024498,
+      "hurdle_availability": 0.005434782608695652,
+      "convergence": {
+        "median_frac_neutralized": -223.84584264575147,
+        "ols_slope": -250.09269712259888,
+        "ols_r2": 0.03863560291919543,
+        "n": 897
+      },
+      "median_basis": 998.6575342465753,
+      "median_daily_funding": 0.00023205,
+      "perp_symbol": "1000BONKUSDT",
+      "rank": 35,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "DOGSUSDT",
+      "perp_dollar_adv": 31729041.968986575,
+      "n_days_overlap": 643,
+      "always_on": {
+        "n_days": 643,
+        "mean_daily": 9.817447059808734e-05,
+        "total": 0.06312618459457016,
+        "ann_return": 0.03583368176830188,
+        "ann_vol": 0.04687693000815422,
+        "sharpe": 0.7644204038547027
+      },
+      "gated": {
+        "n_days": 643,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.8853831384982488,
+        "ols_r2": 0.06861083875417018,
+        "n": 642
+      },
+      "median_basis": -0.0005743824440491809,
+      "median_daily_funding": 0.00026977,
+      "perp_symbol": "DOGSUSDT",
+      "rank": 36,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "AXSUSDT",
+      "perp_dollar_adv": 31576007.695844445,
+      "n_days_overlap": 2018,
+      "always_on": {
+        "n_days": 2018,
+        "mean_daily": -0.0008424439019793433,
+        "total": -1.7000517941943147,
+        "ann_return": -0.3074920242224603,
+        "ann_vol": 0.0790708913184755,
+        "sharpe": -3.8888144435348297
+      },
+      "gated": {
+        "n_days": 2018,
+        "mean_daily": 6.389599216335932e-05,
+        "total": 0.1289421121856591,
+        "ann_return": 0.02332203713962615,
+        "ann_vol": 0.0157411865217421,
+        "sharpe": 1.4815933416082199
+      },
+      "gated_n_episodes": 6,
+      "gated_frac_days_held": 0.010901883052527254,
+      "hurdle_availability": 0.010907288051561725,
+      "convergence": {
+        "median_frac_neutralized": -0.06178656226834064,
+        "ols_slope": -0.09615006331729685,
+        "ols_r2": 0.027904743081046957,
+        "n": 2017
+      },
+      "median_basis": -0.00086805555555546,
+      "median_daily_funding": -0.00030165,
+      "perp_symbol": "AXSUSDT",
+      "rank": 37,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "OPUSDT",
+      "perp_dollar_adv": 30332080.942673784,
+      "n_days_overlap": 1460,
+      "always_on": {
+        "n_days": 1460,
+        "mean_daily": 0.00019095294994349058,
+        "total": 0.27879130691749626,
+        "ann_return": 0.06969782672937407,
+        "ann_vol": 0.018291632713452893,
+        "sharpe": 3.8103666206961173
+      },
+      "gated": {
+        "n_days": 1460,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.03708227914230335,
+        "ols_slope": -0.18848741751011416,
+        "ols_r2": 0.009375270499592858,
+        "n": 1459
+      },
+      "median_basis": -0.00035890533871687385,
+      "median_daily_funding": 0.00021652,
+      "perp_symbol": "OPUSDT",
+      "rank": 38,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "SAGAUSDT",
+      "perp_dollar_adv": 29882304.292396005,
+      "n_days_overlap": 782,
+      "always_on": {
+        "n_days": 782,
+        "mean_daily": 0.00013320794808248347,
+        "total": 0.10416861540050207,
+        "ann_return": 0.04862090105010646,
+        "ann_vol": 0.030566972032084846,
+        "sharpe": 1.5906351796661826
+      },
+      "gated": {
+        "n_days": 782,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.038733051285786774,
+        "ols_slope": -0.6649385095264022,
+        "ols_r2": 0.10546050944904806,
+        "n": 781
+      },
+      "median_basis": -0.0005868544600940182,
+      "median_daily_funding": 0.00029631000000000004,
+      "perp_symbol": "SAGAUSDT",
+      "rank": 39,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "GALAUSDT",
+      "perp_dollar_adv": 28791967.390155997,
+      "n_days_overlap": 1716,
+      "always_on": {
+        "n_days": 1716,
+        "mean_daily": 0.00020230823371439986,
+        "total": 0.34716092905391016,
+        "ann_return": 0.07384250530575595,
+        "ann_vol": 0.027912067706795614,
+        "sharpe": 2.6455404909962246
+      },
+      "gated": {
+        "n_days": 1716,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.021072879754415946,
+        "ols_slope": -0.35832742285724495,
+        "ols_r2": 0.03119673549965385,
+        "n": 1715
+      },
+      "median_basis": -0.000393855848759338,
+      "median_daily_funding": 0.00027787000000000005,
+      "perp_symbol": "GALAUSDT",
+      "rank": 40,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "LUNCUSDT",
+      "perp_dollar_adv": 28646478.74820589,
+      "n_days_overlap": 1360,
+      "always_on": {
+        "n_days": 1360,
+        "mean_daily": 0.00011532834308164563,
+        "total": 0.15684654659103806,
+        "ann_return": 0.042094845224800656,
+        "ann_vol": 0.022930475631242724,
+        "sharpe": 1.835759794159983
+      },
+      "gated": {
+        "n_days": 1360,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -129.70972713428603,
+        "ols_slope": -146.97269486297017,
+        "ols_r2": 0.01591192249355189,
+        "n": 1359
+      },
+      "median_basis": 998.3285586392122,
+      "median_daily_funding": 0.00028872,
+      "perp_symbol": "1000LUNCUSDT",
+      "rank": 41,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "TIAUSDT",
+      "perp_dollar_adv": 27094817.347997777,
+      "n_days_overlap": 943,
+      "always_on": {
+        "n_days": 943,
+        "mean_daily": -9.014328732492558e-05,
+        "total": -0.08500511994740483,
+        "ann_return": -0.032902299873597836,
+        "ann_vol": 0.025587050789646636,
+        "sharpe": -1.2858965319641757
+      },
+      "gated": {
+        "n_days": 943,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.08361018791136418,
+        "ols_slope": -0.06193757302122023,
+        "ols_r2": 0.011294809220293578,
+        "n": 942
+      },
+      "median_basis": -0.000501945745348888,
+      "median_daily_funding": 0.00011870500000000001,
+      "perp_symbol": "TIAUSDT",
+      "rank": 42,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "CHZUSDT",
+      "perp_dollar_adv": 26632628.029424116,
+      "n_days_overlap": 1956,
+      "always_on": {
+        "n_days": 1956,
+        "mean_daily": 0.00029439562901530564,
+        "total": 0.5758378503539379,
+        "ann_return": 0.10745440459058656,
+        "ann_vol": 0.03346939645460632,
+        "sharpe": 3.210527107542085
+      },
+      "gated": {
+        "n_days": 1956,
+        "mean_daily": 9.51565009019204e-05,
+        "total": 0.1861261157641563,
+        "ann_return": 0.03473212282920095,
+        "ann_vol": 0.017621422438026408,
+        "sharpe": 1.9710169795515626
+      },
+      "gated_n_episodes": 7,
+      "gated_frac_days_held": 0.017382413087934562,
+      "hurdle_availability": 0.017215189873417722,
+      "convergence": {
+        "median_frac_neutralized": -0.08604826395825478,
+        "ols_slope": -0.12314033527328345,
+        "ols_r2": 0.020911348845226718,
+        "n": 1955
+      },
+      "median_basis": -0.00048622366288485105,
+      "median_daily_funding": 0.00027868,
+      "perp_symbol": "CHZUSDT",
+      "rank": 43,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ETCUSDT",
+      "perp_dollar_adv": 26224829.692491774,
+      "n_days_overlap": 2327,
+      "always_on": {
+        "n_days": 2327,
+        "mean_daily": 0.00029823479943877205,
+        "total": 0.6939923782940226,
+        "ann_return": 0.1088557017951518,
+        "ann_vol": 0.03016290145199862,
+        "sharpe": 3.6089267462676045
+      },
+      "gated": {
+        "n_days": 2327,
+        "mean_daily": 3.073030945613318e-05,
+        "total": 0.07150943010442191,
+        "ann_return": 0.011216562951488611,
+        "ann_vol": 0.008019585800360569,
+        "sharpe": 1.3986461683575104
+      },
+      "gated_n_episodes": 4,
+      "gated_frac_days_held": 0.006875805758487323,
+      "hurdle_availability": 0.006878761822871883,
+      "convergence": {
+        "median_frac_neutralized": -0.09296113343671762,
+        "ols_slope": -0.06490912320721004,
+        "ols_r2": 0.0033960713004925758,
+        "n": 2326
+      },
+      "median_basis": -0.000351725670986846,
+      "median_daily_funding": 0.000271225,
+      "perp_symbol": "ETCUSDT",
+      "rank": 44,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ALGOUSDT",
+      "perp_dollar_adv": 25582408.255538438,
+      "n_days_overlap": 2175,
+      "always_on": {
+        "n_days": 2175,
+        "mean_daily": 0.00038356702955365073,
+        "total": 0.8342582892791903,
+        "ann_return": 0.14000196578708252,
+        "ann_vol": 0.025340598818030833,
+        "sharpe": 5.524808896286444
+      },
+      "gated": {
+        "n_days": 2175,
+        "mean_daily": 3.062770333198163e-05,
+        "total": 0.06661525474706004,
+        "ann_return": 0.011179111716173295,
+        "ann_vol": 0.008794023987659312,
+        "sharpe": 1.2712168777184352
+      },
+      "gated_n_episodes": 5,
+      "gated_frac_days_held": 0.007816091954022988,
+      "hurdle_availability": 0.0077661032434901784,
+      "convergence": {
+        "median_frac_neutralized": -0.0161620293796817,
+        "ols_slope": -0.13083888412386227,
+        "ols_r2": 0.01318393483896263,
+        "n": 2174
+      },
+      "median_basis": -0.00039254172267808317,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "ALGOUSDT",
+      "rank": 45,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "JTOUSDT",
+      "perp_dollar_adv": 25185535.074255556,
+      "n_days_overlap": 905,
+      "always_on": {
+        "n_days": 905,
+        "mean_daily": -1.987854301377118e-05,
+        "total": -0.017990081427462917,
+        "ann_return": -0.007255668200026481,
+        "ann_vol": 0.04096911308198291,
+        "sharpe": -0.1771009341966283
+      },
+      "gated": {
+        "n_days": 905,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.02781091439912564,
+        "ols_slope": -0.12784270773905837,
+        "ols_r2": 0.04035838763135857,
+        "n": 904
+      },
+      "median_basis": -0.000531096800883105,
+      "median_daily_funding": 0.00024397,
+      "perp_symbol": "JTOUSDT",
+      "rank": 46,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "SEIUSDT",
+      "perp_dollar_adv": 23369673.13489111,
+      "n_days_overlap": 1018,
+      "always_on": {
+        "n_days": 1018,
+        "mean_daily": -0.00013441879633940831,
+        "total": -0.13683833467351766,
+        "ann_return": -0.04906286066388404,
+        "ann_vol": 0.023725454141969072,
+        "sharpe": -2.0679418977735993
+      },
+      "gated": {
+        "n_days": 1018,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.03972562832739633,
+        "ols_slope": -0.08089086374453872,
+        "ols_r2": 0.009129690072719576,
+        "n": 1017
+      },
+      "median_basis": -0.0005901445854233638,
+      "median_daily_funding": -1.1299999999999987e-05,
+      "perp_symbol": "SEIUSDT",
+      "rank": 47,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "LDOUSDT",
+      "perp_dollar_adv": 22227429.15873,
+      "n_days_overlap": 1347,
+      "always_on": {
+        "n_days": 1347,
+        "mean_daily": 0.00022279256039477616,
+        "total": 0.3001015788517635,
+        "ann_return": 0.0813192845440933,
+        "ann_vol": 0.018627379705497608,
+        "sharpe": 4.365578295485814
+      },
+      "gated": {
+        "n_days": 1347,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.19895702581166533,
+        "ols_slope": -0.17765957203635585,
+        "ols_r2": 0.020085477813338026,
+        "n": 1346
+      },
+      "median_basis": -0.0004318933503118554,
+      "median_daily_funding": 0.000271595,
+      "perp_symbol": "LDOUSDT",
+      "rank": 48,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ZROUSDT",
+      "perp_dollar_adv": 21543284.677571222,
+      "n_days_overlap": 710,
+      "always_on": {
+        "n_days": 710,
+        "mean_daily": -0.0002967609564050614,
+        "total": -0.2107002790475936,
+        "ann_return": -0.10831774908784741,
+        "ann_vol": 0.02658190502639798,
+        "sharpe": -4.074867808769881
+      },
+      "gated": {
+        "n_days": 710,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.0021414836537978587,
+        "ols_slope": -0.029229291185525957,
+        "ols_r2": 0.0032844249711992957,
+        "n": 709
+      },
+      "median_basis": -0.0007334963325184375,
+      "median_daily_funding": 4.767999999999999e-05,
+      "perp_symbol": "ZROUSDT",
+      "rank": 49,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ATOMUSDT",
+      "perp_dollar_adv": 19532212.19158022,
+      "n_days_overlap": 2305,
+      "always_on": {
+        "n_days": 2305,
+        "mean_daily": 0.00027292263638925324,
+        "total": 0.6290866768772287,
+        "ann_return": 0.09961676228207743,
+        "ann_vol": 0.02803448568885619,
+        "sharpe": 3.5533650728493815
+      },
+      "gated": {
+        "n_days": 2305,
+        "mean_daily": 4.028529408374706e-05,
+        "total": 0.09285760286303697,
+        "ann_return": 0.014704132340567676,
+        "ann_vol": 0.009525422990290524,
+        "sharpe": 1.543672376077779
+      },
+      "gated_n_episodes": 7,
+      "gated_frac_days_held": 0.00911062906724512,
+      "hurdle_availability": 0.00911062906724512,
+      "convergence": {
+        "median_frac_neutralized": -0.04386485506138119,
+        "ols_slope": -0.12147205282380821,
+        "ols_r2": 0.02189820061178549,
+        "n": 2304
+      },
+      "median_basis": -0.00047238515209211903,
+      "median_daily_funding": 0.00020102,
+      "perp_symbol": "ATOMUSDT",
+      "rank": 50,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "NEIROUSDT",
+      "perp_dollar_adv": 16854405.812080104,
+      "n_days_overlap": 622,
+      "always_on": {
+        "n_days": 622,
+        "mean_daily": 0.00015739688115468136,
+        "total": 0.0979008600782118,
+        "ann_return": 0.057449861621458695,
+        "ann_vol": 0.015143585034981893,
+        "sharpe": 3.7936764305644077
+      },
+      "gated": {
+        "n_days": 622,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.35294336534571497,
+        "ols_slope": -0.46959190369373377,
+        "ols_r2": 0.05300513936537721,
+        "n": 621
+      },
+      "median_basis": -0.0005936127270569469,
+      "median_daily_funding": 0.00022716000000000001,
+      "perp_symbol": "NEIROUSDT",
+      "rank": 51,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "TURBOUSDT",
+      "perp_dollar_adv": 14215661.821718492,
+      "n_days_overlap": 622,
+      "always_on": {
+        "n_days": 622,
+        "mean_daily": -0.0004148125690261253,
+        "total": -0.2580134179342499,
+        "ann_return": -0.15140658769453574,
+        "ann_vol": 0.05052713342875361,
+        "sharpe": -2.996540223443081
+      },
+      "gated": {
+        "n_days": 622,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.0898690206517626,
+        "ols_slope": -0.10412023444476842,
+        "ols_r2": 0.07148124435258729,
+        "n": 621
+      },
+      "median_basis": -0.0006666666666666277,
+      "median_daily_funding": 0.00014576,
+      "perp_symbol": "TURBOUSDT",
+      "rank": 52,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "ETHFIUSDT",
+      "perp_dollar_adv": 14049614.295139337,
+      "n_days_overlap": 804,
+      "always_on": {
+        "n_days": 804,
+        "mean_daily": 2.522226063557289e-07,
+        "total": 0.00020278697551000605,
+        "ann_return": 9.206125131984105e-05,
+        "ann_vol": 0.02231724007060446,
+        "sharpe": 0.004125118116245078
+      },
+      "gated": {
+        "n_days": 804,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.08046176110718868,
+        "ols_slope": -0.1919524896420416,
+        "ols_r2": 0.013221371971041673,
+        "n": 803
+      },
+      "median_basis": -0.000382043935052489,
+      "median_daily_funding": 0.00016192000000000002,
+      "perp_symbol": "ETHFIUSDT",
+      "rank": 53,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "FLOWUSDT",
+      "perp_dollar_adv": 13891434.887176445,
+      "n_days_overlap": 1566,
+      "always_on": {
+        "n_days": 1566,
+        "mean_daily": -6.153676709203792e-05,
+        "total": -0.09636657726613139,
+        "ann_return": -0.02246091998859384,
+        "ann_vol": 0.11211497790090028,
+        "sharpe": -0.2003382635319904
+      },
+      "gated": {
+        "n_days": 1566,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": 0.08236476878292458,
+        "ols_r2": 0.0006603549182357948,
+        "n": 1565
+      },
+      "median_basis": 0.0,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "FLOWUSDT",
+      "rank": 54,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "JUPUSDT",
+      "perp_dollar_adv": 13538476.951822225,
+      "n_days_overlap": 850,
+      "always_on": {
+        "n_days": 850,
+        "mean_daily": -1.7394116360066554e-05,
+        "total": -0.01478499890605657,
+        "ann_return": -0.006348852471424292,
+        "ann_vol": 0.018006708847145118,
+        "sharpe": -0.3525826138090123
+      },
+      "gated": {
+        "n_days": 850,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.037634620119441436,
+        "ols_slope": -0.079131006496596,
+        "ols_r2": 0.01146986972545494,
+        "n": 849
+      },
+      "median_basis": -0.0006450503151174305,
+      "median_daily_funding": 4.986000000000001e-05,
+      "perp_symbol": "JUPUSDT",
+      "rank": 55,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "DYDXUSDT",
+      "perp_dollar_adv": 13386628.83435184,
+      "n_days_overlap": 1724,
+      "always_on": {
+        "n_days": 1724,
+        "mean_daily": 0.00020592232047261257,
+        "total": 0.35501008049478405,
+        "ann_return": 0.07516164697250359,
+        "ann_vol": 0.04274658507011606,
+        "sharpe": 1.7583076367204065
+      },
+      "gated": {
+        "n_days": 1724,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.1729176799272855,
+        "ols_r2": 0.0010505994995326784,
+        "n": 1723
+      },
+      "median_basis": -0.0004906771344454808,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "DYDXUSDT",
+      "rank": 56,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "PNUTUSDT",
+      "perp_dollar_adv": 13072948.573231108,
+      "n_days_overlap": 566,
+      "always_on": {
+        "n_days": 566,
+        "mean_daily": 0.00013456346656101249,
+        "total": 0.07616292207353306,
+        "ann_return": 0.04911566529476956,
+        "ann_vol": 0.020617598795906432,
+        "sharpe": 2.382220440942974
+      },
+      "gated": {
+        "n_days": 566,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": -0.3313644081096132,
+        "ols_slope": -0.2262588884346657,
+        "ols_r2": 0.009436385161675664,
+        "n": 565
+      },
+      "median_basis": -0.0004319654427645612,
+      "median_daily_funding": 0.00019097,
+      "perp_symbol": "PNUTUSDT",
+      "rank": 57,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "PORTALUSDT",
+      "perp_dollar_adv": 12810090.221835231,
+      "n_days_overlap": 822,
+      "always_on": {
+        "n_days": 822,
+        "mean_daily": 0.00022964070580019593,
+        "total": 0.18876466016776106,
+        "ann_return": 0.08381885761707152,
+        "ann_vol": 0.037866538086232596,
+        "sharpe": 2.213533685762156
+      },
+      "gated": {
+        "n_days": 822,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.15698138355064598,
+        "ols_r2": 0.005534507775688313,
+        "n": 821
+      },
+      "median_basis": -0.0003802281368820874,
+      "median_daily_funding": 0.00030000000000000003,
+      "perp_symbol": "PORTALUSDT",
+      "rank": 58,
+      "bucket": "tail"
+    },
+    {
+      "spot_symbol": "BOMEUSDT",
+      "perp_dollar_adv": 11952003.351396801,
+      "n_days_overlap": 806,
+      "always_on": {
+        "n_days": 806,
+        "mean_daily": 0.00023026325901482012,
+        "total": 0.18559218676594502,
+        "ann_return": 0.08404608954040935,
+        "ann_vol": 0.018692980583167287,
+        "sharpe": 4.496131003104525
+      },
+      "gated": {
+        "n_days": 806,
+        "mean_daily": 0.0,
+        "total": 0.0,
+        "ann_return": 0.0,
+        "ann_vol": 0.0,
+        "sharpe": NaN
+      },
+      "gated_n_episodes": 0,
+      "gated_frac_days_held": 0.0,
+      "hurdle_availability": 0.0,
+      "convergence": {
+        "median_frac_neutralized": 0.0,
+        "ols_slope": -0.08292054549820281,
+        "ols_r2": 0.0013034831016303094,
+        "n": 805
+      },
+      "median_basis": -0.0004992511233150937,
+      "median_daily_funding": 0.00024359000000000002,
+      "perp_symbol": "BOMEUSDT",
+      "rank": 59,
+      "bucket": "tail"
+    }
+  ]
+}

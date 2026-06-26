@@ -10,7 +10,7 @@ or an artifact in `results/`; the code that produced each is in the repository.*
 I set out to answer a narrow question honestly: do the standard published
 price signals still pay, in the markets a retail-data researcher can actually
 reach, once you remove every form of backtest inflation you have the
-discipline to remove? The answer, across eleven logged trials, is mostly
+discipline to remove? The answer, across thirteen logged trials, is mostly
 no — and the *way* it is no is the contribution. On a survivorship-biased
 universe my pipeline produces a net Sharpe of 0.82; on the point-in-time
 universe, the same code on the same features produces −0.01. The alpha was the
@@ -28,7 +28,18 @@ statistical significance and tradability are different objects. An eleventh
 cleared every pre-registered bar at once — net Sharpe 1.1, Deflated Sharpe
 0.999 — until a one-week entry lag collapsed it to nothing, exposing a
 microstructure artifact in a discount-reversion costume: the discipline
-overturning its own best-looking number. The deliverable here is not a strategy.
+overturning its own best-looking number. Then the survivorship wall that
+produced the project's *first* result finally fell — not to paid data but to a
+free SEC name-to-CIK crosswalk plus delisting-inclusive prices — which let the
+long-blocked quality-fundamentals hypothesis finally run (trial #12): its raw
+profitability edge was real but evaporated under value-neutralization, a premium
+that was value in disguise. A thirteenth trial took the most-cited free
+alternative-data anomaly — opportunistic insider cluster-buying — and, this time
+genuinely powered, found a clean null in which the "opportunistic" signal was no
+better than the routine one it is supposed to beat. And a delta-neutral crypto
+cash-and-carry audit closed the loop: a real funding harvest whose premium over
+the risk-free rate has been arbitraged to zero, its headline Sharpe of 4.6 a
+tail-risk illusion. The deliverable here is not a strategy.
 It is a research process that detects a real premium where one exists, refuses
 to claim it where one does not, and overturns its own result when it is too good
 to be true — and the evidence that I can tell the difference.
@@ -60,7 +71,7 @@ suggestions:
    thresholds, the majority of published factors are likely false discoveries
    (Harvey, Liu & Zhu 2016). A t-stat of 2 means little after hundreds of
    attempts — so I count mine. The global trial count is logged and never
-   reset; it feeds the Deflated Sharpe directly. As of this note, N = 11.
+   reset; it feeds the Deflated Sharpe directly. As of this note, N = 13.
 3. **Turnover kills.** Anomaly profits concentrate in high-turnover
    implementations whose costs exceed their gross returns (Novy-Marx &
    Velikov 2016). I never report a gross-only number. Turnover is a headline.
@@ -155,7 +166,7 @@ probability that the selected config loses money out-of-sample confirm there is
 no monetizable edge to overfit *to*. Read together the three numbers reaffirm
 the equity null; read alone, PBO would mislead — which is the methodological
 point, and the reason I report it alongside, not instead of, the per-trial DSR.
-I never compute PBO *across* the eleven trials: they live on different
+I never compute PBO *across* the thirteen trials: they live on different
 universes, horizons and asset classes, so they share no return matrix to rank on
 — and pretending otherwise is exactly the overfitting an overfitting metric
 should be the first to refuse.
@@ -289,6 +300,101 @@ relax the criteria to pretend otherwise. The lesson is now a registered
 requirement, not a footnote: a reversion strategy must pass an
 entry-lag/implementability gate, not merely the in-sample bar.
 
+### 5.5 The survivorship wall finally falls — quality fundamentals (trial #12)
+
+The hypothesis blocked since trial #2 was fundamental quality, because the thing
+that makes survivorship bias matter — dead names — is exactly what free
+fundamentals data drops: the SEC's ticker→CIK map is present-day only, so an
+acquired or bankrupt constituent's filings become unreachable. I had measured
+that a naive free recovery lifts coverage only 73%→75%. The unlock was to stop
+matching on the recycled *ticker* and match on the *company name*: SEC's
+`cik-lookup-data.txt` resolves ~94% of dead S&P names to their operating CIK
+(reassignment-immune by construction, because it follows the name through each
+rename to the right filer), and Tiingo supplies delisting-inclusive prices. A
+full 290-name spot-audit put the recovery at ~99% correct. The wall that defined
+trial #2 fell — on free data, no CRSP.
+
+So H1 finally ran. The registered construction (amended pre-data from an
+openassetpricing review): cash-based operating profitability, CBOP/A, the
+accruals-robust profitability measure; value-weighted quintile long-short;
+Financials and Real Estate excluded (no cost-of-goods line); and — the load
+bearing choice — graded on a **value-neutralized** arm, because Novy-Marx's
+large-cap profitability is an FF-alpha riddled with HML exposure, and a "quality"
+premium that is merely value re-labeled must not count. A synthetic two-world
+gate proved in-environment that the neutralization could actually tell a
+value-disguised edge (must collapse) from a value-orthogonal one (must survive)
+before any real number was trusted.
+
+| arm | net SR | t_NW | DSR (N=12) | |
+|---|---|---|---|---|
+| RAW CBOP/A | +0.58 | +2.30 | 0.72 | looks edged |
+| **HML-NEUTRAL** | **−0.18** | **−0.77** | **0.009** | the graduation arm |
+
+The raw book looked tradable (t 2.3) but sat *below* the equal-weight baseline
+(+0.99) and the deflation bar; the neutral arm — the one graduation is judged on
+— is negative. The **raw-minus-neutral gap of +0.755** is the pre-registered
+signature that the edge was repackaged HML exposure: the quality premium was
+value in disguise, exactly as the dossier predicted. PBO across the
+{raw,neutral}×{current,lagged-assets} family was 0.10 — and, as in the equity
+trials, a low PBO in a null family is rank-persistence, not a green light. H1
+does not graduate. The first survivorship-safe free-data fundamentals trial in
+the project is a clean, mechanistic null. (n_obs is 64 quarters and market-cap
+coverage 64%, but value-collinearity is structural — neutralizing HML flips the
+sign — and robust to the coverage gap.)
+
+### 5.6 The most-cited alternative-data anomaly, properly powered — insider cluster-buying (trials, and a power-abort, leading to #13)
+
+The next candidate was opportunistic insider cluster-buying (Cohen–Malloy–
+Pomorski): insiders who buy off their routine calendar carry information, and a
+cluster of them is the signal. Form 4 is survivorship-safe on the signal side —
+it persists under the issuer CIK after a ticker dies — which is the hole that
+sinks most free-data ideas, closed for once.
+
+The first registration (H10, top-decile long-vs-EW) hit a wall the project's
+discipline is built to respect: a **pre-spend power gate**. Computing the real
+cross-section required Form 4s across the whole universe — ~200k rate-limited
+requests as a per-filing crawl — so I built a bulk-data pipeline reading SEC's
+quarterly Form 345 datasets (~64 files), and cross-checked it byte-for-byte
+against the crawl. The check surfaced a genuine completeness bug in the crawl
+(it reads only the ~1,000 most-recent filings, silently dropping older ones for
+prolific filers); the bulk source is the correct one. The full-universe power
+gate then showed a median of ~24 cluster-eligible firms per month — real insider
+clustering exists in large caps — but a *top-decile* book is ~2 names, far below
+a tradable cross-section. **The trial aborted before spending N** — the trial-#10
+fee-first precedent, now for alternative data: you do not run an underpowered
+study just because you can.
+
+The redesign (H12, trial #13) longed *all* cluster names equal-weight versus the
+market — genuinely powered: 196 monthly observations, a minimum detectable
+Sharpe of 0.42. It is a clean null: net Sharpe −0.13, t_NW −0.58, Deflated Sharpe
+0.013, PBO 1.000, and — the decisive detail — the **opportunistic arm (−0.13) is
+no better than the routine arm (−0.06)** it is supposed to dominate, so what
+little is there is generic buying pressure, not information. Crucially, both the
+synthetic machinery gate (planted Sharpe ~8) *and* the power gate passed, so this
+is genuine economic absence, not the impotence-or-underpowering escape hatch — the
+clean counterfactual the H10 power-abort could not provide.
+
+### 5.7 The real-money question — delta-neutral crypto cash-and-carry (Stage-1 audit)
+
+The one trade that pays cash, not a cross-sectional spread, is cash-and-carry:
+long spot, short the perpetual, collect funding while delta-hedged. I ran it as a
+feasibility audit (zero trials) precisely because the headline *looked* like the
+edge I had been hunting — majors 12.9%/yr net carry at a Sharpe of 4.64 — and
+the prime directive says a number that good is a suspected bug. The decomposition
+acquitted the code and convicted the trade: carry ≈ funding, basis P&L ≈ 0, and
+it survives an entry-lag, so it is the *real* funding harvest, not a
+close-timing artifact. But its premium over the risk-free rate has been
+arbitraged to zero — gross funding fell from 32.8% in the 2021 mania to ~4–5%
+in 2025–26, i.e. roughly T-bills — and the 4.64 Sharpe is a *tail-blind illusion*:
+funding income is smooth right up to the funding-flip / liquidation-cascade /
+exchange-failure / stablecoin-de-peg event that delta-neutral reduces but cannot
+remove. SOL even lost outright (basis drift). I deliberately did **not** run it
+as a graded trial, because a naive Deflated Sharpe on that smooth stream would
+"graduate" it misleadingly — the exact false win this project refuses. It is the
+McLean–Pontiff decay confirmed a third time, and the honest verdict is that
+cash-and-carry today is a dormant-but-armed vehicle: it sits flat when funding is
+priced and would only harvest a future mania.
+
 ## 6. What failed, and what the harness caught
 
 This section is mandatory by my own rules, and it is the part I am most willing
@@ -338,6 +444,29 @@ to be judged on.
   rather than reversion. The in-sample criteria were insufficient;
   implementability had to be tested too. The strongest number I produced is the
   one the discipline killed.
+- **A degenerate run is not a null — and I refused to log it as one** (trial
+  #12). The first quality run came back with zero market-cap coverage, Sharpe
+  0.000, t = nan: shares outstanding live under SEC's `dei` namespace and the
+  `shares` unit, not `us-gaap`/`USD` where the reader looked. A pipeline that
+  produces nothing is not evidence of absence; I fixed the reader and re-ran
+  rather than bank a free "null." Distinguishing a real null from a broken run is
+  the whole game.
+- **Three bugs in the alt-data build, each caught by a *different* guard.** A
+  same-filed-date error in the insider classifier (a single multi-transaction
+  Form 4 over-counted "routine") was caught by an adversarial pre-commit review,
+  not its own author's test. A crawl that silently dropped older filings for
+  prolific issuers was caught by an *independent* bulk-vs-crawl cross-check I ran
+  rather than trusting the build agent's "match." A Binance change from
+  millisecond to microsecond timestamps (which errored ~every symbol) was caught
+  by reading the run's actual output instead of trusting that "it's running."
+  Each is now pinned by a regression test. The lesson repeats: the guard that
+  catches the bug is rarely the one its author wrote.
+- **A Sharpe of 4.64, deflated rather than celebrated** (cash-and-carry, §5.7).
+  The funding-vs-basis decomposition showed it was a real funding harvest — and
+  then that the harvest had decayed to the risk-free rate and the Sharpe was
+  blind to the tail. The reflex the prime directive demands — treat a great
+  number as a suspected error first — is what turned a "GO" into the honest
+  verdict.
 
 ## 7. Capacity and execution
 
@@ -398,25 +527,36 @@ the same logging discipline. New trials are already machine-enforced — a
 real-data run refuses to start unless it names a pre-registered, still-open
 hypothesis or declares itself a reproduction.
 
-The binding constraint is now data, not ideas. A post-trial-#11 ideation pass
-screened the remaining free-data candidates — post-earnings drift, systematic
-short volatility, crypto cash-and-carry basis, index additions, lottery/MAX,
-pairs stat-arb, calendar seasonality — against the scars this project earned
-(survivorship, borrow on the short leg, cost mortality, and now the trial-#11
-microstructure trap) and none survived. Free-data cross-sectional alpha,
-honestly screened, is largely exhausted, and that is itself a result. The
-clearest next step is the quality-fundamentals hypothesis (H1) on a
-survivorship-safe source, whose harness is already built, tested, and one
-source-swap from a graded trial #12 the day CRSP/Compustat access lands. I
-checked whether free data could substitute and measured that it cannot: a
-historical ticker→CIK recovery over the 217 dead-and-unmapped S&P names lifts
-survivorship-safe coverage only from 73% to 75%, and more than half of the names
-it *does* resolve carry ticker-reassignment risk — a naive free map would
-silently bind a dead constituent to a living company's fundamentals, the exact
-survivorship sin in a new disguise. The hole that defined trial #2 cannot be
-closed for free. That boundary is the one between a student project and an
-institutional desk, and naming where it falls is the honest version of "what's
-next."
+The binding constraint was supposed to be data. It turned out to be less binding
+than I thought — for one case, and instructively so. The earlier draft of this
+section claimed the survivorship hole that defined trial #2 "cannot be closed for
+free," on the basis that a historical *ticker*→CIK recovery lifts coverage only
+73%→75% and half of its hits are reassignment-prone. That was true for ticker
+matching and false for the problem: matching on the *company name* instead
+(SEC's `cik-lookup-data.txt`, which follows a firm through renames to its
+operating CIK) recovers ~94% of dead S&P names at ~99% correctness, and Tiingo
+supplies the delisting-inclusive prices. So the quality-fundamentals hypothesis
+(H1) did not wait for CRSP — it ran on free, survivorship-safe data as trial #12
+(§5.5), and the answer was a clean null: the raw profitability premium was value
+in disguise. I am keeping the corrected reasoning in view rather than quietly
+deleting the wrong call, because being wrong about a data boundary and then
+measuring past it is the honest version of research.
+
+What that leaves is not "blocked on data" but *empirical exhaustion*, now
+demonstrated rather than screened. Across everything a free-data researcher can
+reach — five price-only features and three model classes (trials 1–7),
+fundamental quality on a survivorship-safe universe (#12), the most-cited
+alternative-data anomaly properly powered (#13), crypto funding carry in the
+majors, the liquid tail, and delta-neutral cash-and-carry (#8, #10, §5.7), an
+index-deletion event study (#9), and a structurally-protected closed-end-fund
+discount (#11) — nothing graduates, and each null comes with a mechanism. The
+remaining frontier is the one institutional-grade data actually opens and free
+data cannot: CRSP delisting returns to close the last 6% survivorship residual,
+point-in-time analyst estimates for post-earnings drift, intraday and
+cross-venue data for the microstructure and basis trades these daily/single-venue
+audits could only bound. That boundary — between what a disciplined student can
+prove with free data and what needs a desk's data budget — is now mapped from
+both sides, and mapping it precisely is the honest version of "what's next."
 
 ## 11. The engine room — ready for the edge I don't yet have
 
@@ -438,20 +578,25 @@ piece is the edge, and finding one honestly is the rest of the project.
 
 ## 12. Conclusion
 
-I tested eleven hypotheses across three asset classes and graduated
-none of them to production. Read carelessly, that is failure. Read correctly, it
-is the whole point: a research process is only worth anything if it can tell a
-real premium from a lucky one and a robust premium from a decaying, skewed one —
-and then *act on that distinction even when the number in front of you is good*.
-My pipeline destroyed its own best result the moment I fixed the universe; it
-found genuine crypto carry and still refused it on a deflated-Sharpe technicality
-it was right to enforce; and it showed a famous anomaly to be a matched-control
-artifact; and it overturned its own best-looking result — a discount-reversion
-backtest that cleared every bar — on a one-week implementability test. The
-strategies failed. The judgment did not. If I am going to act as
-though my analysis means something, even knowing how often analysis is luck, I
-would rather it be analysis that has earned the right — and this is the evidence
-that it has.
+I tested thirteen hypotheses across equities, crypto, and closed-end funds and
+graduated none of them to production. Read carelessly, that is failure. Read
+correctly, it is the whole point: a research process is only worth anything if it
+can tell a real premium from a lucky one and a robust premium from a decaying,
+skewed one — and then *act on that distinction even when the number in front of
+you is good*. My pipeline destroyed its own best result the moment I fixed the
+universe; it found genuine crypto carry and still refused it on a deflated-Sharpe
+technicality it was right to enforce; it showed a famous anomaly to be a
+matched-control artifact; it overturned its own best-looking result — a
+discount-reversion backtest that cleared every bar — on a one-week
+implementability test; it ran the long-blocked quality hypothesis the moment a
+free name-to-CIK crosswalk could finally reach dead names, and showed the premium
+was value in disguise; it powered the most-cited insider-trading anomaly and
+found the "opportunistic" signal no better than the routine baseline it should
+beat; and it took a cash-and-carry trade whose Sharpe looked like 4.6 and proved
+it a funding harvest decayed to the risk-free rate, its Sharpe blind to the tail.
+The strategies failed. The judgment did not. If I am going to act as though my
+analysis means something, even knowing how often analysis is luck, I would rather
+it be analysis that has earned the right — and this is the evidence that it has.
 
 ## References
 

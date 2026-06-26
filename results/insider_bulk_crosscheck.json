@@ -1,0 +1,99 @@
+{
+  "names": {
+    "0000006201": {
+      "ticker": "AAL",
+      "window": [
+        "2015-07-09",
+        "2020-03-03"
+      ],
+      "crawl_buys": 20,
+      "bulk_buys": 20,
+      "crawl_keys": 20,
+      "bulk_keys": 20,
+      "symmetric_difference": 0,
+      "only_in_crawl_examples": [],
+      "only_in_bulk_examples": [],
+      "match": true
+    },
+    "0000315293": {
+      "ticker": "AON",
+      "window": [
+        "2014-11-20",
+        "2026-02-12"
+      ],
+      "crawl_buys": 30,
+      "bulk_buys": 30,
+      "crawl_keys": 26,
+      "bulk_keys": 26,
+      "symmetric_difference": 0,
+      "only_in_crawl_examples": [],
+      "only_in_bulk_examples": [],
+      "match": true
+    },
+    "0001685040": {
+      "ticker": "BHF",
+      "window": [
+        "2017-09-15",
+        "2024-05-31"
+      ],
+      "crawl_buys": 16,
+      "bulk_buys": 16,
+      "crawl_keys": 16,
+      "bulk_keys": 16,
+      "symmetric_difference": 0,
+      "only_in_crawl_examples": [],
+      "only_in_bulk_examples": [],
+      "match": true
+    },
+    "0000815097": {
+      "ticker": "CCL",
+      "window": [
+        "2013-05-29",
+        "2023-10-23"
+      ],
+      "crawl_buys": 11,
+      "bulk_buys": 11,
+      "crawl_keys": 11,
+      "bulk_keys": 11,
+      "symmetric_difference": 0,
+      "only_in_crawl_examples": [],
+      "only_in_bulk_examples": [],
+      "match": true
+    }
+  },
+  "normalization": {
+    "owner_name": "upper-case + collapse internal whitespace (benign)",
+    "key": "(filed_date, owner_name_norm, transaction_date, shares)",
+    "value_excluded": "bulk rounds price to cents; XML keeps full precision"
+  },
+  "download_quarters": [
+    "2013q2",
+    "2014q4",
+    "2015q3",
+    "2016q2",
+    "2017q2",
+    "2017q3",
+    "2018q1",
+    "2018q3",
+    "2018q4",
+    "2019q2",
+    "2019q3",
+    "2019q4",
+    "2020q1",
+    "2020q2",
+    "2020q4",
+    "2021q3",
+    "2021q4",
+    "2022q2",
+    "2022q3",
+    "2023q3",
+    "2023q4",
+    "2024q1",
+    "2024q2",
+    "2024q3",
+    "2026q1"
+  ],
+  "overall_match": true,
+  "total_only_in_crawl": 0,
+  "total_only_in_bulk": 0
+}
