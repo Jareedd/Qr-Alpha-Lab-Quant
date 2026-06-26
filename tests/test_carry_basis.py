@@ -222,3 +222,56 @@ def test_make_synthetic_carry_flat_basis_gross_equals_funding():
                                 basis_drift=0.0, spot_drift=0.0)
     g = cb.gross_carry_returns(w["spot"], w["perp"], w["funding"])
     assert np.allclose(g["gross"].to_numpy(), 0.0007)
+
+
+# ---------------------------------------------------------------------------
+# deploy_signal: the dormant-but-armed DEPLOY gate (decision-support).
+# ---------------------------------------------------------------------------
+def test_deploy_signal_high_funding_deploys():
+    # ~18%/yr gross funding clears BOTH the 3x cost gate AND risk-free+tail-buffer.
+    funding = _series([0.0005] * 60, name="funding")
+    costs = {"X": cb.BUCKET_COSTS["major"]}
+    r = cb.deploy_signal({"X": funding}, costs, risk_free=0.05,
+                         tail_buffer=0.10, window=30)["X"]
+    assert r["deploy"] is True
+    assert r["cost_gate"] is True
+    assert r["net_ann"] > 0.15            # beats rf + buffer
+    assert r["excess_over_rf"] > 0.10
+
+
+def test_deploy_signal_decayed_to_cash_stays_flat():
+    # ~5%/yr gross funding ~= the risk-free rate: the cost gate passes, but the
+    # tail-buffer gate does NOT -> FLAT. This is the dormant 2025-26 behavior and
+    # the whole point of the rule: a yield that merely matches T-bills is not worth
+    # the tail, so the binding gate is the risk-free+buffer, not the cost gate.
+    funding = _series([0.00014] * 60, name="funding")
+    costs = {"X": cb.BUCKET_COSTS["major"]}
+    r = cb.deploy_signal({"X": funding}, costs, risk_free=0.05,
+                         tail_buffer=0.10, window=30)["X"]
+    assert r["deploy"] is False
+    assert r["cost_gate"] is True         # cost gate alone would pass...
+    assert r["excess_over_rf"] < 0.10     # ...but the tail buffer binds -> FLAT
+
+
+def test_deploy_signal_below_cost_gate_stays_flat():
+    funding = _series([0.000005] * 60, name="funding")   # ~0.18%/yr
+    costs = {"X": cb.BUCKET_COSTS["major"]}
+    r = cb.deploy_signal({"X": funding}, costs, window=30)["X"]
+    assert r["deploy"] is False
+    assert r["cost_gate"] is False
+
+
+def test_deploy_signal_negative_funding_is_flat():
+    funding = _series([-0.0002] * 60, name="funding")
+    costs = {"X": cb.BUCKET_COSTS["major"]}
+    r = cb.deploy_signal({"X": funding}, costs, window=30)["X"]
+    assert r["deploy"] is False
+    assert r["net_ann"] < 0
+
+
+def test_deploy_signal_insufficient_history_is_flat():
+    funding = _series([0.0005] * 10, name="funding")     # < window=30
+    costs = {"X": cb.BUCKET_COSTS["major"]}
+    r = cb.deploy_signal({"X": funding}, costs, window=30)["X"]
+    assert r["deploy"] is False
+    assert r["reason"] == "insufficient_history"

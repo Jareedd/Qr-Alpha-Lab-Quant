@@ -30,16 +30,15 @@ cleared every pre-registered bar at once — net Sharpe 1.1, Deflated Sharpe
 microstructure artifact in a discount-reversion costume: the discipline
 overturning its own best-looking number. Then the survivorship wall that
 produced the project's *first* result finally fell — not to paid data but to a
-free SEC name-to-CIK crosswalk plus delisting-inclusive prices — which let the
-long-blocked quality-fundamentals hypothesis finally run (trial #12): its raw
-profitability edge was real but evaporated under value-neutralization, a premium
-that was value in disguise. A thirteenth trial took the most-cited free
-alternative-data anomaly — opportunistic insider cluster-buying — and, this time
-genuinely powered, found a clean null in which the "opportunistic" signal was no
-better than the routine one it is supposed to beat. And a delta-neutral crypto
-cash-and-carry audit closed the loop: a real funding harvest whose premium over
-the risk-free rate has been arbitraged to zero, its headline Sharpe of 4.6 a
-tail-risk illusion. The deliverable here is not a strategy.
+free SEC name-to-CIK crosswalk — and the long-blocked quality-fundamentals trial
+finally ran: its raw profitability edge was real but evaporated under
+value-neutralization — value in disguise. The most-cited free alternative-data
+anomaly, opportunistic insider cluster-buying, came next, properly powered, and
+returned a clean null where the "opportunistic" signal was no better than the
+routine one it should beat. And a delta-neutral crypto cash-and-carry audit
+closed the loop: a real funding harvest whose premium over the risk-free rate has
+been arbitraged to zero, its headline Sharpe of 4.6 a tail-risk illusion. The
+deliverable here is not a strategy.
 It is a research process that detects a real premium where one exists, refuses
 to claim it where one does not, and overturns its own result when it is too good
 to be true — and the evidence that I can tell the difference.

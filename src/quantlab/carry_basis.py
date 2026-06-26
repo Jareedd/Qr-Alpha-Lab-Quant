@@ -340,6 +340,60 @@ def summarize_returns(net: pd.Series, periods: int = 365) -> dict:
     }
 
 
+def deploy_signal(
+    funding_by_symbol: dict,
+    costs_by_symbol: dict,
+    risk_free: float = 0.05,
+    tail_buffer: float = 0.10,
+    window: int = 30,
+) -> dict:
+    """DECISION-SUPPORT: per symbol, should delta-neutral cash-and-carry be
+    DEPLOYED right now, or stay FLAT? (This never auto-executes; the operator
+    trades manually on their own exchange.) The "dormant-but-armed" rule.
+
+    A symbol is DEPLOY only if its trailing ``window``-day annualized NET carry
+    clears BOTH:
+      (1) the 3x round-trip COST gate (trailing-window funding SUM > 3x roundtrip),
+      (2) the RISK-FREE rate by a ``tail_buffer`` margin (net_ann > rf + buffer).
+    Gate (2) is the honest core: the strategy's headline Sharpe is TAIL-BLIND
+    (funding income is smooth right up to a funding-flip / liquidation-cascade /
+    exchange-failure / stablecoin-de-peg event), so we refuse to deploy for a yield
+    that merely matches T-bills -- you must be paid a real premium OVER cash to bear
+    that tail. In the 2025-26 regime (~4-5% gross funding ~= the risk-free rate)
+    this correctly returns FLAT for ~everything: the vehicle sleeps until a
+    high-funding (e.g. 2021-style) regime returns.
+
+    Sizing note (why flags, not Kelly weights): we deliberately do NOT size on the
+    trailing Sharpe -- it is the very number the tail makes a lie. Any deployment is
+    small, equal-weight, and hard-capped (the caller applies the caps).
+
+    Returns per symbol: {gross_ann, net_ann, excess_over_rf, cost_gate, deploy,
+    n_days}. PURE (no network). A symbol with < ``window`` observations is FLAT
+    (insufficient_history)."""
+    out: dict = {}
+    for sym, f in funding_by_symbol.items():
+        f = pd.Series(f).dropna().sort_index()
+        costs = costs_by_symbol[sym]
+        if len(f) < window:
+            out[sym] = {"deploy": False, "reason": "insufficient_history",
+                        "n_days": int(len(f)), "gross_ann": float("nan"),
+                        "net_ann": float("nan"), "excess_over_rf": float("nan"),
+                        "cost_gate": False}
+            continue
+        recent = f.tail(window)
+        gross_ann = float(recent.mean() * 365.0)
+        # round-trip cost amortized over a window-day hold, expressed annualized.
+        amort_cost_ann = costs.roundtrip * (365.0 / window)
+        net_ann = gross_ann - amort_cost_ann
+        excess = net_ann - risk_free
+        cost_gate = bool(float(recent.sum()) > 3.0 * costs.roundtrip)
+        deploy = bool(excess > tail_buffer and cost_gate)
+        out[sym] = {"gross_ann": gross_ann, "net_ann": net_ann,
+                    "excess_over_rf": excess, "cost_gate": cost_gate,
+                    "deploy": deploy, "n_days": int(len(f))}
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Tiny synthetic helper (CLEARLY LABELED -- for tests/sanity only, never in the
 # audit's data outputs). Builds a known-answer cash-and-carry world.
