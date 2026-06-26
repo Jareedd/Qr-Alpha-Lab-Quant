@@ -215,17 +215,11 @@ def _print_verdict(res: dict, n_trials: int) -> None:
           "(log the row by hand; N becomes 14).")
 
 
-def load_real_inputs(csv_path: str, source_name: str) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Parse the Bloomberg CSV -> SUE-scored events, and load delisting-inclusive
-    prices for exactly those tickers from the requested source. Network happens
-    HERE (call-time), never at import. Returns ``(events_with_sue, prices)``."""
-    parsed = pead.parse_pead_csv(csv_path)
-    events = pead.compute_sue(parsed)
+def _load_prices_for_events(events: pd.DataFrame, source_name: str) -> pd.DataFrame:
+    """Load delisting-inclusive prices for exactly the tickers in ``events`` from
+    the requested PRICE source. Network happens HERE (call-time), never at import.
+    Shared by both the Bloomberg-CSV and FMP earnings paths."""
     tickers = sorted(events["ticker"].unique())
-    print(f"[data] parsed {len(parsed)} surprise rows -> {len(events)} SUE events "
-          f"across {len(tickers)} tickers; SUE methods "
-          f"{dict(events['sue_method'].value_counts())}")
-
     start = str((events['ann_date'].min() - pd.Timedelta(days=400)).date())
     end = str((events['ann_date'].max() + pd.Timedelta(days=120)).date())
     if source_name == "tiingo":
@@ -239,22 +233,78 @@ def load_real_inputs(csv_path: str, source_name: str) -> tuple[pd.DataFrame, pd.
         daily = pd.bdate_range(start, end)
         prices = src.prices(tickers, daily)
     else:
-        sys.exit(f"unknown --source {source_name!r}")
+        sys.exit(f"unknown --price-source {source_name!r}")
     if prices.empty:
         sys.exit(
             f"\nDATA GATE: price source '{source_name}' returned NO prices for the "
-            "CSV tickers — cannot run the event study. Check the source / cache; "
+            "event tickers — cannot run the event study. Check the source / cache; "
             "no trial spent (N unchanged).")
     print(f"[prices] {prices.shape[1]} priceable tickers x {prices.shape[0]} days "
           f"({source_name}, delisting-inclusive).")
-    return events, prices
+    return prices
+
+
+def load_csv_events(csv_path: str) -> pd.DataFrame:
+    """Parse the Bloomberg surprise CSV -> SUE-scored events. Pure (no network)."""
+    parsed = pead.parse_pead_csv(csv_path)
+    events = pead.compute_sue(parsed)
+    tickers = sorted(events["ticker"].unique())
+    print(f"[data] parsed {len(parsed)} surprise rows -> {len(events)} SUE events "
+          f"across {len(tickers)} tickers; SUE methods "
+          f"{dict(events['sue_method'].value_counts())}")
+    return events
+
+
+def _pit_sp500_universe() -> list[str]:
+    """Every ticker that was an S&P 500 member at any point in the PIT window
+    (the survivorship-safe universe from quantlab.universe). Network here (the
+    cached Wikipedia tables); never at import."""
+    from quantlab import universe as U
+    current, changes = U.fetch_sp500_tables()
+    intervals = U.build_membership_intervals(current, changes)
+    return U.all_members_in_window(intervals)
+
+
+def build_fmp_events(universe: list[str], max_names: int | None,
+                     do_cross_check: bool) -> tuple[pd.DataFrame, dict]:
+    """Build SUE-scored events from FMP for ``universe`` (capped at ``max_names``),
+    run the leakage gate, and return ``(events_with_sue, validation_report)``.
+
+    The events frame is the gate's INPUT (carries last_updated for the recency
+    caveat); SUE is computed only AFTER the gate passes (the caller decides). The
+    optional Alpha Vantage cross-check is attempted only if ``do_cross_check`` and
+    ALPHAVANTAGE_API_KEY is present (skipped gracefully otherwise)."""
+    from quantlab import fmp_earnings as fmp
+    print(f"[data] FMP earnings pull over {len(universe)} symbols"
+          + (f" (capped at {max_names} this run; cached names are free)" if max_names else "")
+          + " ...")
+    raw_events = fmp.build_events(universe, max_names=max_names)
+    cross = None
+    if do_cross_check:
+        # Sample the names actually pulled, so the overlap is non-empty.
+        pulled = sorted(raw_events["ticker"].unique()) if not raw_events.empty else universe
+        cross = fmp.fetch_alphavantage_cross_check(pulled, max_names=10)
+        if cross is None:
+            print("[data] Alpha Vantage cross-check skipped "
+                  "(no ALPHAVANTAGE_API_KEY or no data).")
+    report = fmp.validate_pead_events(raw_events, cross_check=cross)
+    return raw_events, report
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--hypothesis", default="H13")
     ap.add_argument("--n-trials", type=int, default=N_TRIALS_DEFAULT)
-    ap.add_argument("--source", choices=["tiingo", "sec_xwalk"], default="tiingo")
+    ap.add_argument("--source", choices=["fmp", "csv"], default="fmp",
+                    help="earnings source: 'fmp' (free, gated) or 'csv' (Bloomberg).")
+    ap.add_argument("--price-source", choices=["tiingo", "sec_xwalk"], default="tiingo",
+                    help="price source for the event-study returns leg.")
+    ap.add_argument("--max-names", type=int, default=None,
+                    help="cap on distinct FMP symbols pulled this run (free-tier "
+                         "quota; cached names are free on re-runs).")
+    ap.add_argument("--cross-check", action="store_true",
+                    help="attempt an Alpha Vantage cross-source PIT check "
+                         "(needs ALPHAVANTAGE_API_KEY; skipped otherwise).")
     ap.add_argument("--csv", default=BLOOMBERG_CSV)
     args = ap.parse_args()
 
@@ -280,24 +330,51 @@ def main() -> None:
             f"{max(gate['null_sr']):+.2f}); abort, no trial spent.")
     print(f"[gate] PASS (min paired differential {min(gate['diffs']):.2f})")
 
-    # 3) DATA GATE: a graded trial REQUIRES the Bloomberg surprise CSV. This is
-    #    the first hypothesis that steps past free data; the at-the-announcement
-    #    consensus estimate is the one thing free data cannot give us.
-    if not os.path.exists(args.csv):
-        sys.exit(
-            "\nDATA GATE: no Bloomberg PEAD data at "
-            f"{args.csv}.\n  The harness is built and offline-validated (the "
-            "machinery gate above PASSED on the synthetic PEAD world), but a "
-            "GRADED trial #14 needs the at-the-announcement consensus estimate "
-            "that free data lacks.\n  -> Pull it per the bounded, license-"
-            f"respecting checklist in {PULL_DOC} (one small CSV: ticker, "
-            "ann_date, actual_eps, est_eps [+ std_est/surprise_pct if they "
-            "fit the limit]), drop it at the path above, and re-run.\n  No "
-            "trial spent; N unchanged.")
-    print(f"[data] Bloomberg surprise CSV found at {args.csv}.")
+    # 3) DATA GATE. Two earnings sources, each gated:
+    #    csv  -> the existing Bloomberg surprise CSV (must exist).
+    #    fmp  -> free FMP estimates, GATED by the leakage validator. The gate
+    #            fails CLOSED: if the free estimates look backfilled / non-PIT /
+    #            degenerate, we sys.exit BEFORE spending a trial (N unchanged).
+    if args.source == "csv":
+        if not os.path.exists(args.csv):
+            sys.exit(
+                "\nDATA GATE: no Bloomberg PEAD data at "
+                f"{args.csv}.\n  The harness is built and offline-validated (the "
+                "machinery gate above PASSED on the synthetic PEAD world), but a "
+                "GRADED trial #14 needs the at-the-announcement consensus estimate "
+                "that free data lacks.\n  -> Pull it per the bounded, license-"
+                f"respecting checklist in {PULL_DOC} (one small CSV: ticker, "
+                "ann_date, actual_eps, est_eps [+ std_est/surprise_pct if they "
+                "fit the limit]), drop it at the path above, and re-run.\n  No "
+                "trial spent; N unchanged.")
+        print(f"[data] Bloomberg surprise CSV found at {args.csv}.")
+        events = load_csv_events(args.csv)
+    else:  # fmp
+        universe = _pit_sp500_universe()
+        raw_events, report = build_fmp_events(
+            universe, args.max_names, args.cross_check)
+        # Print the validation report either way (PASS or FAIL).
+        from quantlab.fmp_earnings import format_validation_report
+        print(format_validation_report(report))
+        if not report["passed"]:
+            sys.exit(
+                "\nDATA GATE (FMP leakage validator) FAILED — the free earnings "
+                "feed shows at least one gross red flag of a non-PIT / broken "
+                "source:\n  - " + "\n  - ".join(report["reasons"])
+                + "\n  Failing CLOSED: a contaminated graded trial is worse than "
+                "no trial. No trial spent; N unchanged. Fix/replace the feed (or "
+                "fall back to --source csv) and re-run.")
+        # Gate passed -> NOW compute SUE (drop the validation-only last_updated col).
+        events = pead.compute_sue(
+            raw_events.drop(columns=["last_updated"], errors="ignore"))
+        print(f"[data] FMP gate PASSED -> {len(events)} SUE events across "
+              f"{events['ticker'].nunique()} tickers; SUE methods "
+              f"{dict(events['sue_method'].value_counts())}")
+        print("[data] REMINDER: gate PASS == no gross red flags, NOT proven "
+              "point-in-time (see CAVEAT above).")
 
-    # 4) parse CSV + build SUE + load prices for those tickers (network here).
-    events, prices = load_real_inputs(args.csv, args.source)
+    # 4) load delisting-inclusive prices for the event tickers (network here).
+    prices = _load_prices_for_events(events, args.price_source)
 
     # 5-7) event study + cross-sectional + controls + baselines + verdict.
     res = _run_trial(events, prices, args.n_trials)
