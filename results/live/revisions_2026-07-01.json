@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-06-30",
+  "n_shared_dates": 2134,
+  "n_shared_tickers": 657,
+  "n_cells_compared": 1306873,
+  "n_price_cells_changed": 54469,
+  "frac_price_cells_changed": 0.04167887774864122,
+  "max_abs_rel_price_change": 0.03691869282398874,
+  "n_return_cells_compared": 1306106,
+  "n_return_cells_changed": 306,
+  "frac_return_cells_changed": 0.00023428420051665026,
+  "max_abs_return_change": 0.03647204537831372,
+  "n_tickers_affected": 33,
+  "n_price_cells_noise_band": 635787,
+  "n_return_cells_noise_band": 803867,
+  "n_cells_appeared": 3,
+  "n_cells_vanished": 2,
+  "top_affected_tickers": [
+    {
+      "ticker": "A",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.0019204664370302549,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "ARE",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.012952605410466167,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "AVB",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.009240746362284225,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "BXP",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.010437319908942477,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "CPT",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.009080755888268621,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "DE",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.0025859960267166082,
+      "n_return_cells": 4
+    },
+    {
+      "ticker": "DIS",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.007604461451193867,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "FITB",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.00704525739122841,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "ESS",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.008752873957166285,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "LII",
+      "n_price_cells": 2133,
+      "max_abs_rel_change": 0.0023914268015983176,
+      "n_return_cells": 1
+    }
+  ]
+}
