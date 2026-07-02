@@ -4,7 +4,11 @@
    only, for a locked 60fps. Core easing = cubic-bezier(.16,1,.3,1).
    ========================================================================== */
 
-/* ---- self-hosted variable fonts (no third-party origins; CSP: font-src 'self') */
+/* ---- self-hosted variable fonts (no third-party origins; CSP: font-src 'self')
+   One variable woff2 per family covers every weight we use — smaller and
+   simpler than per-weight static files. No local() sources on purpose: a
+   visitor's installed copy may be an older cut with different metrics, and
+   modern browsers partially ignore local() for fingerprinting reasons. */
 @font-face{
   font-family:"Space Grotesk";
   src:url("assets/fonts/SpaceGrotesk-var.woff2") format("woff2");
@@ -14,6 +18,24 @@
   font-family:"Inter";
   src:url("assets/fonts/Inter-var.woff2") format("woff2");
   font-weight:100 900; font-style:normal; font-display:swap;
+}
+
+/* ---- CLS guard: metric-adjusted fallbacks. While the woff2 loads (or if it
+   ever fails), Arial/Helvetica renders pre-scaled to the web font's metrics,
+   so the swap doesn't shift layout. Values computed from the shipped font
+   files against Arial-compatible metrics (Inter matches next/font's
+   published numbers to ~0.1%). */
+@font-face{
+  font-family:"Space Grotesk Fallback";
+  src:local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
+  size-adjust:111.14%; ascent-override:88.54%; descent-override:26.27%;
+  line-gap-override:0%;
+}
+@font-face{
+  font-family:"Inter Fallback";
+  src:local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
+  size-adjust:107.50%; ascent-override:90.12%; descent-override:22.44%;
+  line-gap-override:0%;
 }
 
 :root{
@@ -27,8 +49,8 @@
   --panel:     #ECECEF;
   --panel-2:   #E2E2E6;
 
-  --font-display: "Space Grotesk", "Arial Narrow", Impact, system-ui, sans-serif;
-  --font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "Space Grotesk Fallback", system-ui, -apple-system, sans-serif;
+  --font-body:    "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease: cubic-bezier(.16,1,.3,1);
   --dur:  .6s;
@@ -46,6 +68,7 @@ body{
   color:var(--ink);
   font-family:var(--font-body);
   font-weight:400;
+  letter-spacing:-.01em;   /* slight tightening for the geometric body face */
   line-height:1.5;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
