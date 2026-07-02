@@ -1,0 +1,54 @@
+# Self-hosted nginx configuration for the Galvez Construction site.
+# Drop into /etc/nginx/sites-available/ and adjust domain + cert paths.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name galvezconstruction.com www.galvezconstruction.com;
+    # everything on 80 bounces straight to TLS
+    return 301 https://galvezconstruction.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name galvezconstruction.com;
+
+    root /var/www/galvez-construction-site;
+    index index.html;
+
+    # --- TLS (use certbot or your CA of choice) ---
+    ssl_certificate     /etc/letsencrypt/live/galvezconstruction.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/galvezconstruction.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+    # --- security headers (headers > meta; frame-ancestors only works here) ---
+    add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; manifest-src 'self'; upgrade-insecure-requests" always;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" always;
+    add_header Cross-Origin-Opener-Policy "same-origin" always;
+    add_header Cross-Origin-Resource-Policy "same-origin" always;
+
+    # hide server version
+    server_tokens off;
+
+    # --- static assets: long-lived immutable cache for fonts ---
+    location /assets/fonts/ {
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        # add_header must be repeated per block in nginx — re-declare the
+        # security set here if you serve fonts cross-page:
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Cross-Origin-Resource-Policy "same-origin" always;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # no dynamic endpoints exist; refuse anything that isn't GET/HEAD
+    if ($request_method !~ ^(GET|HEAD)$) { return 405; }
+}

@@ -3,13 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ================= SECURITY =================
+       Zero external origins: fonts, images and scripts are all self-hosted,
+       so the CSP below can lock everything to 'self'. Defense-in-depth
+       headers that can't be set via <meta> (HSTS, X-Frame-Options, etc.)
+       live in _headers / vercel.json / nginx.conf — deploy one of those. -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'none';
+    script-src 'self';
+    style-src 'self';
+    font-src 'self';
+    img-src 'self' data:;
+    connect-src 'self';
+    form-action 'self';
+    base-uri 'none';
+    object-src 'none';
+    frame-src 'none';
+    manifest-src 'self';
+    upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
   <title>Galvez Construction — Architectural &amp; Structural Concrete</title>
   <meta name="description" content="Galvez Construction LLC — high-end architectural and structural concrete. Monolithic pours, structural foundations, custom flatwork and decorative finishing built to last." />
 
-  <!-- Fonts: heavy display + clean geometric body, with robust system fallbacks -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- Fonts: self-hosted variable fonts (declared in styles.css) -->
+  <link rel="preload" href="assets/fonts/SpaceGrotesk-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/Inter-var.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -334,17 +356,25 @@
         </div>
 
         <form class="blueprint__form" id="intakeForm" novalidate>
+          <!-- honeypot: invisible to humans, irresistible to naive bots.
+               Filled field or sub-2s submit = silently dropped client-side;
+               the backend should apply the same checks server-side. -->
+          <div class="field field--trap" aria-hidden="true">
+            <label for="company_website">Company website</label>
+            <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
           <div class="field field--half">
             <label for="name">01 · Client / Company</label>
-            <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Architect, AIA" required />
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Jane Architect, AIA" required />
           </div>
           <div class="field field--half">
             <label for="email">02 · Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@studio.com" required />
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@studio.com" required />
           </div>
           <div class="field field--half">
             <label for="phone">03 · Phone</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 000-0000" />
+            <input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30" placeholder="(555) 000-0000" />
           </div>
           <div class="field field--half">
             <label for="scope">04 · Scope</label>
@@ -359,7 +389,7 @@
           </div>
           <div class="field field--full">
             <label for="details">05 · Tell us about the pour</label>
-            <textarea id="details" name="details" rows="4" placeholder="Location, approximate volume (CY), target start, architect/engineer of record, and what 'done right' looks like to you."></textarea>
+            <textarea id="details" name="details" rows="4" maxlength="4000" placeholder="Location, approximate volume (CY), target start, architect/engineer of record, and what 'done right' looks like to you."></textarea>
           </div>
 
           <div class="blueprint__foot">

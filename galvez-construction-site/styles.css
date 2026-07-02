@@ -4,6 +4,18 @@
    only, for a locked 60fps. Core easing = cubic-bezier(.16,1,.3,1).
    ========================================================================== */
 
+/* ---- self-hosted variable fonts (no third-party origins; CSP: font-src 'self') */
+@font-face{
+  font-family:"Space Grotesk";
+  src:url("assets/fonts/SpaceGrotesk-var.woff2") format("woff2");
+  font-weight:300 700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Inter";
+  src:url("assets/fonts/Inter-var.woff2") format("woff2");
+  font-weight:100 900; font-style:normal; font-display:swap;
+}
+
 :root{
   --bg:        #F5F5F7;   /* soft architectural concrete grey */
   --ink:       #111111;   /* deep charcoal steel */
@@ -42,6 +54,10 @@ body{
 img,svg{ display:block; max-width:100%; }
 a{ color:inherit; text-decoration:none; }
 ::selection{ background:var(--hot); color:#fff; }
+
+/* keyboard navigation gets the same structural language as hover */
+:focus-visible{ outline:2px solid var(--hot); outline-offset:3px; }
+.blueprint :focus-visible{ outline-offset:2px; }
 
 .svg-defs{ position:absolute; }
 
@@ -394,6 +410,9 @@ a{ color:inherit; text-decoration:none; }
 .field{ display:flex; flex-direction:column; gap:.5rem; }
 .field--half{ grid-column:span 1; }
 .field--full{ grid-column:1 / -1; }
+/* honeypot — removed from visual flow and the a11y tree, still in the DOM for bots */
+.field--trap{ position:absolute; width:1px; height:1px; overflow:hidden;
+  clip-path:inset(50%); white-space:nowrap; }
 .field label{ font-family:var(--font-display); font-size:.7rem; font-weight:600;
   letter-spacing:.14em; text-transform:uppercase; color:rgba(245,245,247,.55); }
 .field input,.field select,.field textarea{

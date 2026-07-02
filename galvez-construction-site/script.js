@@ -145,9 +145,19 @@
   const form = $("#intakeForm");
   if (form) {
     const ok = $("#formOk");
+    const openedAt = performance.now(); // for the bot timing check below
     const mark = (field, bad) => field.closest(".field").classList.toggle("invalid", bad);
     form.addEventListener("submit", (ev) => {
       ev.preventDefault();
+
+      // --- anti-bot: honeypot filled or superhuman submit speed → drop silently.
+      // (First line of defense only; the backend must repeat these checks.)
+      const trap = $("#company_website");
+      if ((trap && trap.value !== "") || performance.now() - openedAt < 2000) {
+        ok.hidden = false; // pretend success so bots learn nothing
+        return;
+      }
+
       const name = $("#name"), email = $("#email"), scope = $("#scope");
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
       let bad = false;
@@ -156,7 +166,9 @@
       if (bad) { form.querySelector(".field.invalid input,.field.invalid select")?.focus(); return; }
       ok.hidden = false;
       form.querySelectorAll("input,select,textarea,button").forEach((n) => (n.disabled = true));
-      // In production this posts to a backend / form service.
+      // In production this posts to a backend / form service over HTTPS.
+      // Values are never interpolated into the DOM, so there is no client-side
+      // XSS sink here — but the backend must still validate and escape.
       // console.log("intake", Object.fromEntries(new FormData(form)));
     });
     // clear invalid state as the user corrects a field

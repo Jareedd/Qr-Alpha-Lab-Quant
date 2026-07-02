@@ -26,11 +26,47 @@ python3 -m http.server 8080
 
 ## Structure
 
-| File         | Role                                                            |
-|--------------|-----------------------------------------------------------------|
-| `index.html` | Semantic markup for all sections + inline SVG concrete textures |
-| `styles.css` | The full design system, motion tokens, and responsive rules     |
-| `script.js`  | Scroll reveals, sticky capability swap, counters, parallax, form |
+| File                 | Role                                                            |
+|----------------------|-----------------------------------------------------------------|
+| `index.html`         | Semantic markup for all sections + inline SVG concrete textures |
+| `styles.css`         | The full design system, motion tokens, and responsive rules     |
+| `script.js`          | Scroll reveals, sticky capability swap, counters, parallax, form |
+| `assets/fonts/`      | Self-hosted variable fonts (Space Grotesk + Inter, ~70 KB total) |
+| `_headers`           | Security headers for Netlify / Cloudflare Pages                 |
+| `vercel.json`        | Security headers for Vercel                                     |
+| `nginx.conf.example` | Hardened self-hosted nginx config (TLS, headers, method filter) |
+| `.well-known/security.txt` | RFC 9116 vulnerability-disclosure contact                 |
+
+## Security architecture
+
+No site is "unhackable," but this one keeps its attack surface close to the
+theoretical minimum for a website: it is fully static (no server-side code, no
+database, no sessions, no cookies — nothing to inject into or exfiltrate from)
+and hardened in depth:
+
+- **Zero external origins.** Fonts are self-hosted; there are no CDNs, trackers,
+  analytics, or third-party scripts. Nothing to supply-chain-attack, nothing to
+  MITM, no data leaves the page.
+- **Strict Content-Security-Policy** — `default-src 'none'` with narrow `'self'`
+  allowances only. No inline scripts, no `eval`, no external loads. A meta-tag
+  CSP ships in `index.html` as a fallback; the real policy (plus
+  `frame-ancestors 'none'`) is delivered via HTTP headers from whichever config
+  matches your host (`_headers`, `vercel.json`, or `nginx.conf.example`).
+- **Full header suite** on deploy: HSTS (2 years, preload), `X-Frame-Options:
+  DENY` (no clickjacking), `X-Content-Type-Options: nosniff`, `Referrer-Policy`,
+  `Permissions-Policy` (camera/mic/geolocation all denied), COOP + CORP.
+- **No client-side XSS sinks.** Form values are never interpolated into the
+  DOM or URLs; the only `innerHTML` writes use static, author-controlled
+  strings.
+- **Form anti-abuse**: a honeypot field plus a submit-timing check drop naive
+  bots client-side (with a fake success so they learn nothing), and inputs are
+  length-capped. **These are conveniences, not the defense** — whatever backend
+  or form service you wire up must re-validate, escape, and rate-limit
+  server-side.
+- **`security.txt`** so researchers know where to report issues.
+
+When you connect the form to a real endpoint, extend `connect-src` /
+`form-action` in the CSP to that origin — and nothing else.
 
 ## Sections
 
@@ -64,5 +100,6 @@ your image, e.g.:
 
 ## Fonts
 
-Space Grotesk (display) + Inter (body) via Google Fonts, with system-font
-fallbacks if the CDN is unavailable.
+Space Grotesk (display) + Inter (body), self-hosted as variable-font woff2
+files in `assets/fonts/` — no third-party font CDN at runtime. System-font
+fallbacks are declared if the files somehow fail to load.
