@@ -60,13 +60,36 @@ and hardened in depth:
   strings.
 - **Form anti-abuse**: a honeypot field plus a submit-timing check drop naive
   bots client-side (with a fake success so they learn nothing), and inputs are
-  length-capped. **These are conveniences, not the defense** — whatever backend
-  or form service you wire up must re-validate, escape, and rate-limit
-  server-side.
+  length-capped. Web3Forms adds its own server-side spam filtering on top.
 - **`security.txt`** so researchers know where to report issues.
 
-When you connect the form to a real endpoint, extend `connect-src` /
-`form-action` in the CSP to that origin — and nothing else.
+## Making the form deliver (2 minutes)
+
+The form works out of the box: with no configuration it opens the visitor's
+email client pre-filled with the intake details (addressed to
+`FALLBACK_MAILTO` in `script.js` — change it to the real inbox).
+
+For proper in-page delivery, wire up Web3Forms (free, no account):
+
+1. Go to <https://web3forms.com>, enter the inbox that should receive
+   intakes, and copy the access key they email you.
+2. Paste it into `WEB3FORMS_ACCESS_KEY` at the top of the form section in
+   `script.js`.
+3. Done — submissions now arrive by email with spam filtering, and the CSP
+   (`connect-src`) already allows exactly `api.web3forms.com` and nothing else.
+
+The access key is designed to be public (it only lets people send *you*
+email), so committing it is fine.
+
+## Publishing (≈$10/yr total)
+
+1. Put this folder in its own GitHub repo.
+2. Cloudflare Pages → connect the repo → framework preset *None*, output `/`.
+   The `_headers` file ships the full security-header suite automatically.
+3. Buy the domain at Cloudflare Registrar or Porkbun, attach it in Pages,
+   enable **DNSSEC** and **Always Use HTTPS**.
+4. Turn on 2FA for GitHub, Cloudflare, and the registrar.
+5. Sanity-check at securityheaders.com (expect an A+).
 
 ## Sections
 

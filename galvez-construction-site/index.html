@@ -15,7 +15,7 @@
     style-src 'self';
     font-src 'self';
     img-src 'self' data:;
-    connect-src 'self';
+    connect-src 'self' https://api.web3forms.com;
     form-action 'self';
     base-uri 'none';
     object-src 'none';
@@ -400,6 +400,7 @@
             </button>
           </div>
           <p class="blueprint__ok" id="formOk" hidden>✓ Received. A superintendent will reach out shortly.</p>
+          <p class="blueprint__err" id="formErr" hidden>Delivery failed — please email us directly at <a href="mailto:build@galvezconstruction.com">build@galvezconstruction.com</a> and we'll take it from there.</p>
         </form>
       </div>
     </section>

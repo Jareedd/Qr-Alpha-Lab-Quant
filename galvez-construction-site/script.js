@@ -147,11 +147,27 @@
     const ok = $("#formOk");
     const openedAt = performance.now(); // for the bot timing check below
     const mark = (field, bad) => field.closest(".field").classList.toggle("invalid", bad);
-    form.addEventListener("submit", (ev) => {
+    const err = $("#formErr");
+    const btn = $("#submitBtn");
+    const btnLabel = btn.querySelector(".btn-cta__label");
+
+    // ---- delivery backend --------------------------------------------------
+    // Web3Forms (https://web3forms.com): free, no account — enter the inbox
+    // address there, paste the emailed access key below, and submissions are
+    // delivered with their server-side spam filtering on top of our honeypot.
+    // While the key is empty, the form falls back to opening the visitor's
+    // own mail client pre-filled (functional with zero configuration).
+    const WEB3FORMS_ACCESS_KEY = "";
+    const FALLBACK_MAILTO = "build@galvezconstruction.com";
+
+    const lockForm = () => form.querySelectorAll("input,select,textarea,button")
+      .forEach((n) => (n.disabled = true));
+
+    form.addEventListener("submit", async (ev) => {
       ev.preventDefault();
 
       // --- anti-bot: honeypot filled or superhuman submit speed → drop silently.
-      // (First line of defense only; the backend must repeat these checks.)
+      // (First line of defense; Web3Forms re-filters server-side.)
       const trap = $("#company_website");
       if ((trap && trap.value !== "") || performance.now() - openedAt < 2000) {
         ok.hidden = false; // pretend success so bots learn nothing
@@ -164,12 +180,60 @@
       [[name, !name.value.trim()], [email, !emailOk], [scope, !scope.value]]
         .forEach(([f, isBad]) => { mark(f, isBad); if (isBad) bad = true; });
       if (bad) { form.querySelector(".field.invalid input,.field.invalid select")?.focus(); return; }
-      ok.hidden = false;
-      form.querySelectorAll("input,select,textarea,button").forEach((n) => (n.disabled = true));
-      // In production this posts to a backend / form service over HTTPS.
-      // Values are never interpolated into the DOM, so there is no client-side
-      // XSS sink here — but the backend must still validate and escape.
-      // console.log("intake", Object.fromEntries(new FormData(form)));
+
+      err.hidden = true;
+      const fields = {
+        name: name.value.trim(),
+        email: email.value.trim(),
+        phone: $("#phone").value.trim(),
+        scope: scope.value,
+        details: $("#details").value.trim(),
+      };
+
+      // no key configured → hand off to the visitor's mail client, pre-filled
+      if (!WEB3FORMS_ACCESS_KEY) {
+        const body = [
+          `Client/Company: ${fields.name}`,
+          `Email: ${fields.email}`,
+          `Phone: ${fields.phone || "—"}`,
+          `Scope: ${fields.scope}`,
+          "",
+          fields.details,
+        ].join("\n");
+        window.location.href = `mailto:${FALLBACK_MAILTO}` +
+          `?subject=${encodeURIComponent(`Project intake — ${fields.scope} — ${fields.name}`)}` +
+          `&body=${encodeURIComponent(body)}`;
+        ok.textContent = "✓ Opening your email client — send the drafted message to complete the intake.";
+        ok.hidden = false;
+        return;
+      }
+
+      // key configured → deliver via Web3Forms
+      btn.disabled = true;
+      btnLabel.textContent = "Transmitting…";
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `Project intake — ${fields.scope} — ${fields.name}`,
+            from_name: "galvezconstruction.com intake form",
+            botcheck: trap ? trap.value : "",
+            ...fields,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false) throw new Error(data.message || res.statusText);
+        ok.hidden = false;
+        btnLabel.textContent = "Sent ✓";
+        lockForm();
+      } catch (e) {
+        btn.disabled = false;
+        btnLabel.textContent = "Submit intake";
+        err.hidden = false; // static message with a mailto escape hatch — no
+                            // error/server text is ever interpolated into the DOM
+      }
     });
     // clear invalid state as the user corrects a field
     form.addEventListener("input", (e) => {

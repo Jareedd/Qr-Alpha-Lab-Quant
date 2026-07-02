@@ -442,6 +442,9 @@ a{ color:inherit; text-decoration:none; }
 .blueprint__note{ margin:0; font-size:.8rem; color:rgba(245,245,247,.5); max-width:38ch; }
 .blueprint__ok{ grid-column:1/-1; color:var(--hot); font-family:var(--font-display);
   font-weight:600; margin:.4rem 0 0; }
+.blueprint__err{ grid-column:1/-1; color:rgba(245,245,247,.85); font-size:.9rem;
+  margin:.4rem 0 0; border-left:2px solid var(--hot); padding-left:.8rem; }
+.blueprint__err a{ color:var(--hot); text-decoration:underline; }
 
 .btn-cta{
   position:relative; display:inline-flex; align-items:center; gap:1rem;
