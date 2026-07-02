@@ -1,12 +1,12 @@
-# Live paper-trading monitor — as of 2026-07-01
+# Live paper-trading monitor — as of 2026-07-02
 
 ## Cycle continuity
-- cycles logged: **14** (2026-06-10 → latest 2026-07-01)
-- prediction logs: **13** of 14 cycles (weights-only cycles predate prediction logging and cannot yield live IC)
+- cycles logged: **15** (2026-06-10 → latest 2026-07-02)
+- prediction logs: **14** of 15 cycles (weights-only cycles predate prediction logging and cannot yield live IC)
 - weekdays in window with NO log: **2** — 2026-06-16, 2026-06-19  *(NYSE holidays are not modeled and appear here; anything else is a missed cycle and must be explained)*
 
 ## Live IC vs backtest IC
-- measurable cycles: **0** of 13 logged (a cycle matures 21 trading days after its as-of date)
+- measurable cycles: **0** of 14 logged (a cycle matures 21 trading days after its as-of date)
 - live mean rank IC: *not yet measurable*
 - backtest mean rank IC (same config, 2010→2026 OOS): **+0.0225** (t_NW = 1.91)
 - **do not interpret yet**: t_NW needs > 23 matured cycles; early ICs are single noisy draws
@@ -16,7 +16,7 @@
 - purpose: if the model's live IC sags vs backtest, the baseline's own live-vs-backtest gap separates 'model decayed' from 'period was hostile to everything'
 
 ## Data revisions (vendor rewriting the shared past)
-- snapshot pairs compared: **12**; latest (2026-06-30 → cycle): 54,469 of 1,306,873 shared price cells changed (4.1679%), **306 return cells** changed (max |Δreturn| 3.65e-02)
+- snapshot pairs compared: **13**; latest (2026-07-01 → cycle): 19,035 of 1,307,507 shared price cells changed (1.4558%), **280 return cells** changed (max |Δreturn| 5.81e-02)
 - price-level changes are mostly benign re-adjustments; *return* changes alter features/labels — they are why backtest and live model literally saw different versions of the same past
 
 ## Realized book P&L (public-price marks, gross, no costs)
