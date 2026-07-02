@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galvez Construction — Architectural &amp; Structural Concrete</title>
+  <meta name="description" content="Galvez Construction LLC — high-end architectural and structural concrete. Monolithic pours, structural foundations, custom flatwork and decorative finishing built to last." />
+
+  <!-- Fonts: heavy display + clean geometric body, with robust system fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============ GRAIN / CONCRETE TEXTURE (SVG filter, reused globally) ============ -->
+  <svg class="svg-defs" aria-hidden="true" width="0" height="0">
+    <defs>
+      <filter id="concreteGrain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix in="noise" type="saturate" values="0"/>
+        <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+      </filter>
+      <filter id="concreteFacade">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.16" numOctaves="4" seed="7" result="n"/>
+        <feColorMatrix in="n" type="saturate" values="0"/>
+        <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+        <feComposite operator="in" in2="SourceGraphic"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- global film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============================ NAV ============================ -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__brand" aria-label="Galvez Construction home">
+      <span class="nav__mark">GC</span>
+      <span class="nav__name">Galvez Construction<sup>®</sup></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#proof">Projects</a>
+      <a href="#contact" class="nav__cta">Start a build <span aria-hidden="true">→</span></a>
+    </nav>
+  </header>
+
+  <!-- ============================ HERO ============================ -->
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="hero__grid">
+        <!-- left: minimal editorial text block -->
+        <div class="hero__lede">
+          <p class="eyebrow" data-reveal>
+            <span class="eyebrow__dot"></span>
+            Est. 2009 · Licensed &amp; Bonded · Architectural + Structural Concrete
+          </p>
+
+          <h1 class="hero__title">
+            <span class="mask"><span class="mask__inner">WE CAST</span></span>
+            <span class="mask"><span class="mask__inner">THE FUTURE</span></span>
+            <span class="mask"><span class="mask__inner">IN <em>STONE</em></span></span>
+          </h1>
+
+          <p class="hero__sub" data-reveal>
+            We pour monolithic architectural and structural concrete for people who
+            refuse to compromise on the bones of a building. Every form is engineered,
+            every finish is intentional, every tolerance is measured — not estimated.
+          </p>
+
+          <div class="hero__actions" data-reveal>
+            <a href="#contact" class="btn btn--solid">
+              <span>Request a consultation</span>
+            </a>
+            <a href="#proof" class="btn btn--ghost">
+              <span>See the work</span>
+            </a>
+          </div>
+
+          <dl class="hero__stats" data-reveal>
+            <div><dt data-count="450" data-suffix="+">0</dt><dd>Structures poured</dd></div>
+            <div><dt data-count="1.2" data-suffix="M">0</dt><dd>Cubic yards placed</dd></div>
+            <div><dt data-count="0" data-suffix=" defects">0</dt><dd>Structural callbacks '23</dd></div>
+          </dl>
+        </div>
+
+        <!-- right: massive high-contrast masonry frame -->
+        <div class="hero__frame" aria-hidden="true">
+          <div class="frame">
+            <div class="frame__media" data-parallax="0.12">
+              <svg class="facade" viewBox="0 0 600 820" preserveAspectRatio="xMidYMid slice" role="img">
+                <defs>
+                  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#2b2b2f"/>
+                    <stop offset="1" stop-color="#141416"/>
+                  </linearGradient>
+                  <linearGradient id="concreteFace" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#c9c9cd"/>
+                    <stop offset="0.55" stop-color="#a6a6ab"/>
+                    <stop offset="1" stop-color="#7d7d82"/>
+                  </linearGradient>
+                  <linearGradient id="concreteSide" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#5c5c60"/>
+                    <stop offset="1" stop-color="#3a3a3d"/>
+                  </linearGradient>
+                </defs>
+                <rect width="600" height="820" fill="url(#sky)"/>
+                <!-- monolithic tower mass -->
+                <polygon points="90,760 90,150 420,90 420,700" fill="url(#concreteFace)"/>
+                <polygon points="420,90 540,140 540,730 420,700" fill="url(#concreteSide)"/>
+                <!-- form-tie joint lines -->
+                <g stroke="#ffffff" stroke-opacity="0.10" stroke-width="1">
+                  <line x1="90" y1="290" x2="420" y2="234"/>
+                  <line x1="90" y1="430" x2="420" y2="378"/>
+                  <line x1="90" y1="570" x2="420" y2="522"/>
+                  <line x1="255" y1="120" x2="255" y2="730"/>
+                </g>
+                <g fill="#111" fill-opacity="0.14">
+                  <circle cx="150" cy="255" r="4"/><circle cx="255" cy="243" r="4"/><circle cx="360" cy="230" r="4"/>
+                  <circle cx="150" cy="395" r="4"/><circle cx="255" cy="383" r="4"/><circle cx="360" cy="370" r="4"/>
+                  <circle cx="150" cy="535" r="4"/><circle cx="255" cy="523" r="4"/><circle cx="360" cy="510" r="4"/>
+                </g>
+                <!-- deep shadow reveal -->
+                <polygon points="90,760 90,150 130,144 130,748" fill="#000" fill-opacity="0.16"/>
+                <!-- concrete grain -->
+                <rect width="600" height="820" filter="url(#concreteFacade)" fill="#000" opacity="0.9"/>
+              </svg>
+            </div>
+            <div class="frame__tag">
+              <span class="frame__tag-k">FIG. 01</span>
+              <span class="frame__tag-v">Monolithic core · 42MPa mix · board-form finish</span>
+            </div>
+          </div>
+          <div class="frame__accent" data-parallax="-0.06"></div>
+        </div>
+      </div>
+
+      <!-- running marquee at the seam of the hero -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>ARCHITECTURAL CONCRETE</span><span class="marquee__sep">/</span>
+          <span>STRUCTURAL FOUNDATIONS</span><span class="marquee__sep">/</span>
+          <span>CUSTOM FLATWORK</span><span class="marquee__sep">/</span>
+          <span>DECORATIVE FINISHING</span><span class="marquee__sep">/</span>
+          <span>ARCHITECTURAL CONCRETE</span><span class="marquee__sep">/</span>
+          <span>STRUCTURAL FOUNDATIONS</span><span class="marquee__sep">/</span>
+          <span>CUSTOM FLATWORK</span><span class="marquee__sep">/</span>
+          <span>DECORATIVE FINISHING</span><span class="marquee__sep">/</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SPECIALIZATION DISPLAY ==================== -->
+    <section class="spec" id="capabilities">
+      <div class="spec__inner">
+        <!-- LEFT: sticky oversized index that changes as gallery scrolls -->
+        <aside class="spec__pin">
+          <p class="section-kicker"><span>02</span> What we build</p>
+          <div class="spec__stage">
+            <span class="spec__index" data-index>01</span>
+            <h2 class="spec__word" data-word>ARCHITECTURAL<br/>CONCRETE</h2>
+            <p class="spec__desc" data-desc>
+              Exposed structure treated as the finish itself — board-form textures,
+              crisp arrises and honest, monolithic surfaces engineered to be seen.
+            </p>
+          </div>
+          <div class="spec__progress" aria-hidden="true">
+            <span data-progress></span>
+          </div>
+        </aside>
+
+        <!-- RIGHT: scrolling capability panels -->
+        <div class="spec__scroll">
+          <article class="capability" data-cap
+            data-title="ARCHITECTURAL<br/>CONCRETE"
+            data-desc="Exposed structure treated as the finish itself — board-form textures, crisp arrises and honest, monolithic surfaces engineered to be seen.">
+            <div class="capability__head">
+              <span class="capability__no">01</span>
+              <h3>Architectural Concrete</h3>
+            </div>
+            <div class="capability__vis capability__vis--a" aria-hidden="true"></div>
+            <ul class="capability__list">
+              <li>Board-form &amp; smooth-form architectural walls</li>
+              <li>Self-consolidating high-flow mixes for zero honeycomb</li>
+              <li>Integral pigment &amp; controlled cure for uniform tone</li>
+            </ul>
+          </article>
+
+          <article class="capability" data-cap
+            data-title="STRUCTURAL<br/>FOUNDATIONS"
+            data-desc="Load-bearing systems poured to engineered tolerances — footings, grade beams, caissons and shear walls that carry the whole idea.">
+            <div class="capability__head">
+              <span class="capability__no">02</span>
+              <h3>Structural Foundations</h3>
+            </div>
+            <div class="capability__vis capability__vis--b" aria-hidden="true"></div>
+            <ul class="capability__list">
+              <li>Spread footings, grade beams &amp; drilled caissons</li>
+              <li>Post-tensioned slabs &amp; reinforced shear walls</li>
+              <li>Third-party break tests on every structural pour</li>
+            </ul>
+          </article>
+
+          <article class="capability" data-cap
+            data-title="CUSTOM<br/>FLATWORK"
+            data-desc="Dead-flat floors and site work held to FF/FL numbers — the surfaces people actually walk, park and live on, finished without excuse.">
+            <div class="capability__head">
+              <span class="capability__no">03</span>
+              <h3>Custom Flatwork</h3>
+            </div>
+            <div class="capability__vis capability__vis--c" aria-hidden="true"></div>
+            <ul class="capability__list">
+              <li>Laser-screeded slabs to specified FF/FL flatness</li>
+              <li>Sawcut control-joint layouts drawn, not guessed</li>
+              <li>Exterior hardscape, ramps &amp; ADA-true site work</li>
+            </ul>
+          </article>
+
+          <article class="capability" data-cap
+            data-title="DECORATIVE<br/>FINISHING"
+            data-desc="The last 5% that reads as craft — polished, honed, sandblasted and sealed surfaces that keep their character for decades.">
+            <div class="capability__head">
+              <span class="capability__no">04</span>
+              <h3>Decorative Finishing</h3>
+            </div>
+            <div class="capability__vis capability__vis--d" aria-hidden="true"></div>
+            <ul class="capability__list">
+              <li>Mechanically polished &amp; honed concrete floors</li>
+              <li>Sandblast, acid-etch &amp; broadcast aggregate reveals</li>
+              <li>Penetrating densifiers &amp; guaranteed sealer systems</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PROCESS / EDITORIAL BREAK ==================== -->
+    <section class="ethos" id="work">
+      <p class="ethos__k">03 — The standard</p>
+      <blockquote class="ethos__quote" data-split>
+        Concrete forgives nothing. Once it sets, the mistake is permanent — so we
+        obsess over the forms, the mix and the pour, because the only finish worth
+        delivering is the one that still looks engineered in thirty years.
+      </blockquote>
+      <div class="ethos__row">
+        <div class="ethos__item"><span>A.</span><p>In-house form design &amp; shop drawings before a single yard is ordered.</p></div>
+        <div class="ethos__item"><span>B.</span><p>Documented mix designs, slump &amp; break data on every structural placement.</p></div>
+        <div class="ethos__item"><span>C.</span><p>One superintendent per pour — accountable from layout to final seal.</p></div>
+      </div>
+    </section>
+
+    <!-- ==================== PROOF / PRECISION GRID ==================== -->
+    <section class="proof" id="proof">
+      <div class="proof__head">
+        <p class="section-kicker"><span>04</span> Selected work</p>
+        <h2 class="proof__title">Poured, formed<br/>&amp; finished.</h2>
+      </div>
+
+      <div class="proof__grid">
+        <figure class="tile tile--tall tile--1" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Riverside, CA</span>
+            <span class="tile__name">Meridian Board-Form Residence</span>
+            <span class="tile__meta">Architectural walls · 620 CY</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tile tile--wide tile--2" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Downtown LA</span>
+            <span class="tile__name">Foundry Block · Post-Tensioned Podium</span>
+            <span class="tile__meta">Structural foundations · 3,400 CY</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tile tile--sm tile--3" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Pasadena</span>
+            <span class="tile__name">Atelier Polished Floors</span>
+            <span class="tile__meta">Decorative finishing · 18k SF</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tile tile--sm tile--4" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Long Beach</span>
+            <span class="tile__name">Pier 7 Grade Beams</span>
+            <span class="tile__meta">Structural · marine-grade mix</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tile tile--tall tile--5" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Malibu</span>
+            <span class="tile__name">Cantilever House Shear Core</span>
+            <span class="tile__meta">Architectural + structural</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tile tile--wide tile--6" data-tile>
+          <div class="tile__img"></div>
+          <figcaption class="tile__cap">
+            <span class="tile__loc">Santa Monica</span>
+            <span class="tile__name">Civic Plaza Laser-Screed Flatwork</span>
+            <span class="tile__meta">Custom flatwork · FF50/FL35</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ==================== CONTACT / BLUEPRINT FORM ==================== -->
+    <section class="portal" id="contact">
+      <div class="blueprint">
+        <div class="blueprint__grid" aria-hidden="true"></div>
+
+        <div class="blueprint__head">
+          <div>
+            <p class="section-kicker section-kicker--light"><span>05</span> Start a build</p>
+            <h2 class="blueprint__title">PROJECT<br/>INTAKE</h2>
+          </div>
+          <div class="blueprint__stamp">
+            <span>DOC</span>
+            <strong>GC-INTAKE</strong>
+            <span>REV. 04 · CONFIDENTIAL</span>
+          </div>
+        </div>
+
+        <form class="blueprint__form" id="intakeForm" novalidate>
+          <div class="field field--half">
+            <label for="name">01 · Client / Company</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Architect, AIA" required />
+          </div>
+          <div class="field field--half">
+            <label for="email">02 · Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@studio.com" required />
+          </div>
+          <div class="field field--half">
+            <label for="phone">03 · Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 000-0000" />
+          </div>
+          <div class="field field--half">
+            <label for="scope">04 · Scope</label>
+            <select id="scope" name="scope" required>
+              <option value="" disabled selected>Select discipline</option>
+              <option>Architectural concrete</option>
+              <option>Structural foundations</option>
+              <option>Custom flatwork</option>
+              <option>Decorative finishing</option>
+              <option>Full structure</option>
+            </select>
+          </div>
+          <div class="field field--full">
+            <label for="details">05 · Tell us about the pour</label>
+            <textarea id="details" name="details" rows="4" placeholder="Location, approximate volume (CY), target start, architect/engineer of record, and what 'done right' looks like to you."></textarea>
+          </div>
+
+          <div class="blueprint__foot">
+            <p class="blueprint__note">Typical response within one business day. All scopes reviewed by a superintendent, not a bot.</p>
+            <button type="submit" class="btn-cta" id="submitBtn">
+              <span class="btn-cta__label">Submit intake</span>
+              <span class="btn-cta__arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+          <p class="blueprint__ok" id="formOk" hidden>✓ Received. A superintendent will reach out shortly.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="foot">
+    <div class="foot__big" aria-hidden="true">GALVEZ</div>
+    <div class="foot__cols">
+      <div class="foot__col">
+        <span class="foot__k">Office</span>
+        <p>1420 Foundry Ave, Unit 3<br/>Los Angeles, CA 90013</p>
+      </div>
+      <div class="foot__col">
+        <span class="foot__k">Contact</span>
+        <p><a href="mailto:build@galvezconstruction.com">build@galvezconstruction.com</a><br/><a href="tel:+15550000000">(555) 000-0000</a></p>
+      </div>
+      <div class="foot__col">
+        <span class="foot__k">Credentials</span>
+        <p>CA Lic. #B-1029384<br/>Bonded · Insured · ACI Certified</p>
+      </div>
+      <div class="foot__col">
+        <span class="foot__k">Index</span>
+        <p><a href="#capabilities">Capabilities</a><br/><a href="#proof">Projects</a><br/><a href="#contact">Start a build</a></p>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>© <span id="year">2026</span> Galvez Construction LLC. Architectural &amp; structural concrete.</span>
+      <span class="foot__made">Formed, poured &amp; finished in California.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
