@@ -44,7 +44,9 @@ Current results: planted → out-of-sample rank IC 0.063 (Newey–West t = 2.0),
 
 **Survivorship bias, measured on this very pipeline.** The same ridge config earns net Sharpe **0.82** (IC 0.033) on a static universe of today's members — and net Sharpe **−0.01** (IC 0.005, Newey–West t = 0.5) on the point-in-time S&P 500. The entire "edge" was hindsight in the universe selection. McLean & Pontiff in miniature, reproduced in-house, and the single best exhibit this project owns.
 
-**The honest bottom line after six logged trials.** Across horizons (21/63d), labels (raw/beta-residualized), models (ridge/GBR), and neutralization, no configuration of five price-only features earns a defensible net edge on the bias-corrected universe (best DSR 0.04). The pipeline provably recovers planted signals and rejects noise — the conclusion is about the signals, not the plumbing, and it matches the published record for heavily-arbitraged large caps. A negative result you can trust is the deliverable; the trials that produced near-misses (|t_NW| ≈ 1.9) are documented in `research_log.md` along with why we refuse to trade the sign-flip.
+**The honest bottom line on the equity ablation (trials #2–#7).** Across horizons (21/63d), labels (raw/beta-residualized), models (ridge/GBR/shallow-NN), and neutralization, no configuration of five price-only features earns a defensible net edge on the bias-corrected universe (best DSR 0.04). The pipeline provably recovers planted signals and rejects noise — the conclusion is about the signals, not the plumbing, and it matches the published record for heavily-arbitraged large caps. A negative result you can trust is the deliverable; the trials that produced near-misses (|t_NW| ≈ 1.9) are documented in `research_log.md` along with why we refuse to trade the sign-flip.
+
+**The full arc: thirteen logged trials, three asset classes, zero graduations.** After the equity nulls, the same machine was pointed at markets where a premium has a structural reason to exist. Trial #8 (crypto-perp funding carry) is the project's first genuine non-null — net Sharpe 0.87, IC t_NW −3.54, controls clean — that *still* fails the pre-registered Deflated Sharpe bar (0.865 < 0.95), is crash-skewed (−1.87), and has decayed from Sharpe 2.3 to ~0.4 as the trade institutionalized; the criteria were **not** relaxed. Trial #9 showed the famous S&P-deletion rebound is just matched small-loser mean reversion (Greenwood–Sammon, reproduced in-house). Trial #10 ran the carry machine into the liquid tail and found a signal just as significant (t_NW −3.62) that loses money net — the cleanest IC-≠-P&L exhibit in the project. Trial #11 (closed-end-fund discount reversion) cleared *every* pre-registered bar at once — net Sharpe 1.11, DSR 0.999 — and was then overturned by its own entry-lag diagnostic (1.11 → 0.10 at a one-week lag): a bid-ask-bounce microstructure artifact, not reversion. Trial #12 (fundamental quality, unblocked after a free SEC name→CIK crosswalk plus Tiingo delisting-inclusive prices solved the survivorship gate from trial #1) earned a raw net Sharpe of +0.58 (t_NW +2.30) that collapses to −0.18 in the HML-neutral arm where graduation is judged — the "quality" edge was the value factor in disguise, exactly the failure mode the two-arm design was pre-registered to catch. Trial #13 (broad-basket insider cluster-buying, the powered redesign after the top-decile book failed its pre-spend power gate) was a clean null: net Sharpe −0.13, opportunistic clusters no better than routine ones. The discipline killing its own best-looking numbers is the point. **The product is the research process, not the alpha.** Full write-up: [`writeup/research_note.md`](writeup/research_note.md) (PDF: [`writeup/Galvez_2026_falsification_first.pdf`](writeup/Galvez_2026_falsification_first.pdf)); every number traces to a row in `research_log.md`.
 
 **Capacity is a first-class question.** `--capacity` sweeps AUM through a square-root impact model (trailing dollar-ADV, point-in-time, k = 1) and reports where net Sharpe dies — because "does it scale?" is the question that separates a backtest from a business.
 
@@ -78,10 +80,12 @@ src/quantlab/
                  # mark-to-market of logged books (read-only by design)
 scripts/run_pipeline.py   # end-to-end CLI (incl. CI falsification-gate flags)
 scripts/live_report.py    # one-page live-monitoring report from results/live/
-tests/                    # 58 tests: leakage, costs, DSR monotonicity, lookahead,
-                          # baselines, vectorized-vs-naive equivalence,
-                          # nested-tuning leak checks, live-order known answers,
-                          # monitor known answers
+tests/                    # 386 tests across 54 files: leakage, costs, DSR
+                          # monotonicity, lookahead, baselines, vectorized-vs-naive
+                          # equivalence, nested-tuning leak checks, live-order &
+                          # monitor known answers, regime causality, carry/CEF/
+                          # event/fundamentals/insider harnesses, PBO/CSCV,
+                          # registry refusal paths
 research_log.md           # every trial ever run; owns the honest --n-trials count
 .github/workflows/ci.yml  # unit tests + falsification gate on every push
 ```
@@ -90,7 +94,7 @@ research_log.md           # every trial ever run; owns the honest --n-trials cou
 
 ```
 pip install -r requirements.txt
-python -m pytest tests/ -q                              # 58 tests
+python -m pytest tests/ -q                              # 386 tests
 python scripts/run_pipeline.py --data planted           # sanity check 1
 python scripts/run_pipeline.py --data noise --n-trials 20   # sanity check 2
 # Real-data runs are registration-gated (law #3, mechanized): they require
