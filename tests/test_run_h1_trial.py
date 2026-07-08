@@ -296,7 +296,12 @@ def test_data_gate_refuses_survivorship_blocked_free_sec(monkeypatch):
     (test_fundamentals.test_machinery_gate_*, test_quality_value.*), and the
     neutralization gate's stochastic SR draw must not make THIS source-refusal
     assertion order-dependent. With both gates passing, reaching the DATA-GATE
-    refusal is exactly the path under test — and it must still refuse free_sec."""
+    refusal is exactly the path under test — and it must still refuse free_sec.
+
+    The registration gate is stubbed like the other main() tests here: it reads the
+    LIVE registry, and H1's status is RUN since trial #12 — without the stub the
+    registration refusal fires first and this test never reaches its subject."""
+    monkeypatch.setattr(rht, "require_runnable_registration", lambda *a, **k: None)
     monkeypatch.setattr(fnd, "machinery_gate",
                         lambda *a, **k: {"passed": True, "diffs": [9.9],
                                          "planted_sr": [9.9], "null_sr": [0.0]})
