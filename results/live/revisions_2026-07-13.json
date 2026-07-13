@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-07-10",
+  "n_shared_dates": 2141,
+  "n_shared_tickers": 638,
+  "n_cells_compared": 1301360,
+  "n_price_cells_changed": 21416,
+  "frac_price_cells_changed": 0.016456629987090427,
+  "max_abs_rel_price_change": 0.017015935292750695,
+  "n_return_cells_compared": 1300708,
+  "n_return_cells_changed": 260,
+  "frac_return_cells_changed": 0.0001998911362119707,
+  "max_abs_return_change": 0.017488546465438404,
+  "n_tickers_affected": 23,
+  "n_price_cells_noise_band": 655585,
+  "n_return_cells_noise_band": 794121,
+  "n_cells_appeared": 20,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "AAP",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.004546078677017729,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "DRI",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.008023495836339323,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "NTAP",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.0030287003400056856,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "MRVL",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.0002474343250871147,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "LNC",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.011392980283497778,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "LEN",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.005928237253752244,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "GIS",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.017015935292750695,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "T",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.013213534488429546,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "VZ",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.016762200463473764,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "ORCL",
+      "n_price_cells": 2140,
+      "max_abs_rel_change": 0.0034674734009061403,
+      "n_return_cells": 1
+    }
+  ]
+}
