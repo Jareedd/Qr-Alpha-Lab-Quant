@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-07-17",
+  "n_shared_dates": 2146,
+  "n_shared_tickers": 647,
+  "n_cells_compared": 1307877,
+  "n_price_cells_changed": 10743,
+  "frac_price_cells_changed": 0.008214075176794148,
+  "max_abs_rel_price_change": 0.007367528593036021,
+  "n_return_cells_compared": 1307140,
+  "n_return_cells_changed": 259,
+  "frac_return_cells_changed": 0.00019814250960111389,
+  "max_abs_return_change": 0.007498098764527228,
+  "n_tickers_affected": 20,
+  "n_price_cells_noise_band": 664797,
+  "n_return_cells_noise_band": 794358,
+  "n_cells_appeared": 8,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "AYI",
+      "n_price_cells": 2145,
+      "max_abs_rel_change": 0.0005884643238587284,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "WSM",
+      "n_price_cells": 2145,
+      "max_abs_rel_change": 0.003328430984021913,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "UDR",
+      "n_price_cells": 2145,
+      "max_abs_rel_change": 0.0035747697576391513,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "EOG",
+      "n_price_cells": 2145,
+      "max_abs_rel_change": 0.007367528593036021,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "RVTY",
+      "n_price_cells": 2145,
+      "max_abs_rel_change": 0.0006273887897726427,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 3,
+      "max_abs_rel_change": 1.2062710008642341e-06,
+      "n_return_cells": 27
+    },
+    {
+      "ticker": "SLG",
+      "n_price_cells": 2,
+      "max_abs_rel_change": 1.1321648637485637e-06,
+      "n_return_cells": 22
+    },
+    {
+      "ticker": "ADP",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.9606615965672702e-05,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "EMC",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 5.6612096960284575e-06,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "AVGO",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.3414319613325176e-05,
+      "n_return_cells": 1
+    }
+  ]
+}
