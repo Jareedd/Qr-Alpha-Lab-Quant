@@ -1,0 +1,21 @@
+{
+  "asof": "2026-07-21",
+  "n_names": 98,
+  "submitted": true,
+  "equity": 1014191.09,
+  "orders_sent": 95,
+  "orders_failed": [
+    {
+      "symbol": "CF",
+      "qty": 41,
+      "side": "buy",
+      "error": "{\"available\":\"7\",\"code\":40310000,\"existing_qty\":\"7\",\"held_for_orders\":\"0\",\"message\":\"insufficient qty available for orde"
+    }
+  ],
+  "n_failed": 1,
+  "revisions": {
+    "compared_to": "2026-07-20",
+    "frac_price_cells_changed": 0.008210821869337578,
+    "n_return_cells_changed": 258
+  }
+}
