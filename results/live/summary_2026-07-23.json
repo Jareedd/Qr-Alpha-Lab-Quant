@@ -1,0 +1,135 @@
+{
+  "asof": "2026-07-23",
+  "n_names": 98,
+  "submitted": true,
+  "equity": 1024215.38,
+  "orders_sent": 46,
+  "orders_failed": [
+    {
+      "symbol": "ACN",
+      "qty": 101,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "ADBE",
+      "qty": 6,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "ADP",
+      "qty": 3,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "ADSK",
+      "qty": 3,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "AJG",
+      "qty": 26,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "AXON",
+      "qty": 3,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "BAX",
+      "qty": 61,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "BR",
+      "qty": 6,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "BRO",
+      "qty": 11,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CDW",
+      "qty": 2,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CF",
+      "qty": 27,
+      "side": "buy",
+      "error": "{\"available\":\"7\",\"code\":40310000,\"existing_qty\":\"7\",\"held_for_orders\":\"0\",\"message\":\"insufficient qty available for orde"
+    },
+    {
+      "symbol": "CHTR",
+      "qty": 5,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CMG",
+      "qty": 34,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "COIN",
+      "qty": 9,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CRM",
+      "qty": 8,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CRWD",
+      "qty": 7,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "CTAS",
+      "qty": 2,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "DDOG",
+      "qty": 4,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "DPZ",
+      "qty": 24,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    },
+    {
+      "symbol": "DVA",
+      "qty": 1,
+      "side": "sell",
+      "error": "{\"code\":40310000,\"message\":\"account is not allowed to short\"}"
+    }
+  ],
+  "n_failed": 49,
+  "revisions": {
+    "compared_to": "2026-07-22",
+    "frac_price_cells_changed": 0.0032875599525418655,
+    "n_return_cells_changed": 234
+  }
+}
