@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-07-27",
+  "n_shared_dates": 2152,
+  "n_shared_tickers": 647,
+  "n_cells_compared": 1311645,
+  "n_price_cells_changed": 2161,
+  "frac_price_cells_changed": 0.0016475494512615838,
+  "max_abs_rel_price_change": 0.003965153333020166,
+  "n_return_cells_compared": 1310868,
+  "n_return_cells_changed": 284,
+  "frac_return_cells_changed": 0.0002166503416057147,
+  "max_abs_return_change": 0.00028997452627432807,
+  "n_tickers_affected": 11,
+  "n_price_cells_noise_band": 673306,
+  "n_return_cells_noise_band": 794985,
+  "n_cells_appeared": 45,
+  "n_cells_vanished": 5,
+  "top_affected_tickers": [
+    {
+      "ticker": "BNY",
+      "n_price_cells": 2150,
+      "max_abs_rel_change": 0.003965153333020166,
+      "n_return_cells": 0
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 2,
+      "max_abs_rel_change": 1.506000780637784e-06,
+      "n_return_cells": 30
+    },
+    {
+      "ticker": "EMC",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.142235642337397e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "GENZ",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.00013298944757633713,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "INFO",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 3.707651017648139e-06,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "MAS",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.0272801080901672e-06,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "NOV",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.0091840232373528e-06,
+      "n_return_cells": 4
+    },
+    {
+      "ticker": "POM",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.0001386173804869273,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "SLG",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.3915491636762312e-06,
+      "n_return_cells": 22
+    },
+    {
+      "ticker": "SPLS",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 7.505503678562064e-06,
+      "n_return_cells": 1
+    }
+  ]
+}
