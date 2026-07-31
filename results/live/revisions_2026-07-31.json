@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-07-30",
+  "n_shared_dates": 2155,
+  "n_shared_tickers": 655,
+  "n_cells_compared": 1317230,
+  "n_price_cells_changed": 6473,
+  "frac_price_cells_changed": 0.004914100043272625,
+  "max_abs_rel_price_change": 0.01129093309885687,
+  "n_return_cells_compared": 1316466,
+  "n_return_cells_changed": 266,
+  "frac_return_cells_changed": 0.00020205611083005563,
+  "max_abs_return_change": 0.011073000485190776,
+  "n_tickers_affected": 13,
+  "n_price_cells_noise_band": 670103,
+  "n_return_cells_noise_band": 796343,
+  "n_cells_appeared": 3,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "CAG",
+      "n_price_cells": 2154,
+      "max_abs_rel_change": 0.01129093309885687,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "CFG",
+      "n_price_cells": 2154,
+      "max_abs_rel_change": 0.006451324403363268,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "STZ",
+      "n_price_cells": 2154,
+      "max_abs_rel_change": 0.007818381166893373,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 2,
+      "max_abs_rel_change": 1.3604729547367356e-06,
+      "n_return_cells": 15
+    },
+    {
+      "ticker": "CPRT",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 0.00016909050148150584,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "IEX",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.1039918357269585e-06,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "CTSH",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 9.279280216634156e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "LULU",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 4.189062880444183e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "INFO",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.8242479172370096e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "PCS",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.9878209269741376e-06,
+      "n_return_cells": 1
+    }
+  ]
+}
