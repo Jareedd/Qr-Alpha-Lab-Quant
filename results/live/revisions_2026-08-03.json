@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-07-31",
+  "n_shared_dates": 2156,
+  "n_shared_tickers": 655,
+  "n_cells_compared": 1317865,
+  "n_price_cells_changed": 22062,
+  "frac_price_cells_changed": 0.016740713198999897,
+  "max_abs_rel_price_change": 0.01185241102828305,
+  "n_return_cells_compared": 1317101,
+  "n_return_cells_changed": 318,
+  "frac_return_cells_changed": 0.00024143934292055052,
+  "max_abs_return_change": 0.011856673100831827,
+  "n_tickers_affected": 23,
+  "n_price_cells_noise_band": 660528,
+  "n_return_cells_noise_band": 800733,
+  "n_cells_appeared": 2,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "AES",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.01185241102828305,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "AOS",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.0060197177324470275,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "CASY",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.0007499812970411801,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "NI",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.006656846247409587,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.004207134535896495,
+      "n_return_cells": 28
+    },
+    {
+      "ticker": "MS",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.005475280211180045,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "LNT",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.007547531231356652,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "VLO",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.0038504553591052204,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "TRGP",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.004659008435397349,
+      "n_return_cells": 3
+    },
+    {
+      "ticker": "TXN",
+      "n_price_cells": 2155,
+      "max_abs_rel_change": 0.005094570950024968,
+      "n_return_cells": 2
+    }
+  ]
+}
