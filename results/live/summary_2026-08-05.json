@@ -1,0 +1,14 @@
+{
+  "asof": "2026-08-05",
+  "n_names": 98,
+  "submitted": true,
+  "equity": 978154.04,
+  "orders_sent": 106,
+  "orders_failed": [],
+  "n_failed": 0,
+  "revisions": {
+    "compared_to": "2026-08-04",
+    "frac_price_cells_changed": 0.0032984528794077405,
+    "n_return_cells_changed": 252
+  }
+}
