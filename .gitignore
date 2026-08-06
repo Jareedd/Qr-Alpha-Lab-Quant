@@ -14,6 +14,10 @@ pytest-cache-files-*/
 # Data caches (regenerable; never commit market data)
 data_cache/
 
+# Synthetic PIT mock for H13 PEAD scaffolding — regenerable from seed via
+# data_mocks/generate_synthetic_pead.py; the generator is committed, the CSV is not
+data_mocks/mock_pead_data.csv
+
 # Secrets -- the real .env never enters git (.env.example documents the keys)
 .env
 
