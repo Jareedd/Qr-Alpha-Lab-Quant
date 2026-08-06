@@ -118,6 +118,8 @@ Monitoring: `python scripts/live_report.py` renders a one-page report from the l
 
 One-time setup: repo → Settings → Secrets and variables → Actions → add `ALPACA_API_KEY_ID` and `ALPACA_API_SECRET_KEY` (paper keys). The workflow skips gracefully until they exist.
 
+**Graduation is pre-registered** (`writeup/graduation_criteria.md`, frozen 2026-08-06, before anything existed to graduate): a sleeve may be *discussed* for real capital only after ≥120 matured live cycles with a spotless record, an anytime-valid e-value ≥ 20 against the momentum control arm, live IC inside the backtest's block-bootstrap band, realized index beta within |mean| ≤ 0.05 / p95 ≤ 0.15, net-of-measured-impact Sharpe > 0 at DSR ≥ 0.95 for the then-current trial count, and a written adversarial sign-off. Anything less and the public answer stays **no**. (Current status: zero of six criteria are moot — nothing has graduated; criterion 4 is failed by the live construction itself, diagnosed in `writeup/live_vol_diagnosis_2026-08-06.md` and addressed by registration H14.)
+
 ## Dashboard
 
 One read-only Streamlit page over `results/` and the research log — falsification-gate status, the live experiment (cycle continuity, maturity countdown, live-vs-backtest IC with the momentum control arm), the trial ledger with the DSR-vs-N luck hurdle, data-revision tracking, and the capacity curve. It can display, and never change, the research record: `pip install -r requirements-dashboard.txt && streamlit run dashboard/app.py` (dashboard deps are deliberately separate so the nightly trading cycle can never be broken by them).
