@@ -31,6 +31,18 @@ import pandas as pd
 from quantlab import monitor
 
 
+def panel_staleness_days(last_cycle: pd.Timestamp, price_index: pd.Index) -> int:
+    """Days the price panel lags the last logged cycle (>0 = stale).
+
+    IC maturity, book marks and the live-vs-backtest comparison all truncate
+    SILENTLY when the panel is old -- the report must say so on its face
+    rather than print healthy-looking zeros.
+    """
+    if len(price_index) == 0:
+        return 10**6
+    return int((pd.Timestamp(last_cycle) - pd.Timestamp(price_index.max())).days)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--live-dir", default="results/live")
@@ -66,7 +78,13 @@ def main() -> None:
         )
         # 600 calendar days back: 252d beta warm-up + buffer before first cycle.
         start = (min(weights_by_date) - pd.Timedelta(days=600)).date().isoformat()
-        prices = load_prices(tickers, start=start, min_coverage=0.0)
+        # A "latest"-keyed parquet under the default cache dir is frozen at
+        # first download, and the CI cache restores it every night -- this
+        # report ran six weeks on a June price panel, saying "0 measurable
+        # cycles" while ~17 had matured. Per-day snapshot dirs (live.py's own
+        # pattern, pruned to 7 in CI) keep the report's prices <= 1 day old.
+        cache_dir = os.path.join("data_cache", f"live_{dt.date.today().isoformat()}")
+        prices = load_prices(tickers, start=start, min_coverage=0.0, cache_dir=cache_dir)
         live_ic = monitor.realized_live_ic(
             preds_by_date, prices, horizon=args.horizon
         )
@@ -103,6 +121,16 @@ def main() -> None:
         baseline_live_ic=baseline_ic,
         revisions=revisions,
     )
+    if not args.offline:
+        stale = panel_staleness_days(max(weights_by_date), prices.index)
+        if stale > 0:
+            md += (
+                f"\n> **STALE PRICE PANEL:** prices end "
+                f"{prices.index.max().date()}, {stale} days before the last "
+                f"logged cycle — every maturity-dependent number above is "
+                f"truncated. Fix the cache before reading this report.\n"
+            )
+
     out_md = os.path.join(args.live_dir, "report.md")
     with open(out_md, "w", encoding="utf-8") as f:
         f.write(md)

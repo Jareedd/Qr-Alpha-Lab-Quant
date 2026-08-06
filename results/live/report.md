@@ -1,18 +1,18 @@
-# Live paper-trading monitor — as of 2026-08-05
+# Live paper-trading monitor — as of 2026-08-06
 
 ## Cycle continuity
 - cycles logged: **38** (2026-06-10 → latest 2026-08-05)
 - prediction logs: **37** of 38 cycles (weights-only cycles predate prediction logging and cannot yield live IC)
-- weekdays in window with NO log: **3** — 2026-06-16, 2026-06-19, 2026-07-03  *(NYSE holidays are not modeled and appear here; anything else is a missed cycle and must be explained)*
+- weekdays in window with NO log: **4** — 2026-06-16, 2026-06-19, 2026-07-03, 2026-08-06  *(NYSE holidays are not modeled and appear here; anything else is a missed cycle and must be explained)*
 
 ## Live IC vs backtest IC
-- measurable cycles: **0** of 37 logged (a cycle matures 21 trading days after its as-of date)
-- live mean rank IC: *not yet measurable*
+- measurable cycles: **17** of 37 logged (a cycle matures 21 trading days after its as-of date)
+- live mean rank IC: **-0.0174** (t_NW = nan)
 - backtest mean rank IC (same config, 2010→2026 OOS): **+0.0225** (t_NW = 1.91)
 - **do not interpret yet**: t_NW needs > 23 matured cycles; early ICs are single noisy draws
 
 ### Control arm (12-1 momentum baseline, shadow-logged — no orders)
-- baseline live IC: *not yet measurable*
+- baseline live mean rank IC: **-0.2350** over 17 matured cycles
 - purpose: if the model's live IC sags vs backtest, the baseline's own live-vs-backtest gap separates 'model decayed' from 'period was hostile to everything'
 
 ## Data revisions (vendor rewriting the shared past)
@@ -20,7 +20,7 @@
 - price-level changes are mostly benign re-adjustments; *return* changes alter features/labels — they are why backtest and live model literally saw different versions of the same past
 
 ## Realized book P&L (public-price marks, gross, no costs)
-- 11 trading days marked; cumulative +3.53%, ann. vol 17.89%
+- 39 trading days marked; cumulative -0.17%, ann. vol 19.80%
 - cross-check only: fills, costs and shorts-availability live at the broker; the Alpaca equity curve is authoritative
 
 ## Standing limitations
