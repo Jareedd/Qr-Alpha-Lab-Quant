@@ -858,6 +858,68 @@ uses **N = 13**.
   the project's decay story from free-data price/fundamental/alt-data signals to the
   canonical estimates-dependent anomaly, and demonstrates institutional-data fluency.
 
+### H14: Construction variant — the live-vol gap is a construction artifact (cadence + index-beta overlay), not a signal property
+- Status: **PROPOSED — frozen 2026-08-06.** Owner sign-off required; a graded
+  run spends one trial at then-current N. No new signal anywhere in this
+  registration.
+- Motivation (diagnosis first, per §5.0 discipline): the committed live record
+  shows the INTENDED book (logged weights at public marks) running **20.3%**
+  ann vol with realized SPY beta **+0.53**, ex-ante w·β_SPY **positive on 38/38
+  cycles** (mean +0.31), and one-way turnover **42×/yr** — while the deployed
+  config's own backtest (`results/metrics_sp500_ridge_both_residlabel.json`)
+  ran **5.6%** vol at **3.46×/yr**. Execution is ruled out (cum broker-vs-
+  intended gap −1.23%; the 2026-07-23 mass short-rejection left a 4.5 bp mark).
+  Full decomposition: `results/live_beta_diagnosis.json` +
+  `writeup/live_vol_diagnosis_2026-08-06.md`.
+- Hypothesis: BOTH live deviations are artifacts of the live layer's
+  construction choices, not of the ridge signal: rebuilding the SAME
+  walk-forward predictions into (a) the backtest's 21-trading-day rebalance
+  cadence and (b) an at-rebalance SPY overlay that zeroes w·β_SPY restores the
+  backtest's realized vol and removes the systematic index tilt, without
+  degrading the (null) net SR.
+- Exact config (FROZEN): identical pipeline to the deployed config
+  (PIT S&P 500, 2010→2026 walk-forward, ridge, residualized labels, h=21,
+  decile quantile 0.10, sector demean + EW-member-mean beta projection,
+  10 bps/side) — three arms through the identical cost-aware backtester on
+  identical dates, registered as ONE construction trial:
+  - **A0** as-live: decile book refreshed every trading day (the live layer's
+    `rebalance_every=1` behavior, reproduced in-backtest);
+  - **A1** cadence: identical but rebalanced every 21 trading days (the
+    deployed backtest's cadence);
+  - **A2** cadence+overlay: A1 plus a SPY position of −(w·β_SPY) set at each
+    rebalance, β from 252d rolling (min 126) daily regressions, overlay traded
+    at 1 bp/side (index ETF spread, declared), book legs at 10 bps/side.
+- Machinery gate (MUST pass in-env before the graded run): a synthetic world
+  with a planted cross-sectional alpha PLUS a planted common index loading —
+  the overlay must remove the loading (realized book β ≈ 0) while preserving
+  the planted alpha; a noise world with the same loading — the overlay must
+  not manufacture SR (net SR ~ 0). Paired per seed.
+- Success criteria (all three, else the hypothesis FAILS):
+  1. A2 realized ann vol ∈ **[0.75, 1.5] ×** the deployed backtest's 0.0559
+     (i.e. the vol gap closes to within band);
+  2. A2 realized rolling-63d SPY beta: **|mean| ≤ 0.05 and p95|β| ≤ 0.15**
+     (graduation criterion 4's bounds, met in-backtest);
+  3. A2 net SR ≥ (deployed backtest net SR − 0.15) — the fix must not buy
+     neutrality by degrading the return profile beyond noise.
+  A0 is the attribution control: A0-vs-A1 isolates cadence, A1-vs-A2 isolates
+  the overlay. Turnover and cost drag reported per arm.
+- Power/MDE: the registered claims are vol/beta CLOSURE bounds on ~16y of
+  daily data (n ≈ 4,000), not an alpha detection — the binding hurdle is the
+  pre-stated bands, computed trivially at that n. DSR does not gate a
+  null-signal construction check; the trial still increments N (real-data
+  evaluation), and the SR floor in criterion 3 is the anti-degradation guard.
+- Kill criteria: machinery gate fails → ABORT (no N spent). Criterion 1 fails
+  → the vol is a signal/period property, NOT construction — the live equity
+  record must then be reinterpreted, logged as such. Criterion 2 fails → the
+  EW-vs-SPY beta reference is not the tilt's source; register nothing further
+  until re-diagnosed. NO post-hoc cadence/window/hedge-ratio scans (each is
+  +1 trial).
+- Scope guard (directive: the live config is frozen mid-experiment): this
+  trial changes NOTHING deployed. If it passes, whether to deploy A2 to the
+  live arm (resetting what the live equity record measures) is a SEPARATE
+  owner decision registered at that time. The live-IC arm is unaffected by
+  construction either way.
+
 ---
 
 Run log: H2 RUN as trial #8 (2026-06-13, criteria not met). H8 RUN as trial #9
