@@ -189,7 +189,9 @@ def shuffle_funding(funding: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
     earn ~nothing; if it earns, the harvest was structure, not carry."""
     rng = np.random.default_rng(seed)
     out = funding.copy()
-    arr = out.to_numpy()
+    # pandas>=3.0 returns a read-only view under copy-on-write; force a
+    # writable copy so the in-place row permutation below stays valid.
+    arr = out.to_numpy(copy=True)
     for i in range(arr.shape[0]):
         row = arr[i]
         finite = np.where(np.isfinite(row))[0]

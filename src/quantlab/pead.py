@@ -76,7 +76,9 @@ def parse_pead_csv(path_or_buffer) -> pd.DataFrame:
     # announcement date, and both EPS numbers (the SUE numerator).
     bad_ticker = df["ticker"].isin(["", "NAN", "NONE"])
     df = df[~bad_ticker]
-    df = df.dropna(subset=["ann_date", "actual_eps", "est_eps"])
+    # pandas>=3.0 string dtype propagates NaN through .astype(str) instead of
+    # stringifying it, so a missing ticker must be dropped as NaN too.
+    df = df.dropna(subset=["ticker", "ann_date", "actual_eps", "est_eps"])
     return df.sort_values(["ann_date", "ticker"]).reset_index(drop=True)
 
 
