@@ -171,7 +171,7 @@ def _run_trial(events: pd.DataFrame, prices: pd.DataFrame, n_trials: int,
     return result
 
 
-def _print_verdict(res: dict, n_trials: int) -> None:
+def _print_verdict(res: dict, n_trials: int, pilot: bool = False) -> None:
     es = res["event_study"]
     dvr = res["drift_vs_reaction"]
     terc = res["size_tercile"]
@@ -211,8 +211,13 @@ def _print_verdict(res: dict, n_trials: int) -> None:
     print(f"  5. not illiquid-only ..... larger terciles SR "
           f"{[round(ts.get(k,float('nan')),3) for k in (1,2)]}  -> "
           f"{'PASS' if g['not_illiquid_only'] else 'FAIL'}")
-    print(f"  >>> H13 {'GRADUATES' if res['graduate'] else 'does NOT graduate'} "
-          "(log the row by hand; N becomes 14).")
+    if pilot:
+        print(f"  >>> PILOT (NON-GRADED): all gates {'WOULD PASS' if res['graduate'] else 'would NOT all pass'} "
+              "— informational only. NO trial spent, N UNCHANGED, no graduation "
+              "claim. Universe too few/large-cap-selected to grade honestly.")
+    else:
+        print(f"  >>> H13 {'GRADUATES' if res['graduate'] else 'does NOT graduate'} "
+              "(log the row by hand; N becomes 14).")
 
 
 def _load_prices_for_events(events: pd.DataFrame, source_name: str) -> pd.DataFrame:
@@ -265,6 +270,42 @@ def _pit_sp500_universe() -> list[str]:
     return U.all_members_in_window(intervals)
 
 
+def _current_sp500_universe() -> list[str]:
+    """The CURRENT S&P 500 members (all live -> clean FMP coverage, no quota
+    wasted on 404'd delisted tickers). Carries a mild universe-survivorship
+    residual vs the PIT set — declared in the H13 registration; far less
+    corrosive for a DATED event study than for a buy-and-hold. Network here."""
+    from quantlab import universe as U
+    current, _ = U.fetch_sp500_tables()
+    col = current["ticker"] if hasattr(current, "columns") else current
+    return sorted({str(t).strip().upper() for t in col if str(t).strip()})
+
+
+def _cached_fmp_universe() -> list[str]:
+    """Only the FMP symbols already cached on disk — NO new fetches. FMP's free
+    tier serves a fixed ~27 demo symbols (every other S&P 500 name 402s as a
+    premium symbol), so the on-disk cache IS the free-accessible universe. Used by
+    the NON-GRADED pilot; far too few / large-cap-selected to grade honestly."""
+    return _cached_symbols(os.path.join("data_cache", "fmp"))
+
+
+def _cached_av_universe() -> list[str]:
+    """The Alpha Vantage symbols already warmed on disk (scripts/warm_av_cache.py).
+    AV free covers the whole universe at ~25/day, so this GROWS daily toward a
+    gradeable cohort — the cached set IS the graded universe for --source av."""
+    return _cached_symbols(os.path.join("data_cache", "alphavantage"))
+
+
+def _cached_symbols(cache_dir: str) -> list[str]:
+    import glob
+    out = []
+    for p in sorted(glob.glob(os.path.join(cache_dir, "earnings_*.json"))):
+        sym = os.path.basename(p)[len("earnings_"):-len(".json")]
+        if sym:
+            out.append(sym)
+    return out
+
+
 def build_fmp_events(universe: list[str], max_names: int | None,
                      do_cross_check: bool) -> tuple[pd.DataFrame, dict]:
     """Build SUE-scored events from FMP for ``universe`` (capped at ``max_names``),
@@ -295,8 +336,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--hypothesis", default="H13")
     ap.add_argument("--n-trials", type=int, default=N_TRIALS_DEFAULT)
-    ap.add_argument("--source", choices=["fmp", "csv"], default="fmp",
-                    help="earnings source: 'fmp' (free, gated) or 'csv' (Bloomberg).")
+    ap.add_argument("--source", choices=["fmp", "av", "csv"], default="fmp",
+                    help="earnings source: 'fmp' (free, ~27 demo symbols), 'av' "
+                         "(Alpha Vantage free, full universe — pre-warm with "
+                         "scripts/warm_av_cache.py), or 'csv' (Bloomberg). All "
+                         "free feeds pass the same leakage gate + rounding filter.")
     ap.add_argument("--price-source", choices=["tiingo", "sec_xwalk"], default="tiingo",
                     help="price source for the event-study returns leg.")
     ap.add_argument("--max-names", type=int, default=None,
@@ -305,6 +349,17 @@ def main() -> None:
     ap.add_argument("--cross-check", action="store_true",
                     help="attempt an Alpha Vantage cross-source PIT check "
                          "(needs ALPHAVANTAGE_API_KEY; skipped otherwise).")
+    ap.add_argument("--universe", choices=["pit", "current", "cached"], default="pit",
+                    help="FMP symbol universe: 'pit' (all S&P 500 members in "
+                         "window, survivorship-safe), 'current' (live members "
+                         "only — clean FMP coverage, declared survivorship "
+                         "residual), or 'cached' (only symbols already on disk — "
+                         "no new fetches; for the FMP-free 27-name pilot).")
+    ap.add_argument("--pilot", action="store_true",
+                    help="NON-GRADED pilot: run the full methodology + verdict but "
+                         "spend NO trial and make NO graduation claim (N unchanged). "
+                         "Used to smoke-test the real-data path on the FMP-free demo "
+                         "symbols, which are too few/biased to grade honestly.")
     ap.add_argument("--csv", default=BLOOMBERG_CSV)
     args = ap.parse_args()
 
@@ -313,8 +368,12 @@ def main() -> None:
         require_runnable_registration(args.hypothesis)
     except RuntimeError as exc:
         sys.exit(f"REGISTRATION GATE: {exc}")
-    print(f"[registration] {args.hypothesis} verified PROPOSED -- a graded run "
-          f"spends a trial at N={args.n_trials}.")
+    if args.pilot:
+        print(f"[registration] {args.hypothesis} verified PROPOSED -- PILOT MODE: "
+              f"NO trial spent, N UNCHANGED, no graduation claim (smoke-test only).")
+    else:
+        print(f"[registration] {args.hypothesis} verified PROPOSED -- a graded run "
+              f"spends a trial at N={args.n_trials}.")
 
     # 2) Machinery gate (law #4): planted_pead recovered, null_pead rejected,
     #    paired per seed. Runs on SYNTHETIC data only (no network, no trial).
@@ -349,36 +408,75 @@ def main() -> None:
                 "trial spent; N unchanged.")
         print(f"[data] Bloomberg surprise CSV found at {args.csv}.")
         events = load_csv_events(args.csv)
-    else:  # fmp
-        universe = _pit_sp500_universe()
-        raw_events, report = build_fmp_events(
-            universe, args.max_names, args.cross_check)
-        # Print the validation report either way (PASS or FAIL).
+    else:  # fmp or av — free earnings feeds, both leakage-gated
+        if args.universe == "cached":
+            universe = (_cached_av_universe() if args.source == "av"
+                        else _cached_fmp_universe())
+        elif args.universe == "current":
+            universe = _current_sp500_universe()
+        else:
+            universe = _pit_sp500_universe()
+        print(f"[data] source = {args.source}, universe = {args.universe} S&P 500 "
+              f"({len(universe)} symbols).")
+        from quantlab import fmp_earnings as fmpmod
         from quantlab.fmp_earnings import format_validation_report
+        if args.source == "av":
+            # Alpha Vantage: full-universe free feed (cached-only — pre-warm with
+            # scripts/warm_av_cache.py). Same leakage gate; optional FMP cross-check.
+            raw_events = fmpmod.build_av_events(universe, max_names=args.max_names)
+            cross = None
+            if args.cross_check and not raw_events.empty:
+                pulled = sorted(raw_events["ticker"].unique())
+                cross = fmpmod.build_events(  # FMP demo names that overlap, if any
+                    pulled, max_names=args.max_names).drop(
+                    columns=["last_updated"], errors="ignore")
+                cross = cross if cross is not None and not cross.empty else None
+            report = fmpmod.validate_pead_events(raw_events, cross_check=cross)
+            n_av = int(raw_events["ticker"].nunique()) if not raw_events.empty else 0
+            print(f"[data] AV cached coverage: {n_av}/{len(universe)} universe names "
+                  f"have events ({len(raw_events)} raw events).")
+        else:  # fmp
+            raw_events, report = build_fmp_events(
+                universe, args.max_names, args.cross_check)
+        # Print the validation report either way (PASS or FAIL).
         print(format_validation_report(report))
         if not report["passed"]:
             sys.exit(
-                "\nDATA GATE (FMP leakage validator) FAILED — the free earnings "
-                "feed shows at least one gross red flag of a non-PIT / broken "
-                "source:\n  - " + "\n  - ".join(report["reasons"])
+                f"\nDATA GATE ({args.source.upper()} leakage validator) FAILED — the "
+                "free earnings feed shows at least one gross red flag of a non-PIT / "
+                "broken source:\n  - " + "\n  - ".join(report["reasons"])
                 + "\n  Failing CLOSED: a contaminated graded trial is worse than "
                 "no trial. No trial spent; N unchanged. Fix/replace the feed (or "
                 "fall back to --source csv) and re-run.")
-        # Gate passed -> NOW compute SUE (drop the validation-only last_updated col).
-        events = pead.compute_sue(
-            raw_events.drop(columns=["last_updated"], errors="ignore"))
-        print(f"[data] FMP gate PASSED -> {len(events)} SUE events across "
-              f"{events['ticker'].nunique()} tickers; SUE methods "
-              f"{dict(events['sue_method'].value_counts())}")
+
+        # PRE-REGISTERED data-quality filter (frozen in H13 before forward
+        # returns): drop sub-$0.10-EPS quarters whose 2-dp rounding quantizes SUE
+        # (see pead.MIN_ABS_EST). Report the count + the |est|<=threshold coverage
+        # so condition #3 (quantization diluted on the full cohort) is auditable.
+        raw_events = raw_events.drop(columns=["last_updated"], errors="ignore")
+        n_before = len(raw_events)
+        low_frac = float((pd.to_numeric(raw_events["est_eps"], errors="coerce")
+                          .abs() <= pead.MIN_ABS_EST).mean()) if n_before else 0.0
+        kept, n_dropped = pead.drop_low_eps(raw_events)
+        print(f"[filter] H13 rounding filter |est|>${pead.MIN_ABS_EST:.2f}: "
+              f"dropped {n_dropped}/{n_before} events ({low_frac:.1%} were "
+              f"<=${pead.MIN_ABS_EST:.2f}); {len(kept)} remain.")
+        # Gate passed + filter applied -> NOW compute SUE.
+        events = pead.compute_sue(kept)
+        tail = float((events["sue"].abs() > 1.0).mean()) if len(events) else 0.0
+        print(f"[data] {args.source.upper()} gate PASSED -> {len(events)} SUE events "
+              f"across {events['ticker'].nunique()} tickers; SUE methods "
+              f"{dict(events['sue_method'].value_counts())}; |SUE|>1 tail {tail:.1%}.")
         print("[data] REMINDER: gate PASS == no gross red flags, NOT proven "
-              "point-in-time (see CAVEAT above).")
+              "point-in-time (see CAVEAT above); FMP & AV share an upstream feed "
+              "(a cross-check = consistency, not independence).")
 
     # 4) load delisting-inclusive prices for the event tickers (network here).
     prices = _load_prices_for_events(events, args.price_source)
 
     # 5-7) event study + cross-sectional + controls + baselines + verdict.
     res = _run_trial(events, prices, args.n_trials)
-    _print_verdict(res, args.n_trials)
+    _print_verdict(res, args.n_trials, pilot=args.pilot)
 
 
 if __name__ == "__main__":

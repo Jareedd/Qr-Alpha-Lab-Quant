@@ -43,6 +43,10 @@ from quantlab.env import load_env
 
 _BASE = "https://financialmodelingprep.com/stable/earnings"
 _MIN_INTERVAL = 0.30  # conservative spacing; free tier ~250 req/day, ~5 req/s cap
+# Alpha Vantage free tier throttles at ~5 requests/MINUTE (separate from the ~25/
+# day cap). Space cross-check calls > 12s apart so all requested names land in one
+# pass instead of calls 6+ returning an uncached rate-note (thinning the sample).
+_AV_MIN_INTERVAL = 13.0
 CACHE = os.path.join("data_cache", "fmp")
 
 # The tidy events schema produced by pead.parse_pead_csv — the harness contract.
@@ -150,7 +154,8 @@ class FMPEarningsSource:
     No network at import or __init__-without-use beyond loading the key from
     ``.env`` (never printed, never committed)."""
 
-    def __init__(self, env_path: str = ".env", cache_dir: str = CACHE):
+    def __init__(self, env_path: str = ".env", cache_dir: str = CACHE,
+                 min_interval: float = _MIN_INTERVAL):
         load_env(env_path)
         self.key = os.environ.get("FMP_API_KEY", "")
         if not self.key:
@@ -159,13 +164,17 @@ class FMPEarningsSource:
                 "Free key from https://financialmodelingprep.com.")
         self.cache_dir = cache_dir
         os.makedirs(cache_dir, exist_ok=True)
+        # Spacing between live requests. The free tier burst-caps (HTTP 402) if
+        # hit too fast — a bulk universe pull should pass a slower interval
+        # (~1.5-2s) than the 0.30s default used for occasional/cached calls.
+        self.min_interval = float(min_interval)
         self._last = 0.0
 
     def _get(self, url: str, timeout: int = 30, retries: int = 5) -> bytes:
         req = urllib.request.Request(
             url, headers={"Content-Type": "application/json"})
         for attempt in range(retries):
-            wait = _MIN_INTERVAL - (time.monotonic() - self._last)
+            wait = self.min_interval - (time.monotonic() - self._last)
             if wait > 0:
                 time.sleep(wait)
             try:
@@ -177,8 +186,11 @@ class FMPEarningsSource:
                 self._last = time.monotonic()
                 if e.code == 404:
                     raise
-                if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
-                    time.sleep(min(60, 3 * 2 ** attempt))   # hard backoff for 429
+                # 402 = free-tier BURST cap (transient — a single call succeeds
+                # right after a burst), so back off and retry like 429 rather than
+                # giving up; only a persistent 402 after all retries propagates.
+                if e.code in (402, 429, 500, 502, 503, 504) and attempt < retries - 1:
+                    time.sleep(min(60, 3 * 2 ** attempt))   # hard backoff
                     continue
                 raise
             except urllib.error.URLError:
@@ -207,8 +219,11 @@ class FMPEarningsSource:
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 data: list = []                 # genuinely absent -> cache empty
-            elif e.code == 429:
-                return []                        # quota hit -> skip, retry later
+            elif e.code in (402, 429):
+                # 429 = rate limit; 402 = free-tier burst/quota cap. Both are
+                # transient w.r.t. a later resumable pass -> skip WITHOUT caching
+                # so this name is retried next run (never cache a quota error).
+                return []
             else:
                 raise
         else:
@@ -232,6 +247,7 @@ class FMPEarningsSource:
 def build_events(
     symbols, env_path: str = ".env", cache_dir: str = CACHE,
     max_names: int | None = None, source: "FMPEarningsSource | None" = None,
+    min_interval: float = _MIN_INTERVAL,
 ) -> pd.DataFrame:
     """Concat tidy PEAD events across a universe (sequential, cached, resumable).
 
@@ -248,7 +264,8 @@ def build_events(
     its recency caveat — strip it before handing the frame to compute_sue, which
     ignores unknown columns anyway). No network at import; network happens here.
     """
-    src = source or FMPEarningsSource(env_path=env_path, cache_dir=cache_dir)
+    src = source or FMPEarningsSource(env_path=env_path, cache_dir=cache_dir,
+                                      min_interval=min_interval)
     syms = [str(s).strip().upper() for s in symbols if str(s).strip()]
     # De-dupe preserving order; cap the number of distinct names pulled this run.
     seen: set[str] = set()
@@ -591,7 +608,12 @@ def parse_alphavantage_earnings(payload: dict, symbol: str) -> pd.DataFrame:
     for r in rows:
         est = r.get("estimatedEPS")
         act = r.get("reportedEPS")
-        if est in (None, "None", "") or r.get("reportedDate") in (None, "None", ""):
+        # Drop FUTURE / not-yet-reported quarters (no realized actual) and rows
+        # lacking an estimate or a date — matches parse_fmp_earnings' PIT discipline
+        # so the AV graded path never admits a null-actual event.
+        if est in (None, "None", "") or act in (None, "None", ""):
+            continue
+        if r.get("reportedDate") in (None, "None", ""):
             continue
         recs.append({
             "ticker": symbol.upper(),
@@ -605,7 +627,7 @@ def parse_alphavantage_earnings(payload: dict, symbol: str) -> pd.DataFrame:
     df["ann_date"] = pd.to_datetime(df["ann_date"], errors="coerce")
     for c in ("actual_eps", "est_eps"):
         df[c] = pd.to_numeric(df[c], errors="coerce")
-    return df.dropna(subset=["ann_date", "est_eps"]).reset_index(drop=True)
+    return df.dropna(subset=["ann_date", "est_eps", "actual_eps"]).reset_index(drop=True)
 
 
 def fetch_alphavantage_cross_check(symbols, env_path: str = ".env",
@@ -615,10 +637,18 @@ def fetch_alphavantage_cross_check(symbols, env_path: str = ".env",
     is present; return None otherwise (the cross-check is then skipped gracefully).
 
     Network at call-time only; cached per symbol. AV's free tier is very tight
-    (~25 req/day) so this is intended for a small ``max_names`` sample — enough to
-    establish PIT agreement on the overlap, not to mirror the whole universe."""
+    (~25 req/day AND ~5 req/min) so this is intended for a small ``max_names``
+    sample — enough to establish PIT agreement on the overlap, not to mirror the
+    whole universe. Calls are spaced ``_AV_MIN_INTERVAL`` seconds apart to respect
+    the per-minute throttle (else calls 6+ in a minute return a rate-note that we
+    must skip, silently thinning the sample)."""
     load_env(env_path)
-    key = os.environ.get("ALPHAVANTAGE_API_KEY", "")
+    # Accept either spelling: ALPHAVANTAGE_API_KEY (no underscore, the canonical
+    # name in our docs) or ALPHA_VANTAGE_API_KEY (the spelling AV's own dashboard
+    # suggests). Reading both prevents a silently-skipped cross-check from a name
+    # typo — the exact false-negative that would look like "ran, found nothing".
+    key = (os.environ.get("ALPHAVANTAGE_API_KEY")
+           or os.environ.get("ALPHA_VANTAGE_API_KEY") or "")
     if not key:
         return None
     os.makedirs(cache_dir, exist_ok=True)
@@ -633,7 +663,7 @@ def fetch_alphavantage_cross_check(symbols, env_path: str = ".env",
             with open(path, encoding="utf-8") as fh:
                 payload = json.load(fh)
         else:
-            wait = 0.3 - (time.monotonic() - last[0])
+            wait = _AV_MIN_INTERVAL - (time.monotonic() - last[0])
             if wait > 0:
                 time.sleep(wait)
             q = urllib.parse.urlencode({"function": "EARNINGS", "symbol": s, "apikey": key})
@@ -655,3 +685,55 @@ def fetch_alphavantage_cross_check(symbols, env_path: str = ".env",
     if not frames:
         return None
     return pd.concat(frames, ignore_index=True)
+
+
+def build_av_events(
+    symbols, cache_dir: str = os.path.join("data_cache", "alphavantage"),
+    max_names: int | None = None, allow_fetch: bool = False, env_path: str = ".env",
+) -> pd.DataFrame:
+    """Tidy PEAD events from Alpha Vantage as a GRADED-TRIAL source (the free path
+    that — unlike FMP's 27-symbol demo tier — covers the whole universe). Reads the
+    per-symbol AV cache warmed by ``scripts/warm_av_cache.py``; CACHED-ONLY by
+    default (``allow_fetch=False``) so a graded run does no network and is fully
+    reproducible. Emits the SAME ``_TIDY_COLS`` (+ ``last_updated``) as the FMP
+    builder so the gate / filter / SUE / event-study consume AV and FMP
+    interchangeably. AV carries no dispersion or lastUpdated, so ``std_est`` /
+    ``num_est`` / ``surprise_pct`` / ``last_updated`` are NaN/NaT (compute_sue then
+    uses the scale-invariant ``rel_est`` branch — identical value to surprise_pct).
+
+    PIT-safety: a pure field map over cached JSON (parse_alphavantage_earnings
+    already drops null-actual rows and references no price/future bar)."""
+    syms = [str(s).strip().upper() for s in symbols if str(s).strip()]
+    seen: set[str] = set()
+    ordered = []
+    for s in syms:
+        if s not in seen:
+            seen.add(s)
+            ordered.append(s)
+    if max_names is not None:
+        ordered = ordered[:max_names]
+
+    if allow_fetch:                     # warm-then-read (rarely used; warm script preferred)
+        fetch_alphavantage_cross_check(ordered, env_path=env_path,
+                                       cache_dir=cache_dir, max_names=max_names)
+
+    frames = []
+    for s in ordered:
+        path = os.path.join(cache_dir, f"earnings_{s.replace('/', '_')}.json")
+        if not os.path.exists(path):
+            continue                    # not warmed yet -> skip (coverage reported upstream)
+        with open(path, encoding="utf-8") as fh:
+            payload = json.load(fh)
+        ev = parse_alphavantage_earnings(payload, s)
+        if ev.empty:
+            continue
+        ev = ev.assign(period=np.nan, surprise_pct=np.nan, num_est=np.nan,
+                       std_est=np.nan, last_updated=pd.NaT)
+        frames.append(ev[_TIDY_COLS + ["last_updated"]])
+    if not frames:
+        out = pd.DataFrame(columns=_TIDY_COLS + ["last_updated"])
+        out["ann_date"] = pd.to_datetime(out["ann_date"])
+        out["last_updated"] = pd.to_datetime(out["last_updated"])
+        return out
+    out = pd.concat(frames, ignore_index=True)
+    return out.sort_values(["ann_date", "ticker"]).reset_index(drop=True)

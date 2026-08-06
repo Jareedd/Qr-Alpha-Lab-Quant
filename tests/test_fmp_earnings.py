@@ -261,3 +261,78 @@ def test_run_pead_fmp_gate_good_frame_proceeds(monkeypatch):
     assert seen.get("ran") is True
     # the events handed downstream carry a SUE column (gate -> compute_sue ran)
     assert "sue" in seen["events"].columns
+
+
+def test_fetch_earnings_skips_402_burst_without_caching(monkeypatch, tmp_path):
+    """A free-tier burst cap (HTTP 402) after retries must SKIP the name (return
+    []) and NEVER cache the error — so a later resumable pass retries it. (429 is
+    handled the same way; both are transient.)"""
+    import urllib.error
+    monkeypatch.setattr(fmp, "load_env", lambda *a, **k: None)
+    monkeypatch.setenv("FMP_API_KEY", "testkey")
+    src = fmp.FMPEarningsSource(cache_dir=str(tmp_path), min_interval=0.0)
+    assert src.min_interval == 0.0          # spacing is settable for bulk pulls
+
+    def boom(url, **k):
+        raise urllib.error.HTTPError(url, 402, "Payment Required", {}, None)
+
+    monkeypatch.setattr(src, "_get", boom)
+    assert src.fetch_earnings("ZZZZ") == []
+    assert not (tmp_path / "earnings_ZZZZ.json").exists()   # quota error not cached
+
+
+def test_build_av_events_cached_only_emits_tidy_schema(tmp_path):
+    """build_av_events reads the warmed AV cache (no network) and emits the SAME
+    tidy schema as the FMP builder, so the gate/filter/SUE consume AV unchanged.
+    AV carries no dispersion/lastUpdated -> those columns are NaN/NaT."""
+    payload = {"symbol": "XYZ", "quarterlyEarnings": [
+        {"reportedDate": "2023-02-01", "reportedEPS": "1.20", "estimatedEPS": "1.10"},
+        {"reportedDate": "2023-05-01", "reportedEPS": "0.90", "estimatedEPS": "1.00"},
+        {"reportedDate": "2099-09-09", "reportedEPS": "None", "estimatedEPS": "1.0"},
+    ]}
+    import json as _json
+    (tmp_path / "earnings_XYZ.json").write_text(_json.dumps(payload), encoding="utf-8")
+    out = fmp.build_av_events(["XYZ", "NOPE"], cache_dir=str(tmp_path))
+    # uncached "NOPE" is skipped; future/null-actual row dropped -> 2 events
+    assert list(out["ticker"].unique()) == ["XYZ"]
+    assert len(out) == 2
+    assert set(fmp._TIDY_COLS + ["last_updated"]).issubset(out.columns)
+    assert out["std_est"].isna().all() and out["last_updated"].isna().all()
+    # flows through the SUE compute on the scale-invariant rel_est branch
+    from quantlab import pead
+    sued = pead.compute_sue(out.drop(columns=["last_updated"]))
+    assert set(sued["sue_method"]) == {"rel_est"}
+
+
+def test_run_pead_applies_frozen_low_eps_filter(monkeypatch):
+    """The runner drops |est_eps| <= $0.10 events (frozen H13 filter) BEFORE
+    scoring: a sub-threshold row must not reach _run_trial."""
+    run_pead = _patch_common(monkeypatch)
+    from quantlab import fmp_earnings as fmpmod
+
+    good = _good_events(n_tickers=4, per=8)
+    good.loc[len(good)] = {                       # one quantization-prone row
+        "ticker": "LOWX", "ann_date": pd.Timestamp("2016-02-01"), "period": np.nan,
+        "actual_eps": 0.04, "est_eps": 0.03, "surprise_pct": 33.3,
+        "num_est": np.nan, "std_est": np.nan,
+        "last_updated": pd.Timestamp("2016-02-02"),
+    }
+    monkeypatch.setattr(fmpmod, "build_events", lambda *a, **k: good)
+    seen = {}
+    monkeypatch.setattr(run_pead, "_load_prices_for_events",
+                        lambda events, ps: seen.update(events=events) or pd.DataFrame())
+    monkeypatch.setattr(run_pead, "_run_trial",
+                        lambda *a, **k: {"event_study": {"n_events": 1, "n_long": 1,
+                        "n_short": 0}, "cross_sectional": {"net_sharpe": 0.0,
+                        "t_nw": float("nan"), "n_months": 0, "annual_turnover": 0.0},
+                        "net_sharpe": 0.0, "t_nw": float("nan"), "dsr": float("nan"),
+                        "n_obs": 0, "drift_vs_reaction": {"sharpe_by_lag": {},
+                        "retention_t5_over_t2": 0.0}, "shuffle_sr": 0.0,
+                        "size_tercile": {"tercile_sharpe": {}, "tercile_n": {}},
+                        "sr_ew": 0.0, "sr_mom": 0.0, "mde_ann": 0.0, "gates": {},
+                        "graduate": False})
+    monkeypatch.setattr(run_pead, "_print_verdict", lambda *a, **k: None)
+    monkeypatch.setattr(sys, "argv", ["run_pead.py", "--source", "fmp"])
+
+    run_pead.main()
+    assert "LOWX" not in set(seen["events"]["ticker"])   # the low-EPS row was dropped
