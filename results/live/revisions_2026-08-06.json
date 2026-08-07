@@ -1,0 +1,80 @@
+{
+  "compared_to": "2026-08-05",
+  "n_shared_dates": 2159,
+  "n_shared_tickers": 645,
+  "n_cells_compared": 1311818,
+  "n_price_cells_changed": 6491,
+  "frac_price_cells_changed": 0.004948094933900892,
+  "max_abs_rel_price_change": 0.004300023853507473,
+  "n_return_cells_compared": 1311083,
+  "n_return_cells_changed": 232,
+  "frac_return_cells_changed": 0.00017695294653351465,
+  "max_abs_return_change": 0.004327341663457274,
+  "n_tickers_affected": 14,
+  "n_price_cells_noise_band": 667500,
+  "n_return_cells_noise_band": 793241,
+  "n_cells_appeared": 4,
+  "n_cells_vanished": 0,
+  "top_affected_tickers": [
+    {
+      "ticker": "DHI",
+      "n_price_cells": 2159,
+      "max_abs_rel_change": 0.002971899885000795,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "EQT",
+      "n_price_cells": 2158,
+      "max_abs_rel_change": 0.003127441697929112,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "SYF",
+      "n_price_cells": 2158,
+      "max_abs_rel_change": 0.004300023853507473,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "O",
+      "n_price_cells": 4,
+      "max_abs_rel_change": 1.1014750402882356e-06,
+      "n_return_cells": 21
+    },
+    {
+      "ticker": "SLG",
+      "n_price_cells": 3,
+      "max_abs_rel_change": 1.2158705146037008e-06,
+      "n_return_cells": 22
+    },
+    {
+      "ticker": "EMC",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 2.7058946457936273e-06,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "MPWR",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 3.719844198446509e-06,
+      "n_return_cells": 2
+    },
+    {
+      "ticker": "INFO",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 1.4105819980736456e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "GENZ",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 3.1473741457510584e-05,
+      "n_return_cells": 1
+    },
+    {
+      "ticker": "NFX",
+      "n_price_cells": 1,
+      "max_abs_rel_change": 8.132899904966795e-05,
+      "n_return_cells": 1
+    }
+  ]
+}
